@@ -46,7 +46,6 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 ## 📅 **Diese Woche (22. September - 21. September 2025)**
 
 ### **Dienstag**
-- [ ] Sustain Post und Bilder sammeln, AI Agent Prototyping teasern
 - [ ] Push Workshop weiter
 - [x] ~~Wiesn~~
 - [ ] Geschenksteffen
@@ -163,6 +162,14 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [ ] **Open source library**
 
 ### **Oktober:**
+- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:
+  - [ ] **Zuhören** - ganz wichtig als erstes zuhören
+  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde
+  - [ ] Sofort markieren und später ansprechen
+  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)
+  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen
+  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen
+  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben
 - [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
 - [ ] **10.10. um 10:30 Uhr Lungenarzttermin**
 - [ ] Zahnärztin, bekomme ich noch die E-Mails?
