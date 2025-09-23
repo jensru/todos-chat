@@ -21,6 +21,34 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 
 ---
 
+## 📅 **Diese Woche (23.-29. September 2025)**
+
+### **Dienstag**
+- [ ] Blutdruck wieder prüfen
+- [ ] Sustain Post und Bilder sammeln, AI Agent Prototyping teasern
+- [ ] 0/4 werk1
+- [ ] Wiesn
+
+### **Mittwoch**
+- [ ] Ru
+
+### **Donnerstag**
+- [ ] Restanspruch ALG herausfinden, dann Dez/Jan Antrag schreiben/stellen
+
+### **Freitag**
+- [ ] Alle Leute hallo mit lead funnels strategie
+- [ ] Ich brauche einen Funnel immer beim Kontaktieren
+- [ ] Irgendein community live Event jetzt
+- [ ] Webinar UX
+- [ ] Webinar Produkt
+- [ ] Die wichtigsten Fragen verstehen
+- [ ] **built your own app with a running agent course!**
+- [ ] Kommentieren an Zielgruppe
+- [ ] Münchner Liste
+- [ ] Letzte Woche Kommentare
+
+---
+
 ## 📅 **Sprint-Planung: Oktober 2025**
 
 ### **🔥 Woche 1-2: Tool-Core (KRITISCH)**
