@@ -31,6 +31,22 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 
 ### **Mittwoch**
 - [ ] Ru
+- [ ] Pucko
+
+### **Neue Positionierung**
+
+- [ ] Neue Positionierung: mehr AI Rapid Prototyping, AI generated Interface, AI and Automation Sprints, AI Product Shipment!!!!
+- [ ] Leadmagneten und Funnels
+- [ ] Analyse Anna Workshops, [https://maven.com/xinran/ai-for-product-designers](https://maven.com/xinran/ai-for-product-designers)
+- [ ] **Pricing**!
+    - Tools pricing
+    - Workshops, webinar cohorten pricing
+    - Newsletter pricing
+- [ ] LinkedIn Update
+- [ ] Website Update
+
+- [ ] Miete erhöhen
+- [ ] Eltern fahren
 
 ### **Donnerstag**
 - [ ] Restanspruch ALG herausfinden, dann Dez/Jan Antrag schreiben/stellen
@@ -63,7 +79,7 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 
 ### **📢 Woche 4: Community & Content**
 - [ ] PUSH Workshop Präsentation vorbereiten
-- [ ] Content für LinkedIn/Social Media (Sustain Post, AI Agent Prototyping)
+- [ ] Content für LinkedIn/Social Media (AI Agent Prototyping)
 - [ ] Market Research Community-Outreach (Anna Workshops analysieren)
 
 ---
@@ -105,12 +121,10 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 - [ ] Geschenke LP
 
 ### **Gesundheit (DRINGEND):**
-- [ ] Blutdruck wieder prüfen
 - [ ] Pneumologie Überweisung erneuern (vor 8. Oktober!)
 - [ ] Zahnärztin E-Mails bearbeiten
 
 ### **Bürokratie:**
-- [ ] ALG Restanspruch herausfinden
 - [ ] Dezember/Januar ALG-Antrag schreiben/stellen
 
 ### **November:**
