@@ -4,6 +4,8 @@ _→ Schneller umsetzen, statt zu lange nachzudenken._
 _→ Sichtbarkeit durch Pushen anderer & mutige eigene Schritte._
 _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 
+Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
+
 ---
 
 ## **==Ziele==**
@@ -68,9 +70,14 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 ## 📅 **Sprint-Planung: Oktober 2025**
 
 ### **🔥 Woche 1-2: Tool-Core (KRITISCH)**
-- [ ] **Chat-First Interface entwickeln** - Hauptpriorität für eigene Nutzung
-- [ ] Tool Marketing Tests vorbereiten
-- [ ] Beta-Liste Setup (invite-only)
+- [ ] **Chat-First Interface für mein Tool** - Hauptpriorität für eigene Nutzung
+- [ ] Tool Marketing Tests
+- [ ] Tools, betaliste, invite only (https://appcanvas.io/)
+- [ ] Signup zu meinem Tool
+- [ ] Meine Tool-Seite soweit fertig machen → Tool Page mit Videos und Bildern
+- [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"
+- [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
+- [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
 
 ### **💼 Woche 3: Business Foundation**
 - [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces)
@@ -81,6 +88,19 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 - [ ] PUSH Workshop Präsentation vorbereiten
 - [ ] Content für LinkedIn/Social Media (AI Agent Prototyping)
 - [ ] Market Research Community-Outreach (Anna Workshops analysieren)
+- [ ] Jetzt schon Marketing Tests zu value prop, Pricing
+- [ ] Post: Der Unterschied zwischen der sich selbst und andere pushen
+- [ ] Landingpages für einzelne Tools (zwei fehlen)
+- [ ] Psychologie tools auf tools seite
+- [ ] Info Jens mit Detailseite
+- [ ] Workshop texte mehr ROI und dann in lerneinheiten
+- [ ] French?!?
+- [ ] SEO
+- [ ] Angebot als Buchbar und Verknappung
+- [ ] Calendly integrieren
+- [ ] Kickboost Seite auf LinkedIn
+- [ ] Newsletter Strategie
+- [ ] Tools Signup
 
 ---
 
@@ -111,6 +131,22 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 - [ ] Echte Nutzerinterviews mit Maryam, Angemeldeten, Zielgruppe
 - [ ] Wiederverwenden-Interviews und Value Proposition
 - [ ] Umfragen zu Wiederverwendung
+- [ ] Maryam
+- [ ] Alle Angemeldeten
+- [ ] Potentielle Zielgruppe aber nicht angemeldet
+
+---
+
+## 🚀 **Zukünftige Projekte**
+
+### **N-t-h (Next to happen):**
+- [ ] **Einkaufsapp, Deep Research, dann simple aufbau**
+- [ ] **Open source library**
+
+### **Oktober:**
+- [ ] Gleich Anfang Oktober vor dem 8.!!! Erneuern Pneumologie Überweisung
+- [ ] Zahnärztin, bekomme ich noch die E-Mails?
+- [ ] Localnotion
 
 ---
 
@@ -141,7 +177,7 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 
 ## 🔧 **Technik & Setup**
 
-- [ ] Localnotion Setup durchführen
+- [x] Localnotion Setup durchführen
 - [ ] UI-Konzept für lokale Book App entwickeln
 - [ ] Design Tool: Fixes/Vorgaben in ersten Prompt implementieren
 
