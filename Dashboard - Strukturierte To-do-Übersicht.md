@@ -22,18 +22,41 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 **Irgendwann und vielleicht schon bald:** Pivot? Zielgruppen switch (Entscheidung)
 
 ---
+## ⚡ **Nächste Schritte (diese Woche)**
+
+1. **SOFORT**: Geschenksteffen & Geschenke LP
+2. **DRINGEND**: 
+   - **7.10. um 9:00 Uhr Blutdruck-Messgerät angelegt**
+   - **8.10. um 9:00 Uhr Blutdruck-Messgerät abgenommen**
+   - **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
+   - **10.10. um 10:30 Uhr Lungenarzttermin**
+3. **Tool-Entwicklung**: Chat-First Interface als Daily Driver aufbauen
+4. **PUSH Workshop**: Content sammeln und Präsentation vorbereiten
+
+---
+
+## 🎯 **Erfolgskriterien Q4 2025**
+
+- **Tool**: Du nutzt es täglich für Kundenarbeit
+- **Marketing**: Erste zahlende Beta-Nutzer
+- **Community**: Etablierte Präsenz in relevanten Communities
+- **Health**: Alle Termine erledigt, TÜV gemacht
+---
 
 ## 📅 **Diese Woche (23.-29. September 2025)**
 
 ### **Dienstag**
-- [ ] Blutdruck wieder prüfen
+- [ ] ~~Blutdruck wieder prüfen~~ → **7.10. um 9:00 Uhr Blutdruck-Messgerät angelegt**
 - [ ] Sustain Post und Bilder sammeln, AI Agent Prototyping teasern
-- [ ] 0/4 werk1
-- [ ] Wiesn
+- [ ] ~~Wiesn~~
+- [ ] Geschenksteffen
+- [ ] Geschenke LP
 
 ### **Mittwoch**
 - [ ] Ru
 - [ ] Pucko
+- [ ] 0/4 werk1
+- [ ] **8.10. um 9:00 Uhr Blutdruck-Messgerät abgenommen**
 
 ### **Neue Positionierung**
 
@@ -82,7 +105,6 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 ### **💼 Woche 3: Business Foundation**
 - [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces)
 - [ ] Pricing-Strategie entwickeln (Tools, Workshops, Newsletter)
-- [ ] Landingpages für einzelne Tools (2 fehlen noch)
 
 ### **📢 Woche 4: Community & Content**
 - [ ] PUSH Workshop Präsentation vorbereiten
@@ -119,13 +141,8 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 ## 📊 **Marketing & Business Development**
 
 ### **Aktueller Status:**
-- [ ] Tool-Seite mit Videos und Bildern fertigstellen
 - [ ] Parallel Marketing für Methode, Tool, Workshops, Kundenprojekte
-- [ ] Post: "Der Unterschied zwischen sich selbst und andere pushen"
-- [ ] Psychologie Tools auf Tools-Seite
 - [ ] Workshop-Texte mehr ROI-fokussiert
-- [ ] Calendly integrieren
-- [ ] Newsletter-Strategie
 
 ### **Nach Beta-Phase:**
 - [ ] Echte Nutzerinterviews mit Maryam, Angemeldeten, Zielgruppe
@@ -144,24 +161,18 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [ ] **Open source library**
 
 ### **Oktober:**
-- [ ] Gleich Anfang Oktober vor dem 8.!!! Erneuern Pneumologie Überweisung
+- [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
+- [ ] **10.10. um 10:30 Uhr Lungenarzttermin**
 - [ ] Zahnärztin, bekomme ich noch die E-Mails?
-- [ ] Localnotion
+- [ ] **Booklist, BUT how to UI the Bookapp for my local Book App!**
 
 ---
 
 ## 🏥 **Persönliche To-dos**
 
-### **Gesundheit (SOFORT):**
-- [ ] Geschenksteffen
-- [ ] Geschenke LP
-
-### **Gesundheit (DRINGEND):**
-- [ ] Pneumologie Überweisung erneuern (vor 8. Oktober!)
-- [ ] Zahnärztin E-Mails bearbeiten
 
 ### **Bürokratie:**
-- [ ] Dezember/Januar ALG-Antrag schreiben/stellen
+- [ ] Dezember/Januar Gründungszuschuss Antrag
 
 ### **November:**
 - [ ] SLK und Touran TÜV
@@ -198,23 +209,8 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [[Booklist, BUT how to UI the Bookapp for my local Book App!]] - Buchempfehlungen
 - [[spanneder post von]] - Content-Ideen
 
----
 
-## ⚡ **Nächste Schritte (diese Woche)**
 
-1. **SOFORT**: Geschenksteffen & Geschenke LP
-2. **DRINGEND**: Pneumologie Überweisung erneuern, Blutdruck prüfen
-3. **Tool-Entwicklung**: Chat-First Interface als Daily Driver aufbauen
-4. **PUSH Workshop**: Content sammeln und Präsentation vorbereiten
-
----
-
-## 🎯 **Erfolgskriterien Q4 2025**
-
-- **Tool**: Du nutzt es täglich für Kundenarbeit
-- **Marketing**: Erste zahlende Beta-Nutzer
-- **Community**: Etablierte Präsenz in relevanten Communities
-- **Health**: Alle Termine erledigt, TÜV gemacht
 
 ---
 
