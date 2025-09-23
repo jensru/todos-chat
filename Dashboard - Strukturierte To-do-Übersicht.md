@@ -102,6 +102,7 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"
 - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
 - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
+- [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
 
 ### **💼 Woche 3: Business Foundation**
 - [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces)
@@ -194,30 +195,6 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [ ] 2 spirou
 
 ---
-
-## 🔧 **Technik & Setup**
-
-- [x] Localnotion Setup durchführen
-- [ ] UI-Konzept für lokale Book App entwickeln
-- [ ] Design Tool: Fixes/Vorgaben in ersten Prompt implementieren
-
----
-
-## 📝 **Referenz-Links zu Originaldateien**
-
-### **Haupt-Strategiedokumente:**
-- [[Quartalsziel]] - Oberdatei mit Links zu anderen
-- [[Revisit Vision]] - Tool-Strategie und Markt-Positionierung
-- [[Finale Designs mit AI- Mein Design File]] - UI-Styleguide
-- [[Aktuelle Produkte & Leadmagneten]] - Produktübersicht
-- [[Tool Landingpage mit Video-]] - Marketing-Materialien
-
-### **Research & Entwicklung:**
-- [[Getting out of the building]] - Market Research Report
-- [[Prompting Unterstützung in AI Interfaces]] - UX-Patterns für AI
-- [[Booklist, BUT how to UI the Bookapp for my local Book App!]] - Buchempfehlungen
-- [[spanneder post von]] - Content-Ideen
-
 
 
 
