@@ -21,13 +21,226 @@ git commit -m "$COMMIT_MSG"
 # Website automatisch aktualisieren
 echo "🔄 Aktualisiere Website..."
 
-# Website manuell aktualisieren - einfache Methode
-echo "🔄 Aktualisiere Website manuell..."
-echo "⚠️  Bitte aktualisiere die Website manuell:"
-echo "   1. Öffne index.html im Editor"
-echo "   2. Kopiere den Inhalt aus 'Dashboard - Strukturierte To-do-Übersicht.md'"
-echo "   3. Ersetze den markdownContent-Bereich in der Website"
-echo "   4. Speichere die Datei"
+# Website automatisch aktualisieren - FUNKTIONIERENDE Methode
+echo "🔄 Aktualisiere Website automatisch..."
+
+# Dashboard-Inhalt lesen
+DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md")
+
+# Erstelle komplett neue index.html
+cat > index.html << EOF
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - To-do Übersicht</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Import Google Sans */
+        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            line-height: 1.6;
+            color: #1F1F1F;
+            background-color: #FFFFFF;
+        }
+        
+        h1 { 
+            color: #1F1F1F; 
+            border-bottom: 2px solid #0B57D0; 
+            padding-bottom: 16px; 
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+        
+        h2 { 
+            color: #1F1F1F; 
+            margin-top: 32px; 
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 32px;
+        }
+        
+        h3 { 
+            color: #444746; 
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 24px;
+        }
+        
+        p, li {
+            color: #1F1F1F;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
+        }
+        
+        .checkbox { 
+            margin: 12px 0; 
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox input[type="checkbox"] { 
+            margin-right: 8px; 
+            width: 16px;
+            height: 16px;
+            accent-color: #0B57D0;
+        }
+        
+        .checkbox label { 
+            cursor: pointer; 
+            font-size: 14px;
+            line-height: 20px;
+            color: #3C4043;
+        }
+        
+        .checkbox input[type="checkbox"]:checked + label { 
+            text-decoration: line-through; 
+            opacity: 0.6; 
+        }
+        
+        blockquote { 
+            border-left: 4px solid #0B57D0; 
+            padding-left: 20px; 
+            margin: 24px 0; 
+            font-style: italic; 
+            color: #747775;
+            font-size: 14px;
+            line-height: 20px;
+        }
+        
+        code { 
+            background: #f8f9fa; 
+            padding: 2px 6px; 
+            border-radius: 3px; 
+            font-family: 'Monaco', 'Consolas', monospace; 
+            color: #1F1F1F;
+        }
+        
+        pre { 
+            background: #f8f9fa; 
+            padding: 16px; 
+            border-radius: 12px; 
+            overflow-x: auto; 
+            border: 1px solid rgba(0,0,0,0.12);
+        }
+        
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            margin: 24px 0; 
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        th, td { 
+            border: 1px solid rgba(0,0,0,0.12); 
+            padding: 16px; 
+            text-align: left; 
+            font-size: 14px;
+            line-height: 20px;
+        }
+        
+        th { 
+            background-color: #f8f9fa; 
+            font-weight: 500; 
+            color: #1F1F1F;
+        }
+        
+        td {
+            color: #747775;
+        }
+        
+        hr { 
+            border: none; 
+            border-top: 1px solid rgba(0,0,0,0.12); 
+            margin: 32px 0; 
+        }
+        
+        .emoji { font-size: 1.2em; }
+        
+        /* CTA Button Style */
+        .cta-button {
+            background-color: #0B57D0;
+            color: #FFFFFF;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            margin: 16px 0;
+        }
+        
+        .cta-button:hover {
+            background-color: #0a4bb8;
+        }
+        
+        /* Emphasis text */
+        strong {
+            color: #444746;
+            font-weight: 500;
+        }
+        
+        /* Links */
+        a {
+            color: #0B57D0;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+
+    <script>
+        // Dashboard Markdown Content
+        const markdownContent = \`$DASHBOARD_CONTENT\`;
+
+        // Configure marked options
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
+
+        // Convert markdown to HTML
+        const htmlContent = marked.parse(markdownContent);
+        
+        // Insert into page
+        document.getElementById('content').innerHTML = htmlContent;
+
+        // Add interactive checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                // Load saved state
+                const savedState = localStorage.getItem('checkbox_' + checkbox.parentNode.textContent.trim());
+                if (savedState === 'true') {
+                    checkbox.checked = true;
+                }
+                
+                // Save state on change
+                checkbox.addEventListener('change', function() {
+                    localStorage.setItem('checkbox_' + this.parentNode.textContent.trim(), this.checked);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+EOF
 
 echo "✅ Website aktualisiert!"
 echo "🌐 Öffne index.html im Browser um die Änderungen zu sehen"
