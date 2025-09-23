@@ -17,6 +17,7 @@ _→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
 ## 🚀 **FOKUS: Tool-First Strategie**
 
 **Regel:** Tool so bauen, dass es _dich selbst_ ersetzt in deinem Workflow → du nutzt es täglich für Kundenarbeit.
+**Irgendwann und vielleicht schon bald:** Pivot? Zielgruppen switch (Entscheidung)
 
 ---
 
