@@ -43,12 +43,12 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - **Health**: Alle Termine erledigt, TÜV gemacht
 ---
 
-## 📅 **Diese Woche (23.-29. September 2025)**
+## 📅 **Diese Woche (22. September - 21. September 2025)**
 
 ### **Dienstag**
-- [ ] ~~Blutdruck wieder prüfen~~ → **7.10. um 9:00 Uhr Blutdruck-Messgerät angelegt**
 - [ ] Sustain Post und Bilder sammeln, AI Agent Prototyping teasern
-- [ ] ~~Wiesn~~
+- [ ] Push Workshop weiter
+- [x] ~~Wiesn~~
 - [ ] Geschenksteffen
 - [ ] Geschenke LP
 
@@ -56,7 +56,8 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [ ] Ru
 - [ ] Pucko
 - [ ] 0/4 werk1
-- [ ] **8.10. um 9:00 Uhr Blutdruck-Messgerät abgenommen**
+- [ ] Push Workshop weiter
+- [ ] Entnotisieren
 
 ### **Neue Positionierung**
 
@@ -87,6 +88,7 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [ ] Kommentieren an Zielgruppe
 - [ ] Münchner Liste
 - [ ] Letzte Woche Kommentare
+- [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools!
 
 ---
 
@@ -214,6 +216,6 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 
 ---
 
-_Heute: 23. September 2025_
-_Letzte Aktualisierung: 23. September 2025_
+_Heute: 
+_Letzte Aktualisierung: 
 _Nächste Review: Ende Oktober 2025_
