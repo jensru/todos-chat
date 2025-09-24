@@ -30,21 +30,7 @@ DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md")
 # Sidebar-Inhalt lesen
 SIDEBAR_CONTENT=$(cat "right-sidebar.md")
 
-# LLM-Agent ausführen
-echo "🤖 Führe LLM-Agenten aus..."
-
-# API Key laden (falls vorhanden)
-if [ -f "config.sh" ]; then
-    source config.sh
-fi
-
-bash agents/timeline-llm-agent.sh
-
-# Agent-Inhalte lesen (falls vorhanden)
-AGENT_CONTENT=""
-if [ -f "timeline-llm-suggestions.md" ]; then
-    AGENT_CONTENT=$(cat "timeline-llm-suggestions.md")
-fi
+# Keine Agenten mehr - einfache Version
 
 # Erstelle komplett neue index.html
 cat > index.html << EOF
@@ -303,16 +289,8 @@ cat > index.html << EOF
         // Sidebar Markdown Content
         const sidebarContent = \`$SIDEBAR_CONTENT\`;
 
-        // Agent Content (falls vorhanden)
-        let agentContent = '';
-        const agentMarkdown = \`$AGENT_CONTENT\`;
-        if (agentMarkdown.trim()) {
-            agentContent = \`
-            <div class="agent-section">
-                <h3>🤖 Timeline-LLM-Agent</h3>
-                \${marked.parse(agentMarkdown)}
-            </div>\`;
-        }
+               // Keine Agenten mehr
+               let agentContent = '';
 
         // Dashboard Markdown Content
         const markdownContent = \`$DASHBOARD_CONTENT\`;
