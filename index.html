@@ -285,23 +285,16 @@
 ## 📅 **Diese Woche (22. September - 28. September 2025)**
 
 ### **Mittwoch (heute) - Tagesplan Timeline:**
-- [x] Geld abheben
-- [x] 1/4 werk1
-- [x] Wann ist Elternabend Sport und Schule. 13.10 und wann leichtathletik?
-- [x] Todos
-- [x] Tabs
 6. **Arbeitsblock 1**: Positionierung, Post schreiben, PUSH Präse weiter 📝
-   - [ ] **Positionierung !!!!** - Neue AI-Positionierung finalisieren
-   - [x] **Neue Positionierung**: mehr AI Rapid Prototyping, AI generated Interface, AI and Automation Sprints, AI Product Shipment!!!!
-   - [x] **LinkedIn Update** - "AI-First Product & UX Consultant | Making software chat-first." 
    - [ ] **Website Update** - Positionierung auf Website
-   - [x] ~~**Post von Push Inhalt** - Content aus Push Workshop sammeln~~ ✅ 
    - [ ] "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
    - [ ] **Kappa Post !!!!** - Kappa-spezifischer Content
+   - [ ] 3-Angebots-Kacheln ("Wir bauen für dich" / "Wir bringen’s dir bei" / "Wir sprinten mit dir")
+   - [ ] drei starkes Kunden-Zitat mit Bild und kurzem Case?
+        - lea
+        - SAP Typ
+        - Tem Manager App Typ
 7. **V-Markt** 🛒
-- [ ] Pucko
-- [ ] Daniel Gauro +49 40 468987876.
-- [x] Alloy testen
 8. **Joggen** 🏃‍♂️
 9. **Arbeitsblock 2**: Gleiche Themen (Positionierung, Posts, PUSH) 📝
    - [ ] Geschenksteffen
@@ -334,6 +327,7 @@
 - [ ] Linkedin Seiten Texte, Linkedin Funnel, Landingpages Newsletter und Website und Tools 
 
 ### **Freitag**
+- [ ] Basic eigenes CRM Verfolgung
 - [ ] Alle Leute hallo mit lead funnels strategie
 - [ ] Ich brauche einen Funnel immer beim Kontaktieren
 - [ ] Irgendein community live Event jetzt
@@ -466,8 +460,7 @@
 ---
 
 _Heute: 
-_Letzte Aktualisierung: 
-_Nächste Review: Ende Oktober 2025_`;
+_Letzte Aktualisierung: `;
 
         // Configure marked options
         marked.setOptions({
@@ -482,6 +475,13 @@ _Nächste Review: Ende Oktober 2025_`;
         // Insert into page
         document.getElementById('content').innerHTML = htmlContent;
         document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
+        
+        // Füge heutige Task-Historie hinzu
+        const todayHistoryHtml = `<div class='completed-tasks-today'><h3>✅ Heute erledigt:</h3><ul><li>LinkedIn Update (marketing)</li><li>Alloy testen (tool)</li><li>Todos (personal)</li><li>Tabs (personal)</li><li>Geld abheben (money)</li><li>1/4 werk1 (personal)</li><li>Wann ist Elternabend Sport und Schule. 13.10 und wann leichtathletik? (personal)</li><li>Todos (personal)</li><li>Tabs (personal)</li><li>Alloy testen (tool)</li></ul></div>`;
+        if (todayHistoryHtml) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML += todayHistoryHtml;
+        }
 
         // Add interactive checkboxes
         document.addEventListener('DOMContentLoaded', function() {

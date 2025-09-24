@@ -9,6 +9,25 @@
       "main_goal": "Tool-First Strategie",
       "focus": "Geld generieren",
       "success_criteria": "3 Geld-Tasks erledigt",
+      "goals_set_at": "2025-09-24T09:00:00",
+      "goals_updated_at": "2025-09-24T09:00:00",
+      "focus_areas": {
+        "geld": {
+          "priority": "high",
+          "target_tasks": 3,
+          "completed_tasks": 1
+        },
+        "tool_first": {
+          "priority": "high", 
+          "target_tasks": 2,
+          "completed_tasks": 2
+        },
+        "marketing": {
+          "priority": "medium",
+          "target_tasks": 2,
+          "completed_tasks": 1
+        }
+      },
       "tasks_completed": [
         {
           "id": "task_001",

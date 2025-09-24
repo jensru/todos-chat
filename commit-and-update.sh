@@ -40,6 +40,12 @@ if [ -f "task-history-manager.sh" ]; then
     TODAY_HISTORY_HTML=$(./task-history-manager.sh generate-html 2>/dev/null || echo "")
 fi
 
+# Tagesziele-Fortschritt generieren
+DAILY_PROGRESS_HTML=""
+if [ -f "daily-goals-manager.sh" ]; then
+    DAILY_PROGRESS_HTML=$(./daily-goals-manager.sh generate-html 2>/dev/null || echo "")
+fi
+
 # Keine Agenten mehr - einfache Version
 
 # Erstelle komplett neue index.html
@@ -324,6 +330,13 @@ cat > index.html << EOF
         if (todayHistoryHtml) {
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML += todayHistoryHtml;
+        }
+        
+        // Füge Tagesziele-Fortschritt hinzu
+        const dailyProgressHtml = \`$DAILY_PROGRESS_HTML\`;
+        if (dailyProgressHtml) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML += dailyProgressHtml;
         }
 
         // Add interactive checkboxes
