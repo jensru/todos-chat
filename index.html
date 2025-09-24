@@ -482,6 +482,13 @@ _Letzte Aktualisierung: `;
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML += todayHistoryHtml;
         }
+        
+        // Füge Tagesziele-Fortschritt hinzu
+        const dailyProgressHtml = `<div class='daily-progress'><h3>🎯 Heutige Ziele:</h3><p><strong>Hauptziel:</strong> Tool-First Strategie</p><p><strong>Fokus:</strong> Geld generieren</p><h4>📊 Fortschritt:</h4><ul></ul></div>`;
+        if (dailyProgressHtml) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML += dailyProgressHtml;
+        }
 
         // Add interactive checkboxes
         document.addEventListener('DOMContentLoaded', function() {

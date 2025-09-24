@@ -151,10 +151,10 @@ generate_progress_html() {
             
             # Fokus-Bereiche
             progress_html+="<h4>📊 Fortschritt:</h4><ul>"
-            echo "$daily_goals" | jq -r '.focus_areas | to_entries[] | 
-                "\(.key): \(.value.completed_tasks)/\(.value.target_tasks)"' | while read -r line; do
+            local focus_areas=$(echo "$daily_goals" | jq -r '.focus_areas | to_entries[] | "\(.key): \(.value.completed_tasks)/\(.value.target_tasks)"')
+            while IFS= read -r line; do
                 progress_html+="<li>$line</li>"
-            done
+            done <<< "$focus_areas"
             progress_html+="</ul></div>"
         fi
     fi
