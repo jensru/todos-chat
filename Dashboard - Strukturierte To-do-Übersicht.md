@@ -5,11 +5,11 @@
 ## 📅 **Diese Woche (22. September - 21. September 2025)**
 
 ### **Mittwoch (heute) - Tagesplan Timeline:**
-- [ ] Geld abheben
-- [ ] 0/4 werk1
+- [x] Geld abheben
+- [x] 1/4 werk1
 - [ ] Wann ist Elternabend Sport und Schule. 13.10 und wann leichtathletik?
+- [x] Todos
 2. **Tabs** 🗂️
-3. **Todos** ✅
 6. **Arbeitsblock 1**: Positionierung, Post schreiben, PUSH Präse weiter 📝
    - [ ] **Positionierung !!!!** - Neue AI-Positionierung finalisieren
    - [ ] **Neue Positionierung**: mehr AI Rapid Prototyping, AI generated Interface, AI and Automation Sprints, AI Product Shipment!!!!
@@ -34,6 +34,7 @@
 
 
 ### **Donnerstag - Geld-Strategien & Pricing**
+- [ ] 1/4 werk1
 - [ ] Restanspruch ALG herausfinden, dann Dez/Jan Antrag schreiben/stellen
 - [ ] **Pricing-Strategie entwickeln**:
   - Tools pricing
