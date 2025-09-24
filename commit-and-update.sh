@@ -30,6 +30,12 @@ DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md")
 # Sidebar-Inhalt lesen
 SIDEBAR_CONTENT=$(cat "right-sidebar.md")
 
+# Agent-Inhalte lesen (falls vorhanden)
+AGENT_CONTENT=""
+if [ -f "timeline-suggestions.md" ]; then
+    AGENT_CONTENT=$(cat "timeline-suggestions.md")
+fi
+
 # Erstelle komplett neue index.html
 cat > index.html << EOF
 <!DOCTYPE html>
@@ -265,6 +271,17 @@ cat > index.html << EOF
         // Sidebar Markdown Content
         const sidebarContent = \`$SIDEBAR_CONTENT\`;
 
+        // Agent Content (falls vorhanden)
+        let agentContent = '';
+        const agentMarkdown = \`$AGENT_CONTENT\`;
+        if (agentMarkdown.trim()) {
+            agentContent = \`
+            <div class="agent-section">
+                <h3>🤖 Timeline-Organizer</h3>
+                \${marked.parse(agentMarkdown)}
+            </div>\`;
+        }
+
         // Dashboard Markdown Content
         const markdownContent = \`$DASHBOARD_CONTENT\`;
 
@@ -280,7 +297,7 @@ cat > index.html << EOF
         
         // Insert into page
         document.getElementById('content').innerHTML = htmlContent;
-        document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent;
+        document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
 
         // Add interactive checkboxes
         document.addEventListener('DOMContentLoaded', function() {

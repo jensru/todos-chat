@@ -2,7 +2,7 @@
 
 
 
-## 📅 **Diese Woche (22. September - 21. September 2025)**
+## 📅 **Diese Woche (22. September - 28. September 2025)**
 
 ### **Mittwoch (heute) - Tagesplan Timeline:**
 - [x] Geld abheben
