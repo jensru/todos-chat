@@ -7,9 +7,17 @@
 CURRENT_DATE=$(date +"%d. %B %Y")
 CURRENT_YEAR=$(date +"%Y")
 
-# Woche berechnen: 22.-28. September 2025 (fest definiert)
-WEEK_START="22. September"
-WEEK_END="28. September"
+# Woche dynamisch berechnen
+CURRENT_DAY=$(date +"%d")
+CURRENT_MONTH=$(date +"%B")
+CURRENT_YEAR=$(date +"%Y")
+
+# Woche berechnen (Montag bis Sonntag)
+WEEK_START_DAY=$((CURRENT_DAY - $(date +"%u") + 1))
+WEEK_END_DAY=$((WEEK_START_DAY + 6))
+
+WEEK_START="$WEEK_START_DAY. $CURRENT_MONTH"
+WEEK_END="$WEEK_END_DAY. $CURRENT_MONTH"
 
 echo "🕐 Aktualisiere Datum: $CURRENT_DATE"
 echo "📅 Woche: $WEEK_START - $WEEK_END $CURRENT_YEAR"
