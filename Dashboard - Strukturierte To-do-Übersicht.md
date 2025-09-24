@@ -1,7 +1,5 @@
 # 🎯 Dashboard - Strukturierte To-do-Übersicht
 
-
-
 ## 📅 **Diese Woche (22. September - 28. September 2025)**
 
 ### **Mittwoch (heute) - Tagesplan Timeline:**
@@ -12,14 +10,11 @@
 7. **V-Markt** 🛒
 8. **Arbeitsblock 2**: 
    - [ ] PUSH Content
-9. **Joggen** 🏃‍♂️
-
-
+9. **Privat**
+   - [ ] Joggen
    - [ ] Geschenksteffen
    - [ ] Geschenke LP
 
-
-### **Neue Positionierung**
 
 ### **Donnerstag - Geld-Strategien & Pricing**
 - [ ] 1/4 werk1
