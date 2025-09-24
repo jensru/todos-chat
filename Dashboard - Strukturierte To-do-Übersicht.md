@@ -1,9 +1,5 @@
 # 🎯 Dashboard - Strukturierte To-do-Übersicht
 
-_→ Schneller umsetzen, statt zu lange nachzudenken._
-_→ Sichtbarkeit durch Pushen anderer & mutige eigene Schritte._
-_→ Vertrauen in dich selbst – es hat bisher immer funktioniert._
-
 Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 
 ---
@@ -12,33 +8,18 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 
 **Geld!**
 
-**Über alles posten**
-
 ---
 
 ## 🚀 **FOKUS: Tool-First Strategie**
 
-**Regel:** Tool so bauen, dass es _dich selbst_ ersetzt in deinem Workflow → du nutzt es täglich für Kundenarbeit.
+**Regel:** Alles was ich mach als Tools Chatfirst so bauen, dass es _dich selbst_ ersetzt in deinem Workflow
 **Irgendwann und vielleicht schon bald:** Pivot? Zielgruppen switch (Entscheidung)
 
----
-## ⚡ **Nächste Schritte (diese Woche)**
-
-1. **SOFORT**: Geschenksteffen & Geschenke LP
-2. **DRINGEND**: 
-   - **7.10. um 9:00 Uhr Blutdruck-Messgerät angelegt**
-   - **8.10. um 9:00 Uhr Blutdruck-Messgerät abgenommen**
-   - **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
-   - **10.10. um 10:30 Uhr Lungenarzttermin**
-3. **Tool-Entwicklung**: Chat-First Interface als Daily Driver aufbauen
-4. **PUSH Workshop**: Content sammeln und Präsentation vorbereiten
-
----
 
 ## 🎯 **Erfolgskriterien Q4 2025**
 
-- **Tool**: Du nutzt es täglich für Kundenarbeit
-- **Marketing**: Erste zahlende Beta-Nutzer
+- **Tool**: Du nutzt es zur täglichen Kundenarbeit
+- **Marketing**: Komplettes ausschlachten der PUDH Session
 - **Community**: Etablierte Präsenz in relevanten Communities
 - **Health**: Alle Termine erledigt, TÜV gemacht
 ---
