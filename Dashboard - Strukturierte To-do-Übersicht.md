@@ -45,36 +45,49 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 
 ## 📅 **Diese Woche (22. September - 21. September 2025)**
 
-### **Dienstag**
-- [ ] Push Workshop weiter
-- [x] ~~Wiesn~~
-- [ ] Geschenksteffen
-- [ ] Geschenke LP
-
-### **Mittwoch**
-- [ ] Ru
-- [ ] Pucko
+### **Mittwoch (heute) - Tagesplan Timeline:**
+- [ ] Geld abheben
 - [ ] 0/4 werk1
-- [ ] Push Workshop weiter
-- [ ] Entnotisieren
+- [ ] Pucko
+- [ ] Daniel Gauro +49 40 468987876.
+- [ ] Wann ist Elternabend Sport und Schule. 13.10 und wann leichtathletik?
+2. **Tabs** 🗂️
+3. **Todos** ✅
+6. **Arbeitsblock 1**: Positionierung, Post schreiben, PUSH Präse weiter 📝
+   - [ ] **Positionierung !!!!** - Neue AI-Positionierung finalisieren
+   - [ ] **Neue Positionierung**: mehr AI Rapid Prototyping, AI generated Interface, AI and Automation Sprints, AI Product Shipment!!!!
+   - [ ] **LinkedIn Update** - "AI-First Product & UX Consultant | Making software chat-first." 
+   - [ ] **Website Update** - Positionierung auf Website
+   - [ ] **Post von Push Inhalt** - Content aus Push Workshop sammeln
+   - [ ] **Post dass ich bei der Push bin** - Teilnahme dokumentieren
+   - [ ] **Kappa Post !!!!** - Kappa-spezifischer Content
+7. **V-Markt** 🛒
+8. **Joggen** 🏃‍♂️
+9. **Arbeitsblock 2**: Gleiche Themen (Positionierung, Posts, PUSH) 📝
+   - [ ] Geschenksteffen
+   - [ ] Geschenke LP
+
+
+
 
 ### **Neue Positionierung**
 
-- [ ] Neue Positionierung: mehr AI Rapid Prototyping, AI generated Interface, AI and Automation Sprints, AI Product Shipment!!!!
-- [ ] Leadmagneten und Funnels
-- [ ] Analyse Anna Workshops, [https://maven.com/xinran/ai-for-product-designers](https://maven.com/xinran/ai-for-product-designers)
-- [ ] **Pricing**!
-    - Tools pricing
-    - Workshops, webinar cohorten pricing
-    - Newsletter pricing
-- [ ] LinkedIn Update
-- [ ] Website Update
 
-- [ ] Miete erhöhen
-- [ ] Eltern fahren
 
-### **Donnerstag**
+### **Donnerstag - Geld-Strategien & Pricing**
 - [ ] Restanspruch ALG herausfinden, dann Dez/Jan Antrag schreiben/stellen
+- [ ] **Pricing-Strategie entwickeln**:
+  - Tools pricing
+  - Workshops, webinar cohorten pricing
+  - Newsletter pricing
+- [ ] **Leadmagneten und Funnels** - Funnel-System aufbauen
+- [ ] **Analyse Anna Workshops** - [https://maven.com/xinran/ai-for-product-designers](https://maven.com/xinran/ai-for-product-designers)
+- [ ] **Cohorten Workshops nach Push** - Workshop-Format entwickeln
+- [ ] **Webinare als Leads** - Lead-Generierung für Cohorten
+- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern
+- [ ] **Paid Newsletter** - Back to terminal, Business Ideen mit AI, Chat first my own live
+- [ ] **Pay me as Spezialist** - UX, AI interfaces, Luke Wroblowski
+- [ ] **Tools schneller** - Aus Marketing Business machen
 
 ### **Freitag**
 - [ ] Alle Leute hallo mit lead funnels strategie
@@ -88,6 +101,17 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [ ] Münchner Liste
 - [ ] Letzte Woche Kommentare
 - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools!
+
+### **Samstag**
+- [ ] **Schimmel** - Schimmel-Problem angehen
+- [ ] **Anneso Lampedisch ding** - Anneso Lampedisch Angelegenheit
+- [ ] **Büro aufräumen** - Arbeitsplatz organisieren
+- [ ] **Keller aufräumen** - Keller entrümpeln
+- [ ] **Steuer2024** - Steuererklärung 2024
+- [ ] **So wiesen** - So wiesen (was auch immer das ist)
+- [ ] **Klettrwald, Tauchen, superfly, therme Erding, bavaria, Berge** - Outdoor-Aktivitäten und Ausflüge planen
+- [ ] Miete erhöhen
+- [ ] Eltern fahren planen
 
 ---
 
@@ -193,9 +217,6 @@ Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 - [ ] Corto Maltese manga
 - [ ] Asterix 41
 - [ ] 2 spirou
-
----
-
 
 
 ---
