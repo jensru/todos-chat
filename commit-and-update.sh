@@ -34,6 +34,12 @@ DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md")
 # Sidebar-Inhalt lesen (NACH dem Commit, damit aktuelle Änderungen erfasst werden)
 SIDEBAR_CONTENT=$(cat "right-sidebar.md")
 
+# Heutige Task-Historie generieren
+TODAY_HISTORY_HTML=""
+if [ -f "task-history-manager.sh" ]; then
+    TODAY_HISTORY_HTML=$(./task-history-manager.sh generate-html 2>/dev/null || echo "")
+fi
+
 # Keine Agenten mehr - einfache Version
 
 # Erstelle komplett neue index.html
@@ -312,6 +318,13 @@ cat > index.html << EOF
         // Insert into page
         document.getElementById('content').innerHTML = htmlContent;
         document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
+        
+        // Füge heutige Task-Historie hinzu
+        const todayHistoryHtml = \`$TODAY_HISTORY_HTML\`;
+        if (todayHistoryHtml) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML += todayHistoryHtml;
+        }
 
         // Add interactive checkboxes
         document.addEventListener('DOMContentLoaded', function() {
