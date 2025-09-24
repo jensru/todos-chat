@@ -1,28 +1,6 @@
 # 🎯 Dashboard - Strukturierte To-do-Übersicht
 
-Mache Website Updates mit: ./commit-and-update.sh "Deine Commit-Nachricht"
 
----
-
-## **==Ziele==**
-
-**Geld!**
-
----
-
-## 🚀 **FOKUS: Tool-First Strategie**
-
-**Regel:** Alles was ich mach als Tools Chatfirst so bauen, dass es _dich selbst_ ersetzt in deinem Workflow
-**Irgendwann und vielleicht schon bald:** Pivot? Zielgruppen switch (Entscheidung)
-
-
-## 🎯 **Erfolgskriterien Q4 2025**
-
-- **Tool**: Du nutzt es zur täglichen Kundenarbeit
-- **Marketing**: Komplettes ausschlachten der PUDH Session
-- **Community**: Etablierte Präsenz in relevanten Communities
-- **Health**: Alle Termine erledigt, TÜV gemacht
----
 
 ## 📅 **Diese Woche (22. September - 21. September 2025)**
 
