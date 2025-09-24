@@ -163,6 +163,22 @@
       }
     }
   },
+  "goal_change_history": {
+    "2025-09-24": [
+      {
+        "timestamp": "2025-09-24T09:00:00",
+        "change_type": "initial_setup",
+        "old_value": null,
+        "new_value": {
+          "main_goal": "Tool-First Strategie",
+          "focus": "Geld generieren",
+          "success_criteria": "3 Geld-Tasks erledigt"
+        },
+        "reason": "Tagesziele initial gesetzt",
+        "impact": "high"
+      }
+    ]
+  },
   "statistics": {
     "total_completed_today": 4,
     "categories": {
