@@ -1,0 +1,11 @@
+# API Keys und sensible Daten
+config.sh
+.env
+
+# Agent-Ausgaben
+timeline-suggestions.md
+timeline-llm-suggestions.md
+
+# Temporäre Dateien
+*.tmp
+*.log

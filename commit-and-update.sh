@@ -30,10 +30,20 @@ DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md")
 # Sidebar-Inhalt lesen
 SIDEBAR_CONTENT=$(cat "right-sidebar.md")
 
+# LLM-Agent ausführen
+echo "🤖 Führe LLM-Agenten aus..."
+
+# API Key laden (falls vorhanden)
+if [ -f "config.sh" ]; then
+    source config.sh
+fi
+
+bash agents/timeline-llm-agent.sh
+
 # Agent-Inhalte lesen (falls vorhanden)
 AGENT_CONTENT=""
-if [ -f "timeline-suggestions.md" ]; then
-    AGENT_CONTENT=$(cat "timeline-suggestions.md")
+if [ -f "timeline-llm-suggestions.md" ]; then
+    AGENT_CONTENT=$(cat "timeline-llm-suggestions.md")
 fi
 
 # Erstelle komplett neue index.html
@@ -73,12 +83,14 @@ cat > index.html << EOF
         .sidebar {
             flex: 1;
             min-width: 300px;
+            max-height: calc(100vh - 48px);
             background: #f8f9fa;
             border-radius: 12px;
             padding: 24px;
             border: 1px solid rgba(0,0,0,0.12);
             position: sticky;
             top: 24px;
+            overflow-y: auto;
         }
         
         .sidebar h1 {
@@ -103,6 +115,26 @@ cat > index.html << EOF
         .sidebar p, .sidebar li {
             font-size: 13px;
             line-height: 18px;
+        }
+        
+        .agent-section {
+            margin-top: 32px;
+            background: #e8f0fe;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #0B57D0;
+        }
+        
+        .agent-section h3 {
+            color: #0B57D0;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .agent-section p, .agent-section li {
+            font-size: 12px;
+            line-height: 16px;
+            color: #444746;
         }
         
         h1 { 
@@ -277,7 +309,7 @@ cat > index.html << EOF
         if (agentMarkdown.trim()) {
             agentContent = \`
             <div class="agent-section">
-                <h3>🤖 Timeline-Organizer</h3>
+                <h3>🤖 Timeline-LLM-Agent</h3>
                 \${marked.parse(agentMarkdown)}
             </div>\`;
         }
