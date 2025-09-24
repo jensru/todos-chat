@@ -8,12 +8,64 @@ DASHBOARD_FILE="Dashboard - Strukturierte To-do-Übersicht.md"
 SIDEBAR_FILE="right-sidebar.md"
 
 # Funktionen
+log_goal_change() {
+    local change_type="$1"
+    local old_value="$2"
+    local reason="$3"
+    local current_date=$(date +"%Y-%m-%d")
+    local current_time=$(date +"%Y-%m-%dT%H:%M:%S")
+    
+    if command -v jq &> /dev/null && [ -f "$TASK_HISTORY_FILE" ]; then
+        # Erstelle Änderungs-Eintrag
+        local change_entry=$(cat << EOF
+{
+  "timestamp": "$current_time",
+  "change_type": "$change_type",
+  "old_value": $old_value,
+  "new_value": null,
+  "reason": "$reason",
+  "impact": "medium"
+}
+EOF
+)
+        
+        # Füge Änderung zur Historie hinzu
+        jq --argjson change "$change_entry" \
+           --arg date "$current_date" \
+           '.goal_change_history[$date] += [$change]' \
+           "$TASK_HISTORY_FILE" > "${TASK_HISTORY_FILE}.tmp" && \
+        mv "${TASK_HISTORY_FILE}.tmp" "$TASK_HISTORY_FILE"
+        
+        echo "📝 Änderung dokumentiert: $change_type"
+    fi
+}
+
 set_daily_goals() {
     local current_date=$(date +"%Y-%m-%d")
     local current_time=$(date +"%Y-%m-%dT%H:%M:%S")
     
     echo "🎯 Setze Tagesziele für $current_date"
     echo "=================================="
+    
+    # Prüfe ob bereits Ziele existieren
+    local existing_goals=""
+    if command -v jq &> /dev/null && [ -f "$TASK_HISTORY_FILE" ]; then
+        existing_goals=$(jq -r ".daily_goals.\"$current_date\"" "$TASK_HISTORY_FILE")
+    fi
+    
+    if [ "$existing_goals" != "null" ] && [ -n "$existing_goals" ]; then
+        echo "⚠️ Tagesziele existieren bereits:"
+        echo "$existing_goals" | jq -r '.main_goal, .focus, .success_criteria' | sed 's/^/  /'
+        echo ""
+        read -p "Möchtest du sie überschreiben? (y/N): " overwrite
+        if [ "$overwrite" != "y" ] && [ "$overwrite" != "Y" ]; then
+            echo "❌ Abgebrochen"
+            return
+        fi
+        
+        # Änderung dokumentieren
+        log_goal_change "goal_update" "$existing_goals" "Tagesziele überschrieben"
+    fi
     
     # Hauptziel eingeben
     read -p "Hauptziel heute: " main_goal
@@ -162,6 +214,43 @@ generate_progress_html() {
     echo "$progress_html"
 }
 
+show_change_history() {
+    local current_date=$(date +"%Y-%m-%d")
+    
+    echo "📋 **Ziel-/Fokus-Änderungs-Historie für $current_date:**"
+    echo "=============================================="
+    
+    if command -v jq &> /dev/null && [ -f "$TASK_HISTORY_FILE" ]; then
+        local change_history=$(jq -r ".goal_change_history.\"$current_date\"" "$TASK_HISTORY_FILE")
+        
+        if [ "$change_history" != "null" ] && [ "$change_history" != "[]" ]; then
+            echo "$change_history" | jq -r '.[] | 
+                "🕐 \(.timestamp) - \(.change_type | ascii_upcase)" +
+                "\n   Grund: \(.reason)" +
+                "\n   Impact: \(.impact)" +
+                "\n   ---"'
+        else
+            echo "ℹ️ Keine Änderungen für heute dokumentiert"
+        fi
+    else
+        echo "❌ jq nicht verfügbar oder Datei nicht gefunden"
+    fi
+}
+
+show_full_history() {
+    echo "📚 **Vollständige Ziel-/Fokus-Historie:**"
+    echo "====================================="
+    
+    if command -v jq &> /dev/null && [ -f "$TASK_HISTORY_FILE" ]; then
+        jq -r '.goal_change_history | to_entries[] | 
+            "📅 \(.key):" +
+            (.value | map("  🕐 \(.timestamp) - \(.change_type): \(.reason)") | join("\n")) +
+            "\n---"' "$TASK_HISTORY_FILE"
+    else
+        echo "❌ jq nicht verfügbar oder Datei nicht gefunden"
+    fi
+}
+
 # Hauptlogik
 case "$1" in
     "set-goals")
@@ -176,17 +265,25 @@ case "$1" in
     "generate-html")
         generate_progress_html
         ;;
+    "show-changes")
+        show_change_history
+        ;;
+    "show-full-history")
+        show_full_history
+        ;;
     "help")
         echo "Daily Goals Manager"
         echo "=================="
         echo "Usage: $0 [command]"
         echo ""
         echo "Commands:"
-        echo "  set-goals       - Setze Tagesziele für heute"
-        echo "  update-progress - Aktualisiere Task-Fortschritt"
-        echo "  show-progress   - Zeige heutigen Fortschritt"
-        echo "  generate-html   - Generiere HTML für Website"
-        echo "  help           - Zeige diese Hilfe"
+        echo "  set-goals         - Setze Tagesziele für heute"
+        echo "  update-progress   - Aktualisiere Task-Fortschritt"
+        echo "  show-progress     - Zeige heutigen Fortschritt"
+        echo "  show-changes      - Zeige heutige Änderungen"
+        echo "  show-full-history - Zeige vollständige Historie"
+        echo "  generate-html     - Generiere HTML für Website"
+        echo "  help             - Zeige diese Hilfe"
         ;;
     *)
         echo "❌ Unbekannter Befehl: $1"
