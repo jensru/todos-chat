@@ -83,3 +83,19 @@ echo "📈 **Nächste Schritte:**"
 echo "- ./commit-and-update.sh \"Nachricht\" - für detaillierte Daten-Sammlung"
 echo "- Research-Log prüfen für Pattern-Recognition"
 echo "- Chat mit LLM für Interpretationen und Empfehlungen"
+echo ""
+
+# Mistral API Integration (optional)
+if [ "$1" = "--mistral" ]; then
+    echo "🤖 **Mistral API Interpretation:**"
+    
+    # Daten für Mistral vorbereiten
+    MISTRAL_PROMPT="Analysiere diese Alignment-Daten: Geld-Fokus: $MONEY_RATIO% der Todos, Tool-First: $TOOL_RATIO% der Todos, Marketing: $MARKETING_RATIO% der Todos, Persönlich: $PERSONAL_RATIO% der Todos. Gesetzte Ziele: Geld-Fokus=$MAIN_GOALS, Tool-First=$TOOL_FOCUS. Gib eine kurze Analyse und konkrete Empfehlungen."
+    
+    # Mistral API aufrufen
+    if [ -f "mistral-api.sh" ]; then
+        ./mistral-api.sh "$MISTRAL_PROMPT"
+    else
+        echo "❌ mistral-api.sh nicht gefunden. Führe ./setup-mistral-api.sh aus"
+    fi
+fi

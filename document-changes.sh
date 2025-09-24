@@ -383,3 +383,25 @@ EOF
 echo "✅ Änderungen dokumentiert in $RESEARCH_LOG"
 echo "📊 Pattern-Recognition aktiviert"
 echo "🤖 Feature-Bedürfnisse extrahiert"
+
+# Mistral API Integration (optional)
+if [ "$2" = "--mistral" ]; then
+    echo ""
+    echo "🤖 **Mistral API Analyse:**"
+    
+    # Letzte Änderungen für Mistral analysieren
+    MISTRAL_PROMPT="Analysiere diese Commit-Änderungen:
+    - Commit: '$COMMIT_MSG'
+    - Geänderte Dateien: $(echo "$STAGED_FILES" | wc -w)
+    - Hinzugefügte Zeilen: $TOTAL_ADDITIONS
+    - Gelöschte Zeilen: $TOTAL_DELETIONS
+    
+    Gib eine kurze Analyse der Änderungen und Empfehlungen für den nächsten Schritt."
+    
+    # Mistral API aufrufen
+    if [ -f "mistral-api.sh" ]; then
+        ./mistral-api.sh "$MISTRAL_PROMPT"
+    else
+        echo "❌ mistral-api.sh nicht gefunden. Führe ./setup-mistral-api.sh aus"
+    fi
+fi
