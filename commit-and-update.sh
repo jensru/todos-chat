@@ -28,10 +28,10 @@ echo "🔄 Aktualisiere Website..."
 # Website automatisch aktualisieren - FUNKTIONIERENDE Methode
 echo "🔄 Aktualisiere Website automatisch..."
 
-# Dashboard-Inhalt lesen
+# Dashboard-Inhalt lesen (NACH dem Commit, damit aktuelle Änderungen erfasst werden)
 DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md")
 
-# Sidebar-Inhalt lesen
+# Sidebar-Inhalt lesen (NACH dem Commit, damit aktuelle Änderungen erfasst werden)
 SIDEBAR_CONTENT=$(cat "right-sidebar.md")
 
 # Keine Agenten mehr - einfache Version
