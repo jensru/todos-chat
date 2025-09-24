@@ -378,8 +378,6 @@ if [ $MARKETING_RATIO -gt $TOOL_RATIO ] && [ $TOOL_RATIO -lt 20 ]; then
     echo "- Marketing-Dominanz-Indikator: Marketing=$MARKETING_RATIO%, Tool=$TOOL_RATIO%" >> "$RESEARCH_LOG"
 fi
 
-EOF
-
 echo "✅ Änderungen dokumentiert in $RESEARCH_LOG"
 echo "📊 Pattern-Recognition aktiviert"
 echo "🤖 Feature-Bedürfnisse extrahiert"
