@@ -14,6 +14,10 @@ COMMIT_MSG="$1"
 echo "🕐 Aktualisiere Datum..."
 ./update-dates.sh
 
+# Änderungen dokumentieren für Chat-First Research
+echo "📊 Dokumentiere Änderungen für Feature-Research..."
+./document-changes.sh "$COMMIT_MSG"
+
 # Git commit
 git add .
 git commit -m "$COMMIT_MSG"

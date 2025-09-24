@@ -274,22 +274,8 @@
 - **Community**: Etablierte Präsenz in relevanten Communities
 - **Health**: Alle Termine erledigt, TÜV gemacht`;
 
-        // Agent Content (falls vorhanden)
-        let agentContent = '';
-        const agentMarkdown = `{
-  
-    
-    
-    
-  }
-}`;
-        if (agentMarkdown.trim()) {
-            agentContent = `
-            <div class="agent-section">
-                <h3>🤖 Timeline-LLM-Agent</h3>
-                ${marked.parse(agentMarkdown)}
-            </div>`;
-        }
+               // Keine Agenten mehr
+               let agentContent = '';
 
         // Dashboard Markdown Content
         const markdownContent = `# 🎯 Dashboard - Strukturierte To-do-Übersicht
