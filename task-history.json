@@ -18,14 +18,14 @@
           "completed_tasks": 1
         },
         "tool_first": {
-          "priority": "high", 
+          "priority": "high",
           "target_tasks": 2,
           "completed_tasks": 2
         },
         "marketing": {
           "priority": "medium",
           "target_tasks": 2,
-          "completed_tasks": 1
+          "completed_tasks": 2
         }
       },
       "tasks_completed": [
@@ -140,6 +140,17 @@
           "description": "- [x] Alloy testen",
           "category": "tool",
           "completed_at": "2025-09-24T13:35:33",
+          "priority": "medium",
+          "tags": [
+            ""
+          ]
+        },
+        {
+          "id": "task_1758714544",
+          "title": "Spontaner LinkedIn Post über alloy für Sichtbarkeit und Positionierung",
+          "description": "- [x] Spontaner LinkedIn Post über alloy für Sichtbarkeit und Positionierung",
+          "category": "marketing",
+          "completed_at": "2025-09-24T13:49:04",
           "priority": "medium",
           "tags": [
             ""

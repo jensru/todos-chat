@@ -5,7 +5,6 @@
 ## 📅 **Diese Woche (22. September - 28. September 2025)**
 
 ### **Mittwoch (heute) - Tagesplan Timeline:**
-- [x] Spontaner LinkedIn Post über alloy für Sichtbarkeit und Positionierung
 6. **Arbeitsblock 1**: Positionierung, Post schreiben, PUSH Präse weiter 📝
    - [ ] **Website Update** - Positionierung auf Website
    - [ ] "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."

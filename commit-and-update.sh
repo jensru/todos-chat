@@ -14,6 +14,20 @@ COMMIT_MSG="$1"
 echo "🕐 Aktualisiere Datum..."
 ./update-dates.sh
 
+# Task-Historie synchronisieren und Dashboard bereinigen
+echo "🔄 Synchronisiere Task-Historie..."
+if [ -f "task-history-manager.sh" ]; then
+    ./task-history-manager.sh sync
+    echo "🧹 Bereinige Dashboard..."
+    ./task-history-manager.sh clean
+fi
+
+# Tagesziele-Fortschritt aktualisieren
+echo "📊 Aktualisiere Tagesziele-Fortschritt..."
+if [ -f "daily-goals-manager.sh" ]; then
+    ./daily-goals-manager.sh update-progress
+fi
+
 # Änderungen dokumentieren für Chat-First Research
 echo "📊 Dokumentiere Änderungen für Feature-Research..."
 ./document-changes.sh "$COMMIT_MSG"
