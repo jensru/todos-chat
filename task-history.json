@@ -25,7 +25,7 @@
         "marketing": {
           "priority": "medium",
           "target_tasks": 2,
-          "completed_tasks": 2
+          "completed_tasks": 3
         }
       },
       "tasks_completed": [
@@ -151,6 +151,17 @@
           "description": "- [x] Spontaner LinkedIn Post über alloy für Sichtbarkeit und Positionierung",
           "category": "marketing",
           "completed_at": "2025-09-24T13:49:04",
+          "priority": "medium",
+          "tags": [
+            ""
+          ]
+        },
+        {
+          "id": "task_1758715101",
+          "title": "6. **Arbeitsblock 1**: Positionierung, Post schreiben, PUSH Präse weiter 📝",
+          "description": "- [x] 6. **Arbeitsblock 1**: Positionierung, Post schreiben, PUSH Präse weiter 📝",
+          "category": "marketing",
+          "completed_at": "2025-09-24T13:58:21",
           "priority": "medium",
           "tags": [
             ""
