@@ -9,7 +9,7 @@
 - [x] 1/4 werk1
 - [x] Wann ist Elternabend Sport und Schule. 13.10 und wann leichtathletik?
 - [x] Todos
-2. **Tabs** 🗂️
+- [x] Tabs
 6. **Arbeitsblock 1**: Positionierung, Post schreiben, PUSH Präse weiter 📝
    - [ ] **Positionierung !!!!** - Neue AI-Positionierung finalisieren
    - [ ] **Neue Positionierung**: mehr AI Rapid Prototyping, AI generated Interface, AI and Automation Sprints, AI Product Shipment!!!!
