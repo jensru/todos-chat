@@ -13,7 +13,7 @@
 6. **Arbeitsblock 1**: Positionierung, Post schreiben, PUSH Präse weiter 📝
    - [ ] **Positionierung !!!!** - Neue AI-Positionierung finalisieren
    - [ ] **Neue Positionierung**: mehr AI Rapid Prototyping, AI generated Interface, AI and Automation Sprints, AI Product Shipment!!!!
-   - [ ] **LinkedIn Update** - "AI-First Product & UX Consultant | Making software chat-first." 
+   - [x] **LinkedIn Update** - "AI-First Product & UX Consultant | Making software chat-first." 
    - [ ] **Website Update** - Positionierung auf Website
    - [x] ~~**Post von Push Inhalt** - Content aus Push Workshop sammeln~~ ✅ 
    - [ ] "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
@@ -21,6 +21,7 @@
 7. **V-Markt** 🛒
 - [ ] Pucko
 - [ ] Daniel Gauro +49 40 468987876.
+- [x] Alloy testen
 8. **Joggen** 🏃‍♂️
 9. **Arbeitsblock 2**: Gleiche Themen (Positionierung, Posts, PUSH) 📝
    - [ ] Geschenksteffen
