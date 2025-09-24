@@ -27,6 +27,9 @@ echo "🔄 Aktualisiere Website automatisch..."
 # Dashboard-Inhalt lesen
 DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md")
 
+# Sidebar-Inhalt lesen
+SIDEBAR_CONTENT=$(cat "right-sidebar.md")
+
 # Erstelle komplett neue index.html
 cat > index.html << EOF
 <!DOCTYPE html>
@@ -42,12 +45,58 @@ cat > index.html << EOF
         
         body {
             font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 24px;
             line-height: 1.6;
             color: #1F1F1F;
             background-color: #FFFFFF;
+        }
+        
+        .main-container {
+            display: flex;
+            gap: 32px;
+            align-items: flex-start;
+        }
+        
+        .main-content {
+            flex: 2;
+            min-width: 0;
+        }
+        
+        .sidebar {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(0,0,0,0.12);
+            position: sticky;
+            top: 24px;
+        }
+        
+        .sidebar h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #0B57D0;
+            padding-bottom: 12px;
+        }
+        
+        .sidebar h2 {
+            font-size: 20px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        
+        .sidebar h3 {
+            font-size: 16px;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .sidebar p, .sidebar li {
+            font-size: 13px;
+            line-height: 18px;
         }
         
         h1 { 
@@ -203,9 +252,19 @@ cat > index.html << EOF
     </style>
 </head>
 <body>
-    <div id="content"></div>
+    <div class="main-container">
+        <div class="main-content">
+            <div id="content"></div>
+        </div>
+        <div class="sidebar">
+            <div id="sidebar-content"></div>
+        </div>
+    </div>
 
     <script>
+        // Sidebar Markdown Content
+        const sidebarContent = \`$SIDEBAR_CONTENT\`;
+
         // Dashboard Markdown Content
         const markdownContent = \`$DASHBOARD_CONTENT\`;
 
@@ -217,9 +276,11 @@ cat > index.html << EOF
 
         // Convert markdown to HTML
         const htmlContent = marked.parse(markdownContent);
+        const sidebarHtmlContent = marked.parse(sidebarContent);
         
         // Insert into page
         document.getElementById('content').innerHTML = htmlContent;
+        document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent;
 
         // Add interactive checkboxes
         document.addEventListener('DOMContentLoaded', function() {
