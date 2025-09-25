@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-09-25T07:23:11Z",
+  "trigger": "Wiesn-Info",
+  "decision": "move_pricing_to_friday",
+  "reason": "Weniger Zeit verfügbar",
+  "confidence": 0.9,
+  "user_decision": "manual",
+  "affected_todos": [],
+  "context": {
+    "external_event": "Wiesn-Info",
+    "time_impact": "unknown",
+    "user_feedback": "Weniger Zeit verfügbar"
+  }
+},

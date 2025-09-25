@@ -168,6 +168,19 @@
           ]
         }
       ]
+    },
+    "2025-09-25": {
+      "focus_areas": {
+        "geld": {
+          "completed_tasks": 0
+        },
+        "tool_first": {
+          "completed_tasks": 0
+        },
+        "marketing": {
+          "completed_tasks": 0
+        }
+      }
     }
   },
   "focus_history": {

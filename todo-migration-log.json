@@ -1,0 +1,190 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "created": "2025-09-25",
+    "description": "Todo-Migration und Restrukturierungs-Log für Chat-First-Tool-Entwicklung"
+  },
+  "migrations": [
+    {
+      "id": "migration-001",
+      "timestamp": "2025-09-25T10:30:00Z",
+      "trigger": "Wiesn-Info",
+      "type": "complete-restructure",
+      "description": "Komplette Restrukturierung nach Wiesn-Info",
+      "changes": {
+        "structure_changes": [
+          {
+            "action": "eliminate_phases",
+            "details": "Phase 1 & 2 entfernt, direkt zu Phase 3 (Tagesplanung)"
+          },
+          {
+            "action": "expand_block1",
+            "details": "Block 1 erweitert um E-Mails und LinkedIn Nachrichten"
+          },
+          {
+            "action": "detail_push_content",
+            "details": "PUSH Content in 5 konkrete Unteraufgaben aufgeteilt"
+          },
+          {
+            "action": "wiesn_integration",
+            "details": "Block 3 explizit für Wiesn mit Kollegen"
+          }
+        ],
+        "todo_migrations": [
+          {
+            "source_day": "Donnerstag",
+            "target_day": "Freitag",
+            "todos": [
+              {
+                "id": "pricing-strategy",
+                "title": "Pricing-Strategie entwickeln",
+                "subtasks": [
+                  "Tools pricing",
+                  "Workshops, webinar cohorten pricing",
+                  "Newsletter pricing"
+                ],
+                "reason": "Wiesn-Info: Weniger Zeit verfügbar"
+              },
+              {
+                "id": "leadmagneten-funnels",
+                "title": "Leadmagneten und Funnels - Funnel-System aufbauen",
+                "reason": "Wiesn-Info: Kann warten"
+              },
+              {
+                "id": "anna-workshops",
+                "title": "Analyse Anna Workshops",
+                "reason": "Wiesn-Info: Kann warten"
+              },
+              {
+                "id": "paid-newsletter",
+                "title": "Paid Newsletter - Back to terminal, Business Ideen mit AI",
+                "reason": "Wiesn-Info: Kann warten"
+              },
+              {
+                "id": "spezialist-positioning",
+                "title": "Pay me as Spezialist - UX, AI interfaces",
+                "reason": "Wiesn-Info: Kann warten"
+              },
+              {
+                "id": "tools-schneller",
+                "title": "Tools schneller - Aus Marketing Business machen",
+                "reason": "Wiesn-Info: Kann warten"
+              },
+              {
+                "id": "content-posts",
+                "title": "Content & Social Media Posts",
+                "subtasks": [
+                  "Post dass ich bei der Push bin",
+                  "Post über Angebote",
+                  "Kappa Post !!!!",
+                  "3-Angebots-Kacheln",
+                  "drei starkes Kunden-Zitat",
+                  "Linkedin Funnel, Landingpages Newsletter"
+                ],
+                "reason": "Wiesn-Info: Kann warten"
+              },
+              {
+                "id": "cohorten-workshops",
+                "title": "Cohorten Workshops nach Push",
+                "reason": "Wiesn-Info: Kann warten"
+              },
+              {
+                "id": "webinare-leads",
+                "title": "Webinare als Leads",
+                "reason": "Wiesn-Info: Kann warten"
+              },
+              {
+                "id": "pms-prototyping",
+                "title": "PMs mehr agentic interfaces Prototyping",
+                "reason": "Wiesn-Info: Kann warten"
+              }
+            ]
+          }
+        ],
+        "priority_changes": [
+          {
+            "day": "Donnerstag",
+            "new_priorities": [
+              {
+                "block": "Block 1 (Vormittag)",
+                "tasks": [
+                  "E-Mails",
+                  "Linkedin Nachrichten",
+                  "Joggen",
+                  "Simon Kubica",
+                  "Tobi → Laura konzept schicken",
+                  "PUSH Content (5 Unteraufgaben)"
+                ]
+              },
+              {
+                "block": "Block 2 (Mittag)",
+                "tasks": [
+                  "Tobi → Laura + werk1 + Breakout Sessions"
+                ]
+              },
+              {
+                "block": "Block 3 (Nachmittag)",
+                "tasks": [
+                  "WIESN mit Kollegen 🍺"
+                ]
+              },
+              {
+                "block": "Block 4 (Abend)",
+                "tasks": [
+                  "Eventuell leichte Community Todos und push content weiter!"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "external_event": "Wiesn (Oktoberfest) mit Kollegen",
+        "time_impact": "Mittag bis Abend nicht verfügbar",
+        "user_feedback": "Donnerstag ist fertig. eines ist bei Freitag und Montag gelandet"
+      },
+      "patterns_identified": [
+        "Kontext-basierte Restrukturierung",
+        "Massive Todo-Migration",
+        "Zeitdruck-Anpassung",
+        "Block-Detailierung",
+        "Prioritäts-Neubewertung"
+      ]
+    }
+  ],
+  "insights": {
+    "migration_triggers": [
+      "External events (Wiesn)",
+      "Time constraints",
+      "Priority reassessment"
+    ],
+    "restructure_patterns": [
+      "Phase elimination",
+      "Block expansion",
+      "Todo mass migration",
+      "Context integration"
+    ],
+    "tool_requirements": [
+      "Context-aware restructuring",
+      "Todo migration system",
+      "Block detailization",
+      "Priority recalculation",
+      "External event integration"
+    ]
+  }
+}
+{
+  "timestamp": "2025-09-25T07:24:05Z",
+  "migration_id": "migration-1758785045",
+  "source_day": "Donnerstag",
+  "target_day": "Freitag",
+  "todo_id": "pricing-strategy",
+  "reason": "Wiesn-Info: Weniger Zeit verfügbar",
+  "user_decision": "manual",
+  "confidence": 0.9,
+  "context": {
+    "external_event": "Wiesn-Info: Weniger Zeit verfügbar",
+    "time_impact": "unknown",
+    "user_feedback": "moved_manually"
+  }
+},

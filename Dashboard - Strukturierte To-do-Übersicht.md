@@ -2,57 +2,69 @@
 
 ## 📅 **Diese Woche (22. September - 28. September 2025)**
 
-### **Mittwoch (heute) - Tagesplan Timeline:**
-8. **Arbeitsblock 2**: 
-   - [ ] PUSH Content
-    - [ ] "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
-9. **Privat**
-   - [ ] Joggen
-   - [ ] Geschenksteffen
-   - [ ] Geschenke LP
+## 🌅 **Startroutine Donnerstag, 25. September**
+
+### **Phase 2: Vollständige Triage aller Todos**
+
+- [ ] **WICHTIG** (diese Woche):
+  - [ ] **Leadmagneten und Funnels** - Funnel-System aufbauen
+  - [ ] **Analyse Anna Workshops** - [https://maven.com/xinran/ai-for-product-designers](https://maven.com/xinran/ai-for-product-designers)
+  - [ ] **Paid Newsletter** - Back to terminal, Business Ideen mit AI, Chat first my own live
+  - [ ] **Pay me as Spezialist** - UX, AI interfaces, Luke Wroblowski
+  - [ ] **Tools schneller** - Aus Marketing Business machen
+
+- [ ] **Content & Social Media** (diese Woche):
+  - [ ] **Post dass ich bei der Push bin** 
+  - [ ] **Post über Angebote** 
+  - [ ] **Kappa Post !!!!** - Kappa-spezifischer Content
+  - [ ] 3-Angebots-Kacheln ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir")
+  - [ ] drei starkes Kunden-Zitat mit Bild und kurzem Case?
+    - lea
+    - SAP Typ
+    - Tem Manager App Typ
+  - [ ] Linkedin Funnel, Landingpages Newsletter
+
+- [ ] **KANN WARTEN** (nächste Woche):
+  - [ ] **Cohorten Workshops nach Push** - Workshop-Format entwickeln
+  - [ ] **Webinare als Leads** - Lead-Generierung für Cohorten
+  - [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern
+
+### **Phase 3: Tagesplanung**
+- [ ] **Arbeitsblöcke für heute definieren:**
+  - [ ] **Block 1 (Vormittag):** 
+    - [ ] E-Mails
+    - [ ] Linkedin Nachrichten
+    - [ ] **KRITISCH & Dringend** (heute erledigen):
+      - [ ] Joggen
+      - [ ] Simon Kubica
+      - [ ] Tobi → Laura konzept schicken
+    - [ ] **Alle unerledigten Todos vom Mittwoch (24.09.) zu heute übertragen**
+      - [ ] **PUSH Content**: 
+        - [ ] Werden die Breakout Sessions geteiltan Paola?
+        - [ ] letzten Präse Steps inhaltlich
+        - [ ] prompting artefakt durchlauf
+        - [ ] Handout Perfect
+        - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
+      - [ ] **Linkend In Post** "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
+  - [ ] Block 2 (Mittag): Tobi → Laura + werk1 + Breakout Sessions
+  - [ ] Block 3 (Nachmittag): **WIESN mit Kollegen** 🍺
+  - [ ] Block 4 (Abend): Eventuell leichte Content-Todos
+
+---
 
 
-### **Donnerstag - Geld-Strategien & Pricing**
-- [ ] 1/4 werk1
-- [ ] Restanspruch ALG herausfinden, dann Dez/Jan Antrag schreiben/stellen
-- [ ] **Pricing-Strategie entwickeln**:
+
+### **Freitag, 26. September**
+- [ ] **Pricing-Strategie entwickeln** (von Donnerstag verschoben):
   - Tools pricing
   - Workshops, webinar cohorten pricing
   - Newsletter pricing
-- [ ] **Leadmagneten und Funnels** - Funnel-System aufbauen
-- [ ] **Analyse Anna Workshops** - [https://maven.com/xinran/ai-for-product-designers](https://maven.com/xinran/ai-for-product-designers)
-- [ ] **Cohorten Workshops nach Push** - Workshop-Format entwickeln
-- [ ] **Webinare als Leads** - Lead-Generierung für Cohorten
-- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern
-- [ ] **Paid Newsletter** - Back to terminal, Business Ideen mit AI, Chat first my own live
-- [ ] **Pay me as Spezialist** - UX, AI interfaces, Luke Wroblowski
-- [ ] **Tools schneller** - Aus Marketing Business machen
-- [ ] **Post dass ich bei der Push bin** 
-- [ ] **Post über Angebote** 
-- [ ] Linkedin Funnel, Landingpages Newsletter und 
-
-- [ ] **Kappa Post !!!!** - Kappa-spezifischer Content
-- [ ] 3-Angebots-Kacheln ("Wir bauen für dich" / "Wir bringen’s dir bei" / "Wir sprinten mit dir")
-- [ ] drei starkes Kunden-Zitat mit Bild und kurzem Case?
-      - lea
-      - SAP Typ
-      - Tem Manager App Typ
-
-### **Freitag**
-- [ ] Basic eigenes CRM Verfolgung
 - [ ] Alle Leute hallo mit lead funnels strategie
-- [ ] Ich brauche einen Funnel immer beim Kontaktieren
-- [ ] Irgendein community live Event jetzt
-- [ ] Webinar UX
-- [ ] Webinar Produkt
-- [ ] Die wichtigsten Fragen verstehen
-- [ ] **built your own app with a running agent course!**
-- [ ] Kommentieren an Zielgruppe
-- [ ] Münchner Liste
-- [ ] Letzte Woche Kommentare
-- [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools!
+- [ ] Noch mehr rauskommen aus dem Haus planen!!!
 
-### **Samstag**
+### **Samstag, 27. September**  
+- [ ] Geschenksteffen (falls nicht erledigt) 
+ - [ ] Geschenke LP (falls nicht erledigt)
 - [ ] **Schimmel** - Schimmel-Problem angehen
 - [ ] **Anneso Lampedisch ding** - Anneso Lampedisch Angelegenheit
 - [ ] **Büro aufräumen** - Arbeitsplatz organisieren
@@ -66,6 +78,20 @@
 ---
 
 ## 📅 **Sprint-Planung: Oktober 2025**
+  - [ ] 0/4 werk1
+  - [ ] Restanspruch ALG herausfinden, dann Dez/Jan Antrag schreiben/stellen
+- [ ] Noch mehr rauskommen aus dem Haus planen!!!
+- [ ] Basic eigenes CRM Verfolgung
+- [ ] Ich brauche einen Funnel immer beim Kontaktieren
+- [ ] Irgendein community live Event jetzt
+- [ ] Webinar UX
+- [ ] Webinar Produkt
+- [ ] Die wichtigsten Fragen verstehen
+- [ ] **built your own app with a running agent course!**
+- [ ] Kommentieren an Zielgruppe
+- [ ] Münchner Liste
+- [ ] Letzte Woche Kommentare
+- [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools!
 
 ### **🔥 Woche 1-2: Tool-Core (KRITISCH)**
 - [ ] **Chat-First Interface für mein Tool** - Hauptpriorität für eigene Nutzung
@@ -75,6 +101,11 @@
 - [ ] Meine Tool-Seite soweit fertig machen → Tool Page mit Videos und Bildern
 - [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"
 - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
+- [ ] https://prompt-directory-fh.lovable.app/
+- [ ] https://mastering-lovable.lovable.app/
+- [ ] https://buzzword-hacks.lovable.app//
+- [ ] https://www.linkedin.com/posts/haasfelix_𝟭𝟬-𝗵𝗮𝗰𝗸𝘀-𝗜-𝘄𝗶𝘀𝗵-𝗜-𝗸𝗻𝗲𝘄-activity-7340306418392072195-OdAa/
+- [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/
 - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
 - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
 

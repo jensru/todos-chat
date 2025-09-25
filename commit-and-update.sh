@@ -32,6 +32,18 @@ fi
 echo "📊 Dokumentiere Änderungen für Feature-Research..."
 ./document-changes.sh "$COMMIT_MSG"
 
+# Tracking-System aktualisieren (Rohdaten sammeln)
+echo "📈 Aktualisiere Tracking-System..."
+./update-tracking.sh "$COMMIT_MSG"
+
+# Mistral-basierte Automatisierung (optional)
+if [ "$2" = "--mistral" ]; then
+    echo "🤖 Mistral-basierte Analyse..."
+    ./mistral-research-update.sh "$COMMIT_MSG"
+    echo "📊 Mistral Todo-Kategorisierung..."
+    ./mistral-todo-categorizer.sh
+fi
+
 # Git commit
 git add .
 git commit -m "$COMMIT_MSG"
