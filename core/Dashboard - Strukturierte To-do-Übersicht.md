@@ -5,8 +5,6 @@
 ## 🌅 **Startroutine Donnerstag, 25. September**
 
 ### **Phase 3: Tagesplanung**
-- [ ] **Arbeitsblöcke für heute definieren:**
-    - [ ] **KRITISCH & Dringend** (heute erledigen):
   - [ ] Block 2 (Mittag): **WIESN mit Kollegen** 🍺
   - [ ] Block 3 (Nachmittag): 
       - [ ] **PUSH Content**: 

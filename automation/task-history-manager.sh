@@ -56,7 +56,7 @@ sync_completed_tasks() {
     echo "🔄 Synchronisiere erledigte Tasks aus Dashboard..."
     
     # Erledigte Tasks aus Dashboard extrahieren
-    local completed_tasks=$(grep -E "^- \[x\]" "$DASHBOARD_FILE" | head -10)
+    local completed_tasks=$(grep -E "^- \[x\]|^ *- \[x\]" "$DASHBOARD_FILE" | head -10)
     
     if [ -n "$completed_tasks" ]; then
         echo "📋 Gefundene erledigte Tasks:"

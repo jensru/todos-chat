@@ -180,7 +180,20 @@
         "marketing": {
           "completed_tasks": 0
         }
-      }
+      },
+      "tasks_completed": [
+        {
+          "id": "task_1758789953",
+          "title": "**Arbeitsblöcke für heute definieren:**",
+          "description": "- [x] **Arbeitsblöcke für heute definieren:**",
+          "category": "personal",
+          "completed_at": "2025-09-25T10:45:53",
+          "priority": "medium",
+          "tags": [
+            ""
+          ]
+        }
+      ]
     }
   },
   "focus_history": {
