@@ -9,8 +9,15 @@ if [ $# -eq 0 ]; then
 fi
 
 PROMPT="$1"
-# Sonderzeichen escapen für JSON
-PROMPT=$(echo "$PROMPT" | sed 's/"/\\"/g' | sed 's/\\/\\\\/g' | tr '\n' ' ')
+# Sonderzeichen escapen für JSON mit jq (falls verfügbar)
+if command -v jq &> /dev/null; then
+    PROMPT=$(echo "$PROMPT" | jq -R -s .)
+    PROMPT=${PROMPT%\"}  # Entferne führende Anführungszeichen
+    PROMPT=${PROMPT#\"}  # Entferne schließende Anführungszeichen
+else
+    # Fallback: Einfache Escaping
+    PROMPT=$(echo "$PROMPT" | sed 's/"/\\"/g' | tr '\n' ' ')
+fi
 
 # API Key aus Umgebungsvariable oder Datei lesen
 if [ -z "$MISTRAL_API_KEY" ]; then

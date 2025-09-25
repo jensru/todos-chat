@@ -3,7 +3,7 @@
 # Mistral-basierte Todo-Kategorisierung
 # Usage: ./mistral-todo-categorizer.sh [--file dashboard_file]
 
-DASHBOARD_FILE="Dashboard - Strukturierte To-do-Übersicht.md"
+DASHBOARD_FILE="core/Dashboard - Strukturierte To-do-Übersicht.md"
 
 if [ "$1" = "--file" ] && [ -n "$2" ]; then
     DASHBOARD_FILE="$2"
@@ -12,7 +12,7 @@ fi
 echo "🤖 Mistral kategorisiert Todos..."
 
 # Todos aus Dashboard extrahieren (Sonderzeichen entfernen)
-TODOS=$(grep -E "^- \[ \]" "$DASHBOARD_FILE" | head -20 | sed 's/"/\\"/g' | tr '\n' ' ')
+TODOS=$(grep -E "^- \[ \]" "$DASHBOARD_FILE" | head -20 | sed 's/"/\\"/g' | sed 's/&/\\&/g' | sed 's/!/\\!/g' | sed 's/ö/\\ö/g' | sed 's/ä/\\ä/g' | sed 's/ü/\\ü/g' | tr '\n' ' ')
 
 # Mistral Prompt erstellen
 MISTRAL_PROMPT="Kategorisiere diese Todos nach folgenden Kategorien:
@@ -29,7 +29,7 @@ Antworte in einfachem Text-Format mit Kategorien:"
 
 # Mistral API aufrufen
 echo "📊 Mistral kategorisiert..."
-MISTRAL_RESPONSE=$(./mistral-api.sh "$MISTRAL_PROMPT")
+MISTRAL_RESPONSE=$(./automation/mistral-api.sh "$MISTRAL_PROMPT")
 
 # JSON-Response speichern
 echo "$MISTRAL_RESPONSE" > "todo-categorization.json"

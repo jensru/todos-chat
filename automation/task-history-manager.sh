@@ -3,9 +3,9 @@
 # Task-History-Manager für strukturierte Datenbank-ähnliche Historie
 # Usage: ./task-history-manager.sh [command] [options]
 
-TASK_HISTORY_FILE="task-history.json"
-DASHBOARD_FILE="${DASHBOARD_FILE:-Dashboard - Strukturierte To-do-Übersicht.md}"
-SIDEBAR_FILE="right-sidebar.md"
+TASK_HISTORY_FILE="data/task-history.json"
+DASHBOARD_FILE="${DASHBOARD_FILE:-core/Dashboard - Strukturierte To-do-Übersicht.md}"
+SIDEBAR_FILE="core/right-sidebar.md"
 
 # Funktionen
 add_completed_task() {

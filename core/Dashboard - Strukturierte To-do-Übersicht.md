@@ -6,14 +6,9 @@
 
 ### **Phase 3: Tagesplanung**
 - [ ] **Arbeitsblöcke für heute definieren:**
-  - [ ] **Block 1 (Vormittag):** 
-    - [x] E-Mails
-    - [x] Linkedin Nachrichten
     - [ ] **KRITISCH & Dringend** (heute erledigen):
-      - [x] ~Joggen~
-      - [ ] Simon Kubica
-      - [ ] Tobi → Laura konzept schicken
-    - [ ] **Alle unerledigten Todos vom Mittwoch (24.09.) zu heute übertragen**
+  - [ ] Block 2 (Mittag): **WIESN mit Kollegen** 🍺
+  - [ ] Block 3 (Nachmittag): 
       - [ ] **PUSH Content**: 
         - [ ] Werden die Breakout Sessions geteiltan Paola?
         - [ ] letzten Präse Steps inhaltlich
@@ -21,9 +16,6 @@
         - [ ] Handout Perfect
         - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
       - [ ] **Linkend In Post** "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
-  - [ ] Block 2 (Mittag): Tobi → Laura + werk1 + Breakout Sessions
-  - [ ] Block 3 (Nachmittag): **WIESN mit Kollegen** 🍺
-  - [ ] Block 4 (Abend): Eventuell leichte Content-Todos
 
 ---
 
@@ -48,6 +40,7 @@
   - SAP Typ
   - Tem Manager App Typ
 - [ ] Linkedin Funnel, Landingpages Newsletter (von Donnerstag verschoben)
+- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
 - [ ] Alle Leute hallo mit lead funnels strategie
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
 
@@ -72,6 +65,8 @@
 - [ ] **Cohorten Workshops nach Push** - Workshop-Format entwickeln (von Donnerstag verschoben)
 - [ ] **Webinare als Leads** - Lead-Generierung für Cohorten (von Donnerstag verschoben)
 - [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben)
+- [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
+- [ ] **Simon Kubica Follow-up (Woche 1)**: Feedback prüfen und Follow-up vorbereiten
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
 - [ ] Basic eigenes CRM Verfolgung
 - [ ] Ich brauche einen Funnel immer beim Kontaktieren
@@ -86,6 +81,7 @@
 - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools!
 
 ### **🔥 Woche 1-2: Tool-Core (KRITISCH)**
+- [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)
 - [ ] **Chat-First Interface für mein Tool** - Hauptpriorität für eigene Nutzung
 - [ ] Tool Marketing Tests
 - [ ] Tools, betaliste, invite only (https://appcanvas.io/)
