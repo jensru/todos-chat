@@ -18,24 +18,9 @@ echo "🤖 Mistral analysiert Commit für Research Log..."
 CHANGED_FILES=$(git diff --cached --name-only | tr '\n' ', ')
 CHANGED_CONTENT=$(git diff --cached --stat)
 
-# Mistral Prompt erstellen
-MISTRAL_PROMPT="Analysiere diese Git-Änderungen für Chat-First Research:
-
-Commit Message: $COMMIT_MSG
-Geänderte Dateien: $CHANGED_FILES
-Änderungsstatistik: $CHANGED_CONTENT
-
-Identifiziere:
-1. Welche Chat-First-Features wurden verwendet?
-2. Welche Patterns sind erkennbar?
-3. Welche Tool-Requirements ergeben sich?
-4. Welche User-Feedback-Loops gab es?
-
-Antworte in strukturiertem Format für Research Log."
-
-# Mistral API aufrufen
-echo "📊 Mistral analysiert..."
-MISTRAL_RESPONSE=$(./mistral-api.sh "$MISTRAL_PROMPT")
+# Kontext-bewusste Mistral-Analyse verwenden
+echo "🧠 Verwende kontext-bewusste Analyse..."
+MISTRAL_RESPONSE=$(./automation/mistral-context-aware.sh "$COMMIT_MSG")
 
 # Research Log erweitern
 cat >> "$RESEARCH_LOG" << EOF

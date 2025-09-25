@@ -12,37 +12,39 @@ COMMIT_MSG="$1"
 
 # Datum automatisch aktualisieren
 echo "🕐 Aktualisiere Datum..."
-./update-dates.sh
+./automation/update-dates.sh
 
 # Task-Historie synchronisieren und Dashboard bereinigen
 echo "🔄 Synchronisiere Task-Historie..."
-if [ -f "task-history-manager.sh" ]; then
-    ./task-history-manager.sh sync
+if [ -f "automation/task-history-manager.sh" ]; then
+    ./automation/task-history-manager.sh sync
     echo "🧹 Bereinige Dashboard..."
-    ./task-history-manager.sh clean
+    ./automation/task-history-manager.sh clean
 fi
 
 # Tagesziele-Fortschritt aktualisieren
 echo "📊 Aktualisiere Tagesziele-Fortschritt..."
-if [ -f "daily-goals-manager.sh" ]; then
-    ./daily-goals-manager.sh update-progress
+if [ -f "automation/daily-goals-manager.sh" ]; then
+    ./automation/daily-goals-manager.sh update-progress
 fi
 
 # Änderungen dokumentieren für Chat-First Research
 echo "📊 Dokumentiere Änderungen für Feature-Research..."
-./document-changes.sh "$COMMIT_MSG"
+./automation/document-changes.sh "$COMMIT_MSG"
 
 # Tracking-System aktualisieren (Rohdaten sammeln)
 echo "📈 Aktualisiere Tracking-System..."
-./update-tracking.sh "$COMMIT_MSG"
+./automation/update-tracking.sh "$COMMIT_MSG"
 
-# Mistral-basierte Automatisierung (optional)
-if [ "$2" = "--mistral" ]; then
-    echo "🤖 Mistral-basierte Analyse..."
-    ./mistral-research-update.sh "$COMMIT_MSG"
-    echo "📊 Mistral Todo-Kategorisierung..."
-    ./mistral-todo-categorizer.sh
-fi
+# Mistral-basierte Automatisierung (standardmäßig aktiviert)
+echo "🤖 Mistral-basierte Analyse..."
+./automation/mistral-research-update.sh "$COMMIT_MSG"
+echo "📊 Mistral Todo-Kategorisierung..."
+./automation/mistral-todo-categorizer.sh
+
+# Log-Rotation (behält nur die letzten 20 Mistral-Einträge)
+echo "🔄 Führe Log-Rotation durch..."
+./automation/log-rotation.sh
 
 # Git commit
 git add .
@@ -55,27 +57,27 @@ echo "🔄 Aktualisiere Website..."
 echo "🔄 Aktualisiere Website automatisch..."
 
 # Dashboard-Inhalt lesen (NACH dem Commit, damit aktuelle Änderungen erfasst werden)
-DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md")
+DASHBOARD_CONTENT=$(cat "core/Dashboard - Strukturierte To-do-Übersicht.md")
 
 # Sidebar-Inhalt lesen (NACH dem Commit, damit aktuelle Änderungen erfasst werden)
-SIDEBAR_CONTENT=$(cat "right-sidebar.md")
+SIDEBAR_CONTENT=$(cat "core/right-sidebar.md")
 
 # Heutige Task-Historie generieren
 TODAY_HISTORY_HTML=""
-if [ -f "task-history-manager.sh" ]; then
-    TODAY_HISTORY_HTML=$(./task-history-manager.sh generate-html 2>/dev/null || echo "")
+if [ -f "automation/task-history-manager.sh" ]; then
+    TODAY_HISTORY_HTML=$(./automation/task-history-manager.sh generate-html 2>/dev/null || echo "")
 fi
 
 # Tagesziele-Fortschritt generieren
 DAILY_PROGRESS_HTML=""
-if [ -f "daily-goals-manager.sh" ]; then
-    DAILY_PROGRESS_HTML=$(./daily-goals-manager.sh generate-html 2>/dev/null || echo "")
+if [ -f "automation/daily-goals-manager.sh" ]; then
+    DAILY_PROGRESS_HTML=$(./automation/daily-goals-manager.sh generate-html 2>/dev/null || echo "")
 fi
 
 # Keine Agenten mehr - einfache Version
 
 # Erstelle komplett neue index.html
-cat > index.html << EOF
+cat > web/index.html << EOF
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -387,4 +389,4 @@ cat > index.html << EOF
 EOF
 
 echo "✅ Website aktualisiert!"
-echo "🌐 Öffne index.html im Browser um die Änderungen zu sehen"
+echo "🌐 Öffne web/index.html im Browser um die Änderungen zu sehen"

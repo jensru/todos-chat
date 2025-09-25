@@ -131,10 +131,10 @@ update_task_progress() {
     echo "📊 Aktualisiere Task-Fortschritt für $current_date..."
     
     if command -v jq &> /dev/null && [ -f "$TASK_HISTORY_FILE" ]; then
-        # Zähle erledigte Tasks nach Kategorie
-        local geld_completed=$(jq -r ".daily_goals.\"$current_date\".tasks_completed[] | select(.category == \"money\") | .id" "$TASK_HISTORY_FILE" | wc -l)
-        local tool_completed=$(jq -r ".daily_goals.\"$current_date\".tasks_completed[] | select(.category == \"tool\") | .id" "$TASK_HISTORY_FILE" | wc -l)
-        local marketing_completed=$(jq -r ".daily_goals.\"$current_date\".tasks_completed[] | select(.category == \"marketing\") | .id" "$TASK_HISTORY_FILE" | wc -l)
+        # Zähle erledigte Tasks nach Kategorie (mit null-Check)
+        local geld_completed=$(jq -r ".daily_goals.\"$current_date\".tasks_completed // [] | map(select(.category == \"money\")) | length" "$TASK_HISTORY_FILE")
+        local tool_completed=$(jq -r ".daily_goals.\"$current_date\".tasks_completed // [] | map(select(.category == \"tool\")) | length" "$TASK_HISTORY_FILE")
+        local marketing_completed=$(jq -r ".daily_goals.\"$current_date\".tasks_completed // [] | map(select(.category == \"marketing\")) | length" "$TASK_HISTORY_FILE")
         
         # Aktualisiere Fortschritt
         jq --arg date "$current_date" \
@@ -168,12 +168,12 @@ show_daily_progress() {
             echo ""
             
             echo "📊 **Fokus-Bereiche:**"
-            echo "$daily_goals" | jq -r '.focus_areas | to_entries[] | "  \(.key): \(.value.completed_tasks)/\(.value.target_tasks) (\(.value.priority))"'
+            echo "$daily_goals" | jq -r '.focus_areas // {} | to_entries[] | "  \(.key): \(.value.completed_tasks)/\(.value.target_tasks) (\(.value.priority))"'
             echo ""
             
             # Fortschritts-Balken
             echo "📈 **Fortschritts-Visualisierung:**"
-            echo "$daily_goals" | jq -r '.focus_areas | to_entries[] | 
+            echo "$daily_goals" | jq -r '.focus_areas // {} | to_entries[] | 
                 "  \(.key): " + 
                 (if .value.completed_tasks >= .value.target_tasks then "✅ ERREICHT" 
                  else "\(.value.completed_tasks)/\(.value.target_tasks)" end)'
@@ -203,7 +203,7 @@ generate_progress_html() {
             
             # Fokus-Bereiche
             progress_html+="<h4>📊 Fortschritt:</h4><ul>"
-            local focus_areas=$(echo "$daily_goals" | jq -r '.focus_areas | to_entries[] | "\(.key): \(.value.completed_tasks)/\(.value.target_tasks)"')
+            local focus_areas=$(echo "$daily_goals" | jq -r '.focus_areas // {} | to_entries[] | "\(.key): \(.value.completed_tasks)/\(.value.target_tasks)"')
             while IFS= read -r line; do
                 progress_html+="<li>$line</li>"
             done <<< "$focus_areas"
