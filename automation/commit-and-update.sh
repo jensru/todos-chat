@@ -78,7 +78,7 @@ fi
 
 # Keine Agenten mehr - einfache Version
 
-# Erstelle komplett neue index.html
+# Erstelle komplett neue index.html mit verbessertem Design
 cat > web/index.html << EOF
 <!DOCTYPE html>
 <html lang="de">
@@ -318,6 +318,58 @@ cat > web/index.html << EOF
         
         a:hover {
             text-decoration: underline;
+        }
+        
+        /* Verbesserte Todo-Styles */
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        li {
+            margin: 8px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Prioritäts-Indikatoren */
+        .priority-high {
+            background: linear-gradient(90deg, #ffebee 0%, transparent 100%);
+            border-left: 4px solid #f44336;
+            padding-left: 12px;
+        }
+        
+        .priority-medium {
+            background: linear-gradient(90deg, #fff3e0 0%, transparent 100%);
+            border-left: 4px solid #ff9800;
+            padding-left: 12px;
+        }
+        
+        .priority-low {
+            background: linear-gradient(90deg, #e8f5e8 0%, transparent 100%);
+            border-left: 4px solid #4caf50;
+            padding-left: 12px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .sidebar {
+                position: static;
+                max-height: none;
+            }
+            
+            body {
+                padding: 16px;
+            }
         }
     </style>
 </head>
