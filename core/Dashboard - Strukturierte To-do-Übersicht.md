@@ -7,9 +7,6 @@
 ### **Freitag, 26. September**
 
 
-### **Phase 1: Morgensetup**
-- [ ] **E-Mails checken** - Wichtige Nachrichten beantworten
-- [ ] **LinkedIn Nachrichten** - Business-Kontakte pflegen
 
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
   - [ ] Werden die Breakout Sessions geteiltan Paola?

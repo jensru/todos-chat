@@ -207,6 +207,39 @@
           "tags": [
             ""
           ]
+        },
+        {
+          "id": "task_1758872676",
+          "title": "**Phase 1: Morgensetup**",
+          "description": "- [x] **Phase 1: Morgensetup**",
+          "category": "personal",
+          "completed_at": "2025-09-26T09:44:36",
+          "priority": "medium",
+          "tags": [
+            ""
+          ]
+        },
+        {
+          "id": "task_1758872676",
+          "title": "**E-Mails checken**",
+          "description": "- [x] **E-Mails checken** - Wichtige Nachrichten beantworten",
+          "category": "personal",
+          "completed_at": "2025-09-26T09:44:36",
+          "priority": "medium",
+          "tags": [
+            ""
+          ]
+        },
+        {
+          "id": "task_1758872676",
+          "title": "**LinkedIn Nachrichten**",
+          "description": "Business-Kontakte pflegen",
+          "category": "marketing",
+          "completed_at": "2025-09-26T09:44:36",
+          "priority": "medium",
+          "tags": [
+            ""
+          ]
         }
       ]
     }
