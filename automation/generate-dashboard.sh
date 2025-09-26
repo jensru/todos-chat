@@ -1,3 +1,36 @@
+#!/bin/bash
+
+# Automatische Dashboard-Generierung mit korrektem Escaping
+# Lädt das aktuelle Dashboard und generiert eine funktionierende index.html
+
+DASHBOARD_FILE="core/Dashboard - Strukturierte To-do-Übersicht.md"
+SIDEBAR_FILE="core/right-sidebar.md"
+OUTPUT_FILE="web/index.html"
+
+echo "🔄 Generiere Dashboard aus aktuellem Markdown..."
+
+# Prüfe ob Dateien existieren
+if [ ! -f "$DASHBOARD_FILE" ]; then
+    echo "❌ Dashboard-Datei nicht gefunden: $DASHBOARD_FILE"
+    exit 1
+fi
+
+if [ ! -f "$SIDEBAR_FILE" ]; then
+    echo "❌ Sidebar-Datei nicht gefunden: $SIDEBAR_FILE"
+    exit 1
+fi
+
+# Erstelle temporäre Dateien für Escaping
+echo "📖 Lade und escape Dashboard-Inhalt..."
+cat "$DASHBOARD_FILE" > temp_dashboard.md
+
+echo "📖 Lade und escape Sidebar-Inhalt..."
+cat "$SIDEBAR_FILE" > temp_sidebar.md
+
+# Erstelle HTML-Template
+echo "🔧 Erstelle HTML-Template..."
+
+cat > "$OUTPUT_FILE" << 'EOF'
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -222,44 +255,59 @@
     </div>
 
     <script>
-        // Dashboard Markdown Content
-        const dashboardContent = `DASHBOARD_PLACEHOLDER`;
+        // Lade Dashboard-Inhalt über fetch
+        async function loadDashboard() {
+            try {
+                const dashboardResponse = await fetch('../core/Dashboard - Strukturierte To-do-Übersicht.md');
+                const sidebarResponse = await fetch('../core/right-sidebar.md');
+                
+                if (!dashboardResponse.ok || !sidebarResponse.ok) {
+                    throw new Error('Fehler beim Laden der Markdown-Dateien');
+                }
+                
+                const dashboardContent = await dashboardResponse.text();
+                const sidebarContent = await sidebarResponse.text();
+                
+                // Konvertiere Markdown zu HTML
+                function convertMarkdownToHtml(markdown) {
+                    // Erweitere marked.js für bessere Darstellung
+                    marked.setOptions({
+                        breaks: true,
+                        gfm: true,
+                        sanitize: false
+                    });
+                    
+                    let html = marked.parse(markdown);
+                    
+                    // Füge spezielle Klassen für bessere Darstellung hinzu
+                    html = html.replace(/<h1>/g, '<h1 class="main-title">');
+                    html = html.replace(/<h2>/g, '<h2 class="section-title">');
+                    html = html.replace(/<h3>/g, '<h3 class="subsection-title">');
+                    html = html.replace(/<h4>/g, '<h4 class="subsubsection-title">');
+                    
+                    // Füge Timeline-Klassen hinzu
+                    html = html.replace(/### \*\*📅 WOCHE \d+:/g, '<div class="week-header">$&</div>');
+                    html = html.replace(/#### \*\*\w+, \d+\. \w+\*\*/g, '<div class="day-header">$&</div>');
+                    
+                    return html;
+                }
 
-        // Sidebar Markdown Content  
-        const sidebarContent = `SIDEBAR_PLACEHOLDER`;
+                // Lade Dashboard
+                document.getElementById('dashboard-content').innerHTML = convertMarkdownToHtml(dashboardContent);
+                
+                // Lade Sidebar
+                document.getElementById('sidebar-content').innerHTML = convertMarkdownToHtml(sidebarContent);
 
-        // Konvertiere Markdown zu HTML
-        function convertMarkdownToHtml(markdown) {
-            // Erweitere marked.js für bessere Darstellung
-            marked.setOptions({
-                breaks: true,
-                gfm: true,
-                sanitize: false
-            });
-            
-            let html = marked.parse(markdown);
-            
-            // Füge spezielle Klassen für bessere Darstellung hinzu
-            html = html.replace(/<h1>/g, '<h1 class="main-title">');
-            html = html.replace(/<h2>/g, '<h2 class="section-title">');
-            html = html.replace(/<h3>/g, '<h3 class="subsection-title">');
-            html = html.replace(/<h4>/g, '<h4 class="subsubsection-title">');
-            
-            // Füge Timeline-Klassen hinzu
-            html = html.replace(/### \*\*📅 WOCHE \d+:/g, '<div class="week-header">$&</div>');
-            html = html.replace(/#### \*\*\w+, \d+\. \w+\*\*/g, '<div class="day-header">$&</div>');
-            
-            return html;
+                // Checkbox-Funktionalität
+                setupCheckboxes();
+                
+            } catch (error) {
+                console.error('Fehler beim Laden des Dashboards:', error);
+                document.getElementById('dashboard-content').innerHTML = '<p>Fehler beim Laden des Dashboards. Bitte überprüfen Sie die Dateipfade.</p>';
+            }
         }
 
-        // Lade Dashboard
-        document.getElementById('dashboard-content').innerHTML = convertMarkdownToHtml(dashboardContent);
-        
-        // Lade Sidebar
-        document.getElementById('sidebar-content').innerHTML = convertMarkdownToHtml(sidebarContent);
-
-        // Checkbox-Funktionalität
-        document.addEventListener('DOMContentLoaded', function() {
+        function setupCheckboxes() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             
             checkboxes.forEach(checkbox => {
@@ -282,7 +330,20 @@
                     localStorage.setItem('checkbox_' + this.parentNode.textContent.trim(), this.checked);
                 });
             });
-        });
+        }
+
+        // Lade Dashboard beim Start
+        document.addEventListener('DOMContentLoaded', loadDashboard);
     </script>
 </body>
 </html>
+EOF
+
+# Lösche temporäre Dateien
+rm -f temp_dashboard.md temp_sidebar.md
+
+echo "✅ Dashboard erfolgreich generiert: $OUTPUT_FILE"
+echo "🌐 Öffne Dashboard im Browser..."
+
+# Öffne Dashboard im Browser
+open "$OUTPUT_FILE"
