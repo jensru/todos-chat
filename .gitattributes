@@ -1,0 +1,17 @@
+# Git Attributes für Design-Schutz
+# Diese Datei stellt sicher, dass das moderne Design-System nicht versehentlich überschrieben wird
+
+# Web-Dateien mit Design-Schutz
+web/index.html merge=ours
+web/*.css merge=ours
+
+# Design-Dateien als kritisch markieren
+web/index.html linguist-generated=false
+web/*.css linguist-generated=false
+
+# Automatische Merge-Strategie für Design-Dateien
+*.html merge=ours
+*.css merge=ours
+
+# Backup-Strategie: Design-Dateien werden bei Konflikten bevorzugt
+web/index.html merge=ours

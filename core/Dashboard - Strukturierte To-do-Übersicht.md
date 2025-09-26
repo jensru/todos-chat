@@ -6,7 +6,6 @@
 
 ### **Freitag, 26. September**
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
-  - [ ] letzten Präse Steps inhaltlich
   - [ ] prompting artefakt durchlauf
   - [ ] Handout Perfect
   - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
