@@ -19,266 +19,536 @@
             background-color: #FFFFFF;
         }
         
-        .container {
+        .main-container {
             display: flex;
             gap: 32px;
-            min-height: 100vh;
+            align-items: flex-start;
         }
         
         .main-content {
-            flex: 1;
-            background: #FFFFFF;
-            border-radius: 12px;
-            padding: 32px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            flex: 2;
+            min-width: 0;
         }
         
         .sidebar {
-            width: 300px;
-            background: #F8F9FA;
+            flex: 1;
+            min-width: 300px;
+            max-height: calc(100vh - 48px);
+            background: #f8f9fa;
             border-radius: 12px;
             padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.12);
+            position: sticky;
+            top: 24px;
+            overflow-y: auto;
         }
         
-        h1 {
-            color: #1F1F1F;
-            font-size: 32px;
-            font-weight: 500;
-            margin-bottom: 24px;
-            border-bottom: 3px solid #4285F4;
+        .sidebar h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #0B57D0;
             padding-bottom: 12px;
         }
         
-        h2 {
-            color: #1F1F1F;
-            font-size: 24px;
-            font-weight: 500;
-            margin-top: 32px;
-            margin-bottom: 16px;
-        }
-        
-        h3 {
-            color: #1F1F1F;
+        .sidebar h2 {
             font-size: 20px;
-            font-weight: 500;
             margin-top: 24px;
             margin-bottom: 12px;
         }
         
-        h4 {
+        .sidebar h3 {
+            font-size: 16px;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .sidebar p, .sidebar li {
+            font-size: 13px;
+            line-height: 18px;
+        }
+        
+        .agent-section {
+            margin-top: 32px;
+            background: #e8f0fe;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #0B57D0;
+        }
+        
+        .agent-section h3 {
+            color: #0B57D0;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .agent-section p, .agent-section li {
+            font-size: 12px;
+            line-height: 16px;
+            color: #444746;
+        }
+        
+        h1 { 
+            color: #1F1F1F; 
+            border-bottom: 2px solid #0B57D0; 
+            padding-bottom: 16px; 
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+        
+        h2 { 
+            color: #1F1F1F; 
+            margin-top: 32px; 
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 32px;
+        }
+        
+        h3 { 
+            color: #444746; 
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 24px;
+        }
+        
+        p, li {
             color: #1F1F1F;
-            font-size: 18px;
-            font-weight: 500;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-        
-        ul {
-            margin: 16px 0;
-            padding-left: 24px;
-        }
-        
-        li {
-            margin: 8px 0;
-            line-height: 1.5;
-        }
-        
-        input[type="checkbox"] {
-            margin-right: 8px;
-            transform: scale(1.2);
-            accent-color: #4285F4;
-        }
-        
-        .completed {
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-        
-        .priority-high {
-            color: #EA4335;
-            font-weight: 500;
-        }
-        
-        .priority-medium {
-            color: #FBBC04;
-            font-weight: 500;
-        }
-        
-        .priority-low {
-            color: #34A853;
-            font-weight: 500;
-        }
-        
-        .timeline-section {
-            background: #F8F9FA;
-            border-left: 4px solid #4285F4;
-            padding: 16px;
-            margin: 16px 0;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .week-header {
-            background: #4285F4;
-            color: white;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-weight: 500;
-            margin: 16px 0 8px 0;
-        }
-        
-        .day-header {
-            background: #E8F0FE;
-            color: #1F1F1F;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-weight: 500;
-            margin: 12px 0 6px 0;
-        }
-        
-        code {
-            background: #F1F3F4;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
         }
         
-        pre {
-            background: #F1F3F4;
-            padding: 16px;
-            border-radius: 8px;
-            overflow-x: auto;
+        .checkbox { 
+            margin: 12px 0; 
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox input[type="checkbox"] { 
+            margin-right: 8px; 
+            width: 16px;
+            height: 16px;
+            accent-color: #0B57D0;
+        }
+        
+        .checkbox label { 
+            cursor: pointer; 
+            font-size: 14px;
+            line-height: 20px;
+            color: #3C4043;
+        }
+        
+        .checkbox input[type="checkbox"]:checked + label { 
+            text-decoration: line-through; 
+            opacity: 0.6; 
+        }
+        
+        blockquote { 
+            border-left: 4px solid #0B57D0; 
+            padding-left: 20px; 
+            margin: 24px 0; 
+            font-style: italic; 
+            color: #747775;
+            font-size: 14px;
+            line-height: 20px;
+        }
+        
+        code { 
+            background: #f8f9fa; 
+            padding: 2px 6px; 
+            border-radius: 3px; 
+            font-family: 'Monaco', 'Consolas', monospace; 
+            color: #1F1F1F;
+        }
+        
+        pre { 
+            background: #f8f9fa; 
+            padding: 16px; 
+            border-radius: 12px; 
+            overflow-x: auto; 
+            border: 1px solid rgba(0,0,0,0.12);
+        }
+        
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            margin: 24px 0; 
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        th, td { 
+            border: 1px solid rgba(0,0,0,0.12); 
+            padding: 16px; 
+            text-align: left; 
+            font-size: 14px;
+            line-height: 20px;
+        }
+        
+        th { 
+            background-color: #f8f9fa; 
+            font-weight: 500; 
+            color: #1F1F1F;
+        }
+        
+        td {
+            color: #747775;
+        }
+        
+        hr { 
+            border: none; 
+            border-top: 1px solid rgba(0,0,0,0.12); 
+            margin: 32px 0; 
+        }
+        
+        .emoji { font-size: 1.2em; }
+        
+        /* CTA Button Style */
+        .cta-button {
+            background-color: #0B57D0;
+            color: #FFFFFF;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
             margin: 16px 0;
         }
         
-        blockquote {
-            border-left: 4px solid #4285F4;
-            padding-left: 16px;
-            margin: 16px 0;
-            color: #5F6368;
-            font-style: italic;
+        .cta-button:hover {
+            background-color: #0a4bb8;
         }
         
+        /* Emphasis text */
+        strong {
+            color: #444746;
+            font-weight: 500;
+        }
+        
+        /* Links */
         a {
-            color: #4285F4;
+            color: #0B57D0;
             text-decoration: none;
         }
         
         a:hover {
             text-decoration: underline;
         }
-        
-        .sidebar h3 {
-            color: #1F1F1F;
-            font-size: 18px;
-            margin-bottom: 16px;
-            border-bottom: 2px solid #E8F0FE;
-            padding-bottom: 8px;
-        }
-        
-        .sidebar ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .sidebar li {
-            padding: 8px 0;
-            border-bottom: 1px solid #E8F0FE;
-        }
-        
-        .sidebar li:last-child {
-            border-bottom: none;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-            }
-            
-            body {
-                padding: 16px;
-            }
-            
-            .main-content {
-                padding: 24px;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="main-container">
         <div class="main-content">
-            <div id="dashboard-content"></div>
+            <div id="content"></div>
         </div>
-        
         <div class="sidebar">
             <div id="sidebar-content"></div>
         </div>
     </div>
 
     <script>
+        // Sidebar Markdown Content
+        const sidebarContent = `# 🎯 **Ziele & Fokus**
+
+## **==Ziele==**
+
+**Geld!**
+
+---
+
+## 🚀 **FOKUS: Tool-First Strategie**
+
+**Regel:** Alles was ich mach als Tools Chatfirst so bauen, dass es _dich selbst_ ersetzt in deinem Workflow
+
+**Irgendwann und vielleicht schon bald:** Pivot? Zielgruppen switch (Entscheidung)
+
+---
+
+## 🎯 **Erfolgskriterien Q4 2025**
+
+- **Tool**: Du nutzt es zur täglichen Kundenarbeit
+- **Marketing**: Komplettes ausschlachten der PUSH Session
+- **Community**: Etablierte Präsenz in relevanten Communities
+- **Health**: Alle Termine erledigt, TÜV gemacht`;
+
+               // Keine Agenten mehr
+               let agentContent = '';
+
         // Dashboard Markdown Content
-        const dashboardContent = `DASHBOARD_PLACEHOLDER`;
+        const markdownContent = `# 🎯 Dashboard - Strukturierte To-do-Übersicht
 
-        // Sidebar Markdown Content  
-        const sidebarContent = `SIDEBAR_PLACEHOLDER`;
+## 📅 **Diese Woche (22. September - 28. September 2025)**
 
-        // Konvertiere Markdown zu HTML
-        function convertMarkdownToHtml(markdown) {
-            // Erweitere marked.js für bessere Darstellung
-            marked.setOptions({
-                breaks: true,
-                gfm: true,
-                sanitize: false
-            });
-            
-            let html = marked.parse(markdown);
-            
-            // Füge spezielle Klassen für bessere Darstellung hinzu
-            html = html.replace(/<h1>/g, '<h1 class="main-title">');
-            html = html.replace(/<h2>/g, '<h2 class="section-title">');
-            html = html.replace(/<h3>/g, '<h3 class="subsection-title">');
-            html = html.replace(/<h4>/g, '<h4 class="subsubsection-title">');
-            
-            // Füge Timeline-Klassen hinzu
-            html = html.replace(/### \*\*📅 WOCHE \d+:/g, '<div class="week-header">$&</div>');
-            html = html.replace(/#### \*\*\w+, \d+\. \w+\*\*/g, '<div class="day-header">$&</div>');
-            
-            return html;
+
+
+### **Freitag, 26. September**
+- [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
+  - [ ] Werden die Breakout Sessions geteiltan Paola?
+  - [ ] letzten Präse Steps inhaltlich
+  - [ ] prompting artefakt durchlauf
+  - [ ] Handout Perfect
+  - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
+- [ ] **🔥 Push Post ist musthave** - LinkedIn Post veröffentlichen: \"I'm back at preparing my breakout session for PUSH...\"
+  - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
+
+
+- [ ] **11:30 Hugendubel fahren** - Entweder ein Buch oder Gutschein (nicht Avocado)
+
+
+  
+### **Phase 3: Weitere Todos**
+- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
+- [ ] Alle Leute hallo mit lead funnels strategie
+- [ ] Noch mehr rauskommen aus dem Haus planen!!!
+
+
+
+### **Samstag, 27. September**  
+ - [ ] Geschenke LP (falls nicht erledigt)
+- [ ] **Schimmel** - Schimmel-Problem angehen
+- [ ] **Anneso Lampedisch ding** - Anneso Lampedisch Angelegenheit
+- [ ] **Büro aufräumen** - Arbeitsplatz organisieren
+- [ ] **Keller aufräumen** - Keller entrümpeln
+- [ ] **Steuer2024** - Steuererklärung 2024
+- [ ] **So wiesen** - So wiesen (was auch immer das ist)
+- [ ] **Klettrwald, Tauchen, superfly, therme Erding, bavaria, Berge** - Outdoor-Aktivitäten und Ausflüge planen
+- [ ] Miete erhöhen
+- [ ] Eltern fahren planen
+
+---
+
+## 📅 **TIMELINE: Oktober - Dezember 2025**
+
+
+### **📅 WOCHE 1: 30. September - 6. Oktober 2025**
+
+#### **Montag, 30. September**
+- [ ] **📅 Monatssequenz** - Oktober-Planung und Ziele definieren
+- [ ] **📊 Wochensequenz** - Woche 1 (30.09-06.10) strukturieren
+- [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten "folder"** - Separater Tab/Folder für Payment-Produkte
+- [ ] Christophs Bitcoin Design Team Kollege
+- [ ] 0/4 werk1
+
+#### **Dienstag, 1. Oktober**
+- [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`
+- [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
+  - Tools pricing
+  - Workshops, webinar cohorten pricing
+  - Newsletter pricing
+  - Analyse Anna Workshops
+  - Post dass ich bei der Push bin
+  - Post über Angebote
+  - Kappa Post
+  - Linkedin Funnel, Landingpages Newsletter
+- [ ] **3-Angebots-Kacheln** ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)
+- [ ] **drei starkes Kunden-Zitat mit Bild und kurzem Case?** (von Donnerstag verschoben)
+  - lea
+  - SAP Typ
+  - Tem Manager App Typ
+
+#### **Donnerstag, 2. Oktober**
+- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:
+  - [ ] **Zuhören** - ganz wichtig als erstes zuhören
+  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde
+  - [ ] Sofort markieren und später ansprechen
+  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)
+  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen
+  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen
+  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben
+
+#### **Tool-Core (KRITISCH)**
+- [ ] **Simon Kubica Follow-up (Woche 1)**: Feedback prüfen und Follow-up vorbereiten
+- [ ] **Chat-First Interface für mein Tool** - Hauptpriorität für eigene Nutzung
+- [ ] Tool Marketing Tests
+- [ ] Tools, betaliste, invite only (https://appcanvas.io/)
+- [ ] Signup zu meinem Tool
+- [ ] Meine Tool-Seite soweit fertig machen → Tool Page mit Videos und Bildern
+- [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"
+- [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
+- [ ] https://prompt-directory-fh.lovable.app/
+- [ ] https://mastering-lovable.lovable.app/
+- [ ] https://buzzword-hacks.lovable.app//
+- [ ] https://www.linkedin.com/posts/haasfelix_10-hacks-activity-7340306418392072195-OdAa/
+- [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/
+- [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
+- [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
+
+### **📅 WOCHE 2: 7. - 13. Oktober 2025**
+
+#### **Mittwoch, 9. Oktober**
+- [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
+
+#### **Donnerstag, 10. Oktober**
+- [ ] **10.10. um 10:30 Uhr Lungenarzttermin**
+
+#### **Woche 2 - Tool-Core Fortsetzung**
+- [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)
+- [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
+- [ ] **built your own app with a running agent course!**
+
+### **📅 WOCHE 3: 14. - 20. Oktober 2025**
+
+#### **Woche 3 - Business Foundation**
+- [ ] **Cohorten Workshops nach Push** - Workshop-Format entwickeln (von Donnerstag verschoben)
+- [ ] **Webinare als Leads** - Lead-Generierung für Cohorten (von Donnerstag verschoben)
+- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben)
+- [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces)
+- [ ] Pricing-Strategie entwickeln (Tools, Workshops, Newsletter)
+- [ ] PUSH Workshop Präsentation vorbereiten
+- [ ] Content für LinkedIn/Social Media (AI Agent Prototyping)
+- [ ] Market Research Community-Outreach (Anna Workshops analysieren)
+- [ ] Jetzt schon Marketing Tests zu value prop, Pricing
+- [ ] Post: Der Unterschied zwischen der sich selbst und andere pushen
+- [ ] Landingpages für einzelne Tools (zwei fehlen)
+- [ ] Psychologie tools auf tools seite
+- [ ] Info Jens mit Detailseite
+- [ ] Workshop texte mehr ROI und dann in lerneinheiten
+- [ ] French?!?
+- [ ] SEO
+- [ ] Angebot als Buchbar und Verknappung
+- [ ] Calendly integrieren
+- [ ] Kickboost Seite auf LinkedIn
+- [ ] Newsletter Strategie
+- [ ] Tools Signup
+
+### **📅 WOCHE 4: 21. - 27. Oktober 2025**
+
+#### **Woche 4 - Community & Content**
+- [ ] Noch mehr rauskommen aus dem Haus planen!!!
+- [ ] Basic eigenes CRM Verfolgung
+- [ ] Ich brauche einen Funnel immer beim Kontaktieren
+- [ ] Irgendein community live Event jetzt
+- [ ] Webinar UX
+- [ ] Webinar Produkt
+- [ ] Die wichtigsten Fragen verstehen
+- [ ] Kommentieren an Zielgruppe
+- [ ] Münchner Liste
+- [ ] Letzte Woche Kommentare
+- [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools!
+
+### **📅 WOCHE 5: 28. Oktober - 3. November 2025**
+
+#### **Woche 5 - Oktober-Abschluss & November-Vorbereitung**
+- [ ] Zahnärztin, bekomme ich noch die E-Mails?
+- [ ] **Booklist, BUT how to UI the Bookapp for my local Book App!**
+
+---
+
+## 📅 **NOVEMBER 2025**
+
+### **Gründungsplan - ALG I & Gründungszuschuss**
+- [ ] **Spätestens Ende Dezember 2025** - Antrag für Gründungszuschuss stellen
+  - [ ] **150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen
+  - [ ] **Besser deutlich früher** - Oktober bis Dezember 2025 für genug Bearbeitungszeit
+- [ ] **Einkommensplan erstellen** - ALG I + Gründungszuschuss kalkulieren:
+  - [ ] **ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich
+  - [ ] **Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat
+  - [ ] **Phase 2 (9 Monate, optional):** Nur 300 € Zuschuss
+- [ ] **Optimaler Zeitraum planen** - Oktober bis Dezember 2025 für Antrag
+  - [ ] **Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026
+  - [ ] **Szenario Dezember 2025:** Gründung Januar 2026 → ALG I + Zuschuss bis Juni/Juli 2026
+
+### **November 2025 - Persönliche Todos**
+- [ ] SLK und Touran TÜV
+
+---
+
+## 📅 **DEZEMBER 2025**
+
+### **Dezember 2025 - Gründungsplan**
+- [ ] Dezember/Januar Gründungszuschuss Antrag
+
+### **Dezember 2025 - Persönliche Todos**
+- [ ] Blake et mortimer
+- [ ] Junior et senior
+- [ ] Corto Maltese manga
+- [ ] Asterix 41
+- [ ] 2 spirou
+
+---
+
+## 🎯 **Leadmagnets & Funnels Pipeline**
+
+### **Entwickelt/In Arbeit:**
+- [ ] **Interview-Agent** - Tool zur Unterstützung von Validierungsinterviews
+- [ ] **New Workflow** - AI-kreatives Arbeiten im Product-Building
+- [ ] **Concept Library** - Sammlung von Interface-Ideen zum Kombinieren
+- [ ] **Prototyping-Tool** - Vor dem Vibe-Coding
+- [ ] **Persona Quickstart** - Mini-Leadmagnet
+- [ ] **AI-Prototyping Setup für Unternehmen**
+
+---
+
+## 📊 **Marketing & Business Development**
+
+### **Aktueller Status:**
+- [ ] Parallel Marketing für Methode, Tool, Workshops, Kundenprojekte
+- [ ] Workshop-Texte mehr ROI-fokussiert
+
+### **Nach Beta-Phase:**
+- [ ] Echte Nutzerinterviews mit Maryam, Angemeldeten, Zielgruppe
+- [ ] Wiederverwenden-Interviews und Value Proposition
+- [ ] Umfragen zu Wiederverwendung
+- [ ] Alle Angemeldeten
+- [ ] Potentielle Zielgruppe aber nicht angemeldet
+
+---
+
+## 🚀 **Zukünftige Projekte**
+
+### **N-t-h (Next to happen):**
+- [ ] **Einkaufsapp, Deep Research, dann simple aufbau**
+- [ ] **Open source library**
+
+
+---
+
+_Heute: 
+_Letzte Aktualisierung: `;
+
+        // Configure marked options
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
+
+        // Convert markdown to HTML
+        const htmlContent = marked.parse(markdownContent);
+        const sidebarHtmlContent = marked.parse(sidebarContent);
+        
+        // Insert into page
+        document.getElementById('content').innerHTML = htmlContent;
+        document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
+        
+        // Füge heutige Task-Historie hinzu
+        const todayHistoryHtml = `<div class='completed-tasks-today'><h3>✅ Heute erledigt:</h3><ul><li>**Tagesplanung** (personal)</li><li>**Phase 1: Morgensetup** (personal)</li><li>**E-Mails checken** (personal)</li><li>**LinkedIn Nachrichten** (marketing)</li><li>**Restanspruch prüfen** (personal)</li></ul></div>`;
+        if (todayHistoryHtml) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML += todayHistoryHtml;
+        }
+        
+        // Füge Tagesziele-Fortschritt hinzu
+        const dailyProgressHtml = ``;
+        if (dailyProgressHtml) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML += dailyProgressHtml;
         }
 
-        // Lade Dashboard
-        document.getElementById('dashboard-content').innerHTML = convertMarkdownToHtml(dashboardContent);
-        
-        // Lade Sidebar
-        document.getElementById('sidebar-content').innerHTML = convertMarkdownToHtml(sidebarContent);
-
-        // Checkbox-Funktionalität
+        // Add interactive checkboxes
         document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            
             checkboxes.forEach(checkbox => {
-                // Lade gespeicherten Zustand
+                // Load saved state
                 const savedState = localStorage.getItem('checkbox_' + checkbox.parentNode.textContent.trim());
                 if (savedState === 'true') {
                     checkbox.checked = true;
-                    checkbox.parentNode.classList.add('completed');
                 }
                 
-                // Event Listener für Änderungen
+                // Save state on change
                 checkbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        this.parentNode.classList.add('completed');
-                    } else {
-                        this.parentNode.classList.remove('completed');
-                    }
-                    
-                    // Speichere Zustand
                     localStorage.setItem('checkbox_' + this.parentNode.textContent.trim(), this.checked);
                 });
             });
