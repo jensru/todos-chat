@@ -6,7 +6,6 @@
 
 ### **Freitag, 26. September**
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
-  - [ ] Werden die Breakout Sessions geteiltan Paola?
   - [ ] letzten Präse Steps inhaltlich
   - [ ] prompting artefakt durchlauf
   - [ ] Handout Perfect
