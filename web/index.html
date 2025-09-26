@@ -288,20 +288,22 @@
 
 
 ### **Phase 1: Morgensetup**
-- [ ] Geschenksteffen Hugendubel oder Avocadostore Gutschein
-- [ ] **Tagesplanung** - Prioritäten für heute definieren
 - [ ] **E-Mails checken** - Wichtige Nachrichten beantworten
 - [ ] **LinkedIn Nachrichten** - Business-Kontakte pflegen
 
-### **Phase 2: MUST HAVE (Priorität 1)**
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
   - [ ] Werden die Breakout Sessions geteiltan Paola?
   - [ ] letzten Präse Steps inhaltlich
   - [ ] prompting artefakt durchlauf
   - [ ] Handout Perfect
   - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
-- [ ] **🔥 Push Post ist musthave** - LinkedIn Post veröffentlichen: \"I'm back at preparing my breakout session for PUSH...\"
-  - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
+- [ ] **🔥 Push Post ist musthave** - LinkedIn Post veröffentlichen: "I'm back at preparing my breakout session for PUSH..."
+  - [ ] **Linkend In Post** "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
+
+
+- [ ] **11:30 Hugendubel fahren** - Entweder ein Buch oder Gutschein (nicht Avocado)
+
+
   
 ### **Phase 3: Weitere Todos**
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
@@ -329,11 +331,12 @@
 ### **Montag, 30. September - Monats- und Wochensequenz**
 - [ ] **📅 Monatssequenz** - Oktober-Planung und Ziele definieren
 - [ ] **📊 Wochensequenz** - Woche 1 (30.09-06.10) strukturieren
-- [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten \"folder\"** - Separater Tab/Folder für Payment-Produkte
+- [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten "folder"** - Separater Tab/Folder für Payment-Produkte
 
+- [ ] Christophs Bitcoin Design Team Kollege
 ### **Dienstag, 1. Oktober - Mistral-Morgensequenz**
-- [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: \`./automation/mistral-morning-sequence.sh \"2025-10-01\"\`
-- [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten \"folder\"** - Separater Tab/Folder für Payment-Produkte
+- [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`
+- [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten "folder"** - Separater Tab/Folder für Payment-Produkte
 - [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
   - Tools pricing
   - Workshops, webinar cohorten pricing
@@ -343,7 +346,7 @@
   - Post über Angebote
   - Kappa Post
   - Linkedin Funnel, Landingpages Newsletter
-- [ ] **3-Angebots-Kacheln** (\"Wir bauen für dich\" / \"Wir bringen's dir bei\" / \"Wir sprinten mit dir\") (von Donnerstag verschoben)
+- [ ] **3-Angebots-Kacheln** ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)
 - [ ] **drei starkes Kunden-Zitat mit Bild und kurzem Case?** (von Donnerstag verschoben)
   - lea
   - SAP Typ
@@ -371,13 +374,13 @@
 - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools!
 
 ### **🔥 Woche 1-2: Tool-Core (KRITISCH)**
-- [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: \"I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right.\" (Email oder WhatsApp)
+- [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)
 - [ ] **Chat-First Interface für mein Tool** - Hauptpriorität für eigene Nutzung
 - [ ] Tool Marketing Tests
 - [ ] Tools, betaliste, invite only (https://appcanvas.io/)
 - [ ] Signup zu meinem Tool
 - [ ] Meine Tool-Seite soweit fertig machen → Tool Page mit Videos und Bildern
-- [ ] **Testimonial**: \"Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht\"
+- [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"
 - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
 - [ ] https://prompt-directory-fh.lovable.app/
 - [ ] https://mastering-lovable.lovable.app/
@@ -497,7 +500,7 @@ _Letzte Aktualisierung: `;
         document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
         
         // Füge heutige Task-Historie hinzu
-        const todayHistoryHtml = ``;
+        const todayHistoryHtml = `<div class='completed-tasks-today'><h3>✅ Heute erledigt:</h3><ul><li>**Tagesplanung** (personal)</li></ul></div>`;
         if (todayHistoryHtml) {
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML += todayHistoryHtml;
