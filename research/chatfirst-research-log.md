@@ -2022,3 +2022,87 @@ Overall, the focus of these changes is on increasing automation, improving effic
 - **Learning-Loop:** Mistral lernt aus User-Feedback und -Anpassungen
 - **Template-System:** Wiederverwendbare Startup-Sequenz-Templates
 - **Context-Awareness:** Mistral berücksichtigt Tageskontext (Wochentag, Termine, etc.)
+
+
+---
+
+## 🔄 **Tagesabschluss-Patterns: Recap & Abendsende**
+
+### **Identifizierte Bedürfnisse:**
+- **Recap-Sequenz:** Tagsüber - Schaffe ich meine Ziele? (Midday Check)
+- **Abendsende-Sequenz:** Tagesabschluss und Vorbereitung für morgen
+
+### **Chat-First-Features erkannt:**
+- **Midday-Recap-Tool:** Automatische Überprüfung der Tagesziele
+- **Abendsende-Assistent:** Strukturierter Tagesabschluss
+- **Ziel-Tracking:** Fortschrittsüberwachung in Echtzeit
+- **Morgen-Vorbereitung:** Automatische Vorbereitung für den nächsten Tag
+
+### **Tool-Requirements:**
+- **Recap-Generator:** Mistral analysiert Fortschritt und schlägt Anpassungen vor
+- **Abendsende-Template:** Strukturierte Abschlussroutine
+- **Ziel-Status-Tracker:** Automatische Überwachung der Tagesziele
+- **Morgen-Prepper:** Vorbereitung der nächsten Morgensequenz
+
+### **Mistral-Integration:**
+- **Recap-Analyse:** Mistral bewertet Fortschritt und schlägt Optimierungen vor
+- **Abendsende-Recommendations:** Mistral schlägt strukturierte Abschlussroutine vor
+- **Adaptive Planung:** Mistral passt nächste Morgensequenz basierend auf heutigem Fortschritt an
+
+### **Implementierung (Zukunft):**
+- **Recap-Script:** `./automation/mistral-recap.sh` - Midday Check
+- **Abendsende-Script:** `./automation/mistral-evening-wrap.sh` - Tagesabschluss
+- **Ziel-Tracking:** Automatische Überwachung der Tagesziele
+- **Adaptive Sequenzen:** Morgensequenz passt sich an gelernte Patterns an
+---
+
+## 🚀 **Chat-First Tool Vision: Aktueller Stand & Planung**
+
+### **Kern-Paradigma: Chat-First**
+**Vision:** Laufende Unterhaltung, in die man jederzeit „reinsagen" kann
+**Beispiel:** „Boah man, im Oktober wollten wir doch das machen."
+**System-Antwort:** „Jens, Oktober ist schon vorgemerkt – soll ich das in KW 42 konkret einplanen?"
+
+**Chat-First-Paradigma:** Genau das aus dem Research [chat-first-research-methodology.md]
+**Status:** ✅ Grundlagen erforscht und dokumentiert
+
+### **Kontext-Management**
+**Schmerz:** „AI vergisst zwischen Sessions"
+**Lösung:** Handover-System (automatisches Laden des relevanten Kontextes)
+**AI-Verhalten:** Antwortet nicht „leer", sondern weiß was gestern wichtig war, was verschoben wurde, was offen ist
+**Implementierung:** ✅ Mechanismus mit task-history und automatischer Übergabe vorhanden
+
+### **Triage & Lernen**
+**Lernziel:** System lernt aus User-Verhalten
+**Patterns:** 
+- Was du gerne verschiebst → kennzeichnet als „low priority"
+- Was du regelmäßig sofort machst → priorisiert höher
+- Merkt sich, wie du organisierst (Deadlines vs. Fokusblöcke)
+
+**Research-Basis:** ✅ 60% der User passen Aufgaben nachträglich an → „Conversational Refinement"
+**Status:** 🔄 In Entwicklung (Mistral lernt bereits Patterns)
+
+### **Nutzer-Adaptivität**
+**Vision:** System versteht nicht nur dich, sondern auch andere Nutzer
+**Adaptivität:** 
+- Kanban-Denker vs. Kalender-Planner vs. „Notizzettel"
+- Erkennt Muster und passt Stil an
+- Push vs. Pull, strenge Deadlines vs. lose Erinnerung
+
+**Designer+AI-Superpower:** ✅ System wird zu individuellem Organisations-Assistenten
+**Status:** 🎯 Langfristiges Ziel
+
+### **Aktuelle Implementierung:**
+- ✅ **Mistral-Integration:** Lernt bereits Patterns
+- ✅ **Startup-Sequenzen:** Strukturierte Tagesplanung
+- ✅ **Todo-Kategorisierung:** Automatische Priorisierung
+- ✅ **Tracking-System:** Rohdaten für Lern-Algorithmen
+- 🔄 **Recap & Abendsende:** In Planung
+- 🎯 **Chat-First-Interface:** Langfristiges Ziel
+
+### **Nächste Schritte:**
+1. **Recap-Sequenz implementieren** - Midday Check
+2. **Abendsende-Sequenz** - Tagesabschluss
+3. **Pattern-Learning erweitern** - Bessere Priorisierung
+4. **Chat-First-Interface** - Laufende Unterhaltung
+5. **Multi-User-Adaptivität** - Verschiedene Organisationsstile
