@@ -8,12 +8,9 @@
 
 
 ### **Phase 1: Morgensetup**
-- [ ] Geschenksteffen Hugendubel oder Avocadostore Gutschein
-- [ ] **Tagesplanung** - Prioritäten für heute definieren
 - [ ] **E-Mails checken** - Wichtige Nachrichten beantworten
 - [ ] **LinkedIn Nachrichten** - Business-Kontakte pflegen
 
-### **Phase 2: MUST HAVE (Priorität 1)**
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
   - [ ] Werden die Breakout Sessions geteiltan Paola?
   - [ ] letzten Präse Steps inhaltlich
@@ -22,6 +19,11 @@
   - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
 - [ ] **🔥 Push Post ist musthave** - LinkedIn Post veröffentlichen: "I'm back at preparing my breakout session for PUSH..."
   - [ ] **Linkend In Post** "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
+
+
+- [ ] **11:30 Hugendubel fahren** - Entweder ein Buch oder Gutschein (nicht Avocado)
+
+
   
 ### **Phase 3: Weitere Todos**
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
@@ -51,6 +53,7 @@
 - [ ] **📊 Wochensequenz** - Woche 1 (30.09-06.10) strukturieren
 - [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten "folder"** - Separater Tab/Folder für Payment-Produkte
 
+- [ ] Christophs Bitcoin Design Team Kollege
 ### **Dienstag, 1. Oktober - Mistral-Morgensequenz**
 - [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`
 - [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten "folder"** - Separater Tab/Folder für Payment-Produkte
@@ -102,7 +105,7 @@
 - [ ] https://prompt-directory-fh.lovable.app/
 - [ ] https://mastering-lovable.lovable.app/
 - [ ] https://buzzword-hacks.lovable.app//
-- [ ] https://www.linkedin.com/posts/haasfelix_𝟭𝟬-𝗵𝗮𝗰𝗸𝘀-𝗜-𝘄𝗶𝘀𝗵-𝗜-𝗸𝗻𝗲𝘄-activity-7340306418392072195-OdAa/
+- [ ] https://www.linkedin.com/posts/haasfelix_10-hacks-activity-7340306418392072195-OdAa/
 - [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/
 - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
 - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
