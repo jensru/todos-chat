@@ -285,8 +285,6 @@
 ## 🌅 **Startroutine Donnerstag, 25. September**
 
 ### **Phase 3: Tagesplanung**
-- [ ] **Arbeitsblöcke für heute definieren:**
-    - [ ] **KRITISCH & Dringend** (heute erledigen):
   - [ ] Block 2 (Mittag): **WIESN mit Kollegen** 🍺
   - [ ] Block 3 (Nachmittag): 
       - [ ] **PUSH Content**: 
@@ -488,7 +486,7 @@ _Letzte Aktualisierung: `;
         document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
         
         // Füge heutige Task-Historie hinzu
-        const todayHistoryHtml = ``;
+        const todayHistoryHtml = `<div class='completed-tasks-today'><h3>✅ Heute erledigt:</h3><ul><li>**Arbeitsblöcke für heute definieren:** (personal)</li></ul></div>`;
         if (todayHistoryHtml) {
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML += todayHistoryHtml;

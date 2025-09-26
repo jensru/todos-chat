@@ -1967,3 +1967,58 @@ Overall, the focus of these changes is on increasing automation, improving effic
 - **Analyse:** Mistral API
 - **Integration:** Automatisch in Research Log
 
+
+
+---
+
+## 📝 **Todo-Übertragungs-Pattern: Präzision vs. Vereinfachung**
+
+### **Problem identifiziert:**
+- **Schlampige Übertragung:** AI-Assistent vereinfacht zu stark und verliert Details
+- **Verlust von Spezifität:** Exakte Formulierungen und Unterpunkte gehen verloren
+- **Unvollständige Migration:** Todos werden nicht präzise von einem Tag zum anderen übertragen
+
+### **Chat-First-Features erkannt:**
+- **Präzise Todo-Übertragung:** Exakte Formulierungen beibehalten
+- **Detail-Erhaltung:** Alle Unterpunkte und Spezifikationen übertragen
+- **Vereinfachung mit Referenz:** Kurze Version + Link zu detaillierten Todos
+- **Strukturierte Migration:** Systematische Verschiebung von Todos zwischen Tagen
+
+### **Tool-Requirements:**
+- **Todo-Migration-Tool:** Präzise Übertragung ohne Detailverlust
+- **Referenz-System:** Links zwischen vereinfachten und detaillierten Versionen
+- **Validierung:** Überprüfung auf Vollständigkeit der Übertragung
+
+### **User-Feedback-Loop:**
+- **Korrektur-Pattern:** User korrigiert schlampige Übertragungen
+- **Präzisions-Feedback:** Spezifische Anforderungen an Detailgenauigkeit
+- **Strukturierungs-Feedback:** Wünsche nach besserer Organisation
+
+
+---
+
+## 🚀 **Startup-Sequenz-Pattern: Strukturierte Tagesplanung**
+
+### **Pattern erkannt:**
+- **Phase-basierte Struktur:** Morgensetup → MUST HAVE → Weitere Todos
+- **Prioritäts-Reihenfolge:** Persönliche Todos zuerst, dann Business
+- **Detail-Erhaltung:** Alle Unterpunkte präzise übertragen
+- **Duplikat-Vermeidung:** Saubere Struktur ohne Wiederholungen
+
+### **Chat-First-Features:**
+- **Startup-Sequenz-Generator:** Automatische Erstellung strukturierter Tagespläne
+- **Prioritäts-Assistent:** Intelligente Reihenfolge basierend auf Kontext
+- **Duplikat-Detektor:** Automatische Erkennung und Entfernung von Wiederholungen
+- **Phase-Manager:** Strukturierung in logische Arbeitsphasen
+
+### **Mistral-Training-Potential:**
+- **Startup-Sequenz-Recommendations:** Mistral schlägt strukturierte Tagespläne vor
+- **Prioritäts-Optimierung:** Mistral lernt persönliche Prioritäts-Präferenzen
+- **Pattern-Recognition:** Mistral erkennt wiederkehrende Startup-Patterns
+- **Adaptive Strukturierung:** Mistral passt Phasen an Kontext an
+
+### **Implementierung:**
+- **Recommendation-Modus:** Mistral schlägt Startup-Sequenzen vor
+- **Learning-Loop:** Mistral lernt aus User-Feedback und -Anpassungen
+- **Template-System:** Wiederverwendbare Startup-Sequenz-Templates
+- **Context-Awareness:** Mistral berücksichtigt Tageskontext (Wochentag, Termine, etc.)

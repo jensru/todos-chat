@@ -2,48 +2,35 @@
 
 ## 📅 **Diese Woche (22. September - 28. September 2025)**
 
-## 🌅 **Startroutine Donnerstag, 25. September**
-
-### **Phase 3: Tagesplanung**
-  - [ ] Block 2 (Mittag): **WIESN mit Kollegen** 🍺
-  - [ ] Block 3 (Nachmittag): 
-      - [ ] **PUSH Content**: 
-        - [ ] Werden die Breakout Sessions geteiltan Paola?
-        - [ ] letzten Präse Steps inhaltlich
-        - [ ] prompting artefakt durchlauf
-        - [ ] Handout Perfect
-        - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
-      - [ ] **Linkend In Post** "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
-
----
-
 
 
 ### **Freitag, 26. September**
-- [ ] **Pricing-Strategie entwickeln** (von Donnerstag verschoben):
-  - Tools pricing
-  - Workshops, webinar cohorten pricing
-  - Newsletter pricing
-- [ ] **Leadmagneten und Funnels** - Funnel-System aufbauen (von Donnerstag verschoben)
-- [ ] **Analyse Anna Workshops** - [https://maven.com/xinran/ai-for-product-designers](https://maven.com/xinran/ai-for-product-designers) (von Donnerstag verschoben)
-- [ ] **Paid Newsletter** - Back to terminal, Business Ideen mit AI, Chat first my own live (von Donnerstag verschoben)
-- [ ] **Pay me as Spezialist** - UX, AI interfaces, Luke Wroblowski (von Donnerstag verschoben)
-- [ ] **Tools schneller** - Aus Marketing Business machen (von Donnerstag verschoben)
-- [ ] **Post dass ich bei der Push bin** (von Donnerstag verschoben)
-- [ ] **Post über Angebote** (von Donnerstag verschoben)
-- [ ] **Kappa Post !!!!** - Kappa-spezifischer Content (von Donnerstag verschoben)
-- [ ] 3-Angebots-Kacheln ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)
-- [ ] drei starkes Kunden-Zitat mit Bild und kurzem Case? (von Donnerstag verschoben)
-  - lea
-  - SAP Typ
-  - Tem Manager App Typ
-- [ ] Linkedin Funnel, Landingpages Newsletter (von Donnerstag verschoben)
+
+
+### **Phase 1: Morgensetup**
+- [ ] Geschenksteffen Hugendubel oder Avocadostore Gutschein
+- [ ] **Tagesplanung** - Prioritäten für heute definieren
+- [ ] **E-Mails checken** - Wichtige Nachrichten beantworten
+- [ ] **LinkedIn Nachrichten** - Business-Kontakte pflegen
+
+### **Phase 2: MUST HAVE (Priorität 1)**
+- [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
+  - [ ] Werden die Breakout Sessions geteiltan Paola?
+  - [ ] letzten Präse Steps inhaltlich
+  - [ ] prompting artefakt durchlauf
+  - [ ] Handout Perfect
+  - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
+- [ ] **🔥 Push Post ist musthave** - LinkedIn Post veröffentlichen: "I'm back at preparing my breakout session for PUSH..."
+  - [ ] **Linkend In Post** "I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned."
+  
+### **Phase 3: Weitere Todos**
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
 - [ ] Alle Leute hallo mit lead funnels strategie
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
 
+
+
 ### **Samstag, 27. September**  
-- [ ] Geschenksteffen (falls nicht erledigt) 
  - [ ] Geschenke LP (falls nicht erledigt)
 - [ ] **Schimmel** - Schimmel-Problem angehen
 - [ ] **Anneso Lampedisch ding** - Anneso Lampedisch Angelegenheit
@@ -58,6 +45,25 @@
 ---
 
 ## 📅 **Sprint-Planung: Oktober 2025**
+
+### **Montag, 30. September - Payment Produkte & Pricing**
+- [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten "folder"** - Separater Tab/Folder für Payment-Produkte
+- [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
+  - Tools pricing
+  - Workshops, webinar cohorten pricing
+  - Newsletter pricing
+  - Analyse Anna Workshops
+  - Post dass ich bei der Push bin
+  - Post über Angebote
+  - Kappa Post
+  - Linkedin Funnel, Landingpages Newsletter
+- [ ] **3-Angebots-Kacheln** ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)
+- [ ] **drei starkes Kunden-Zitat mit Bild und kurzem Case?** (von Donnerstag verschoben)
+  - lea
+  - SAP Typ
+  - Tem Manager App Typ
+
+### **Oktober 2025 - Weitere Todos**
   - [ ] 0/4 werk1
   - [ ] Restanspruch ALG herausfinden, dann Dez/Jan Antrag schreiben/stellen
 - [ ] **Cohorten Workshops nach Push** - Workshop-Format entwickeln (von Donnerstag verschoben)
@@ -141,7 +147,6 @@
 - [ ] Echte Nutzerinterviews mit Maryam, Angemeldeten, Zielgruppe
 - [ ] Wiederverwenden-Interviews und Value Proposition
 - [ ] Umfragen zu Wiederverwendung
-- [ ] Maryam
 - [ ] Alle Angemeldeten
 - [ ] Potentielle Zielgruppe aber nicht angemeldet
 
