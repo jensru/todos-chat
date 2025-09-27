@@ -3,11 +3,10 @@
 ## 📅 **TIMELINE: Oktober - Dezember 2025**
 
 
-### **📅 WOCHE 1: 30. September - 6. Oktober 2025**
-- [ ]Andreas nicht Montag besuchen in dieser Woche
-#### **Montag, 30. September**
+### **📅 29. September 2025**
+- [ ] Andreas nicht Montag besuchen in dieser Woche
 - [ ] **📅 Monatssequenz** - Oktober-Planung und Ziele definieren
-- [ ] **📊 Wochensequenz** - Woche 1 (30.09-06.10) strukturieren
+- [ ] **📊 Wochensequenz** - Erste Oktoberwoche strukturieren
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
   - [/] prompting artefakt durchlauf
   - [ ] Handout Perfect
@@ -24,7 +23,7 @@
 - [ ] Christophs Bitcoin Design Team Kollege
 - [ ] 0/4 werk1
 
-#### **Dienstag, 1. Oktober**
+#### **Mittwoch, 1. Oktober**
 - [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`
 - [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
   - Tools pricing
@@ -76,7 +75,7 @@
 - [ ] Miete erhöhen
 
 
-### **📅 WOCHE 2: 7. - 13. Oktober 2025**
+### **📅 WOCHE: 7. - 13. Oktober 2025**
 
 #### **Mittwoch, 9. Oktober**
 - [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
@@ -84,14 +83,14 @@
 #### **Donnerstag, 10. Oktober**
 - [ ] **10.10. um 10:30 Uhr Lungenarzttermin**
 
-#### **Woche 2 - Tool-Core Fortsetzung**
+#### **Woche - Tool-Core Fortsetzung**
 - [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
 - [ ] **built your own app with a running agent course!**
 
-### **📅 WOCHE 3: 14. - 20. Oktober 2025**
+### **📅 WOCHE: 14. - 20. Oktober 2025**
 
-#### **Woche 3 - Business Foundation**
+#### **Woche - Business Foundation**
 - [ ] **Cohorten Workshops nach Push** - Workshop-Format entwickeln (von Donnerstag verschoben)
 - [ ] **Webinare als Leads** - Lead-Generierung für Cohorten (von Donnerstag verschoben)
 - [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben)
@@ -114,9 +113,9 @@
 - [ ] Newsletter Strategie
 - [ ] Tools Signup
 
-### **📅 WOCHE 4: 21. - 27. Oktober 2025**
+### **📅 WOCHE: 21. - 27. Oktober 2025**
 
-#### **Woche 4 - Community & Content**
+#### **Woche - Community & Content**
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
 - [ ] Basic eigenes CRM Verfolgung
 - [ ] Ich brauche einen Funnel immer beim Kontaktieren
@@ -129,9 +128,9 @@
 - [ ] Letzte Woche Kommentare
 - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools!
 
-### **📅 WOCHE 5: 28. Oktober - 3. November 2025**
+### **📅 WOCHE: 28. Oktober - 3. November 2025**
 
-#### **Woche 5 - Oktober-Abschluss & November-Vorbereitung**
+#### **Woche - Oktober-Abschluss & November-Vorbereitung**
 - [ ] Zahnärztin, bekomme ich noch die E-Mails?
 - [ ] **Booklist, BUT how to UI the Bookapp for my local Book App!**
 

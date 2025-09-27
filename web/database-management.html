@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datenbank-Management Dashboard</title>
+    <style>
+        /* Import Google Sans */
+        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
+        
+        /* CSS Custom Properties - Google Material 3 Design System */
+        :root {
+            --primary-50: #e8f0fe;
+            --primary-500: #0B57D0;
+            --primary-600: #0a4bb8;
+            --primary-700: #0847a6;
+            --neutral-50: #f8f9fa;
+            --neutral-100: #f1f3f4;
+            --neutral-200: #e8eaed;
+            --neutral-300: #dadce0;
+            --neutral-400: #bdc1c6;
+            --neutral-500: #9aa0a6;
+            --neutral-600: #80868b;
+            --neutral-700: #5f6368;
+            --neutral-800: #3c4043;
+            --neutral-900: #1f1f1f;
+            --success-500: #137333;
+            --warning-500: #ea8600;
+            --error-500: #d93025;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e8f0fe;
+            --text-primary: #1f1f1f;
+            --text-secondary: #444746;
+            --text-tertiary: #747775;
+            --text-disabled: #9aa0a6;
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: var(--space-6);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            min-height: 100vh;
+            color: #4a4a4a;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .header h1 {
+            color: var(--text-primary);
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: var(--space-4);
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            color: var(--text-tertiary);
+            font-size: 16px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--neutral-200);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .card h3 {
+            color: var(--text-primary);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--space-3);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-500);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        
+        .button {
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+            color: white;
+            border: none;
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: var(--space-2);
+        }
+        
+        .button:hover {
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        
+        .button.secondary {
+            background: var(--neutral-200);
+            color: var(--text-primary);
+        }
+        
+        .button.secondary:hover {
+            background: var(--neutral-300);
+        }
+        
+        .button.success {
+            background: var(--success-500);
+        }
+        
+        .button.warning {
+            background: var(--warning-500);
+        }
+        
+        .button.error {
+            background: var(--error-500);
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: var(--space-2);
+        }
+        
+        .status-online {
+            background: var(--success-500);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-offline {
+            background: var(--error-500);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .log-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: var(--space-3);
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+        }
+        
+        .log-entry {
+            margin-bottom: var(--space-1);
+            padding: var(--space-1);
+            border-radius: var(--radius-sm);
+        }
+        
+        .log-success {
+            background: #e8f5e8;
+            color: var(--success-500);
+        }
+        
+        .log-error {
+            background: #ffebee;
+            color: var(--error-500);
+        }
+        
+        .log-info {
+            background: var(--bg-tertiary);
+            color: var(--primary-500);
+        }
+        
+        .sync-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: var(--space-8);
+            color: var(--text-tertiary);
+        }
+        
+        .error {
+            background: #ffebee;
+            color: var(--error-500);
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--error-500);
+            margin: var(--space-4) 0;
+        }
+        
+        .success {
+            background: #e8f5e8;
+            color: var(--success-500);
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--success-500);
+            margin: var(--space-4) 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗄️ Datenbank-Management Dashboard</h1>
+            <p>Verwalten Sie Ihre lokale JSON-Datenbank und synchronisieren Sie mit Markdown-Dateien</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <!-- Status Card -->
+            <div class="card">
+                <h3>
+                    <span class="status-indicator" id="status-indicator"></span>
+                    System-Status
+                </h3>
+                <div id="system-status">
+                    <div class="loading">🔄 Lade Status...</div>
+                </div>
+            </div>
+            
+            <!-- Statistiken Card -->
+            <div class="card">
+                <h3>📊 Datenbank-Statistiken</h3>
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-tasks">-</div>
+                        <div class="stat-label">Gesamt Tasks</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="pending-tasks">-</div>
+                        <div class="stat-label">Offen</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="completed-tasks">-</div>
+                        <div class="stat-label">Erledigt</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="high-priority">-</div>
+                        <div class="stat-label">Hoch</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sync Controls Card -->
+            <div class="card">
+                <h3>🔄 Synchronisation</h3>
+                <div class="sync-controls">
+                    <button class="button success" onclick="syncMarkdownToJson()">
+                        📝 → 📊 Markdown zu JSON
+                    </button>
+                    <button class="button warning" onclick="syncJsonToMarkdown()">
+                        📊 → 📝 JSON zu Markdown
+                    </button>
+                    <button class="button" onclick="bidirectionalSync()">
+                        ↔️ Bidirektionale Sync
+                    </button>
+                    <button class="button secondary" onclick="refreshData()">
+                        🔄 Aktualisieren
+                    </button>
+                </div>
+                <div id="sync-status"></div>
+            </div>
+            
+            <!-- Logs Card -->
+            <div class="card">
+                <h3>📋 Sync-Logs</h3>
+                <div class="log-container" id="log-container">
+                    <div class="loading">🔄 Lade Logs...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="card">
+            <h3>⚡ Schnellaktionen</h3>
+            <div class="sync-controls">
+                <button class="button" onclick="startAutoSync()">
+                    ▶️ Auto-Sync starten
+                </button>
+                <button class="button secondary" onclick="stopAutoSync()">
+                    ⏹️ Auto-Sync stoppen
+                </button>
+                <button class="button" onclick="openMainDashboard()">
+                    🌐 Haupt-Dashboard öffnen
+                </button>
+                <button class="button secondary" onclick="exportData()">
+                    📤 Daten exportieren
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001/api';
+        
+        // Lade initiale Daten
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshData();
+            checkHealth();
+            loadLogs();
+            
+            // Auto-refresh alle 30 Sekunden
+            setInterval(refreshData, 30000);
+        });
+        
+        // Health Check
+        async function checkHealth() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                const statusIndicator = document.getElementById('status-indicator');
+                const systemStatus = document.getElementById('system-status');
+                
+                if (data.status === 'ok') {
+                    statusIndicator.className = 'status-indicator status-online';
+                    systemStatus.innerHTML = `
+                        <div class="success">
+                            ✅ API online<br>
+                            <small>Letzter Check: ${new Date().toLocaleTimeString('de-DE')}</small>
+                        </div>
+                    `;
+                } else {
+                    statusIndicator.className = 'status-indicator status-offline';
+                    systemStatus.innerHTML = `
+                        <div class="error">
+                            ❌ API offline<br>
+                            <small>Letzter Check: ${new Date().toLocaleTimeString('de-DE')}</small>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                const statusIndicator = document.getElementById('status-indicator');
+                const systemStatus = document.getElementById('system-status');
+                
+                statusIndicator.className = 'status-indicator status-offline';
+                systemStatus.innerHTML = `
+                    <div class="error">
+                        ❌ Verbindungsfehler<br>
+                        <small>${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+        
+        // Lade Statistiken
+        async function refreshData() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const stats = data.data;
+                    
+                    document.getElementById('total-tasks').textContent = stats.total_tasks;
+                    document.getElementById('pending-tasks').textContent = stats.pending_tasks;
+                    document.getElementById('completed-tasks').textContent = stats.completed_tasks;
+                    document.getElementById('high-priority').textContent = stats.high_priority;
+                }
+            } catch (error) {
+                console.error('Fehler beim Laden der Statistiken:', error);
+            }
+        }
+        
+        // Lade Logs
+        async function loadLogs() {
+            try {
+                const response = await fetch(`${API_BASE}/logs`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const logs = data.data.recent_syncs || [];
+                    const logContainer = document.getElementById('log-container');
+                    
+                    if (logs.length === 0) {
+                        logContainer.innerHTML = '<div class="log-entry log-info">Keine Logs verfügbar</div>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    logs.forEach(log => {
+                        const time = new Date(log.timestamp).toLocaleTimeString('de-DE');
+                        const status = log.status === 'success' ? 'log-success' : 'log-error';
+                        const icon = log.status === 'success' ? '✅' : '❌';
+                        
+                        html += `
+                            <div class="log-entry ${status}">
+                                ${icon} ${time} - ${log.file || 'Unbekannt'}
+                                ${log.error ? `<br><small>${log.error}</small>` : ''}
+                            </div>
+                        `;
+                    });
+                    
+                    logContainer.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Fehler beim Laden der Logs:', error);
+            }
+        }
+        
+        // Sync-Funktionen
+        async function syncMarkdownToJson() {
+            showSyncStatus('🔄 Synchronisiere Markdown zu JSON...', 'info');
+            
+            try {
+                const response = await fetch(`${API_BASE}/sync/markdown-to-json`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        markdownPath: './core/Dashboard - Strukturierte To-do-Übersicht.md'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSyncStatus('✅ Markdown zu JSON synchronisiert!', 'success');
+                    refreshData();
+                    loadLogs();
+                } else {
+                    showSyncStatus(`❌ Fehler: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showSyncStatus(`❌ Verbindungsfehler: ${error.message}`, 'error');
+            }
+        }
+        
+        async function syncJsonToMarkdown() {
+            showSyncStatus('🔄 Synchronisiere JSON zu Markdown...', 'info');
+            
+            try {
+                const response = await fetch(`${API_BASE}/sync/json-to-markdown`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jsonPath: './data/tasks.json',
+                        markdownPath: './core/Dashboard - Strukturierte To-do-Übersicht.md'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSyncStatus('✅ JSON zu Markdown synchronisiert!', 'success');
+                    refreshData();
+                    loadLogs();
+                } else {
+                    showSyncStatus(`❌ Fehler: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showSyncStatus(`❌ Verbindungsfehler: ${error.message}`, 'error');
+            }
+        }
+        
+        async function bidirectionalSync() {
+            showSyncStatus('🔄 Führe bidirektionale Synchronisation durch...', 'info');
+            
+            try {
+                const response = await fetch(`${API_BASE}/sync/bidirectional`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        markdownPath: './core/Dashboard - Strukturierte To-do-Übersicht.md',
+                        jsonPath: './data/tasks.json'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSyncStatus('✅ Bidirektionale Synchronisation abgeschlossen!', 'success');
+                    refreshData();
+                    loadLogs();
+                } else {
+                    showSyncStatus(`❌ Fehler: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showSyncStatus(`❌ Verbindungsfehler: ${error.message}`, 'error');
+            }
+        }
+        
+        // Utility-Funktionen
+        function showSyncStatus(message, type) {
+            const statusDiv = document.getElementById('sync-status');
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : 'log-info';
+            
+            statusDiv.innerHTML = `<div class="${className}">${message}</div>`;
+            
+            // Nach 5 Sekunden ausblenden
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 5000);
+        }
+        
+        function openMainDashboard() {
+            window.open('./index.html', '_blank');
+        }
+        
+        function exportData() {
+            // Einfacher Export - öffnet die JSON-Datei
+            window.open('./data/tasks.json', '_blank');
+        }
+        
+        function startAutoSync() {
+            showSyncStatus('🔄 Starte Auto-Sync Service...', 'info');
+            // Hier würde der Auto-Sync Service gestartet werden
+            // In einer echten Implementierung würde das über die API erfolgen
+        }
+        
+        function stopAutoSync() {
+            showSyncStatus('⏹️ Stoppe Auto-Sync Service...', 'info');
+            // Hier würde der Auto-Sync Service gestoppt werden
+        }
+    </script>
+</body>
+</html>

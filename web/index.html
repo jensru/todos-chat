@@ -123,65 +123,6 @@
             box-shadow: var(--shadow-md);
         }
         
-        .sidebar h1 {
-            font-size: 24px;
-            margin-bottom: var(--space-4);
-            border-bottom: 2px solid var(--primary-500);
-            padding-bottom: var(--space-3);
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        .sidebar h2 {
-            font-size: 20px;
-            margin-top: var(--space-6);
-            margin-bottom: var(--space-3);
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-        
-        .sidebar h3 {
-            font-size: 16px;
-            margin-top: var(--space-4);
-            margin-bottom: var(--space-2);
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        .sidebar p, .sidebar li {
-            font-size: 13px;
-            line-height: 18px;
-            color: var(--text-tertiary);
-        }
-        
-        .agent-section {
-            margin-top: var(--space-8);
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-lg);
-            padding: var(--space-5);
-            border: 1px solid var(--primary-500);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-        }
-        
-        .agent-section:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-1px);
-        }
-        
-        .agent-section h3 {
-            color: var(--primary-500);
-            font-size: 16px;
-            margin-bottom: var(--space-3);
-            font-weight: 600;
-        }
-        
-        .agent-section p, .agent-section li {
-            font-size: 12px;
-            line-height: 16px;
-            color: var(--text-secondary);
-        }
-        
         h1 { 
             color: var(--text-primary); 
             border-bottom: 2px solid var(--primary-500); 
@@ -217,204 +158,120 @@
             font-weight: normal;
         }
         
-        .checkbox { 
-            margin: var(--space-4) 0; 
-            display: flex;
-            align-items: flex-start;
-            padding: var(--space-2);
+        .task-item {
+            margin: var(--space-4) 0;
+            padding: var(--space-3);
             border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary-500);
+            background: var(--bg-primary);
+            box-shadow: var(--shadow-sm);
             transition: all 0.2s ease;
-            list-style: none;
         }
         
-        .checkbox:hover {
-            background: var(--neutral-50);
+        .task-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(4px);
         }
         
-        .checkbox input[type="checkbox"] { 
-            margin-right: var(--space-3); 
-            margin-top: 2px;
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary-500);
-            border-radius: var(--radius-sm);
-            flex-shrink: 0;
+        .task-item.high-priority {
+            border-left-color: var(--error-500);
+            background: linear-gradient(90deg, #ffebee 0%, var(--bg-primary) 100%);
         }
         
-        .checkbox label { 
-            cursor: pointer; 
-            font-size: 16px;
-            line-height: 1.8;
-            color: #4a4a4a;
-            transition: all 0.2s ease;
-            list-style: none;
-            font-weight: normal;
+        .task-item.medium-priority {
+            border-left-color: var(--warning-500);
+            background: linear-gradient(90deg, #fff3e0 0%, var(--bg-primary) 100%);
         }
         
-        .checkbox input[type="checkbox"]:checked + label { 
-            text-decoration: line-through; 
-            opacity: 0.6; 
+        .task-item.low-priority {
+            border-left-color: var(--success-500);
+            background: linear-gradient(90deg, #e8f5e8 0%, var(--bg-primary) 100%);
+        }
+        
+        .task-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .task-description {
+            color: var(--text-tertiary);
+            font-size: 14px;
+            margin-bottom: var(--space-2);
+        }
+        
+        .task-meta {
+            display: flex;
+            gap: var(--space-3);
+            font-size: 12px;
             color: var(--text-disabled);
         }
         
-        blockquote { 
-            border-left: 4px solid var(--primary-500); 
-            padding-left: var(--space-5); 
-            margin: var(--space-6) 0; 
-            font-style: italic; 
-            color: var(--text-tertiary);
-            font-size: 14px;
-            line-height: 20px;
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
-            padding: var(--space-4) var(--space-5);
+        .task-tags {
+            display: flex;
+            gap: var(--space-1);
+            margin-top: var(--space-2);
         }
         
-        code { 
-            background: var(--bg-secondary); 
-            padding: var(--space-1) var(--space-2); 
-            border-radius: var(--radius-sm); 
-            font-family: 'Monaco', 'Consolas', monospace; 
-            color: var(--text-primary);
-            border: 1px solid var(--neutral-200);
-        }
-        
-        pre { 
-            background: var(--bg-secondary); 
-            padding: var(--space-4); 
-            border-radius: var(--radius-lg); 
-            overflow-x: auto; 
-            border: 1px solid var(--neutral-200);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        table { 
-            border-collapse: collapse; 
-            width: 100%; 
-            margin: var(--space-6) 0; 
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        th, td { 
-            border: 1px solid var(--neutral-200); 
-            padding: var(--space-4); 
-            text-align: left; 
-            font-size: 14px;
-            line-height: 20px;
-        }
-        
-        th { 
-            background-color: var(--bg-secondary); 
-            font-weight: 500; 
-            color: var(--text-primary);
-        }
-        
-        td {
-            color: var(--text-tertiary);
-        }
-        
-        hr { 
-            border: none; 
-            border-top: 1px solid var(--neutral-200); 
-            margin: var(--space-8) 0; 
-        }
-        
-        .emoji { font-size: 1.2em; }
-        
-        /* Remove bulletpoints from checkbox lists */
-        .checkbox {
-            list-style: none !important;
-        }
-        
-        .checkbox::before {
-            display: none !important;
-        }
-        
-        /* Ensure no bulletpoints appear */
-        ul li.checkbox {
-            list-style: none !important;
-        }
-        
-        ul li.checkbox::marker {
-            display: none !important;
-        }
-        
-        /* Remove all list markers from checkbox items */
-        li.checkbox {
-            list-style-type: none !important;
-        }
-        
-        li.checkbox::before {
-            content: none !important;
-        }
-        
-        /* Global removal of bulletpoints for checkbox lists */
-        ul li.checkbox,
-        ol li.checkbox {
-            list-style: none !important;
-            list-style-type: none !important;
-        }
-        
-        /* Remove bulletpoints from ALL list items with checkboxes */
-        ul li:has(input[type="checkbox"]),
-        ol li:has(input[type="checkbox"]) {
-            list-style: none !important;
-            list-style-type: none !important;
-        }
-        
-        /* Fallback for browsers that don't support :has() */
-        ul li,
-        ol li {
-            list-style: none;
-        }
-        
-        /* Only show bulletpoints for list items WITHOUT checkboxes */
-        ul li:not(:has(input[type="checkbox"])),
-        ol li:not(:has(input[type="checkbox"])) {
-            list-style: disc;
-        }
-        
-        /* CTA Button Style */
-        .cta-button {
-            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
-            color: #FFFFFF;
-            font-family: 'Google Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 18px;
-            padding: var(--space-3) var(--space-6);
-            border-radius: var(--radius-lg);
-            border: none;
-            cursor: pointer;
-            margin: var(--space-4) 0;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .cta-button:hover {
-            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-        
-        /* Emphasis text */
-        strong {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        /* Links */
-        a {
+        .tag {
+            background: var(--primary-50);
             color: var(--primary-500);
-            text-decoration: none;
-            transition: all 0.2s ease;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 500;
         }
         
-        a:hover {
-            text-decoration: underline;
-            color: var(--primary-600);
+        .db-stats {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            margin-bottom: var(--space-6);
+            border: 1px solid var(--primary-500);
+        }
+        
+        .db-stats h3 {
+            color: var(--primary-500);
+            margin-bottom: var(--space-3);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--space-3);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--space-2);
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-500);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: var(--space-8);
+            color: var(--text-tertiary);
+        }
+        
+        .error {
+            background: #ffebee;
+            color: var(--error-500);
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--error-500);
+            margin: var(--space-4) 0;
         }
         
         /* Responsive Design */
@@ -442,92 +299,187 @@
                 padding: var(--space-4);
             }
         }
-        
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .main-content {
-                flex: 0 0 65%;
-            }
-            
-            .sidebar {
-                flex: 0 0 35%;
-            }
-        }
-        
-        @media (min-width: 1025px) {
-            .main-content {
-                flex: 0 0 70%;
-            }
-            
-            .sidebar {
-                flex: 0 0 30%;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="main-container">
         <div class="main-content">
-            <div id="content"></div>
+            <h1>🎯 Dashboard - Strukturierte To-do-Übersicht</h1>
+            
+            <div class="db-stats">
+                <h3>📊 Datenbank-Statistiken</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-tasks">-</div>
+                        <div class="stat-label">Gesamt Tasks</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="pending-tasks">-</div>
+                        <div class="stat-label">Offen</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="completed-tasks">-</div>
+                        <div class="stat-label">Erledigt</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="high-priority">-</div>
+                        <div class="stat-label">Hoch</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tasks-container">
+                <div class="loading">🔄 Lade Tasks aus der Datenbank...</div>
+            </div>
         </div>
+        
         <div class="sidebar">
-            <div id="sidebar-content"></div>
+            <h1>🎯 Ziele & Fokus</h1>
+            
+            <h2>==Ziele==</h2>
+            <p><strong>Geld!</strong></p>
+            
+            <hr>
+            
+            <h2>🚀 FOKUS: Tool-First Strategie</h2>
+            <p><strong>Regel:</strong> Alles was ich mach als Tools Chatfirst so bauen, dass es <em>dich selbst</em> ersetzt in deinem Workflow</p>
+            
+            <p><strong>Irgendwann und vielleicht schon bald:</strong> Pivot? Zielgruppen switch (Entscheidung)</p>
+            
+            <hr>
+            
+            <h2>🎯 Erfolgskriterien Q4 2025</h2>
+            <ul>
+                <li><strong>Tool:</strong> Du nutzt es zur täglichen Kundenarbeit</li>
+                <li><strong>Marketing:</strong> Komplettes ausschlachten der PUSH Session</li>
+                <li><strong>Community:</strong> Etablierte Präsenz in relevanten Communities</li>
+                <li><strong>Health:</strong> Alle Termine erledigt, TÜV gemacht</li>
+            </ul>
+            
+            <div class="db-stats">
+                <h3>🗄️ Datenbank-Info</h3>
+                <p>Diese Seite lädt Daten aus der lokalen JSON-Datenbank, die automatisch aus dem Markdown-Dashboard generiert wird.</p>
+                <p><strong>Single Source of Truth:</strong> Markdown-Dateien</p>
+                <p><strong>Strukturierte Daten:</strong> JSON-Datenbank</p>
+            </div>
         </div>
     </div>
 
     <script>
-        // Sidebar Markdown Content
-        const sidebarContent = `$SIDEBAR_CONTENT`;
-
-               // Keine Agenten mehr
-               let agentContent = '';
-
-        // Dashboard Markdown Content
-        const markdownContent = `$DASHBOARD_CONTENT`;
-
-        // Configure marked options
-        marked.setOptions({
-            breaks: true,
-            gfm: true
-        });
-
-        // Convert markdown to HTML
-        const htmlContent = marked.parse(markdownContent);
-        const sidebarHtmlContent = marked.parse(sidebarContent);
-        
-        // Insert into page
-        document.getElementById('content').innerHTML = htmlContent;
-        document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
-        
-        // Füge heutige Task-Historie hinzu
-        const todayHistoryHtml = `$TODAY_HISTORY_HTML`;
-        if (todayHistoryHtml) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML += todayHistoryHtml;
-        }
-        
-        // Füge Tagesziele-Fortschritt hinzu
-        const dailyProgressHtml = `$DAILY_PROGRESS_HTML`;
-        if (dailyProgressHtml) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML += dailyProgressHtml;
-        }
-
-        // Add interactive checkboxes
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                // Load saved state
-                const savedState = localStorage.getItem('checkbox_' + checkbox.parentNode.textContent.trim());
-                if (savedState === 'true') {
-                    checkbox.checked = true;
+        // Lade Tasks aus der JSON-Datenbank
+        async function loadTasks() {
+            try {
+                const response = await fetch('./data/tasks.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                const data = await response.json();
+                const tasks = data.tasks || [];
                 
-                // Save state on change
-                checkbox.addEventListener('change', function() {
-                    localStorage.setItem('checkbox_' + this.parentNode.textContent.trim(), this.checked);
+                // Statistiken aktualisieren
+                updateStats(tasks);
+                
+                // Tasks anzeigen
+                displayTasks(tasks);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Tasks:', error);
+                document.getElementById('tasks-container').innerHTML = 
+                    `<div class="error">❌ Fehler beim Laden der Datenbank: ${error.message}</div>`;
+            }
+        }
+        
+        function updateStats(tasks) {
+            const total = tasks.length;
+            const pending = tasks.filter(t => t.status === 'pending').length;
+            const completed = tasks.filter(t => t.status === 'completed').length;
+            const highPriority = tasks.filter(t => t.priority === 'high').length;
+            
+            document.getElementById('total-tasks').textContent = total;
+            document.getElementById('pending-tasks').textContent = pending;
+            document.getElementById('completed-tasks').textContent = completed;
+            document.getElementById('high-priority').textContent = highPriority;
+        }
+        
+        function displayTasks(tasks) {
+            const container = document.getElementById('tasks-container');
+            
+            if (tasks.length === 0) {
+                container.innerHTML = '<div class="loading">📝 Keine Tasks gefunden</div>';
+                return;
+            }
+            
+            // Gruppiere Tasks nach Datum
+            const tasksByDate = {};
+            tasks.forEach(task => {
+                const date = task.date || 'Unbekannt';
+                if (!tasksByDate[date]) {
+                    tasksByDate[date] = [];
+                }
+                tasksByDate[date].push(task);
+            });
+            
+            let html = '';
+            
+            // Sortiere Daten
+            const sortedDates = Object.keys(tasksByDate).sort();
+            
+            sortedDates.forEach(date => {
+                const dateTasks = tasksByDate[date];
+                const formattedDate = formatDate(date);
+                
+                html += `<h2>📅 ${formattedDate}</h2>`;
+                
+                dateTasks.forEach(task => {
+                    html += createTaskHTML(task);
                 });
             });
-        });
+            
+            container.innerHTML = html;
+        }
+        
+        function createTaskHTML(task) {
+            const priorityClass = `task-item ${task.priority}-priority`;
+            const statusIcon = task.status === 'completed' ? '✅' : '⏳';
+            const cleanTitle = task.title.replace(/\*\*/g, '').trim();
+            
+            let html = `
+                <div class="${priorityClass}">
+                    <div class="task-title">${statusIcon} ${cleanTitle}</div>
+                    ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
+                    <div class="task-meta">
+                        <span>📅 ${task.date || 'Unbekannt'}</span>
+                        <span>🎯 ${task.priority || 'medium'}</span>
+                        <span>📁 ${task.project || 'Unbekannt'}</span>
+                    </div>
+                    ${task.tags && task.tags.length > 0 ? `
+                        <div class="task-tags">
+                            ${task.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return html;
+        }
+        
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr === 'Unbekannt') return 'Unbekanntes Datum';
+            
+            const date = new Date(dateStr);
+            const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                           'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            
+            const dayName = days[date.getDay()];
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            
+            return `${dayName}, ${day}. ${month}`;
+        }
+        
+        // Lade Tasks beim Laden der Seite
+        document.addEventListener('DOMContentLoaded', loadTasks);
     </script>
 </body>
 </html>
