@@ -74,7 +74,7 @@ if [ -f "automation/daily-goals-manager.sh" ]; then
 fi
 
 # Erstelle komplett neue index.html mit modernem Design-System
-cat > web/index.html << 'EOF'
+cat > web/index.html << EOF
 <!DOCTYPE html>
 <html lang="de">
 <head>
