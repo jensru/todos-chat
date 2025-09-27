@@ -3,7 +3,6 @@
 Geld-Fokus:
 - Pricing-Ideen sammeln
 - Alle Payment-Produkte und printing ideen auf Montag in eigenen Tab/Folder
-- 0/4 werk1
 
 Tool-Fokus:
 - Tool-Entwicklung
@@ -18,9 +17,13 @@ Marketing-Fokus:
 
 Personal:
 - Andreas nicht Montag besuchen in dieser Woche
-- Monatssequenz: Oktober-Planung und Ziele definieren
-- Wochensequenz: Woche 1 (30.09-06.10) strukturieren
-- Alle Todos von Donnerstag verschieben (drei starke Kunden-Zitat mit Bild und kurzem Case, 3-Angebots-Kacheln)
-- Simons Kubica Follow-up (Woche 1): Feedback prüfen und Follow-up vorbereiten
+- Oktober-Planung und Ziele definieren
+- Woche 1 (30.09-06.10) strukturieren
+- Alle PUSH Content-Todos abschließen
+- Simón Kubica Follow-up (Woche 1): Feedback prüfen und Follow-up vorbereiten
 - Noch mehr rauskommen aus dem Haus planen
-- Dienstagmorgensequenz ausführen (Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`)
+- Christophs Bitcoin Design Team Kollege
+- 0/4 werk1
+- Morgensequenz mit Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`
+
+Die obigen Todos sind nach den angegebenen Kategorien gruppiert: Geld-Fokus, Tool-Fokus, Marketing-Fokus und Personal. Jeder Eintrag ist eine einzelne Aufgabe, die in die jeweilige Kategorie fällt.
