@@ -53,6 +53,9 @@ git commit -m "$COMMIT_MSG"
 # Website automatisch aktualisieren
 echo "🔄 Aktualisiere Website..."
 
+# Website automatisch aktualisieren - FUNKTIONIERENDE Methode
+echo "🔄 Aktualisiere Website automatisch..."
+
 # Dashboard-Inhalt lesen und für JavaScript escapen (NACH dem Commit, damit aktuelle Änderungen erfasst werden)
 echo "🔧 Escape Dashboard-Inhalt für JavaScript..."
 DASHBOARD_CONTENT=$(cat "core/Dashboard - Strukturierte To-do-Übersicht.md" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed "s/'/\\'/g" | sed 's/`/\\`/g' | sed 's/\$/\\$/g' | tr '\n' '|' | sed 's/|/\\n/g')
@@ -73,8 +76,10 @@ if [ -f "automation/daily-goals-manager.sh" ]; then
     DAILY_PROGRESS_HTML=$(./automation/daily-goals-manager.sh generate-html 2>/dev/null || echo "")
 fi
 
+# Keine Agenten mehr - einfache Version
+
 # Erstelle komplett neue index.html mit modernem Design-System
-cat > web/index.html << 'EOF'
+cat > web/index.html << EOF
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -202,341 +207,248 @@ cat > web/index.html << 'EOF'
         
         .sidebar h1 {
             font-size: 24px;
-            margin-bottom: var(--space-4);
-            border-bottom: 2px solid var(--primary-500);
-            padding-bottom: var(--space-3);
-            color: var(--text-primary);
-            font-weight: 600;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #0B57D0;
+            padding-bottom: 12px;
         }
         
         .sidebar h2 {
             font-size: 20px;
-            margin-top: var(--space-6);
-            margin-bottom: var(--space-3);
-            color: var(--text-primary);
-            font-weight: 500;
+            margin-top: 24px;
+            margin-bottom: 12px;
         }
         
         .sidebar h3 {
             font-size: 16px;
-            margin-top: var(--space-4);
-            margin-bottom: var(--space-2);
-            color: var(--text-secondary);
-            font-weight: 500;
+            margin-top: 16px;
+            margin-bottom: 8px;
         }
         
         .sidebar p, .sidebar li {
             font-size: 13px;
             line-height: 18px;
-            color: var(--text-tertiary);
         }
         
         .agent-section {
-            margin-top: var(--space-8);
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-lg);
-            padding: var(--space-5);
-            border: 1px solid var(--primary-500);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-        }
-        
-        .agent-section:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-1px);
+            margin-top: 32px;
+            background: #e8f0fe;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #0B57D0;
         }
         
         .agent-section h3 {
-            color: var(--primary-500);
+            color: #0B57D0;
             font-size: 16px;
-            margin-bottom: var(--space-3);
-            font-weight: 600;
+            margin-bottom: 12px;
         }
         
         .agent-section p, .agent-section li {
             font-size: 12px;
             line-height: 16px;
-            color: var(--text-secondary);
+            color: #444746;
         }
         
         h1 { 
-            color: var(--text-primary); 
-            border-bottom: 2px solid var(--primary-500); 
-            padding-bottom: var(--space-4); 
+            color: #1F1F1F; 
+            border-bottom: 2px solid #0B57D0; 
+            padding-bottom: 16px; 
             font-size: 32px;
-            font-weight: 600;
-            margin-bottom: var(--space-6);
-            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 500;
+            margin-bottom: 24px;
         }
         
         h2 { 
-            color: var(--text-primary); 
-            margin-top: var(--space-8); 
+            color: #1F1F1F; 
+            margin-top: 32px; 
             font-size: 24px;
             font-weight: 500;
             line-height: 32px;
         }
         
         h3 { 
-            color: var(--text-secondary); 
+            color: #444746; 
             font-size: 16px;
             font-weight: 500;
             line-height: 24px;
         }
         
         p, li {
-            color: #4a4a4a;
-            font-size: 16px;
-            line-height: 1.8;
-            font-weight: normal;
+            color: #1F1F1F;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
         }
         
         .checkbox { 
-            margin: var(--space-4) 0; 
+            margin: 12px 0; 
             display: flex;
-            align-items: flex-start;
-            padding: var(--space-2);
-            border-radius: var(--radius-md);
-            transition: all 0.2s ease;
-            list-style: none;
-        }
-        
-        .checkbox:hover {
-            background: var(--neutral-50);
+            align-items: center;
         }
         
         .checkbox input[type="checkbox"] { 
-            margin-right: var(--space-3); 
-            margin-top: 2px;
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary-500);
-            border-radius: var(--radius-sm);
-            flex-shrink: 0;
+            margin-right: 8px; 
+            width: 16px;
+            height: 16px;
+            accent-color: #0B57D0;
         }
         
         .checkbox label { 
             cursor: pointer; 
-            font-size: 16px;
-            line-height: 1.8;
-            color: #4a4a4a;
-            transition: all 0.2s ease;
-            list-style: none;
-            font-weight: normal;
+            font-size: 14px;
+            line-height: 20px;
+            color: #3C4043;
         }
         
         .checkbox input[type="checkbox"]:checked + label { 
             text-decoration: line-through; 
             opacity: 0.6; 
-            color: var(--text-disabled);
         }
         
         blockquote { 
-            border-left: 4px solid var(--primary-500); 
-            padding-left: var(--space-5); 
-            margin: var(--space-6) 0; 
+            border-left: 4px solid #0B57D0; 
+            padding-left: 20px; 
+            margin: 24px 0; 
             font-style: italic; 
-            color: var(--text-tertiary);
+            color: #747775;
             font-size: 14px;
             line-height: 20px;
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
-            padding: var(--space-4) var(--space-5);
         }
         
         code { 
-            background: var(--bg-secondary); 
-            padding: var(--space-1) var(--space-2); 
-            border-radius: var(--radius-sm); 
+            background: #f8f9fa; 
+            padding: 2px 6px; 
+            border-radius: 3px; 
             font-family: 'Monaco', 'Consolas', monospace; 
-            color: var(--text-primary);
-            border: 1px solid var(--neutral-200);
+            color: #1F1F1F;
         }
         
         pre { 
-            background: var(--bg-secondary); 
-            padding: var(--space-4); 
-            border-radius: var(--radius-lg); 
+            background: #f8f9fa; 
+            padding: 16px; 
+            border-radius: 12px; 
             overflow-x: auto; 
-            border: 1px solid var(--neutral-200);
-            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.12);
         }
         
         table { 
             border-collapse: collapse; 
             width: 100%; 
-            margin: var(--space-6) 0; 
-            border-radius: var(--radius-lg);
+            margin: 24px 0; 
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
         }
         
         th, td { 
-            border: 1px solid var(--neutral-200); 
-            padding: var(--space-4); 
+            border: 1px solid rgba(0,0,0,0.12); 
+            padding: 16px; 
             text-align: left; 
             font-size: 14px;
             line-height: 20px;
         }
         
         th { 
-            background-color: var(--bg-secondary); 
+            background-color: #f8f9fa; 
             font-weight: 500; 
-            color: var(--text-primary);
+            color: #1F1F1F;
         }
         
         td {
-            color: var(--text-tertiary);
+            color: #747775;
         }
         
         hr { 
             border: none; 
-            border-top: 1px solid var(--neutral-200); 
-            margin: var(--space-8) 0; 
+            border-top: 1px solid rgba(0,0,0,0.12); 
+            margin: 32px 0; 
         }
         
         .emoji { font-size: 1.2em; }
         
-        /* Remove bulletpoints from checkbox lists */
-        .checkbox {
-            list-style: none !important;
-        }
-        
-        .checkbox::before {
-            display: none !important;
-        }
-        
-        /* Ensure no bulletpoints appear */
-        ul li.checkbox {
-            list-style: none !important;
-        }
-        
-        ul li.checkbox::marker {
-            display: none !important;
-        }
-        
-        /* Remove all list markers from checkbox items */
-        li.checkbox {
-            list-style-type: none !important;
-        }
-        
-        li.checkbox::before {
-            content: none !important;
-        }
-        
-        /* Global removal of bulletpoints for checkbox lists */
-        ul li.checkbox,
-        ol li.checkbox {
-            list-style: none !important;
-            list-style-type: none !important;
-        }
-        
-        /* Remove bulletpoints from ALL list items with checkboxes */
-        ul li:has(input[type="checkbox"]),
-        ol li:has(input[type="checkbox"]) {
-            list-style: none !important;
-            list-style-type: none !important;
-        }
-        
-        /* Fallback for browsers that don't support :has() */
-        ul li,
-        ol li {
-            list-style: none;
-        }
-        
-        /* Only show bulletpoints for list items WITHOUT checkboxes */
-        ul li:not(:has(input[type="checkbox"])),
-        ol li:not(:has(input[type="checkbox"])) {
-            list-style: disc;
-        }
-        
         /* CTA Button Style */
         .cta-button {
-            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+            background-color: #0B57D0;
             color: #FFFFFF;
             font-family: 'Google Sans', sans-serif;
             font-size: 14px;
             font-weight: 500;
             line-height: 18px;
-            padding: var(--space-3) var(--space-6);
-            border-radius: var(--radius-lg);
+            padding: 12px 24px;
+            border-radius: 12px;
             border: none;
             cursor: pointer;
-            margin: var(--space-4) 0;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 16px 0;
         }
         
         .cta-button:hover {
-            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
+            background-color: #0a4bb8;
         }
         
         /* Emphasis text */
         strong {
-            color: var(--text-secondary);
+            color: #444746;
             font-weight: 500;
         }
         
         /* Links */
         a {
-            color: var(--primary-500);
+            color: #0B57D0;
             text-decoration: none;
-            transition: all 0.2s ease;
         }
         
         a:hover {
             text-decoration: underline;
-            color: var(--primary-600);
+        }
+        
+        /* Verbesserte Todo-Styles */
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        li {
+            margin: 8px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Prioritäts-Indikatoren */
+        .priority-high {
+            background: linear-gradient(90deg, #ffebee 0%, transparent 100%);
+            border-left: 4px solid #f44336;
+            padding-left: 12px;
+        }
+        
+        .priority-medium {
+            background: linear-gradient(90deg, #fff3e0 0%, transparent 100%);
+            border-left: 4px solid #ff9800;
+            padding-left: 12px;
+        }
+        
+        .priority-low {
+            background: linear-gradient(90deg, #e8f5e8 0%, transparent 100%);
+            border-left: 4px solid #4caf50;
+            padding-left: 12px;
         }
         
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
-                gap: var(--space-4);
-            }
-            
-            .main-content {
-                width: 100%;
-                order: 2;
-                padding: var(--space-4);
+                gap: 16px;
             }
             
             .sidebar {
-                width: 100%;
-                order: 1;
-                max-height: 200px;
-                overflow-y: auto;
-                padding: var(--space-4);
+                position: static;
+                max-height: none;
             }
             
             body {
-                padding: var(--space-4);
-            }
-        }
-        
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .main-content {
-                flex: 0 0 65%;
-            }
-            
-            .sidebar {
-                flex: 0 0 35%;
-            }
-        }
-        
-        @media (min-width: 1025px) {
-            .main-content {
-                flex: 0 0 70%;
-            }
-            
-            .sidebar {
-                flex: 0 0 30%;
+                padding: 16px;
             }
         }
     </style>
@@ -553,13 +465,13 @@ cat > web/index.html << 'EOF'
 
     <script>
         // Sidebar Markdown Content
-        const sidebarContent = `$SIDEBAR_CONTENT`;
+        const sidebarContent = \`$SIDEBAR_CONTENT\`;
 
                // Keine Agenten mehr
                let agentContent = '';
 
         // Dashboard Markdown Content
-        const markdownContent = `$DASHBOARD_CONTENT`;
+        const markdownContent = \`$DASHBOARD_CONTENT\`;
 
         // Configure marked options
         marked.setOptions({
@@ -576,14 +488,14 @@ cat > web/index.html << 'EOF'
         document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
         
         // Füge heutige Task-Historie hinzu
-        const todayHistoryHtml = `$TODAY_HISTORY_HTML`;
+        const todayHistoryHtml = \`$TODAY_HISTORY_HTML\`;
         if (todayHistoryHtml) {
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML += todayHistoryHtml;
         }
         
         // Füge Tagesziele-Fortschritt hinzu
-        const dailyProgressHtml = `$DAILY_PROGRESS_HTML`;
+        const dailyProgressHtml = \`$DAILY_PROGRESS_HTML\`;
         if (dailyProgressHtml) {
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML += dailyProgressHtml;
@@ -610,5 +522,5 @@ cat > web/index.html << 'EOF'
 </html>
 EOF
 
-echo "✅ Website mit modernem Design aktualisiert!"
+echo "✅ Website aktualisiert!"
 echo "🌐 Öffne web/index.html im Browser um die Änderungen zu sehen"

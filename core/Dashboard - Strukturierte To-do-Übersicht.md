@@ -1,50 +1,25 @@
 # 🎯 Dashboard - Strukturierte To-do-Übersicht
 
-## 📅 **Diese Woche (22. September - 28. September 2025)**
+## 📅 **TIMELINE: Oktober - Dezember 2025**
 
 
-
-### **Freitag, 26. September**
+### **📅 WOCHE 1: 30. September - 6. Oktober 2025**
+- [ ]Andreas nicht Montag besuchen in dieser Woche
+#### **Montag, 30. September**
+- [ ] **📅 Monatssequenz** - Oktober-Planung und Ziele definieren
+- [ ] **📊 Wochensequenz** - Woche 1 (30.09-06.10) strukturieren
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
-  - [ ] prompting artefakt durchlauf
+  - [/] prompting artefakt durchlauf
   - [ ] Handout Perfect
   - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
 - [ ] **🔥 Push Post ist musthave** - LinkedIn Post veröffentlichen: \"I'm back at preparing my breakout session for PUSH...\"
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
-
-
-
-
   
 ### **Phase 3: Weitere Todos**
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
 - [ ] Alle Leute hallo mit lead funnels strategie
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
 
-
-
-### **Samstag, 27. September**  
- - [ ] Geschenke LP (falls nicht erledigt)
-- [ ] **Schimmel** - Schimmel-Problem angehen
-- [ ] **Anneso Lampedisch ding** - Anneso Lampedisch Angelegenheit
-- [ ] **Büro aufräumen** - Arbeitsplatz organisieren
-- [ ] **Keller aufräumen** - Keller entrümpeln
-- [ ] **Steuer2024** - Steuererklärung 2024
-- [ ] **So wiesen** - So wiesen (was auch immer das ist)
-- [ ] **Klettrwald, Tauchen, superfly, therme Erding, bavaria, Berge** - Outdoor-Aktivitäten und Ausflüge planen
-- [ ] Miete erhöhen
-- [ ] Eltern fahren planen
-
----
-
-## 📅 **TIMELINE: Oktober - Dezember 2025**
-
-
-### **📅 WOCHE 1: 30. September - 6. Oktober 2025**
-
-#### **Montag, 30. September**
-- [ ] **📅 Monatssequenz** - Oktober-Planung und Ziele definieren
-- [ ] **📊 Wochensequenz** - Woche 1 (30.09-06.10) strukturieren
 - [ ] **💳 Payment Produckte und prcining ideen auf Montag mal in eigen getabbeten "folder"** - Separater Tab/Folder für Payment-Produkte
 - [ ] Christophs Bitcoin Design Team Kollege
 - [ ] 0/4 werk1
@@ -92,6 +67,14 @@
 - [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/
 - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
 - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
+
+### **Samstag, 4. Oktober**  
+- [ ] **Büro aufräumen** - Arbeitsplatz organisieren
+- [ ] **Keller aufräumen** - Keller entrümpeln
+- [ ] **Steuer2024** - Steuererklärung 2024
+- [ ] **Klettrwald, Tauchen, superfly, therme Erding, bavaria, Berge** - Outdoor-Aktivitäten und Ausflüge planen
+- [ ] Miete erhöhen
+
 
 ### **📅 WOCHE 2: 7. - 13. Oktober 2025**
 
