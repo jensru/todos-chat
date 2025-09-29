@@ -1,3 +1,28 @@
 🤖 Mistral API wird aufgerufen...
 ✅ Mistral Response:
-Fehler in API Response: {'object': 'error', 'message': 'Service tier capacity exceeded for this model.', 'type': 'service_tier_capacity_exceeded', 'param': None, 'code': '3505'}
+**Geld-Fokus:**
+- [ ] Pricing-Ideen sammeln: 3-Angebots-Kacheln (Wir bauen für dich / Wir bringen's dir bei / Wir sprinten mit dir)
+
+**Tool-Fokus:**
+- [ ] Alloy-Tool testen und evaluieren
+- [ ] Alloy Guides lesen und testen
+- [ ] Alloy-Dokumentation durcharbeiten und praktisch testen
+- [ ] iPad für Maryam besorgen
+- [ ] 1/4 werk1
+
+**Marketing-Fokus:**
+- [ ] Content-Todos für PUSH-Inhalte abschließen
+- [ ] Post: Push Post ist musthave
+- [ ] Marketing für Substain und Laura
+
+**Personal:**
+- [ ] Zettel
+- [ ] Joggen
+- [ ] Präsentation für Check24 mit offenen Fragen vorbereiten
+- [ ] Treffen mit Andreas in dieser Woche verschieben
+- [ ] Reste vom Montag essen
+- [ ] Nebenkosten Nachzahlung für Licht klären
+- [ ] CV dieses Jahr aktualisieren: Laura, Substain, Prompting Birds, 36Zerovision, AI Rapid Prototyping mit eigenen Tools, die Figma ersetzen, bekannter Experte und Berater von Teams und Freelancern von Check24 bis SAP Innovation zu diesem Thema.
+- [ ] Mehr aus dem Haus rauskommen planen
+- [ ] Christophs Bitcoin Design Team Kollege kontaktieren
+- [ ] Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`

@@ -6,7 +6,6 @@
 
 ### **📅 29. September 2025**
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
-  - [ ] **Mockup Builder Prompt** → aus den Beschreibungen generative Mockups erzeugen lassen (Browser-Rendering oder Wireframes)
   - [ ] **Schrittweise Testbuilds mit AI-Coder** → Klickdummies generieren, erste End-to-End-Ideation-Tests fahren
   - [ ] Handout Perfect
   - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
