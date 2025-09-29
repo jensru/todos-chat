@@ -1,8 +1,6 @@
 # 🎯 Dashboard - Strukturierte To-do-Übersicht
 
 ## 📅 **TIMELINE: Oktober - Dezember 2025**
-- [ ] Emails
-- [ ] Tabs
 
 
 
@@ -34,7 +32,7 @@
 - [ ] 1/4 werk1
 - [ ] Nbenkosten Nachzahlung Lich
 - [ ] iPad für Maryam
-
+- [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
 
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
@@ -55,8 +53,8 @@
   - SAP Typ
   - Tem Manager App Typ
   - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools! 
-- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben)
-- [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces)
+- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818
+- [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces) 
 - [ ] Content für LinkedIn/Social Media (AI Agent Prototyping)
 - [ ] Tool Marketing Tests, betaliste, invite only (https://appcanvas.io/), Tests zu value prop, Pricing
     - [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"
@@ -87,6 +85,7 @@
   - [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/
   - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
   - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
+  - [ ] Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill
 
 ### **Freitag, 3. Oktober**
 - [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier

@@ -1,25 +1,3 @@
 🤖 Mistral API wird aufgerufen...
 ✅ Mistral Response:
-**Geld-Fokus:**
-- [ ] Pricing-Ideen sammeln: 3-Angebots-Kacheln, drei starke Kunden-Zitat mit Bild und kurzem Case
-
-**Tool-Fokus:**
-- [ ] Tabs
-- [ ] Alloy testen
-- [ ] Alloy Guides lesen und testen
-
-**Marketing-Fokus:**
-- [ ] Emails
-- [ ] Push Post ist musthave
-- [ ] Alle Leute hallo mit lead funnels strategie
-- [ ] Noch mehr rauskommen aus dem Haus planen
-- [ ] Content-Todos für PUSH abschließen
-- [ ] Joggen (als persönliche Marke aktiv sein)
-
-**Personal:**
-- [ ] Zettel (persönliche Aufgaben)
-- [ ] Andreas nicht Montag besuchen in dieser Woche
-- [ ] Reste Montag
-- [ ] Nebenkosten Nachzahlung Licht
-- [ ] iPad für Maryam
-- [ ] Doku/Anleitung für Mistral-Morgensequenz durchführen: `./automation/mistral-morning-sequence.sh "2025-10-01"`
+Fehler in API Response: {'object': 'error', 'message': 'Service tier capacity exceeded for this model.', 'type': 'service_tier_capacity_exceeded', 'param': None, 'code': '3505'}

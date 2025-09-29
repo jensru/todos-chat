@@ -123,6 +123,65 @@
             box-shadow: var(--shadow-md);
         }
         
+        .sidebar h1 {
+            font-size: 24px;
+            margin-bottom: var(--space-4);
+            border-bottom: 2px solid var(--primary-500);
+            padding-bottom: var(--space-3);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .sidebar h2 {
+            font-size: 20px;
+            margin-top: var(--space-6);
+            margin-bottom: var(--space-3);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .sidebar h3 {
+            font-size: 16px;
+            margin-top: var(--space-4);
+            margin-bottom: var(--space-2);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .sidebar p, .sidebar li {
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--text-tertiary);
+        }
+        
+        .agent-section {
+            margin-top: var(--space-8);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            border: 1px solid var(--primary-500);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+        
+        .agent-section:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        
+        .agent-section h3 {
+            color: var(--primary-500);
+            font-size: 16px;
+            margin-bottom: var(--space-3);
+            font-weight: 600;
+        }
+        
+        .agent-section p, .agent-section li {
+            font-size: 12px;
+            line-height: 16px;
+            color: var(--text-secondary);
+        }
+        
         h1 { 
             color: var(--text-primary); 
             border-bottom: 2px solid var(--primary-500); 
@@ -158,120 +217,204 @@
             font-weight: normal;
         }
         
-        .task-item {
-            margin: var(--space-4) 0;
-            padding: var(--space-3);
-            border-radius: var(--radius-md);
-            border-left: 4px solid var(--primary-500);
-            background: var(--bg-primary);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.2s ease;
-        }
-        
-        .task-item:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateX(4px);
-        }
-        
-        .task-item.high-priority {
-            border-left-color: var(--error-500);
-            background: linear-gradient(90deg, #ffebee 0%, var(--bg-primary) 100%);
-        }
-        
-        .task-item.medium-priority {
-            border-left-color: var(--warning-500);
-            background: linear-gradient(90deg, #fff3e0 0%, var(--bg-primary) 100%);
-        }
-        
-        .task-item.low-priority {
-            border-left-color: var(--success-500);
-            background: linear-gradient(90deg, #e8f5e8 0%, var(--bg-primary) 100%);
-        }
-        
-        .task-title {
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: var(--space-1);
-        }
-        
-        .task-description {
-            color: var(--text-tertiary);
-            font-size: 14px;
-            margin-bottom: var(--space-2);
-        }
-        
-        .task-meta {
+        .checkbox { 
+            margin: var(--space-4) 0; 
             display: flex;
-            gap: var(--space-3);
-            font-size: 12px;
+            align-items: flex-start;
+            padding: var(--space-2);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            list-style: none;
+        }
+        
+        .checkbox:hover {
+            background: var(--neutral-50);
+        }
+        
+        .checkbox input[type="checkbox"] { 
+            margin-right: var(--space-3); 
+            margin-top: 2px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-500);
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+        }
+        
+        .checkbox label { 
+            cursor: pointer; 
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a4a4a;
+            transition: all 0.2s ease;
+            list-style: none;
+            font-weight: normal;
+        }
+        
+        .checkbox input[type="checkbox"]:checked + label { 
+            text-decoration: line-through; 
+            opacity: 0.6; 
             color: var(--text-disabled);
         }
         
-        .task-tags {
-            display: flex;
-            gap: var(--space-1);
-            margin-top: var(--space-2);
+        blockquote { 
+            border-left: 4px solid var(--primary-500); 
+            padding-left: var(--space-5); 
+            margin: var(--space-6) 0; 
+            font-style: italic; 
+            color: var(--text-tertiary);
+            font-size: 14px;
+            line-height: 20px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: var(--space-4) var(--space-5);
         }
         
-        .tag {
-            background: var(--primary-50);
-            color: var(--primary-500);
-            padding: var(--space-1) var(--space-2);
-            border-radius: var(--radius-sm);
-            font-size: 11px;
+        code { 
+            background: var(--bg-secondary); 
+            padding: var(--space-1) var(--space-2); 
+            border-radius: var(--radius-sm); 
+            font-family: 'Monaco', 'Consolas', monospace; 
+            color: var(--text-primary);
+            border: 1px solid var(--neutral-200);
+        }
+        
+        pre { 
+            background: var(--bg-secondary); 
+            padding: var(--space-4); 
+            border-radius: var(--radius-lg); 
+            overflow-x: auto; 
+            border: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            margin: var(--space-6) 0; 
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        th, td { 
+            border: 1px solid var(--neutral-200); 
+            padding: var(--space-4); 
+            text-align: left; 
+            font-size: 14px;
+            line-height: 20px;
+        }
+        
+        th { 
+            background-color: var(--bg-secondary); 
+            font-weight: 500; 
+            color: var(--text-primary);
+        }
+        
+        td {
+            color: var(--text-tertiary);
+        }
+        
+        hr { 
+            border: none; 
+            border-top: 1px solid var(--neutral-200); 
+            margin: var(--space-8) 0; 
+        }
+        
+        .emoji { font-size: 1.2em; }
+        
+        /* Remove bulletpoints from checkbox lists */
+        .checkbox {
+            list-style: none !important;
+        }
+        
+        .checkbox::before {
+            display: none !important;
+        }
+        
+        /* Ensure no bulletpoints appear */
+        ul li.checkbox {
+            list-style: none !important;
+        }
+        
+        ul li.checkbox::marker {
+            display: none !important;
+        }
+        
+        /* Remove all list markers from checkbox items */
+        li.checkbox {
+            list-style-type: none !important;
+        }
+        
+        li.checkbox::before {
+            content: none !important;
+        }
+        
+        /* Global removal of bulletpoints for checkbox lists */
+        ul li.checkbox,
+        ol li.checkbox {
+            list-style: none !important;
+            list-style-type: none !important;
+        }
+        
+        /* Remove bulletpoints from ALL list items with checkboxes */
+        ul li:has(input[type="checkbox"]),
+        ol li:has(input[type="checkbox"]) {
+            list-style: none !important;
+            list-style-type: none !important;
+        }
+        
+        /* Fallback for browsers that don't support :has() */
+        ul li,
+        ol li {
+            list-style: none;
+        }
+        
+        /* Only show bulletpoints for list items WITHOUT checkboxes */
+        ul li:not(:has(input[type="checkbox"])),
+        ol li:not(:has(input[type="checkbox"])) {
+            list-style: disc;
+        }
+        
+        /* CTA Button Style */
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+            color: #FFFFFF;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-lg);
+            border: none;
+            cursor: pointer;
+            margin: var(--space-4) 0;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .cta-button:hover {
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        /* Emphasis text */
+        strong {
+            color: var(--text-secondary);
             font-weight: 500;
         }
         
-        .db-stats {
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-lg);
-            padding: var(--space-4);
-            margin-bottom: var(--space-6);
-            border: 1px solid var(--primary-500);
-        }
-        
-        .db-stats h3 {
+        /* Links */
+        a {
             color: var(--primary-500);
-            margin-bottom: var(--space-3);
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: var(--space-3);
-        }
-        
-        .stat-item {
-            text-align: center;
-            padding: var(--space-2);
-            background: var(--bg-primary);
-            border-radius: var(--radius-md);
-        }
-        
-        .stat-number {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary-500);
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-tertiary);
-        }
-        
-        .loading {
-            text-align: center;
-            padding: var(--space-8);
-            color: var(--text-tertiary);
-        }
-        
-        .error {
-            background: #ffebee;
-            color: var(--error-500);
-            padding: var(--space-4);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--error-500);
-            margin: var(--space-4) 0;
+        a:hover {
+            text-decoration: underline;
+            color: var(--primary-600);
         }
         
         /* Responsive Design */
@@ -299,187 +442,92 @@
                 padding: var(--space-4);
             }
         }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .main-content {
+                flex: 0 0 65%;
+            }
+            
+            .sidebar {
+                flex: 0 0 35%;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .main-content {
+                flex: 0 0 70%;
+            }
+            
+            .sidebar {
+                flex: 0 0 30%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="main-container">
         <div class="main-content">
-            <h1>🎯 Dashboard - Strukturierte To-do-Übersicht</h1>
-            
-            <div class="db-stats">
-                <h3>📊 Datenbank-Statistiken</h3>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number" id="total-tasks">-</div>
-                        <div class="stat-label">Gesamt Tasks</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="pending-tasks">-</div>
-                        <div class="stat-label">Offen</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="completed-tasks">-</div>
-                        <div class="stat-label">Erledigt</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="high-priority">-</div>
-                        <div class="stat-label">Hoch</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="tasks-container">
-                <div class="loading">🔄 Lade Tasks aus der Datenbank...</div>
-            </div>
+            <div id="content"></div>
         </div>
-        
         <div class="sidebar">
-            <h1>🎯 Ziele & Fokus</h1>
-            
-            <h2>==Ziele==</h2>
-            <p><strong>Geld!</strong></p>
-            
-            <hr>
-            
-            <h2>🚀 FOKUS: Tool-First Strategie</h2>
-            <p><strong>Regel:</strong> Alles was ich mach als Tools Chatfirst so bauen, dass es <em>dich selbst</em> ersetzt in deinem Workflow</p>
-            
-            <p><strong>Irgendwann und vielleicht schon bald:</strong> Pivot? Zielgruppen switch (Entscheidung)</p>
-            
-            <hr>
-            
-            <h2>🎯 Erfolgskriterien Q4 2025</h2>
-            <ul>
-                <li><strong>Tool:</strong> Du nutzt es zur täglichen Kundenarbeit</li>
-                <li><strong>Marketing:</strong> Komplettes ausschlachten der PUSH Session</li>
-                <li><strong>Community:</strong> Etablierte Präsenz in relevanten Communities</li>
-                <li><strong>Health:</strong> Alle Termine erledigt, TÜV gemacht</li>
-            </ul>
-            
-            <div class="db-stats">
-                <h3>🗄️ Datenbank-Info</h3>
-                <p>Diese Seite lädt Daten aus der lokalen JSON-Datenbank, die automatisch aus dem Markdown-Dashboard generiert wird.</p>
-                <p><strong>Single Source of Truth:</strong> Markdown-Dateien</p>
-                <p><strong>Strukturierte Daten:</strong> JSON-Datenbank</p>
-            </div>
+            <div id="sidebar-content"></div>
         </div>
     </div>
 
     <script>
-        // Lade Tasks aus der JSON-Datenbank
-        async function loadTasks() {
-            try {
-                const response = await fetch('./data/tasks.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                const tasks = data.tasks || [];
-                
-                // Statistiken aktualisieren
-                updateStats(tasks);
-                
-                // Tasks anzeigen
-                displayTasks(tasks);
-                
-            } catch (error) {
-                console.error('Fehler beim Laden der Tasks:', error);
-                document.getElementById('tasks-container').innerHTML = 
-                    `<div class="error">❌ Fehler beim Laden der Datenbank: ${error.message}</div>`;
-            }
+        // Sidebar Markdown Content
+        const sidebarContent = `# 🎯 **Ziele & Fokus**\n\n## **==Ziele==**\n\n**Geld!**\n\n---\n\n## 🚀 **FOKUS: Tool-First Strategie**\n\n**Regel:** Alles was ich mach als Tools Chatfirst so bauen, dass es _dich selbst_ ersetzt in deinem Workflow\n\n**Irgendwann und vielleicht schon bald:** Pivot? Zielgruppen switch (Entscheidung)\n\n---\n\n## 🎯 **Erfolgskriterien Q4 2025**\n\n- **Tool**: Du nutzt es zur täglichen Kundenarbeit\n- **Marketing**: Komplettes ausschlachten der PUSH Session\n- **Community**: Etablierte Präsenz in relevanten Communities\n- **Health**: Alle Termine erledigt, TÜV gemacht\n`;
+
+               // Keine Agenten mehr
+               let agentContent = '';
+
+        // Dashboard Markdown Content
+        const markdownContent = `# 🎯 Dashboard - Strukturierte To-do-Übersicht\n\n## 📅 **TIMELINE: Oktober - Dezember 2025**\n- [ ] Emails\n- [ ] Tabs\n\n\n\n### **📅 29. September 2025**\n- [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:\n  - [/] prompting artefakt durchlauf\n  - [ ] Handout Perfect\n  - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren\n- [ ] **🔥 Push Post ist musthave**   \n  - [ ] **Linkend In Post** \\"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\\"\n  - [ ] Workshop texte mehr ROI und dann in lerneinheiten\n\n\n### **Phase 3: Weitere Todos**\n- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren\n- [ ] Alle Leute hallo mit lead funnels strategie\n- [ ] Noch mehr rauskommen aus dem Haus planen!!!\n\n\n\n\n- [ ] Zettel\n- [ ] Joggen\n\n### **📅 Dienstag, 30. September**\n- [ ] Andreas nicht Montag besuchen in dieser Woche\n- [ ] Reste Montag\n- [ ] Christophs Bitcoin Design Team Kollege\n- [ ] 1/4 werk1\n- [ ] Nbenkosten Nachzahlung Lich\n- [ ] iPad für Maryam\n\n\n#### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**\n- [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen\n- [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: \`./automation/mistral-morning-sequence.sh "2025-10-01"\`\n- [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:\n  - Tools pricing\n  - Cohorten Workshops nach Push\n  - Newsletter pricing\n  - Analyse Anna Workshops\n  - Post dass ich bei der Push bin\n  - Post über Angebote\n  - Kappa Post\n  - Webinare als Leads\n  - Linkedin Funnel, Landingpages Newsletter\n- [ ] **3-Angebots-Kacheln** ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)\n- [ ] **drei starkes Kunden-Zitat mit Bild und kurzem Case?** (von Donnerstag verschoben)\n  - lea\n  - SAP Typ\n  - Tem Manager App Typ\n  - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools! \n- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben)\n- [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces)\n- [ ] Content für LinkedIn/Social Media (AI Agent Prototyping)\n- [ ] Tool Marketing Tests, betaliste, invite only (https://appcanvas.io/), Tests zu value prop, Pricing\n    - [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"\n    - [ ] **Testimonial**: Lea\n- [ ] Ich brauche einen Funnel immer beim Kontaktieren\n- [ ] Irgendein community live Event jetzt\n- [ ] Webinar UX\n- [ ] Webinar Produkt\n- [ ] Die wichtigsten Fragen verstehen\n\n#### **Donnerstag, 2. Oktober**\n- [ ] **Simon Kubica Follow-up (Woche 1)**: Feedback prüfen und Follow-up vorbereiten\n- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:\n  - [ ] **Zuhören** - ganz wichtig als erstes zuhören\n  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde\n  - [ ] Sofort markieren und später ansprechen\n  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)\n  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen\n  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen\n  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben\n- [ ] **Tool-Chat & Design-Core (KRITISCH)**\n  - [ ] **Chat-First Interface für mein Tool** - Hauptpriorität für eigene Nutzung\n  - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben\n  - [ ] https://prompt-directory-fh.lovable.app/\n  - [ ] https://mastering-lovable.lovable.app/\n  - [ ] https://buzzword-hacks.lovable.app//\n  - [ ] https://www.linkedin.com/posts/haasfelix_10-hacks-activity-7340306418392072195-OdAa/\n  - [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/\n  - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt\n  - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren\n\n### **Freitag, 3. Oktober**\n- [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier\n\n### **Samstag, 4. Oktober**  \n- [ ] **Büro aufräumen** - Arbeitsplatz organisieren\n- [ ] **Keller aufräumen** - Keller entrümpeln\n- [ ] **Steuer2024** - Steuererklärung 2024\n- [ ] **Klettrwald, Tauchen, superfly, therme Erding, bavaria, Berge** - Outdoor-Aktivitäten und Ausflüge planen\n- [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist\n- [ ] Schlafzimmer Rollos\n- [ ] Nebenkostenabrechnungen Lich\n\n\n### **📅 WOCHE: 6. - 12. Oktober 2025**\n- [ ] **Tool Seiten -> Aktuelle Tools & Lead....**\n    - [ ] built your own app with a running agent course!\n    - [ ] Marketing für Methode, Tool, Workshops, Kundenprojekte\n    - [ ] Workshop-Texte mehr ROI-fokussiert\n- [ ] **Wireframes Tool**\n    - [ ] Chat First\n    - [ ] Echte Nutzerinterviews mit Maryam, Angemeldeten, Zielgruppe\n    - [ ] Umfragen zu Wiederverwendung\n    - [ ] Alle Angemeldeten\n    - [ ] Potentielle Zielgruppe aber nicht angemeldet\n- [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)\n\n#### **Mittwoch, 8. Oktober**\n- [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**\n\n#### **Donnerstag, 9. Oktober**\n- [ ] **10.10. um 10:30 Uhr Lungenarzttermin**\n\n\n\n### **📅 WOCHE: 13. - 19. Oktober 2025**\n- [ ] Zahnärztin, bekomme ich noch die E-Mails?\n- [ ] **Booklist, BUT how to UI the Bookapp for my local Book App!**\n\n### **📅 WOCHE: 20. - 26. Oktober 2025**\n\n#### **Donnerstag, 23. Oktober**\n- [ ] **🔥 PUSH UX Event** - Tag 1\n\n#### **Freitag, 24. Oktober**\n- [ ] **🔥 PUSH UX Event** - Tag 2\n\n\n### **📅 WOCHE: 27. Oktober - 2. November 2025**\n\n\n---\n\n## 📅 **NOVEMBER 2025**\n\n### **Gründungsplan - ALG I & Gründungszuschuss**\n- [ ] **Spätestens Ende Dezember 2025** - Antrag für Gründungszuschuss stellen\n  - [ ] **150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen\n  - [ ] **Besser deutlich früher** - Oktober bis Dezember 2025 für genug Bearbeitungszeit\n- [ ] **Einkommensplan erstellen** - ALG I + Gründungszuschuss kalkulieren:\n  - [ ] **ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich\n  - [ ] **Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat\n  - [ ] **Phase 2 (9 Monate, optional):** Nur 300 € Zuschuss\n- [ ] **Optimaler Zeitraum planen** - Oktober bis Dezember 2025 für Antrag\n  - [ ] **Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026\n  - [ ] **Szenario Dezember 2025:** Gründung Januar 2026 → ALG I + Zuschuss bis Juni/Juli 2026\n\n### **November 2025 - Persönliche Todos**\n- [ ] SLK und Touran TÜV\n\n---\n\n## 📅 **DEZEMBER 2025**\n\n### **Dezember 2025 - Gründungsplan**\n- [ ] Dezember/Januar Gründungszuschuss Antrag\n\n### **Dezember 2025 - Persönliche Todos**\n- [ ] Blake et mortimer\n- [ ] Junior et senior\n- [ ] Corto Maltese manga\n- [ ] Asterix 41\n- [ ] 2 spirou\n\n---\n\n_Heute: \n_Letzte Aktualisierung: \n`;
+
+        // Configure marked options
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
+
+        // Convert markdown to HTML
+        const htmlContent = marked.parse(markdownContent);
+        const sidebarHtmlContent = marked.parse(sidebarContent);
+        
+        // Insert into page
+        document.getElementById('content').innerHTML = htmlContent;
+        document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
+        
+        // Füge heutige Task-Historie hinzu
+        const todayHistoryHtml = '';
+        if (todayHistoryHtml) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML += todayHistoryHtml;
         }
         
-        function updateStats(tasks) {
-            const total = tasks.length;
-            const pending = tasks.filter(t => t.status === 'pending').length;
-            const completed = tasks.filter(t => t.status === 'completed').length;
-            const highPriority = tasks.filter(t => t.priority === 'high').length;
-            
-            document.getElementById('total-tasks').textContent = total;
-            document.getElementById('pending-tasks').textContent = pending;
-            document.getElementById('completed-tasks').textContent = completed;
-            document.getElementById('high-priority').textContent = highPriority;
+        // Füge Tagesziele-Fortschritt hinzu
+        const dailyProgressHtml = '';
+        if (dailyProgressHtml) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML += dailyProgressHtml;
         }
-        
-        function displayTasks(tasks) {
-            const container = document.getElementById('tasks-container');
-            
-            if (tasks.length === 0) {
-                container.innerHTML = '<div class="loading">📝 Keine Tasks gefunden</div>';
-                return;
-            }
-            
-            // Gruppiere Tasks nach Datum
-            const tasksByDate = {};
-            tasks.forEach(task => {
-                const date = task.date || 'Unbekannt';
-                if (!tasksByDate[date]) {
-                    tasksByDate[date] = [];
+
+        // Add interactive checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                // Load saved state
+                const savedState = localStorage.getItem('checkbox_' + checkbox.parentNode.textContent.trim());
+                if (savedState === 'true') {
+                    checkbox.checked = true;
                 }
-                tasksByDate[date].push(task);
-            });
-            
-            let html = '';
-            
-            // Sortiere Daten
-            const sortedDates = Object.keys(tasksByDate).sort();
-            
-            sortedDates.forEach(date => {
-                const dateTasks = tasksByDate[date];
-                const formattedDate = formatDate(date);
                 
-                html += `<h2>📅 ${formattedDate}</h2>`;
-                
-                dateTasks.forEach(task => {
-                    html += createTaskHTML(task);
+                // Save state on change
+                checkbox.addEventListener('change', function() {
+                    localStorage.setItem('checkbox_' + this.parentNode.textContent.trim(), this.checked);
                 });
             });
-            
-            container.innerHTML = html;
-        }
-        
-        function createTaskHTML(task) {
-            const priorityClass = `task-item ${task.priority}-priority`;
-            const statusIcon = task.status === 'completed' ? '✅' : '⏳';
-            const cleanTitle = task.title.replace(/\*\*/g, '').trim();
-            
-            let html = `
-                <div class="${priorityClass}">
-                    <div class="task-title">${statusIcon} ${cleanTitle}</div>
-                    ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
-                    <div class="task-meta">
-                        <span>📅 ${task.date || 'Unbekannt'}</span>
-                        <span>🎯 ${task.priority || 'medium'}</span>
-                        <span>📁 ${task.project || 'Unbekannt'}</span>
-                    </div>
-                    ${task.tags && task.tags.length > 0 ? `
-                        <div class="task-tags">
-                            ${task.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-            
-            return html;
-        }
-        
-        function formatDate(dateStr) {
-            if (!dateStr || dateStr === 'Unbekannt') return 'Unbekanntes Datum';
-            
-            const date = new Date(dateStr);
-            const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-            const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
-                           'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-            
-            const dayName = days[date.getDay()];
-            const day = date.getDate();
-            const month = months[date.getMonth()];
-            
-            return `${dayName}, ${day}. ${month}`;
-        }
-        
-        // Lade Tasks beim Laden der Seite
-        document.addEventListener('DOMContentLoaded', loadTasks);
+        });
     </script>
 </body>
 </html>
