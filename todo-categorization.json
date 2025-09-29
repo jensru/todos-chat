@@ -1,28 +1,25 @@
 🤖 Mistral API wird aufgerufen...
 ✅ Mistral Response:
-Geld-Fokus:
-- Pricing-Ideen sammeln
-- Payment Produkte und pricing ideen auf Montag mal in eigen getabbeten "folder"
+**Geld-Fokus:**
+- [ ] Pricing-Ideen sammeln: 3-Angebots-Kacheln, drei starke Kunden-Zitat mit Bild und kurzem Case
 
-Tool-Fokus:
-- Tool-Entwicklung
-- Chat-First Interface für mein Tool (Hauptpriorität)
-- Alloy-Tool testen und evaluieren
-- Tool Marketing Tests
+**Tool-Fokus:**
+- [ ] Tabs
+- [ ] Alloy testen
+- [ ] Alloy Guides lesen und testen
 
-Marketing-Fokus:
-- LinkedIn Post veröffentlichen: "I'm back at preparing my breakout session for PUSH..."
-- Alle Leute hallo mit lead funnels strategie
-- Noch mehr rauskommen aus dem Haus planen
-- Content für 3-Angebots-Kacheln
-- Drei starke Kunden-Zitat mit Bild und kurzem Case (falls verfügbar)
+**Marketing-Fokus:**
+- [ ] Emails
+- [ ] Push Post ist musthave
+- [ ] Alle Leute hallo mit lead funnels strategie
+- [ ] Noch mehr rauskommen aus dem Haus planen
+- [ ] Content-Todos für PUSH abschließen
+- [ ] Joggen (als persönliche Marke aktiv sein)
 
-Personal:
-- Andreas nicht Montag besuchen in dieser Woche
-- Monatssequenz - Oktober-Planung und Ziele definieren
-- Wochensequenz - Erste Oktoberwoche strukturieren
-- PUSH Content-Todos abschließen
-- 0/4 werk1
-- Mistral-Morgensequenz ausführen
-- Simon Kubica Follow-up (Woche 1): Feedback prüfen und Follow-up vorbereiten
-- Bene (Sustain) Meeting - Meeting-Vorbereitung
+**Personal:**
+- [ ] Zettel (persönliche Aufgaben)
+- [ ] Andreas nicht Montag besuchen in dieser Woche
+- [ ] Reste Montag
+- [ ] Nebenkosten Nachzahlung Licht
+- [ ] iPad für Maryam
+- [ ] Doku/Anleitung für Mistral-Morgensequenz durchführen: `./automation/mistral-morning-sequence.sh "2025-10-01"`

@@ -238,3 +238,4 @@ Alle Konfigurationen sind in den Script-Dateien enthalten. Hauptparameter:
 ## 📄 Lizenz
 
 Dieses System ist Teil des lokalen To-do-Management-Projekts und unterliegt den gleichen Lizenzbedingungen.
+

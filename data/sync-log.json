@@ -34,5 +34,29 @@
     "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
     "tasks_parsed": 100,
     "status": "success"
+  },
+  {
+    "timestamp": "2025-09-27T10:15:39.947Z",
+    "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+    "tasks_parsed": 100,
+    "status": "success"
+  },
+  {
+    "timestamp": "2025-09-29T05:55:01.294Z",
+    "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+    "tasks_parsed": 94,
+    "status": "success"
+  },
+  {
+    "timestamp": "2025-09-29T06:16:23.950Z",
+    "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+    "tasks_parsed": 76,
+    "status": "success"
+  },
+  {
+    "timestamp": "2025-09-29T06:18:04.019Z",
+    "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+    "tasks_parsed": 76,
+    "status": "success"
   }
 ]
