@@ -6,7 +6,8 @@
 
 ### **📅 29. September 2025**
 - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
-  - [/] prompting artefakt durchlauf
+  - [ ] **Mockup Builder Prompt** → aus den Beschreibungen generative Mockups erzeugen lassen (Browser-Rendering oder Wireframes)
+  - [ ] **Schrittweise Testbuilds mit AI-Coder** → Klickdummies generieren, erste End-to-End-Ideation-Tests fahren
   - [ ] Handout Perfect
   - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
 - [ ] **🔥 Push Post ist musthave**   
@@ -26,6 +27,7 @@
 - [ ] Joggen
 
 ### **📅 Dienstag, 30. September**
+- [ ] Check24 Präse mit den offenen Fragen vorbereiten
 - [ ] Andreas nicht Montag besuchen in dieser Woche
 - [ ] Reste Montag
 - [ ] Christophs Bitcoin Design Team Kollege
@@ -35,6 +37,7 @@
 - [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
 
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
+- [ ] Marketing Substain und Laura
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
 - [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`
 - [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
