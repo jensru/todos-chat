@@ -5,22 +5,6 @@
 
 
 ### **📅 29. September 2025**
-- [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
-  - [ ] **Schrittweise Testbuilds mit AI-Coder** → Klickdummies generieren, erste End-to-End-Ideation-Tests fahren
-  - [ ] Handout Perfect
-  - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
-- [ ] **🔥 Push Post ist musthave**   
-  - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
-  - [ ] Workshop texte mehr ROI und dann in lerneinheiten
-
-
-### **Phase 3: Weitere Todos**
-- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
-- [ ] Alle Leute hallo mit lead funnels strategie
-- [ ] Noch mehr rauskommen aus dem Haus planen!!!
-
-
-
 
 - [ ] Zettel
 - [ ] Joggen
@@ -34,6 +18,20 @@
 - [ ] Nbenkosten Nachzahlung Lich
 - [ ] iPad für Maryam
 - [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
+
+- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
+- [ ] Alle Leute hallo mit lead funnels strategie
+- [ ] Noch mehr rauskommen aus dem Haus planen!!!
+
+- [ ] PUSH Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
+- [ ] **🔥 Push Post ist musthave**   
+  - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
+  - [ ] Workshop texte mehr ROI und dann in lerneinheiten
+
+- [ ] **PUSH Build Test**
+  - [ ] Build mehr Mobile First Optik und große Typo
+  - [ ] immer start beim dashboard für die interaktionen nicht zu viel Navigation chrome
+  - [ ] Handout abgespeckt Perfect
 
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
 - [ ] Marketing Substain und Laura
