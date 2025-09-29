@@ -269,13 +269,18 @@ class LocalTaskDatabase {
    */
   logSync(sourceFile, tasksCount, timestamp) {
     const logPath = path.join(this.dataDir, 'sync-log.json');
-    let logs = [];
+    let logData = { recent_syncs: [] };
     
     if (fs.existsSync(logPath)) {
-      logs = JSON.parse(fs.readFileSync(logPath, 'utf8'));
+      logData = JSON.parse(fs.readFileSync(logPath, 'utf8'));
     }
     
-    logs.push({
+    // Stelle sicher, dass recent_syncs ein Array ist
+    if (!Array.isArray(logData.recent_syncs)) {
+      logData.recent_syncs = [];
+    }
+    
+    logData.recent_syncs.push({
       timestamp: timestamp,
       source_file: sourceFile,
       tasks_parsed: tasksCount,
@@ -283,11 +288,11 @@ class LocalTaskDatabase {
     });
     
     // Nur die letzten 100 Einträge behalten
-    if (logs.length > 100) {
-      logs = logs.slice(-100);
+    if (logData.recent_syncs.length > 100) {
+      logData.recent_syncs = logData.recent_syncs.slice(-100);
     }
     
-    fs.writeFileSync(logPath, JSON.stringify(logs, null, 2));
+    fs.writeFileSync(logPath, JSON.stringify(logData, null, 2));
   }
 }
 
