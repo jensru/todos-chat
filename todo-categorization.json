@@ -1,7 +1,3 @@
 🤖 Mistral API wird aufgerufen...
 ✅ Mistral Response:
-Geld-Fokus:
-- Check24 Präsentation mit offenen Fragen vorbereiten
-- 1/4 werk1
-- Nebenkosten Nachzahlung Licht
-- CV dieses Jahr Update: bekannter Experte und Berater von Teams und Freelancern von Check2
+Fehler in API Response: {'object': 'error', 'message': 'Service tier capacity exceeded for this model.', 'type': 'service_tier_capacity_exceeded', 'param': None, 'code': '3505'}

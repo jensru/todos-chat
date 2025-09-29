@@ -4,35 +4,38 @@
 
 
 
-### **📅 29. September 2025**
-
-- [ ] Joggen
-
 ### **📅 Dienstag, 30. September**
-- [ ] Check24 Präse mit den offenen Fragen vorbereiten
-- [ ] Andreas nicht Montag besuchen in dieser Woche
-- [ ] Reste Montag
-- [ ] Christophs Bitcoin Design Team Kollege
 - [ ] 1/4 werk1
 - [ ] Nbenkosten Nachzahlung Lich
 - [ ] iPad für Maryam
-- [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
 
-- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
-- [ ] Alle Leute hallo mit lead funnels strategie
-- [ ] Noch mehr rauskommen aus dem Haus planen!!!
+
+- [ ] Check24 Präse mit den offenen Fragen vorbereiten
+
+
+
 
 - [ ] PUSH Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
 - [ ] **🔥 Push Post ist musthave**   
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
   - [ ] Workshop texte mehr ROI und dann in lerneinheiten
 
-- [ ] **PUSH Build Test**
+- [ ] **PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**
+  - [ ] Das Ergebnis war besser, weniger fancy app idee https://lovable.dev/projects/a50b1c07-f4b4-43a1-aa9d-dff576e2b903
   - [ ] Build mehr Mobile First Optik und große Typo
   - [ ] immer start beim dashboard für die interaktionen nicht zu viel Navigation chrome
   - [ ] Handout abgespeckt Perfect
 
+
+
+
+
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
+
+- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
+- [ ] Alle Leute hallo mit lead funnels strategie
+- [ ] Noch mehr rauskommen aus dem Haus planen!!!
+
 - [ ] Marketing Substain und Laura
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
 - [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`
@@ -100,6 +103,7 @@
 
 
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
+- [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
 - [ ] **Tool Seiten -> Aktuelle Tools & Lead....**
     - [ ] built your own app with a running agent course!
     - [ ] Marketing für Methode, Tool, Workshops, Kundenprojekte
