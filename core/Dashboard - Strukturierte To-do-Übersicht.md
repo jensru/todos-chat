@@ -6,7 +6,6 @@
 
 ### **📅 29. September 2025**
 
-- [ ] Zettel
 - [ ] Joggen
 
 ### **📅 Dienstag, 30. September**
@@ -132,6 +131,9 @@
 
 #### **Freitag, 24. Oktober**
 - [ ] **🔥 PUSH UX Event** - Tag 2
+
+#### **Sonntag, 26. Oktober**
+- [ ] **Olympia Bürgerentscheid** - Bürgerentscheid zur Olympia-Bewerbung
 
 
 ### **📅 WOCHE: 27. Oktober - 2. November 2025**
