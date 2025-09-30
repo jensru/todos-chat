@@ -1,6 +1,6 @@
 {
   "last_sync": "2025-09-30T13:01:22.102Z",
-  "total_syncs": 7,
+  "total_syncs": 10,
   "recent_syncs": [
     {
       "timestamp": "2025-09-30T13:01:47.234Z",
@@ -40,6 +40,24 @@
     },
     {
       "timestamp": "2025-09-30T16:25:04.041Z",
+      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+      "status": "success",
+      "error": null
+    },
+    {
+      "timestamp": "2025-09-30T16:25:29.190Z",
+      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+      "status": "success",
+      "error": null
+    },
+    {
+      "timestamp": "2025-09-30T16:28:46.261Z",
+      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+      "status": "success",
+      "error": null
+    },
+    {
+      "timestamp": "2025-09-30T16:28:53.248Z",
       "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "status": "success",
       "error": null

@@ -3,12 +3,9 @@
 ## 📅 **TIMELINE: Oktober - Dezember 2025**
 
 
-
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
 - [ ] 2/4 werk1
 - [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
-
-
 
 - [ ] **🔥 Push Post ist musthave**   
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
@@ -28,12 +25,14 @@
   - [ ] Komponente in Flows
 
 ---
-
-
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
-- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
 
+- [ ] Check 24? **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818
+
+- [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
+
+#### **Donnerstag, 2. Oktober**
 - [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
   - Tools pricing
   - Cohorten Workshops nach Push
@@ -45,9 +44,6 @@
   - Webinare als Leads
   - Linkedin Funnel, Landingpages Newsletter
 - [ ] **3-Angebots-Kacheln** ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)
-- [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
-
-#### **Donnerstag, 2. Oktober**
 - [ ] **drei starkes Kunden-Zitat mit Bild und kurzem Case?** (von Donnerstag verschoben)
   - lea
   - SAP Typ
