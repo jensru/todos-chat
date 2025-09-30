@@ -5,20 +5,25 @@
 
 
 ### **📅 Dienstag, 30. September**
-- [ ] 1/4 werk1
-- [ ] Nbenkosten Nachzahlung Lich
-- [ ] iPad für Maryam
-
+- [ ] Mails
+- [ ] Tabs
+- [ ] Linkedin
 
 - [ ] Check24 Präse mit den offenen Fragen vorbereiten
+  Dinge die es zu meistern gilt: Kontext, Brand, Interaction Patterns, Branch, Agentic Prototyping? 
+---
 
+- [ ] Nbenkosten Nachzahlung Lich
+- [ ] Tesxhenrechner
 
-
+---
 
 - [ ] PUSH Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
 - [ ] **🔥 Push Post ist musthave**   
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
   - [ ] Workshop texte mehr ROI und dann in lerneinheiten
+
+---
 
 - [ ] **PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**
   - [ ] Das Ergebnis war besser, weniger fancy app idee https://lovable.dev/projects/a50b1c07-f4b4-43a1-aa9d-dff576e2b903
@@ -26,14 +31,17 @@
   - [ ] immer start beim dashboard für die interaktionen nicht zu viel Navigation chrome
   - [ ] Handout abgespeckt Perfect
 
+---
 
+- [ ] iPad für Maryam
 
 
 
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
+- [ ] 2/4 werk1
 
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
-- [ ] Alle Leute hallo mit lead funnels strategie
+- [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
 
 - [ ] Marketing Substain und Laura
