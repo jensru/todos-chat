@@ -73,30 +73,38 @@
         
         body {
             font-family: Helvetica, Arial, sans-serif;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: var(--space-6);
+            width: 100%;
+            margin: 0;
+            padding: var(--space-4);
             line-height: 1.8;
             color: #4a4a4a;
             background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             min-height: 100vh;
+            text-align: left;
+            box-sizing: border-box;
         }
         
         .main-container {
             display: flex;
-            gap: var(--space-8);
+            gap: var(--space-4);
             align-items: flex-start;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
         
         .main-content {
-            flex: 2;
+            flex: 1;
             min-width: 0;
             background: var(--bg-primary);
             border-radius: var(--radius-xl);
-            padding: var(--space-8);
+            padding: var(--space-4);
             box-shadow: var(--shadow-md);
             border: 1px solid var(--neutral-200);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            box-sizing: border-box;
+            overflow-wrap: break-word;
         }
         
         .main-content:hover {
@@ -105,18 +113,20 @@
         }
         
         .sidebar {
-            flex: 1;
-            min-width: 300px;
-            max-height: calc(100vh - 48px);
+            flex: 0 0 400px;
+            max-width: 400px;
+            max-height: calc(100vh - 32px);
             background: var(--bg-secondary);
             border-radius: var(--radius-xl);
-            padding: var(--space-6);
+            padding: var(--space-4);
             border: 1px solid var(--neutral-200);
             position: sticky;
-            top: var(--space-6);
+            top: var(--space-4);
             overflow-y: auto;
             box-shadow: var(--shadow-sm);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            box-sizing: border-box;
         }
         
         .sidebar:hover {
@@ -417,49 +427,92 @@
             color: var(--primary-600);
         }
         
+        /* Force left alignment for all content */
+        * {
+            text-align: left !important;
+        }
+        
+        /* Specific overrides for markdown content */
+        #content, #sidebar-content {
+            text-align: left !important;
+        }
+        
+        #content *, #sidebar-content * {
+            text-align: left !important;
+        }
+        
+        /* Override any centering from markdown */
+        h1, h2, h3, h4, h5, h6 {
+            text-align: left !important;
+        }
+        
+        p, li, ul, ol, blockquote {
+            text-align: left !important;
+        }
+        
+        .checkbox {
+            text-align: left !important;
+        }
+        
+        .checkbox label {
+            text-align: left !important;
+        }
+        
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            padding: var(--space-8);
+            color: var(--text-tertiary);
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
-                gap: var(--space-4);
+                gap: var(--space-2);
             }
             
             .main-content {
-                width: 100%;
+                flex: 1;
                 order: 2;
-                padding: var(--space-4);
+                padding: var(--space-3);
             }
             
             .sidebar {
-                width: 100%;
+                flex: 1;
                 order: 1;
                 max-height: 200px;
                 overflow-y: auto;
-                padding: var(--space-4);
+                padding: var(--space-3);
+                max-width: 100%;
             }
             
             body {
-                padding: var(--space-4);
+                padding: var(--space-2);
             }
         }
         
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .main-content {
-                flex: 0 0 65%;
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .sidebar {
+                flex: 0 0 333px;
+                max-width: 333px;
             }
             
-            .sidebar {
-                flex: 0 0 35%;
+            .main-content {
+                flex: 1;
+                min-width: 0;
             }
         }
         
-        @media (min-width: 1025px) {
-            .main-content {
-                flex: 0 0 70%;
+        @media (min-width: 1201px) {
+            .sidebar {
+                flex: 0 0 400px;
+                max-width: 400px;
             }
             
-            .sidebar {
-                flex: 0 0 30%;
+            .main-content {
+                flex: 1;
+                min-width: 0;
             }
         }
     </style>
@@ -467,53 +520,51 @@
 <body>
     <div class="main-container">
         <div class="main-content">
-            <div id="content"></div>
+            <div id="content" class="loading">🔄 Lade Dashboard-Inhalte...</div>
         </div>
         <div class="sidebar">
-            <div id="sidebar-content"></div>
+            <div id="sidebar-content" class="loading">🔄 Lade Sidebar-Inhalte...</div>
         </div>
     </div>
 
     <script>
-        // Sidebar Markdown Content
-        const sidebarContent = `# 🎯 **Ziele & Fokus**\n\n## **==Ziele==**\n\n**Geld!**\n\n---\n\n## 🚀 **FOKUS: Tool-First Strategie**\n\n**Regel:** Alles was ich mach als Tools Chatfirst so bauen, dass es _dich selbst_ ersetzt in deinem Workflow\n\n**Irgendwann und vielleicht schon bald:** Pivot? Zielgruppen switch (Entscheidung)\n\n---\n\n## 🎯 **Erfolgskriterien Q4 2025**\n\n- **Tool**: Du nutzt es zur täglichen Kundenarbeit\n- **Marketing**: Komplettes ausschlachten der PUSH Session\n- **Community**: Etablierte Präsenz in relevanten Communities\n- **Health**: Alle Termine erledigt, TÜV gemacht\n`;
-
-               // Keine Agenten mehr
-               let agentContent = '';
-
-        // Dashboard Markdown Content
-        const markdownContent = `# 🎯 Dashboard - Strukturierte To-do-Übersicht\n\n## 📅 **TIMELINE: Oktober - Dezember 2025**\n\n\n\n### **📅 29. September 2025**\n- [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:\n  - [/] prompting artefakt durchlauf\n  - [ ] Handout Perfect\n  - [ ] Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren\n- [ ] **🔥 Push Post ist musthave**   \n  - [ ] **Linkend In Post** \\"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\\"\n  - [ ] Workshop texte mehr ROI und dann in lerneinheiten\n\n\n### **Phase 3: Weitere Todos**\n- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren\n- [ ] Alle Leute hallo mit lead funnels strategie\n- [ ] Noch mehr rauskommen aus dem Haus planen!!!\n\n\n\n\n- [ ] Zettel\n- [ ] Joggen\n\n### **📅 Dienstag, 30. September**\n- [ ] Andreas nicht Montag besuchen in dieser Woche\n- [ ] Reste Montag\n- [ ] Christophs Bitcoin Design Team Kollege\n- [ ] 1/4 werk1\n- [ ] Nbenkosten Nachzahlung Lich\n- [ ] iPad für Maryam\n- [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.\n\n#### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**\n- [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen\n- [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: \`./automation/mistral-morning-sequence.sh "2025-10-01"\`\n- [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:\n  - Tools pricing\n  - Cohorten Workshops nach Push\n  - Newsletter pricing\n  - Analyse Anna Workshops\n  - Post dass ich bei der Push bin\n  - Post über Angebote\n  - Kappa Post\n  - Webinare als Leads\n  - Linkedin Funnel, Landingpages Newsletter\n- [ ] **3-Angebots-Kacheln** ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)\n- [ ] **drei starkes Kunden-Zitat mit Bild und kurzem Case?** (von Donnerstag verschoben)\n  - lea\n  - SAP Typ\n  - Tem Manager App Typ\n  - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools! \n- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818\n- [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces) \n- [ ] Content für LinkedIn/Social Media (AI Agent Prototyping)\n- [ ] Tool Marketing Tests, betaliste, invite only (https://appcanvas.io/), Tests zu value prop, Pricing\n    - [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"\n    - [ ] **Testimonial**: Lea\n- [ ] Ich brauche einen Funnel immer beim Kontaktieren\n- [ ] Irgendein community live Event jetzt\n- [ ] Webinar UX\n- [ ] Webinar Produkt\n- [ ] Die wichtigsten Fragen verstehen\n\n#### **Donnerstag, 2. Oktober**\n- [ ] **Simon Kubica Follow-up (Woche 1)**: Feedback prüfen und Follow-up vorbereiten\n- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:\n  - [ ] **Zuhören** - ganz wichtig als erstes zuhören\n  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde\n  - [ ] Sofort markieren und später ansprechen\n  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)\n  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen\n  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen\n  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben\n- [ ] **Tool-Chat & Design-Core (KRITISCH)**\n  - [ ] **Chat-First Interface für mein Tool** - Hauptpriorität für eigene Nutzung\n  - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben\n  - [ ] https://prompt-directory-fh.lovable.app/\n  - [ ] https://mastering-lovable.lovable.app/\n  - [ ] https://buzzword-hacks.lovable.app//\n  - [ ] https://www.linkedin.com/posts/haasfelix_10-hacks-activity-7340306418392072195-OdAa/\n  - [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/\n  - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt\n  - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren\n  - [ ] Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill\n\n### **Freitag, 3. Oktober**\n- [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier\n\n### **Samstag, 4. Oktober**  \n- [ ] **Büro aufräumen** - Arbeitsplatz organisieren\n- [ ] **Keller aufräumen** - Keller entrümpeln\n- [ ] **Steuer2024** - Steuererklärung 2024\n- [ ] **Klettrwald, Tauchen, superfly, therme Erding, bavaria, Berge** - Outdoor-Aktivitäten und Ausflüge planen\n- [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist\n- [ ] Schlafzimmer Rollos\n- [ ] Nebenkostenabrechnungen Lich\n\n\n### **📅 WOCHE: 6. - 12. Oktober 2025**\n- [ ] **Tool Seiten -> Aktuelle Tools & Lead....**\n    - [ ] built your own app with a running agent course!\n    - [ ] Marketing für Methode, Tool, Workshops, Kundenprojekte\n    - [ ] Workshop-Texte mehr ROI-fokussiert\n- [ ] **Wireframes Tool**\n    - [ ] Chat First\n    - [ ] Echte Nutzerinterviews mit Maryam, Angemeldeten, Zielgruppe\n    - [ ] Umfragen zu Wiederverwendung\n    - [ ] Alle Angemeldeten\n    - [ ] Potentielle Zielgruppe aber nicht angemeldet\n- [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)\n\n#### **Mittwoch, 8. Oktober**\n- [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**\n\n#### **Donnerstag, 9. Oktober**\n- [ ] **10.10. um 10:30 Uhr Lungenarzttermin**\n\n\n\n### **📅 WOCHE: 13. - 19. Oktober 2025**\n- [ ] Zahnärztin, bekomme ich noch die E-Mails?\n- [ ] **Booklist, BUT how to UI the Bookapp for my local Book App!**\n\n### **📅 WOCHE: 20. - 26. Oktober 2025**\n\n#### **Donnerstag, 23. Oktober**\n- [ ] **🔥 PUSH UX Event** - Tag 1\n\n#### **Freitag, 24. Oktober**\n- [ ] **🔥 PUSH UX Event** - Tag 2\n\n\n### **📅 WOCHE: 27. Oktober - 2. November 2025**\n\n\n---\n\n## 📅 **NOVEMBER 2025**\n\n### **Gründungsplan - ALG I & Gründungszuschuss**\n- [ ] **Spätestens Ende Dezember 2025** - Antrag für Gründungszuschuss stellen\n  - [ ] **150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen\n  - [ ] **Besser deutlich früher** - Oktober bis Dezember 2025 für genug Bearbeitungszeit\n- [ ] **Einkommensplan erstellen** - ALG I + Gründungszuschuss kalkulieren:\n  - [ ] **ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich\n  - [ ] **Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat\n  - [ ] **Phase 2 (9 Monate, optional):** Nur 300 € Zuschuss\n- [ ] **Optimaler Zeitraum planen** - Oktober bis Dezember 2025 für Antrag\n  - [ ] **Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026\n  - [ ] **Szenario Dezember 2025:** Gründung Januar 2026 → ALG I + Zuschuss bis Juni/Juli 2026\n\n### **November 2025 - Persönliche Todos**\n- [ ] SLK und Touran TÜV\n\n---\n\n## 📅 **DEZEMBER 2025**\n\n### **Dezember 2025 - Gründungsplan**\n- [ ] Dezember/Januar Gründungszuschuss Antrag\n\n### **Dezember 2025 - Persönliche Todos**\n- [ ] Blake et mortimer\n- [ ] Junior et senior\n- [ ] Corto Maltese manga\n- [ ] Asterix 41\n- [ ] 2 spirou\n\n---\n\n_Heute: \n_Letzte Aktualisierung: \n`;
-
         // Configure marked options
         marked.setOptions({
             breaks: true,
             gfm: true
         });
 
-        // Convert markdown to HTML
-        const htmlContent = marked.parse(markdownContent);
-        const sidebarHtmlContent = marked.parse(sidebarContent);
-        
-        // Insert into page
-        document.getElementById('content').innerHTML = htmlContent;
-        document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent + agentContent;
-        
-        // Füge heutige Task-Historie hinzu
-        const todayHistoryHtml = '';
-        if (todayHistoryHtml) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML += todayHistoryHtml;
-        }
-        
-        // Füge Tagesziele-Fortschritt hinzu
-        const dailyProgressHtml = '';
-        if (dailyProgressHtml) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML += dailyProgressHtml;
+        // Load content dynamically
+        async function loadContent() {
+            try {
+                // Load dashboard content
+                const dashboardResponse = await fetch('/api/markdown/dashboard');
+                const dashboardContent = await dashboardResponse.text();
+                
+                // Load sidebar content
+                const sidebarResponse = await fetch('/api/markdown/sidebar');
+                const sidebarContent = await sidebarResponse.text();
+                
+                // Convert markdown to HTML
+                const htmlContent = marked.parse(dashboardContent);
+                const sidebarHtmlContent = marked.parse(sidebarContent);
+                
+                // Insert into page
+                document.getElementById('content').innerHTML = htmlContent;
+                document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent;
+                
+                // Add interactive checkboxes
+                addInteractiveCheckboxes();
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Inhalte:', error);
+                document.getElementById('content').innerHTML = '<p>❌ Fehler beim Laden der Dashboard-Inhalte</p>';
+                document.getElementById('sidebar-content').innerHTML = '<p>❌ Fehler beim Laden der Sidebar-Inhalte</p>';
+            }
         }
 
         // Add interactive checkboxes
-        document.addEventListener('DOMContentLoaded', function() {
+        function addInteractiveCheckboxes() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
                 // Load saved state
@@ -527,7 +578,13 @@
                     localStorage.setItem('checkbox_' + this.parentNode.textContent.trim(), this.checked);
                 });
             });
-        });
+        }
+
+        // Load content when page loads
+        document.addEventListener('DOMContentLoaded', loadContent);
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadContent, 30000);
     </script>
 </body>
 </html>

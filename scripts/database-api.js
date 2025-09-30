@@ -51,6 +51,53 @@ class DatabaseAPI {
     this.app.get('/api/health', (req, res) => {
       res.json({ status: 'ok', timestamp: new Date().toISOString() });
     });
+    
+    // Markdown Content Routes
+    this.app.get('/api/markdown/dashboard', this.getDashboardMarkdown.bind(this));
+    this.app.get('/api/markdown/sidebar', this.getSidebarMarkdown.bind(this));
+  }
+
+  // Markdown Content Endpoints
+  async getDashboardMarkdown(req, res) {
+    try {
+      const dashboardPath = './core/Dashboard - Strukturierte To-do-Übersicht.md';
+      if (!fs.existsSync(dashboardPath)) {
+        return res.status(404).json({
+          success: false,
+          error: 'Dashboard Markdown-Datei nicht gefunden'
+        });
+      }
+      
+      const content = fs.readFileSync(dashboardPath, 'utf8');
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(content);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+
+  async getSidebarMarkdown(req, res) {
+    try {
+      const sidebarPath = './core/right-sidebar.md';
+      if (!fs.existsSync(sidebarPath)) {
+        return res.status(404).json({
+          success: false,
+          error: 'Sidebar Markdown-Datei nicht gefunden'
+        });
+      }
+      
+      const content = fs.readFileSync(sidebarPath, 'utf8');
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(content);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
   }
 
   // Task Management Endpoints

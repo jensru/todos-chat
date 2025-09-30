@@ -7,6 +7,14 @@
 ### **📅 Dienstag, 30. September**
 
 
+
+
+#### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
+- [ ] 2/4 werk1
+- [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
+
+
+
 - [ ] PUSH Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
 - [ ] **🔥 Push Post ist musthave**   
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
@@ -24,21 +32,11 @@
 
 ---
 
-- [ ] iPad für Maryam
-- [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
-
-
-#### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
-- [ ] 2/4 werk1
-- [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
 
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
-- [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
-- [ ] Noch mehr rauskommen aus dem Haus planen!!!
-
-- [ ] Marketing Substain und Laura
+- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
-- [ ] **🌅 Mistral-Morgensequenz ausführen** - Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`
+
 - [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
   - Tools pricing
   - Cohorten Workshops nach Push
@@ -50,12 +48,15 @@
   - Webinare als Leads
   - Linkedin Funnel, Landingpages Newsletter
 - [ ] **3-Angebots-Kacheln** ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)
+- [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
+
+#### **Donnerstag, 2. Oktober**
 - [ ] **drei starkes Kunden-Zitat mit Bild und kurzem Case?** (von Donnerstag verschoben)
   - lea
   - SAP Typ
-  - Tem Manager App Typ
+  - Team Manager App Typ
   - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools! 
-- [ ] **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818
+
 - [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces) 
 - [ ] Content für LinkedIn/Social Media (AI Agent Prototyping)
 - [ ] Tool Marketing Tests, betaliste, invite only (https://appcanvas.io/), Tests zu value prop, Pricing
@@ -67,18 +68,7 @@
 - [ ] Webinar Produkt
 - [ ] Die wichtigsten Fragen verstehen
 
-#### **Donnerstag, 2. Oktober**
-- [ ] **Simon Kubica Follow-up (Woche 1)**: Feedback prüfen und Follow-up vorbereiten
-- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:
-  - [ ] **Zuhören** - ganz wichtig als erstes zuhören
-  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde
-  - [ ] Sofort markieren und später ansprechen
-  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)
-  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen
-  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen
-  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben
-- [ ] **Tool-Chat & Design-Core (KRITISCH)**
-  - [ ] **Chat-First Interface für mein Tool** - Hauptpriorität für eigene Nutzung
+- [ ] **Design Core Prompts für PUSH und Check24)**
   - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
   - [ ] https://prompt-directory-fh.lovable.app/
   - [ ] https://mastering-lovable.lovable.app/
@@ -105,17 +95,24 @@
 
 
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
+- [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
+- [ ] Noch mehr rauskommen aus dem Haus planen!!!
 - [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, Check24!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
+- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:
+  - [ ] **Zuhören** - ganz wichtig als erstes zuhören
+  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde
+  - [ ] Sofort markieren und später ansprechen
+  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)
+  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen
+  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen
+  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben
 - [ ] **Tool Seiten -> Aktuelle Tools & Lead....**
     - [ ] built your own app with a running agent course!
     - [ ] Marketing für Methode, Tool, Workshops, Kundenprojekte
     - [ ] Workshop-Texte mehr ROI-fokussiert
 - [ ] **Wireframes Tool**
+    - [ ] Value Proposition tests mit beta signup. Echte Wärungen bevor weiter Zeit invest
     - [ ] Chat First
-    - [ ] Echte Nutzerinterviews mit Maryam, Angemeldeten, Zielgruppe
-    - [ ] Umfragen zu Wiederverwendung
-    - [ ] Alle Angemeldeten
-    - [ ] Potentielle Zielgruppe aber nicht angemeldet
 - [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)
 
 #### **Mittwoch, 8. Oktober**
