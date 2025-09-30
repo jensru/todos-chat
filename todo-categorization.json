@@ -1,3 +1,28 @@
 🤖 Mistral API wird aufgerufen...
 ✅ Mistral Response:
-Fehler in API Response: {'object': 'error', 'message': 'Service tier capacity exceeded for this model.', 'type': 'service_tier_capacity_exceeded', 'param': None, 'code': '3505'}
+**Geld-Fokus:**
+- Pricing-Ideen sammeln
+- Neue AI-Positionierung finalisieren
+- Content für LinkedIn/Social Media (AI Agent Prototyping)
+- Tool Marketing Tests, betaliste, invite only
+
+**Tool-Fokus:**
+- PUSH Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
+- PUSH Build Test, ergebnis noch scheisse, mehr auf die Logiken eingehen
+- Alloy testen
+- Alloy Guides lesen und testen
+- PMs mehr agentic interfaces Prototyping
+
+**Marketing-Fokus:**
+- PUSH Post ist musthave
+- Alle Leute hallo mit Lead Funnels Strategie, potenzielle Kunden aus der letzten Kontaktwelle
+- Marketing Substain und Laura
+- Content für LinkedIn/Social Media (AI Agent Prototyping)
+
+**Personal:**
+- iPad für Maryam
+- Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
+- 2/4 werk1
+- Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
+- Noch mehr rauskommen aus dem Haus planen
+- Mistral-Morgensequenz ausführen (Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`)

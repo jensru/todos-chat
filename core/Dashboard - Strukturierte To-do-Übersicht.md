@@ -20,6 +20,7 @@
   - [ ] Build mehr Mobile First Optik und große Typo
   - [ ] immer start beim dashboard für die interaktionen nicht zu viel Navigation chrome
   - [ ] Handout abgespeckt Perfect
+  - [ ] Komponente in Flows
 
 ---
 
@@ -27,9 +28,9 @@
 - [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
 
 
-
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
 - [ ] 2/4 werk1
+- [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
 
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
 - [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
@@ -89,6 +90,7 @@
   - [ ] Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill
 
 - [ ] Taschenrechner file:///Users/jensru/Downloads/Taschenrechnerbestellung%20_InfoEltern%202025_8.-10.%20Klasse.pdf
+- [ ] Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?
 
 ### **Freitag, 3. Oktober**
 - [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier
@@ -103,7 +105,7 @@
 
 
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
-- [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
+- [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, Check24!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
 - [ ] **Tool Seiten -> Aktuelle Tools & Lead....**
     - [ ] built your own app with a running agent course!
     - [ ] Marketing für Methode, Tool, Workshops, Kundenprojekte
