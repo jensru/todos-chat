@@ -6,19 +6,12 @@
 
 ### **📅 Dienstag, 30. September**
 
-- [ ] Check24 Präse mit den offenen Fragen vorbereiten
-  Dinge die es zu meistern gilt: Kontext, Brand, Interaction Patterns, Branch, Agentic Prototyping? 
----
-
-- [ ] Nbenkosten Nachzahlung Lich
-- [ ] Tesxhenrechner
-
----
 
 - [ ] PUSH Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
 - [ ] **🔥 Push Post ist musthave**   
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
   - [ ] Workshop texte mehr ROI und dann in lerneinheiten
+  - [ ] https://chatgpt.com/g/g-p-68db885253bc8191a343448dc31c1629-mail-un-posts-zu-push-inhalten/c/68db889d-1fe8-8332-b4df-9514298254bb
 
 ---
 
@@ -31,6 +24,7 @@
 ---
 
 - [ ] iPad für Maryam
+- [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
 
 
 
@@ -94,6 +88,8 @@
   - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
   - [ ] Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill
 
+- [ ] Taschenrechner file:///Users/jensru/Downloads/Taschenrechnerbestellung%20_InfoEltern%202025_8.-10.%20Klasse.pdf
+
 ### **Freitag, 3. Oktober**
 - [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier
 
@@ -104,7 +100,6 @@
 - [ ] **Klettrwald, Tauchen, superfly, therme Erding, bavaria, Berge** - Outdoor-Aktivitäten und Ausflüge planen
 - [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist
 - [ ] Schlafzimmer Rollos
-- [ ] Nebenkostenabrechnungen Lich
 
 
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
