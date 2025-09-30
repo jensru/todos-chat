@@ -4,25 +4,22 @@
 
 
 
-### **📅 Dienstag, 30. September**
-
-
-
-
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
 - [ ] 2/4 werk1
 - [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
 
 
 
-- [ ] PUSH Präse 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
 - [ ] **🔥 Push Post ist musthave**   
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
   - [ ] Workshop texte mehr ROI und dann in lerneinheiten
   - [ ] https://chatgpt.com/g/g-p-68db885253bc8191a343448dc31c1629-mail-un-posts-zu-push-inhalten/c/68db889d-1fe8-8332-b4df-9514298254bb
 
 ---
-
+- [ ] **PUSH Präse**
+  - [ ] Slim Prompts!
+  - [ ] Präse ab dem Teil Slim Prompts
+  - [ ] Präse von Gamma.App rendern lassen
 - [ ] **PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**
   - [ ] Das Ergebnis war besser, weniger fancy app idee https://lovable.dev/projects/a50b1c07-f4b4-43a1-aa9d-dff576e2b903
   - [ ] Build mehr Mobile First Optik und große Typo
