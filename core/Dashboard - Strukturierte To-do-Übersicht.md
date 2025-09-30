@@ -5,9 +5,6 @@
 
 
 ### **📅 Dienstag, 30. September**
-- [ ] Mails
-- [ ] Tabs
-- [ ] Linkedin
 
 - [ ] Check24 Präse mit den offenen Fragen vorbereiten
   Dinge die es zu meistern gilt: Kontext, Brand, Interaction Patterns, Branch, Agentic Prototyping? 

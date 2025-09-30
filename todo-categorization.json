@@ -1,38 +1,3 @@
 🤖 Mistral API wird aufgerufen...
 ✅ Mistral Response:
-**Geld-Fokus:**
-- [ ] Check24 Präsenz mit den offenen Fragen vorbereiten
-- [ ] Nebenkosten Nachzahlung Licht
-- [ ] Tesxhenrechner
-- [ ] PUSH Präsenz 1h Test und visuell Perfect: gamma.app, Manus Slides ausprobieren
-- [ ] 💰 Pricing-Ideen sammeln
-- [ ] Drei Angebots-Kacheln ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir")
-- [ ] Drei starkes Kunden-Zitat mit Bild und kurzem Case (von Donnerstag verschoben)
-
-**Tool-Fokus:**
-- [ ] Tool-Entwicklung
-- [ ] Chat-First
-- [ ] Interface
-- [ ] Prototyping
-- [ ] Alloy testen
-- [ ] Alloy-Tool testen und evaluieren
-- [ ] Alloy-Dokumentation durcharbeiten und praktisch testen
-
-**Marketing-Fokus:**
-- [ ] Mails
-- [ ] Tabs
-- [ ] Linkedin
-- [ ] PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen (focus on the logic)
-- [ ] Noch mehr rauskommen aus dem Haus planen
-- [ ] Marketing Substain und Laura
-- [ ] PUSH Post ist musthave
-- [ ] Alle Leute hallo mit Lead Funnels Strategie, potential clients aus der letztenkontaktier welle
-
-**Personal:**
-- [ ] Persönliche Aufgaben
-- [ ] Gesundheit
-- [ ] Familie
-- [ ] Bürokratie
-- [ ] iPad für Maryam
-- [ ] 2/4 werk1
-- [ ] Dörfermorgensequenz ausführen (Terminal-Befehl: `./automation/mistral-morning-sequence.sh "2025-10-01"`)
+Fehler in API Response: {'object': 'error', 'message': 'Service tier capacity exceeded for this model.', 'type': 'service_tier_capacity_exceeded', 'param': None, 'code': '3505'}
