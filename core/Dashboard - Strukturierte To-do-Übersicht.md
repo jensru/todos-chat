@@ -4,6 +4,7 @@
 
 
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
+- [ ] Todos hier massiv verschlanken und auf notion unterseiten
 - [ ] 2/4 werk1
 - [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
 
@@ -23,6 +24,16 @@
   - [ ] immer start beim dashboard für die interaktionen nicht zu viel Navigation chrome
   - [ ] Handout abgespeckt Perfect
   - [ ] Komponente in Flows
+- [ ] **Design Core Prompts für PUSH und Check24)**
+  - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
+  - [ ] https://prompt-directory-fh.lovable.app/
+  - [ ] https://mastering-lovable.lovable.app/
+  - [ ] https://buzzword-hacks.lovable.app//
+  - [ ] https://www.linkedin.com/posts/haasfelix_10-hacks-activity-7340306418392072195-OdAa/
+  - [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/
+  - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
+  - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
+  - [ ] Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill
 
 ---
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
@@ -34,43 +45,7 @@
 
 #### **Donnerstag, 2. Oktober**
 - [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
-  - Tools pricing
-  - Cohorten Workshops nach Push
-  - Newsletter pricing
-  - Analyse Anna Workshops
-  - Post dass ich bei der Push bin
-  - Post über Angebote
-  - Kappa Post
-  - Webinare als Leads
-  - Linkedin Funnel, Landingpages Newsletter
-- [ ] **3-Angebots-Kacheln** ("Wir bauen für dich" / "Wir bringen's dir bei" / "Wir sprinten mit dir") (von Donnerstag verschoben)
-- [ ] **drei starkes Kunden-Zitat mit Bild und kurzem Case?** (von Donnerstag verschoben)
-  - lea
-  - SAP Typ
-  - Team Manager App Typ
-  - [ ] Meine Website Tools seiten besser, Preise überall und mehr Tools! 
-
-- [ ] Neue AI-Positionierung finalisieren (AI Rapid Prototyping, AI-generated Interfaces) 
-- [ ] Content für LinkedIn/Social Media (AI Agent Prototyping)
-- [ ] Tool Marketing Tests, betaliste, invite only (https://appcanvas.io/), Tests zu value prop, Pricing
-    - [ ] **Testimonial**: "Hi Jens, danke für die Einladung. Also erst einmal finde ich die Wires klasse. Es hätte mir bei meiner App geholfen, die Seiten zu strukturieren. Die Möglichkeit hatte ich damals nicht"
-    - [ ] **Testimonial**: Lea
-- [ ] Ich brauche einen Funnel immer beim Kontaktieren
-- [ ] Irgendein community live Event jetzt
-- [ ] Webinar UX
-- [ ] Webinar Produkt
-- [ ] Die wichtigsten Fragen verstehen
-
-- [ ] **Design Core Prompts für PUSH und Check24)**
-  - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
-  - [ ] https://prompt-directory-fh.lovable.app/
-  - [ ] https://mastering-lovable.lovable.app/
-  - [ ] https://buzzword-hacks.lovable.app//
-  - [ ] https://www.linkedin.com/posts/haasfelix_10-hacks-activity-7340306418392072195-OdAa/
-  - [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/
-  - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
-  - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
-  - [ ] Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill
+- [ ] **Marketing Seiten aufräumen**
 
 - [ ] Taschenrechner file:///Users/jensru/Downloads/Taschenrechnerbestellung%20_InfoEltern%202025_8.-10.%20Klasse.pdf
 - [ ] Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?
