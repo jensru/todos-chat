@@ -1,8 +1,8 @@
 {
   "tasks": [
     {
-      "id": "task_unknown_pascal__input_der_teams__ausar_6",
-      "title": "Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h",
+      "id": "task_unknown_slim_prompts__6",
+      "title": "Slim Prompts!",
       "description": "",
       "status": "pending",
       "priority": "medium",
@@ -11,13 +11,29 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 6,
-      "created_at": "2025-10-01T07:30:21.756Z",
-      "updated_at": "2025-10-01T07:30:21.756Z",
+      "created_at": "2025-10-01T08:35:48.277Z",
+      "updated_at": "2025-10-01T08:35:48.277Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
     {
-      "id": "task_unknown____push_post_ist_musthave______8",
+      "id": "task_unknown_pascal__input_der_teams__ausar_7",
+      "title": "Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [],
+      "date": null,
+      "week": null,
+      "project": "TIMELINE: Oktober - Dezember 2025",
+      "line_number": 7,
+      "created_at": "2025-10-01T08:35:48.277Z",
+      "updated_at": "2025-10-01T08:35:48.277Z",
+      "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+      "subtasks": []
+    },
+    {
+      "id": "task_unknown____push_post_ist_musthave______9",
       "title": "**🔥 Push Post ist musthave**",
       "description": "",
       "status": "pending",
@@ -30,36 +46,36 @@
       "date": null,
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
-      "line_number": 8,
-      "created_at": "2025-10-01T07:30:21.756Z",
-      "updated_at": "2025-10-01T07:30:21.756Z",
+      "line_number": 9,
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": [
         {
-          "id": "subtask___linkend_in_post____9",
+          "id": "subtask___linkend_in_post____10",
           "title": "**Linkend In Post** \\\"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\\\"",
           "status": "pending",
-          "line_number": 9,
-          "created_at": "2025-10-01T07:30:21.756Z"
+          "line_number": 10,
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
-          "id": "subtask_workshop_texte_mehr__10",
+          "id": "subtask_workshop_texte_mehr__11",
           "title": "Workshop texte mehr ROI und dann in lerneinheiten",
           "status": "pending",
-          "line_number": 10,
-          "created_at": "2025-10-01T07:30:21.756Z"
+          "line_number": 11,
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
-          "id": "subtask_https___chatgpt_com__11",
+          "id": "subtask_https___chatgpt_com__12",
           "title": "https://chatgpt.com/g/g-p-68db885253bc8191a343448dc31c1629-mail-un-posts-zu-push-inhalten/c/68db889d-1fe8-8332-b4df-9514298254bb",
           "status": "pending",
-          "line_number": 11,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "line_number": 12,
+          "created_at": "2025-10-01T08:35:48.278Z"
         }
       ]
     },
     {
-      "id": "task_unknown_nochmal_gesamte_pr_se_urspr_ng_16",
+      "id": "task_unknown_nochmal_gesamte_pr_se_urspr_ng_17",
       "title": "Nochmal gesamte präse ursprünglich einfach so bauen lassen und Skript ablegen",
       "description": "",
       "status": "pending",
@@ -68,14 +84,14 @@
       "date": null,
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
-      "line_number": 16,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "line_number": 17,
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
     {
-      "id": "task_unknown___push_pr_se___18",
+      "id": "task_unknown___push_pr_se___19",
       "title": "**PUSH Präse**",
       "description": "",
       "status": "pending",
@@ -86,31 +102,24 @@
       "date": null,
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
-      "line_number": 18,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "line_number": 19,
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": [
-        {
-          "id": "subtask_slim_prompts__19",
-          "title": "Slim Prompts!",
-          "status": "pending",
-          "line_number": 19,
-          "created_at": "2025-10-01T07:30:21.757Z"
-        },
         {
           "id": "subtask_pr_se_ab_dem_teil_sl_20",
           "title": "Präse ab dem Teil Slim Prompts",
           "status": "pending",
           "line_number": 20,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_pr_se_von_gamma_app__21",
           "title": "Präse von Gamma.App rendern lassen",
           "status": "pending",
           "line_number": 21,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         }
       ]
     },
@@ -127,8 +136,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 22,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": [
         {
@@ -136,35 +145,35 @@
           "title": "Das Ergebnis war besser, weniger fancy app idee https://lovable.dev/projects/a50b1c07-f4b4-43a1-aa9d-dff576e2b903",
           "status": "pending",
           "line_number": 23,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_build_mehr_mobile_fi_24",
           "title": "Build mehr Mobile First Optik und große Typo",
           "status": "pending",
           "line_number": 24,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_immer_start_beim_das_25",
           "title": "immer start beim dashboard für die interaktionen nicht zu viel Navigation chrome",
           "status": "pending",
           "line_number": 25,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_handout_abgespeckt_p_26",
           "title": "Handout abgespeckt Perfect",
           "status": "pending",
           "line_number": 26,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_komponente_in_flows_27",
           "title": "Komponente in Flows",
           "status": "pending",
           "line_number": 27,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         }
       ]
     },
@@ -181,8 +190,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 28,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": [
         {
@@ -190,63 +199,63 @@
           "title": "Design Tool schon in ersten Prompt jetzt fixes oder vorgaben",
           "status": "pending",
           "line_number": 29,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_https___prompt_direc_30",
           "title": "https://prompt-directory-fh.lovable.app/",
           "status": "pending",
           "line_number": 30,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_https___mastering_lo_31",
           "title": "https://mastering-lovable.lovable.app/",
           "status": "pending",
           "line_number": 31,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_https___buzzword_hac_32",
           "title": "https://buzzword-hacks.lovable.app//",
           "status": "pending",
           "line_number": 32,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_https___www_linkedin_33",
           "title": "https://www.linkedin.com/posts/haasfelix_10-hacks-activity-7340306418392072195-OdAa/",
           "status": "pending",
           "line_number": 33,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_https___www_linkedin_34",
           "title": "https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/",
           "status": "pending",
           "line_number": 34,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_basic_geiles_design__35",
           "title": "Basic geiles Design von Lovable Input fordern in vibe coding system prompt",
           "status": "pending",
           "line_number": 35,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_design_in_mein_tool__36",
           "title": "Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren",
           "status": "pending",
           "line_number": 36,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         },
         {
           "id": "subtask_evals_f_r_mein_tool__37",
           "title": "Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill",
           "status": "pending",
           "line_number": 37,
-          "created_at": "2025-10-01T07:30:21.757Z"
+          "created_at": "2025-10-01T08:35:48.278Z"
         }
       ]
     },
@@ -261,8 +270,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 40,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -277,8 +286,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 41,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -293,8 +302,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 43,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -309,8 +318,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 45,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -327,8 +336,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 48,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -343,8 +352,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 49,
-      "created_at": "2025-10-01T07:30:21.757Z",
-      "updated_at": "2025-10-01T07:30:21.757Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -359,8 +368,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 51,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -377,8 +386,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 52,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.278Z",
+      "updated_at": "2025-10-01T08:35:48.278Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -393,8 +402,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 55,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -409,8 +418,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 58,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -425,8 +434,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 59,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -441,8 +450,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 60,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -457,8 +466,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 61,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -473,8 +482,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 62,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -489,8 +498,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 63,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -505,8 +514,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 67,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -521,8 +530,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 68,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -537,8 +546,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 69,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -555,8 +564,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 70,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -573,8 +582,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 71,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": [
         {
@@ -582,49 +591,49 @@
           "title": "**Zuhören** - ganz wichtig als erstes zuhören",
           "status": "pending",
           "line_number": 72,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask_hilfe_wieder_anbiete_73",
           "title": "Hilfe wieder anbieten, sobald ich einen Punkt finde",
           "status": "pending",
           "line_number": 73,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask_sofort_markieren_und_74",
           "title": "Sofort markieren und später ansprechen",
           "status": "pending",
           "line_number": 74,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask_fragen_nach_gr__ten__75",
           "title": "Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)",
           "status": "pending",
           "line_number": 75,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask_agentisches_prototyp_76",
           "title": "Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen",
           "status": "pending",
           "line_number": 76,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask_workshop_teaser___wo_77",
           "title": "Workshop-Teaser - Workshop für Mitarbeiter ansprechen",
           "status": "pending",
           "line_number": 77,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask_post_zusammen_machen_78",
           "title": "Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben",
           "status": "pending",
           "line_number": 78,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         }
       ]
     },
@@ -639,8 +648,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 79,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -655,8 +664,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 83,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -671,8 +680,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 86,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -687,8 +696,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 89,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -703,8 +712,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 92,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -719,8 +728,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 97,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -735,8 +744,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 98,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -754,8 +763,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 103,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -773,8 +782,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 106,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -789,8 +798,8 @@
       "week": null,
       "project": "TIMELINE: Oktober - Dezember 2025",
       "line_number": 109,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -805,8 +814,8 @@
       "week": null,
       "project": "NOVEMBER 2025",
       "line_number": 120,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": [
         {
@@ -814,14 +823,14 @@
           "title": "**150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen",
           "status": "pending",
           "line_number": 121,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask___besser_deutlich_fr_122",
           "title": "**Besser deutlich früher** - Oktober bis Dezember 2025 für genug Bearbeitungszeit",
           "status": "pending",
           "line_number": 122,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         }
       ]
     },
@@ -836,8 +845,8 @@
       "week": null,
       "project": "NOVEMBER 2025",
       "line_number": 123,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": [
         {
@@ -845,21 +854,21 @@
           "title": "**ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich",
           "status": "pending",
           "line_number": 124,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask___phase_1__6_monate__125",
           "title": "**Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat",
           "status": "pending",
           "line_number": 125,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask___phase_2__9_monate__126",
           "title": "**Phase 2 (9 Monate, optional):** Nur 300 € Zuschuss",
           "status": "pending",
           "line_number": 126,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         }
       ]
     },
@@ -874,8 +883,8 @@
       "week": null,
       "project": "NOVEMBER 2025",
       "line_number": 127,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": [
         {
@@ -883,14 +892,14 @@
           "title": "**Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026",
           "status": "pending",
           "line_number": 128,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         },
         {
           "id": "subtask___szenario_dezember__129",
           "title": "**Szenario Dezember 2025:** Gründung Januar 2026 → ALG I + Zuschuss bis Juni/Juli 2026",
           "status": "pending",
           "line_number": 129,
-          "created_at": "2025-10-01T07:30:21.758Z"
+          "created_at": "2025-10-01T08:35:48.279Z"
         }
       ]
     },
@@ -905,8 +914,8 @@
       "week": null,
       "project": "NOVEMBER 2025",
       "line_number": 132,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -921,8 +930,8 @@
       "week": null,
       "project": "DEZEMBER 2025",
       "line_number": 139,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -937,8 +946,8 @@
       "week": null,
       "project": "DEZEMBER 2025",
       "line_number": 142,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -953,8 +962,8 @@
       "week": null,
       "project": "DEZEMBER 2025",
       "line_number": 143,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -969,8 +978,8 @@
       "week": null,
       "project": "DEZEMBER 2025",
       "line_number": 144,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -985,8 +994,8 @@
       "week": null,
       "project": "DEZEMBER 2025",
       "line_number": 145,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     },
@@ -1001,15 +1010,15 @@
       "week": null,
       "project": "DEZEMBER 2025",
       "line_number": 146,
-      "created_at": "2025-10-01T07:30:21.758Z",
-      "updated_at": "2025-10-01T07:30:21.758Z",
+      "created_at": "2025-10-01T08:35:48.279Z",
+      "updated_at": "2025-10-01T08:35:48.279Z",
       "source_file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "subtasks": []
     }
   ],
   "metadata": {
-    "last_updated": "2025-10-01T07:30:21.759Z",
-    "total_tasks": 46,
+    "last_updated": "2025-10-01T08:35:48.279Z",
+    "total_tasks": 47,
     "version": "1.0"
   }
 }

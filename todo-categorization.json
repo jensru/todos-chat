@@ -1,7 +1,3 @@
 🤖 Mistral API wird aufgerufen...
 ✅ Mistral Response:
-Geld-Fokus:
-- Nebenkostenabrechnungen an Mieter senden, inkl. Steigerung
-- Pricing-Ideen sammeln
-- Miete erhöhen wenn Nebenkostenabrechnung Tela da ist
-- Steuererklärung 2
+Fehler in API Response: {'object': 'error', 'message': 'Service tier capacity exceeded for this model.', 'type': 'service_tier_capacity_exceeded', 'param': None, 'code': '3505'}

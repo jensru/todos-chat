@@ -17,22 +17,15 @@
 - [ ] Nochmal gesamte präse ursprünglich einfach so bauen lassen und Skript ablegen
 
 - [ ] **PUSH Präse**
-  - [ ] Slim Prompts!
-  - [ ] Präse ab dem Teil Slim Prompts
   - [ ] Präse von Gamma.App rendern lassen
 - [ ] **PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**
-  - [ ] Das Ergebnis war besser, weniger fancy app idee https://lovable.dev/projects/a50b1c07-f4b4-43a1-aa9d-dff576e2b903
-  - [ ] Build mehr Mobile First Optik und große Typo
-  - [ ] immer start beim dashboard für die interaktionen nicht zu viel Navigation chrome
+  - [ ] 3 Stufiges generieren nochmal testen, einzel optimieren
+  - [ ] colors vorher definieren?
+  - [ ] daily repeat und hub optimieren
+  - [ ] guided interactions noch mal checken 
+  - [ ] microcopy mit psychology noch mal checken
   - [ ] Handout abgespeckt Perfect
-  - [ ] Komponente in Flows
 - [ ] **Design Core Prompts für PUSH und Check24)**
-  - [ ] Design Tool schon in ersten Prompt jetzt fixes oder vorgaben
-  - [ ] https://prompt-directory-fh.lovable.app/
-  - [ ] https://mastering-lovable.lovable.app/
-  - [ ] https://buzzword-hacks.lovable.app//
-  - [ ] https://www.linkedin.com/posts/haasfelix_10-hacks-activity-7340306418392072195-OdAa/
-  - [ ] https://www.linkedin.com/posts/haasfelix_7a5fff-00d1b2-ff6b6b-activity-7324076565607178240-RkE7/
   - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
   - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
   - [ ] Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill
