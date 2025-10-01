@@ -4,8 +4,6 @@
 
 
 #### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
-- [ ] Todos hier massiv verschlanken und auf notion unterseiten
-- [ ] 2/4 werk1
 - [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
 
 - [ ] **🔥 Push Post ist musthave**   
@@ -13,7 +11,11 @@
   - [ ] Workshop texte mehr ROI und dann in lerneinheiten
   - [ ] https://chatgpt.com/g/g-p-68db885253bc8191a343448dc31c1629-mail-un-posts-zu-push-inhalten/c/68db889d-1fe8-8332-b4df-9514298254bb
 
+
+
 ---
+- [ ] Nochmal gesamte präse ursprünglich einfach so bauen lassen und Skript ablegen
+
 - [ ] **PUSH Präse**
   - [ ] Slim Prompts!
   - [ ] Präse ab dem Teil Slim Prompts
@@ -63,6 +65,7 @@
 
 
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
+- [ ] 0/3 werk1
 - [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
 - [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, Check24!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.

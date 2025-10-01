@@ -1,39 +1,27 @@
 {
-  "last_sync": "2025-09-30T13:03:11.591Z",
-  "total_syncs": 13,
+  "last_sync": "2025-09-30T13:01:22.102Z",
+  "total_syncs": 16,
   "recent_syncs": [
     {
-      "timestamp": "2025-09-30T16:20:44.849Z",
+      "timestamp": "2025-09-30T16:25:04.041Z",
       "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "status": "success",
       "error": null
     },
     {
-      "timestamp": "2025-09-30T16:24:50.023Z",
+      "timestamp": "2025-09-30T16:25:29.190Z",
       "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "status": "success",
       "error": null
     },
     {
-      "timestamp": "2025-09-30T16:25:04.023Z",
+      "timestamp": "2025-09-30T16:28:46.261Z",
       "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "status": "success",
       "error": null
     },
     {
-      "timestamp": "2025-09-30T16:25:29.068Z",
-      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
-      "status": "success",
-      "error": null
-    },
-    {
-      "timestamp": "2025-09-30T16:28:46.238Z",
-      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
-      "status": "success",
-      "error": null
-    },
-    {
-      "timestamp": "2025-09-30T16:28:53.229Z",
+      "timestamp": "2025-09-30T16:28:53.248Z",
       "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "status": "success",
       "error": null
@@ -51,13 +39,25 @@
       "error": null
     },
     {
-      "timestamp": "2025-10-01T06:16:00.202Z",
+      "timestamp": "2025-10-01T06:16:00.205Z",
       "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "status": "success",
       "error": null
     },
     {
       "timestamp": "2025-10-01T06:16:14.174Z",
+      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+      "status": "success",
+      "error": null
+    },
+    {
+      "timestamp": "2025-10-01T07:03:58.816Z",
+      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+      "status": "success",
+      "error": null
+    },
+    {
+      "timestamp": "2025-10-01T07:30:21.768Z",
       "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
       "status": "success",
       "error": null
