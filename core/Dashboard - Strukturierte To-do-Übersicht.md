@@ -7,12 +7,31 @@
 
   
 -
+
+---
+
+
+
+
+### **Freitag, 3. Oktober**
+- [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier
+
+### **Samstag, 4. Oktober**  
+- [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
+- [ ] Taschenrechner file:///Users/jensru/Downloads/Taschenrechnerbestellung%20_InfoEltern%202025_8.-10.%20Klasse.pdf
+- [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist
+- [ ] Schlafzimmer Rollos
+- [ ] Belgien AG antworten
+- [ ] Geld zurück einsammeln
+- [ ] **Steuer2024** - Steuererklärung 2024
+- [ ] Immer: Heldenverlies, Klettrwald, Tauchen, superfly, Therme Erding, 
+
+
+
+### **📅 WOCHE: 6. - 12. Oktober 2025**
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
   - [ ] Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext
 
-
-
----
 
 - [ ] **PUSH Präse**
 - [ ] **PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**
@@ -30,26 +49,9 @@
 ---
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
+- [ ] Check24 Workshop!!!
 
 
-
-
-
-### **Freitag, 3. Oktober**
-- [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier
-
-### **Samstag, 4. Oktober**  
-- [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
-- [ ] Taschenrechner file:///Users/jensru/Downloads/Taschenrechnerbestellung%20_InfoEltern%202025_8.-10.%20Klasse.pdf
-- [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist
-- [ ] Schlafzimmer Rollos
-- [ ] Belgien AG antworten
-- [ ] **Steuer2024** - Steuererklärung 2024
-- [ ] Immer: Heldenverlies, Klettrwald, Tauchen, superfly, Therme Erding, 
-
-
-
-### **📅 WOCHE: 6. - 12. Oktober 2025**
 - [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
 - [ ] **Marketing Seiten aufräumen**
 
