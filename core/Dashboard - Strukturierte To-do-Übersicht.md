@@ -5,17 +5,13 @@
 
 #### **Donnerstag, 2. Oktober**
 
-- [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
-  - [ ] Workshop Outline
-  - [ ] Vorbefragung
-  - [ ] Termine
-  - [ ] Materialien?!?
-  - [ ] Check 24? **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818
+- [x] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
 
 
 - [ ] **🔥 Push Post ist musthave**   
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
   - [ ] Workshop texte mehr ROI und dann in lerneinheiten
+  - [ ] Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext
   - [ ] https://chatgpt.com/g/g-p-68db885253bc8191a343448dc31c1629-mail-un-posts-zu-push-inhalten/c/68db889d-1fe8-8332-b4df-9514298254bb
 
 
@@ -65,6 +61,8 @@
 
 - [ ] Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?
 
+  - [ ] Check24 genaues Briefing für den Konzepter
+  - [ ] Check24 Materialien?!?
 - [ ] 0/3 werk1
 - [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
