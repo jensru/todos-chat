@@ -5,7 +5,6 @@
 
 #### **Donnerstag, 2. Oktober**
 
-- [x] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
 
 
 - [ ] **🔥 Push Post ist musthave**   
