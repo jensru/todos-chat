@@ -3,8 +3,15 @@
 ## 📅 **TIMELINE: Oktober - Dezember 2025**
 
 
-#### **Mittwoch, 1. Oktober (Marketing und Pricing Plan)**
+#### **Donnerstag, 2. Oktober**
+
 - [ ] Pascal, Input der Teams, ausarbeiten für Setup und Zeitflow, Option 8h vs 4h
+  - [ ] Workshop Outline
+  - [ ] Vorbefragung
+  - [ ] Termine
+  - [ ] Materialien?!?
+  - [ ] Check 24? **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818
+
 
 - [ ] **🔥 Push Post ist musthave**   
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
@@ -14,10 +21,10 @@
 
 
 ---
-- [ ] Nochmal gesamte präse ursprünglich einfach so bauen lassen und Skript ablegen
 
 - [ ] **PUSH Präse**
   - [ ] Präse von Gamma.App rendern lassen
+  - [ ] Nochmal gesamte präse ursprünglich einfach so bauen lassen und Skript ablegen
 - [ ] **PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**
   - [ ] 3 Stufiges generieren nochmal testen, einzel optimieren
   - [ ] colors vorher definieren?
@@ -34,16 +41,11 @@
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
 
-- [ ] Check 24? **PMs mehr agentic interfaces Prototyping** - Zielgruppe erweitern (von Donnerstag verschoben) https://www.linkedin.com/posts/charlywargnier_this-guy-literally-shared-a-step-by-step-activity-7376664411186565120-w2wA/?utm_source=share&utm_medium=member_android&rcm=ACoAAAGVrIABTiNBA6oz4zVdomEKmFdTpsfV818
 
 - [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
-
-#### **Donnerstag, 2. Oktober**
-- [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
-- [ ] **Marketing Seiten aufräumen**
-
 - [ ] Taschenrechner file:///Users/jensru/Downloads/Taschenrechnerbestellung%20_InfoEltern%202025_8.-10.%20Klasse.pdf
-- [ ] Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?
+
+
 
 ### **Freitag, 3. Oktober**
 - [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier
@@ -58,6 +60,11 @@
 
 
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
+- [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
+- [ ] **Marketing Seiten aufräumen**
+
+- [ ] Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?
+
 - [ ] 0/3 werk1
 - [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
