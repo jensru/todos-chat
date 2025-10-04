@@ -3,9 +3,6 @@
 ## 📅 **TIMELINE: Oktober - Dezember 2025**
 
 
-### **Freitag, 3. Oktober**
-- [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier
-
 ### **Samstag, 4. Oktober**  
 - [ ] Schlafzimmer Rollos
 - [ ] Belgien AG antworten
