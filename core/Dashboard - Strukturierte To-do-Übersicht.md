@@ -3,35 +3,20 @@
 ## 📅 **TIMELINE: Oktober - Dezember 2025**
 
 
-#### **Donnerstag, 2. Oktober**
-
-  
--
-
----
-
-
-
-
 ### **Freitag, 3. Oktober**
 - [ ] **🎂 Geburtstag Léo-Paul** - Geburtstagsfeier
 
 ### **Samstag, 4. Oktober**  
-- [ ] Nebenkostenabrechnungen Lich an Mieter, inkl. Steigerung
-- [ ] Taschenrechner file:///Users/jensru/Downloads/Taschenrechnerbestellung%20_InfoEltern%202025_8.-10.%20Klasse.pdf
-- [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist
 - [ ] Schlafzimmer Rollos
 - [ ] Belgien AG antworten
-- [ ] Geld zurück einsammeln
 - [ ] **Steuer2024** - Steuererklärung 2024
-- [ ] Immer: Heldenverlies, Klettrwald, Tauchen, superfly, Therme Erding, 
 
 
 
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
   - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
   - [ ] Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext
-
+- [ ] Tim wg. Coaching
 
 - [ ] **PUSH Präse**
 - [ ] **PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**
@@ -50,10 +35,9 @@
 - [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
 - [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
 - [ ] Check24 Workshop!!!
+- [ ] Erste Daten für Konzepter generieren. Check24 Workshop!!!
 
 
-- [ ] **💰 Pricing-Ideen sammeln** - Alle Pricing-Strategien und Ideen strukturieren:
-- [ ] **Marketing Seiten aufräumen**
 
 - [ ] Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?
 
@@ -80,6 +64,10 @@
     - [ ] Chat First
 - [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)
 
+#### **Mittwoch, 7. Oktober**
+- [ ] Nebenkostenabrechnungen Lich versenden
+- [ ] Linkedin zu Substack und zweiter Link zu Tools und Workshops. Psychology war anscheinen gute Prompts
+
 #### **Mittwoch, 8. Oktober**
 - [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
 
@@ -87,6 +75,12 @@
 - [ ] **10.10. um 10:30 Uhr Lungenarzttermin**
 
 
+- [ ] **💰 Pricing-Ideen sammeln (Sales Seiten aufräumen)** - Alle Pricing-Strategien und Ideen strukturieren:
+- [ ] **Marketing Seiten aufräumen** → kickboost.io Angebote und Tools, Tool Tests, Pivot?
+
+### **Wochenende 11. und 12. Oktober**  
+- [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist
+- [ ] Immer: Heldenverlies, Klettrwald, Tauchen, superfly, Therme Erding, 
 
 ### **📅 WOCHE: 13. - 19. Oktober 2025**
 - [ ] Zahnärztin, bekomme ich noch die E-Mails?
