@@ -4,15 +4,15 @@
 
 
 ### **Samstag, 4. Oktober**  
-- [ ] Schlafzimmer Rollos
-- [ ] Belgien AG antworten
-- [ ] **Steuer2024** - Steuererklärung 2024
 
 
 
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
-  - [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
-  - [ ] Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext
+- [ ] Kretschmer wegen Zahnzusatz
+
+
+- [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
+- [ ] Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext
 - [ ] Tim wg. Coaching
 
 - [ ] **PUSH Präse**
@@ -76,6 +76,8 @@
 - [ ] **Marketing Seiten aufräumen** → kickboost.io Angebote und Tools, Tool Tests, Pivot?
 
 ### **Wochenende 11. und 12. Oktober**  
+- [ ] Schlafzimmer Rollos
+- [ ] **Steuer2024** - Steuererklärung 2024
 - [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist
 - [ ] Immer: Heldenverlies, Klettrwald, Tauchen, superfly, Therme Erding, 
 
