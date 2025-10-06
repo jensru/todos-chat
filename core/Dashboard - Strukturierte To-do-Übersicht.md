@@ -48,20 +48,19 @@
 
 #### **Mittwoch, 8. Oktober**
 - [ ] 0/3 werk1 📅 2025-10-08
-- [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen** 📅 2025-10-09
+- [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen** 📅 2025-10-08
 - [ ] Linkedin zu Substack und zweiter Link zu Tools und Workshops. Psychology war anscheinen gute Prompts 📅 2025-10-08
 
 
 #### **Donnerstag, 9. Oktober**
-- [ ] Stromanbieter 📅 2025-10-08
-- [ ] Huk 📅 2025-10-08
-- [ ] Zahnversicherung 📅 2025-10-08
-- [ ] Mieterverein doppelt 📅 2025-10-08
-- [ ] Kretschmer wegen Zahnzusatz 📅 2025-10-08
-- [ ] Nebenkostenabrechnungen Lich versenden 📅 2025-10-08
-- [ ] **10.10. um 10:30 Uhr Lungenarzttermin** 📅 2025-10-10
+- [ ] Stromanbieter 📅 2025-10-09
+- [ ] Huk 📅 2025-10-09
+- [ ] Zahnversicherung 📅 2025-10-09
+- [ ] Mieterverein doppelt 📅 2025-10-09
+- [ ] Kretschmer wegen Zahnzusatz 📅 2025-10-09
+- [ ] Nebenkostenabrechnungen Lich versenden 📅 2025-10-09
 
-- [ ] **Tool Seiten -> Aktuelle Tools & Lead....** 📅 2025-10-06
+- [ ] **Tool Seiten -> Aktuelle Tools & Lead....** 📅 2025-10-09
     - [ ] built your own app with a running agent course!
     - [ ] Marketing für Methode, Tool, Workshops, Kundenprojekte
     - [ ] Workshop-Texte mehr ROI-fokussiert
@@ -71,6 +70,10 @@
 
 - [ ] **💰 Pricing-Ideen sammeln (Sales Seiten aufräumen)** - Alle Pricing-Strategien und Ideen strukturieren: 📅 2025-10-09
 - [ ] **Marketing Seiten aufräumen** → kickboost.io Angebote und Tools, Tool Tests, Pivot? 📅 2025-10-09
+
+
+#### **Freitag, 10. Oktober**
+- [ ] **10.10. um 10:30 Uhr Lungenarzttermin** 📅 2025-10-10
 
 ### **Wochenende 11. und 12. Oktober**  
 - [ ] Schlafzimmer Rollos 📅 2025-10-11
@@ -101,14 +104,14 @@
 ## 📅 **NOVEMBER 2025**
 
 ### **Gründungsplan - ALG I & Gründungszuschuss**
-- [ ] **Spätestens Ende Dezember 2025** - Antrag für Gründungszuschuss stellen 📅 2025-12-01
+- [ ] **Spätestens Ende Dezember 2025** - Antrag für Gründungszuschuss stellen 📅 2025-11-01
   - [ ] **150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen
   - [ ] **Besser deutlich früher** - Oktober bis Dezember 2025 für genug Bearbeitungszeit
-- [ ] **Einkommensplan erstellen** - ALG I + Gründungszuschuss kalkulieren:
+- [ ] **Einkommensplan erstellen** - ALG I + Gründungszuschuss kalkulieren: 📅 2025-11-01
   - [ ] **ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich
   - [ ] **Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat
   - [ ] **Phase 2 (9 Monate, optional):** Nur 300 € Zuschuss
-- [ ] **Optimaler Zeitraum planen** - Oktober bis Dezember 2025 für Antrag
+- [ ] **Optimaler Zeitraum planen** - Oktober bis Dezember 2025 für Antrag 📅 2025-11-01
   - [ ] **Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026
   - [ ] **Szenario Dezember 2025:** Gründung Januar 2026 → ALG I + Zuschuss bis Juni/Juli 2026
 

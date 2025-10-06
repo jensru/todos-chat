@@ -300,19 +300,27 @@ class DatabaseAPI {
 
   async bidirectionalSync(req, res) {
     try {
-      const markdownPath = req.body.markdownPath || './core/Dashboard - Strukturierte To-do-Übersicht.md';
-      const jsonPath = req.body.jsonPath || './data/tasks.json';
+      const markdownPath = './core/Dashboard - Strukturierte To-do-Übersicht.md';
+      const jsonPath = './data/tasks.json';
       
-      await this.syncService.bidirectionalSync(markdownPath, jsonPath);
+      // Führe Markdown-zu-JSON Sync durch
+      await this.syncMarkdownToJson(markdownPath, jsonPath);
+      
+      // Führe Smart Task Enhancement durch
+      const { SmartTaskEnhancer } = require('./smart-task-enhancer');
+      const enhancer = new SmartTaskEnhancer();
+      enhancer.enhanceTasks();
       
       res.json({
         success: true,
-        message: 'Bidirektionale Synchronisation abgeschlossen'
+        message: 'Bidirektionale Synchronisation abgeschlossen',
+        timestamp: new Date().toISOString()
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message
+        error: error.message,
+        timestamp: new Date().toISOString()
       });
     }
   }

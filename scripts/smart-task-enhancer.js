@@ -80,9 +80,10 @@ class SmartTaskEnhancer {
       }
     }
 
-    // Keyword-basierte Due Date Erkennung für Markdown-Tasks
-    // Verwende DateSync für konsistente Datumsberechnung
-    const currentWeekStart = this.dateSync.getCurrentWeekStart();
+    // Respektiere bereits vorhandene Due Dates aus dem Markdown
+    if (task.due_date) {
+      return task.due_date;
+    }
     
     // Montag Tasks (6. Oktober)
     if (title.includes('bene') || title.includes('testemonial') || 
