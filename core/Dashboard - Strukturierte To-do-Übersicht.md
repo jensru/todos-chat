@@ -10,14 +10,7 @@
 
 
 #### **Montag Nachmittag, 6. Oktober**
-- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:
-  - [ ] **Zuhören** - ganz wichtig als erstes zuhören
-  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde
-  - [ ] Sofort markieren und später ansprechen
-  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)
-  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen
-  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen
-  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben
+- [ ] Testemonial text an Bene schicken - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben
 
 - [ ] Steffen app schicken
 - [ ] Tim wg. Coaching
@@ -136,7 +129,4 @@
 - [ ] Asterix 41
 - [ ] 2 spirou
 
----
 
-_Heute: 
-_Letzte Aktualisierung: 

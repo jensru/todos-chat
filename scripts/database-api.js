@@ -55,6 +55,10 @@ class DatabaseAPI {
     // Markdown Content Routes
     this.app.get('/api/markdown/dashboard', this.getDashboardMarkdown.bind(this));
     this.app.get('/api/markdown/sidebar', this.getSidebarMarkdown.bind(this));
+    
+    // AI Integration Routes
+    this.app.post('/api/slash-command', this.executeSlashCommand.bind(this));
+    this.app.post('/api/mistral', this.askMistral.bind(this));
   }
 
   // Markdown Content Endpoints
@@ -324,6 +328,75 @@ class DatabaseAPI {
         success: true,
         data: logs
       });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+
+  // AI Integration Methods
+  async executeSlashCommand(req, res) {
+    try {
+      const { command } = req.body;
+      
+      if (!command) {
+        return res.status(400).json({
+          success: false,
+          error: 'Command ist erforderlich'
+        });
+      }
+      
+      // Execute slash command using the automation script
+      const { exec } = require('child_process');
+      const util = require('util');
+      const execAsync = util.promisify(exec);
+      
+      const scriptPath = './automation/simple-slash-commands.sh';
+      const { stdout, stderr } = await execAsync(`${scriptPath} "${command}"`);
+      
+      if (stderr) {
+        console.error('Slash command error:', stderr);
+      }
+      
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(stdout);
+      
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+
+  async askMistral(req, res) {
+    try {
+      const { prompt } = req.body;
+      
+      if (!prompt) {
+        return res.status(400).json({
+          success: false,
+          error: 'Prompt ist erforderlich'
+        });
+      }
+      
+      // Execute Mistral API call using the automation script
+      const { exec } = require('child_process');
+      const util = require('util');
+      const execAsync = util.promisify(exec);
+      
+      const scriptPath = './automation/mistral-api.sh';
+      const { stdout, stderr } = await execAsync(`${scriptPath} "${prompt}"`);
+      
+      if (stderr) {
+        console.error('Mistral API error:', stderr);
+      }
+      
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(stdout);
+      
     } catch (error) {
       res.status(500).json({
         success: false,

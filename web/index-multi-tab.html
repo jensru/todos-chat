@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Dashboard - Multi-Tab Übersicht</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Import Google Sans */
+        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
+        
+        /* CSS Custom Properties - Google Material 3 Design System */
+        :root {
+            /* Primary Colors */
+            --primary-50: #e8f0fe;
+            --primary-500: #0B57D0;
+            --primary-600: #0a4bb8;
+            --primary-700: #0847a6;
+            
+            /* Neutral Colors */
+            --neutral-50: #f8f9fa;
+            --neutral-100: #f1f3f4;
+            --neutral-200: #e8eaed;
+            --neutral-300: #dadce0;
+            --neutral-400: #bdc1c6;
+            --neutral-500: #9aa0a6;
+            --neutral-600: #80868b;
+            --neutral-700: #5f6368;
+            --neutral-800: #3c4043;
+            --neutral-900: #1f1f1f;
+            
+            /* Semantic Colors */
+            --success-500: #137333;
+            --warning-500: #ea8600;
+            --error-500: #d93025;
+            --info-500: #1a73e8;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e8f0fe;
+            
+            /* Text Colors */
+            --text-primary: #1f1f1f;
+            --text-secondary: #444746;
+            --text-tertiary: #747775;
+            --text-disabled: #9aa0a6;
+            
+            /* Spacing System (8px Grid) */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            --space-16: 64px;
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            width: 100%;
+            margin: 0;
+            padding: var(--space-4);
+            line-height: 1.8;
+            color: #4a4a4a;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            min-height: 100vh;
+            text-align: left;
+            box-sizing: border-box;
+        }
+        
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--neutral-200);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: var(--text-primary);
+            font-size: 32px;
+            font-weight: 600;
+            margin: 0;
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin: var(--space-2) 0 0 0;
+        }
+        
+        /* Tab Navigation */
+        .tab-navigation {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--neutral-200);
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: var(--space-2);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--neutral-200);
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .tab-btn:hover {
+            background: var(--primary-50);
+            border-color: var(--primary-500);
+            color: var(--primary-500);
+        }
+        
+        .tab-btn.active {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--neutral-200);
+            min-height: 600px;
+        }
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        /* Markdown Structure Tab */
+        .markdown-structure {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            border: 1px solid var(--neutral-200);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* Mistral Chat Tab */
+        .mistral-chat-container {
+            display: flex;
+            gap: var(--space-4);
+            height: 600px;
+        }
+        
+        .chat-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--neutral-200);
+            margin-bottom: var(--space-4);
+        }
+        
+        .chat-message {
+            margin-bottom: var(--space-3);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+        }
+        
+        .chat-message.user {
+            background: var(--primary-50);
+            border-left: 3px solid var(--primary-500);
+        }
+        
+        .chat-message.ai {
+            background: var(--neutral-50);
+            border-left: 3px solid var(--info-500);
+        }
+        
+        .chat-message.system {
+            background: var(--warning-500);
+            color: white;
+            border-left: 3px solid var(--warning-500);
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: var(--space-3);
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+            color: #FFFFFF;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .chat-send-btn:hover {
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-3);
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            background: linear-gradient(135deg, var(--info-500) 0%, var(--primary-500) 100%);
+            color: #FFFFFF;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .quick-action-btn:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        
+        .sidebar {
+            flex: 0 0 300px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            border: 1px solid var(--neutral-200);
+            overflow-y: auto;
+        }
+        
+        /* Smart Tasks Tab */
+        .smart-tasks-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+            height: auto;
+            min-height: 600px;
+        }
+        
+        .smart-tasks-main {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .smart-tasks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+        
+        .smart-tasks-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: var(--space-4);
+        }
+        
+        .smart-task-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: var(--space-3);
+            margin-bottom: var(--space-2);
+            border: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            min-height: 60px;
+        }
+        
+        .smart-task-card.hierarchy-level-1 {
+            border-left: 3px solid var(--primary-500);
+        }
+        
+        .smart-task-card.hierarchy-level-2 {
+            border-left: 2px solid var(--neutral-300);
+            background: var(--bg-secondary);
+            margin-left: var(--space-4);
+        }
+        
+        .smart-task-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        
+        .task-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .task-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 0;
+            flex: 1;
+            line-height: 1.4;
+        }
+        
+        .task-meta {
+            display: flex;
+            gap: var(--space-2);
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .priority-badge {
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .priority-high {
+            background: var(--error-500);
+            color: white;
+        }
+        
+        .priority-medium {
+            background: var(--warning-500);
+            color: white;
+        }
+        
+        .priority-low {
+            background: var(--success-500);
+            color: white;
+        }
+        
+        .deadline-badge {
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        .deadline-overdue {
+            background: var(--error-500);
+            color: white;
+        }
+        
+        .deadline-due-today {
+            background: var(--warning-500);
+            color: white;
+        }
+        
+        .deadline-due-tomorrow {
+            background: var(--info-500);
+            color: white;
+        }
+        
+        .deadline-due-soon {
+            background: var(--primary-500);
+            color: white;
+        }
+        
+        .task-tags {
+            display: flex;
+            gap: var(--space-1);
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+        
+        .task-tag {
+            background: var(--bg-tertiary);
+            color: var(--primary-500);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        .task-stats {
+            display: flex;
+            gap: var(--space-2);
+            align-items: center;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+        
+        .smart-score {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+        }
+        
+        .complexity-indicator {
+            width: 20px;
+            height: 4px;
+            background: var(--neutral-200);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .complexity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-500), var(--warning-500), var(--error-500));
+            transition: width 0.3s ease;
+        }
+        
+        .filter-panel {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            margin-bottom: var(--space-4);
+            border: 1px solid var(--primary-500);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .filter-panel h3 {
+            color: var(--primary-500);
+            font-size: 16px;
+            margin-bottom: var(--space-3);
+            font-weight: 600;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: var(--space-2);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-3);
+        }
+        
+        .filter-btn {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--neutral-200);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-btn.active {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+        }
+        
+        .filter-btn:hover {
+            background: var(--primary-50);
+            border-color: var(--primary-500);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2);
+            margin-top: var(--space-3);
+        }
+        
+        .stat-item {
+            background: var(--bg-primary);
+            padding: var(--space-2);
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid var(--neutral-200);
+        }
+        
+        .stat-number {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-500);
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: var(--space-8);
+            color: var(--text-tertiary);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mistral-chat-container,
+            .smart-tasks-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .sidebar {
+                flex: 1;
+                max-height: 200px;
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+            
+            body {
+                padding: var(--space-2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 Todo Dashboard</h1>
+            <p>Multi-Tab Übersicht für Markdown-Struktur, Mistral Chat und Smart Tasks</p>
+        </div>
+        
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('markdown')">
+                    📄 Markdown Struktur
+                </button>
+                <button class="tab-btn" onclick="switchTab('mistral')">
+                    🤖 Mistral Dashboard
+                </button>
+                <button class="tab-btn" onclick="switchTab('smart')">
+                    🧠 Smartes Task Dashboard
+                </button>
+            </div>
+        </div>
+        
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Markdown Structure Tab -->
+            <div id="markdown-tab" class="tab-panel active">
+                <h2>📄 Markdown Struktur anzeigen</h2>
+                <div id="markdownContent" class="loading">🔄 Lade Markdown-Inhalt...</div>
+            </div>
+            
+            <!-- Mistral Chat Tab -->
+            <div id="mistral-tab" class="tab-panel">
+                <h2>🤖 Mistral Dashboard</h2>
+                <div class="mistral-chat-container">
+                    <div class="chat-panel">
+                        <div class="quick-actions">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('/heute')">📅 Heute</button>
+                            <button class="quick-action-btn" onclick="sendQuickMessage('/woche')">📊 Diese Woche</button>
+                            <button class="quick-action-btn" onclick="sendQuickMessage('/nächste-woche')">🚀 Nächste Woche</button>
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Zeige mir meine Prioritäten')">🎯 Prioritäten</button>
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Analysiere meine Tasks')">📊 Analyse</button>
+                        </div>
+                        
+                        <div id="chatMessages" class="chat-messages">
+                            <div class="chat-message system">
+                                <strong>🤖 Mistral AI:</strong> Hallo! Ich bin hier, um Ihnen bei Ihren Todos zu helfen. Sie können mich fragen oder Quick Actions verwenden.
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <input type="text" id="chatInput" class="chat-input" placeholder="Fragen Sie Mistral AI... (z.B. 'Welche Tasks sind heute wichtig?')">
+                            <button class="chat-send-btn" onclick="sendMessage()">Senden</button>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar">
+                        <div id="sidebar-content" class="loading">🔄 Lade Sidebar-Inhalte...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Smart Tasks Tab -->
+            <div id="smart-tab" class="tab-panel">
+                <div class="smart-tasks-container">
+                    <div class="smart-tasks-header">
+                        <h2 style="margin: 0;">🧠 Smartes Task Dashboard</h2>
+                        <div class="stats-grid" style="display: flex; gap: var(--space-4);">
+                            <div class="stat-item" style="padding: var(--space-2) var(--space-3);">
+                                <div class="stat-number" id="totalTasks">-</div>
+                                <div class="stat-label">Tasks</div>
+                            </div>
+                            <div class="stat-item" style="padding: var(--space-2) var(--space-3);">
+                                <div class="stat-number" id="overdueTasks">-</div>
+                                <div class="stat-label">Überfällig</div>
+                            </div>
+                            <div class="stat-item" style="padding: var(--space-2) var(--space-3);">
+                                <div class="stat-number" id="highPriorityTasks">-</div>
+                                <div class="stat-label">Hoch</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="smart-tasks-content">
+                        <div class="smart-tasks-main">
+                            <div class="filter-buttons" style="margin-bottom: var(--space-4);">
+                                <button class="filter-btn active" onclick="filterTasks('all')">Alle</button>
+                                <button class="filter-btn" onclick="filterTasks('heute')">📅 Heute</button>
+                                <button class="filter-btn" onclick="filterTasks('overdue')">Überfällig</button>
+                                <button class="filter-btn" onclick="filterTasks('due-today')">Fällig Heute</button>
+                                <button class="filter-btn" onclick="filterTasks('high-priority')">Hoch</button>
+                                <button class="filter-btn" onclick="filterTasks('hierarchy-level-1')">Haupt-Tasks</button>
+                                <button class="filter-btn" onclick="filterTasks('hierarchy-level-2')">Unter-Tasks</button>
+                                <button class="filter-btn" onclick="filterTasks('business')">Business</button>
+                                <button class="filter-btn" onclick="filterTasks('development')">Development</button>
+                            </div>
+                            
+                            <div id="smartTasks" class="loading">🔄 Lade Smart Tasks...</div>
+                        </div>
+                        
+                        <div class="sidebar">
+                            <div class="filter-panel">
+                                <h3>📊 Statistiken</h3>
+                                
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number" id="avgSmartScore">-</div>
+                                        <div class="stat-label">Avg Score</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number" id="totalDuration">-</div>
+                                        <div class="stat-label">Minuten</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: var(--space-4);">
+                                    <h4 style="color: var(--primary-500); margin: 0 0 var(--space-2) 0; font-size: 14px;">💡 Tipps</h4>
+                                    <p style="margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
+                                        Verwenden Sie die Filter, um Tasks nach Priorität oder Kategorie zu gruppieren. 
+                                        Der "Heute" Button zeigt alle wichtigen Tasks für heute.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configure marked options
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Load content for the tab
+            if (tabName === 'markdown') {
+                loadMarkdownContent();
+            } else if (tabName === 'mistral') {
+                loadMistralContent();
+            } else if (tabName === 'smart') {
+                loadSmartTasks();
+            }
+        }
+
+        // Load Markdown Content
+        async function loadMarkdownContent() {
+            try {
+                const response = await fetch('/api/markdown/dashboard');
+                const content = await response.text();
+                
+                // Convert markdown to HTML
+                const htmlContent = marked.parse(content);
+                
+                // Insert into page
+                document.getElementById('markdownContent').innerHTML = htmlContent;
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Markdown-Inhalte:', error);
+                document.getElementById('markdownContent').innerHTML = '<p>❌ Fehler beim Laden der Markdown-Inhalte</p>';
+            }
+        }
+
+        // Load Mistral Content
+        async function loadMistralContent() {
+            try {
+                // Load sidebar content
+                const sidebarResponse = await fetch('/api/markdown/sidebar');
+                const sidebarContent = await sidebarResponse.text();
+                const sidebarHtmlContent = marked.parse(sidebarContent);
+                
+                // Insert into sidebar
+                document.getElementById('sidebar-content').innerHTML = sidebarHtmlContent;
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Mistral-Inhalte:', error);
+                document.getElementById('sidebar-content').innerHTML = '<p>❌ Fehler beim Laden der Sidebar-Inhalte</p>';
+            }
+        }
+
+        // Load Smart Tasks
+        async function loadSmartTasks() {
+            try {
+                const response = await fetch('/data/smart-tasks.json');
+                const data = await response.json();
+                allTasks = data.tasks;
+                filteredTasks = [...allTasks];
+                
+                renderTasks();
+                updateStats();
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Smart Tasks:', error);
+                document.getElementById('smartTasks').innerHTML = '<p>❌ Fehler beim Laden der Smart Tasks</p>';
+            }
+        }
+
+        // Chat functionality
+        function addMessage(type, content) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}`;
+            
+            let prefix = '';
+            if (type === 'user') prefix = '👤 Sie: ';
+            else if (type === 'ai') prefix = '🤖 Mistral: ';
+            else if (type === 'system') prefix = '⚡ System: ';
+            
+            messageDiv.innerHTML = `<strong>${prefix}</strong>${content}`;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('chatInput').value = message;
+            sendMessage();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage('user', message);
+            input.value = '';
+            
+            // Show typing indicator
+            addMessage('system', 'Mistral denkt nach...');
+            
+            try {
+                // Simulate AI response based on message content
+                const response = await generateAIResponse(message);
+                
+                // Remove typing indicator
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.removeChild(chatMessages.lastChild);
+                
+                // Add AI response
+                addMessage('ai', response);
+                
+            } catch (error) {
+                // Remove typing indicator
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.removeChild(chatMessages.lastChild);
+                
+                addMessage('system', `❌ Fehler: ${error.message}`);
+            }
+        }
+
+        async function generateAIResponse(message) {
+            // Simulate AI responses based on message content
+            const responses = {
+                '/heute': `📅 **Heute (${new Date().toLocaleDateString('de-DE')})**\n\n**🔥 HOCHPRIORITÄT:**\n- Noch proaktiver nach Leuten lokal suchen\n- Steffen app schicken\n- Ki hatte das falsche Versprechen und überbewerten\n\n**⚡ MITTELPRIORITÄT:**\n- Bene (Sustain) Meeting Vorbereitung\n- PUSH Präse\n- PUSH Build Test Optimierungen\n\n**📝 NIEDRIGPRIORITÄT:**\n- Tim wg. Coaching\n- LinkedIn Posts vorbereiten`,
+                
+                '/woche': `📊 **Diese Woche (${getWeekRange()})**\n\n**Montag:** Business Development\n**Dienstag:** Content & Development\n**Mittwoch:** Administrative Aufgaben\n**Donnerstag:** Termine & Meetings\n**Freitag:** Abschluss & Planung\n\nSoll ich Ihre Tasks für diese Woche neu organisieren?`,
+                
+                '/nächste-woche': `🚀 **Nächste Woche Planung**\n\n**Fokus-Bereiche:**\n- Business Development\n- Tool-Entwicklung\n- Marketing & Content\n\n**Empfehlung:** Konzentrieren Sie sich auf Lead-Generierung und Tool-Testing.`,
+                
+                'Zeige mir meine Prioritäten': `🎯 **Ihre aktuellen Prioritäten:**\n\n1. **Business Development** (höchste Priorität)\n2. **PUSH Präsentation** (dringend)\n3. **Check24 Workshop** (wichtig)\n4. **Tool-Entwicklung** (strategisch)\n\nWelchen Bereich möchten Sie zuerst angehen?`,
+                
+                'Analysiere meine Tasks': `📊 **Task-Analyse:**\n\n**Verteilung:**\n- Business: 40%\n- Development: 30%\n- Marketing: 20%\n- Personal: 10%\n\n**Empfehlung:** Mehr Fokus auf Marketing für bessere Balance.`
+            };
+            
+            // Check for exact matches first
+            if (responses[message]) {
+                return responses[message];
+            }
+            
+            // Check for partial matches
+            if (message.includes('heute') || message.includes('today')) {
+                return responses['/heute'];
+            }
+            if (message.includes('woche') || message.includes('week')) {
+                return responses['/woche'];
+            }
+            if (message.includes('priorität') || message.includes('priority')) {
+                return responses['Zeige mir meine Prioritäten'];
+            }
+            if (message.includes('analys') || message.includes('analyze')) {
+                return responses['Analysiere meine Tasks'];
+            }
+            
+            // Default response
+            return `Ich verstehe: "${message}"\n\nWie kann ich Ihnen bei Ihren Todos helfen? Sie können mich fragen nach:\n- Prioritäten\n- Wochenplanung\n- Task-Analyse\n- Spezifische Empfehlungen`;
+        }
+
+        function getWeekRange() {
+            const today = new Date();
+            const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1));
+            const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 7));
+            return `${startOfWeek.toLocaleDateString('de-DE')} - ${endOfWeek.toLocaleDateString('de-DE')}`;
+        }
+
+        // Smart Tasks functionality
+        let allTasks = [];
+        let filteredTasks = [];
+
+        // Render tasks
+        function renderTasks() {
+            const container = document.getElementById('smartTasks');
+            
+            if (filteredTasks.length === 0) {
+                container.innerHTML = '<p>Keine Tasks gefunden.</p>';
+                return;
+            }
+            
+            // Check if we're showing "Heute" view
+            const isTodayView = document.querySelector('.filter-btn.active').textContent.includes('Heute');
+            
+            if (isTodayView) {
+                renderTodayView();
+                return;
+            }
+            
+            // Sort by smart score (highest first)
+            const sortedTasks = [...filteredTasks].sort((a, b) => b.smart_score - a.smart_score);
+            
+            container.innerHTML = sortedTasks.map(task => {
+                const hierarchyClass = task.hierarchy_level ? `hierarchy-level-${task.hierarchy_level}` : '';
+                
+                return `
+                    <div class="smart-task-card ${task.priority}-priority ${task.deadline_status.replace('_', '-')} ${hierarchyClass}" onclick="toggleTask('${task.id}')">
+                        <div class="task-content">
+                            <div class="task-title">${task.title}</div>
+                            
+                            <div class="task-meta">
+                                <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+                                ${task.deadline_status !== 'no_deadline' ? `<span class="deadline-badge deadline-${task.deadline_status.replace('_', '-')}">${getDeadlineText(task.deadline_status)}</span>` : ''}
+                            </div>
+                            
+                            <div class="task-tags">
+                                ${task.tags.slice(0, 3).map(tag => `<span class="task-tag">${tag}</span>`).join('')}
+                                ${task.tags.length > 3 ? `<span class="task-tag">+${task.tags.length - 3}</span>` : ''}
+                            </div>
+                            
+                            <div class="task-stats">
+                                <span>⏱️ ${task.estimated_duration_minutes}min</span>
+                                <span>📁 ${task.category}</span>
+                                <div class="complexity-indicator">
+                                    <div class="complexity-fill" style="width: ${(task.complexity / 5) * 100}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="smart-score">${task.smart_score}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render today's view with priority sections
+        function renderTodayView() {
+            const container = document.getElementById('smartTasks');
+            const today = new Date().toLocaleDateString('de-DE');
+            const dayOfWeek = new Date().toLocaleDateString('de-DE', { weekday: 'long' });
+            
+            // Group tasks by priority
+            const highPriorityTasks = filteredTasks.filter(task => task.priority === 'high' || task.deadline_status === 'overdue');
+            const mediumPriorityTasks = filteredTasks.filter(task => task.priority === 'medium' && task.deadline_status !== 'overdue');
+            const lowPriorityTasks = filteredTasks.filter(task => task.priority === 'low');
+            
+            container.innerHTML = `
+                <div style="text-align: center; margin-bottom: var(--space-6);">
+                    <h2 style="color: var(--primary-500); margin: 0;">📅 Heute - ${dayOfWeek}, ${today}</h2>
+                    <p style="color: var(--text-tertiary); margin: var(--space-2) 0 0 0;">${filteredTasks.length} Tasks für heute</p>
+                </div>
+                
+                ${highPriorityTasks.length > 0 ? `
+                    <div style="margin-bottom: var(--space-6);">
+                        <h3 style="color: var(--error-500); margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
+                            🔥 HOCHPRIORITÄT (${highPriorityTasks.length} Tasks)
+                        </h3>
+                        ${renderTaskGroup(highPriorityTasks)}
+                    </div>
+                ` : ''}
+                
+                ${mediumPriorityTasks.length > 0 ? `
+                    <div style="margin-bottom: var(--space-6);">
+                        <h3 style="color: var(--warning-500); margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
+                            ⚡ MITTELPRIORITÄT (${mediumPriorityTasks.length} Tasks)
+                        </h3>
+                        ${renderTaskGroup(mediumPriorityTasks)}
+                    </div>
+                ` : ''}
+                
+                ${lowPriorityTasks.length > 0 ? `
+                    <div style="margin-bottom: var(--space-6);">
+                        <h3 style="color: var(--success-500); margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
+                            📝 NIEDRIGPRIORITÄT (${lowPriorityTasks.length} Tasks)
+                        </h3>
+                        ${renderTaskGroup(lowPriorityTasks)}
+                    </div>
+                ` : ''}
+                
+                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: var(--space-4); margin-top: var(--space-6); border: 1px solid var(--primary-500);">
+                    <h4 style="color: var(--primary-500); margin: 0 0 var(--space-2) 0;">💡 Heute-Fokus</h4>
+                    <p style="margin: 0; font-size: 14px; color: var(--text-secondary);">
+                        Konzentrieren Sie sich zuerst auf die <strong>Hochpriorität</strong> Tasks. 
+                        ${highPriorityTasks.length > 0 ? `Sie haben ${highPriorityTasks.length} überfällige oder hochprioritäre Tasks.` : 'Alle Hochpriorität-Tasks sind erledigt!'}
+                    </p>
+                </div>
+            `;
+        }
+
+        // Render a group of tasks
+        function renderTaskGroup(tasks) {
+            return tasks.map(task => {
+                const hierarchyClass = task.hierarchy_level ? `hierarchy-level-${task.hierarchy_level}` : '';
+                
+                return `
+                    <div class="smart-task-card ${task.priority}-priority ${task.deadline_status.replace('_', '-')} ${hierarchyClass}" onclick="toggleTask('${task.id}')">
+                        <div class="task-content">
+                            <div class="task-title">${task.title}</div>
+                            
+                            <div class="task-meta">
+                                <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+                                ${task.deadline_status !== 'no_deadline' ? `<span class="deadline-badge deadline-${task.deadline_status.replace('_', '-')}">${getDeadlineText(task.deadline_status)}</span>` : ''}
+                            </div>
+                            
+                            <div class="task-tags">
+                                ${task.tags.slice(0, 3).map(tag => `<span class="task-tag">${tag}</span>`).join('')}
+                                ${task.tags.length > 3 ? `<span class="task-tag">+${task.tags.length - 3}</span>` : ''}
+                            </div>
+                            
+                            <div class="task-stats">
+                                <span>⏱️ ${task.estimated_duration_minutes}min</span>
+                                <span>📁 ${task.category}</span>
+                                <div class="complexity-indicator">
+                                    <div class="complexity-fill" style="width: ${(task.complexity / 5) * 100}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="smart-score">${task.smart_score}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Get deadline text
+        function getDeadlineText(status) {
+            const texts = {
+                'overdue': 'Überfällig',
+                'due_today': 'Heute',
+                'due_tomorrow': 'Morgen',
+                'due_soon': 'Bald',
+                'due_this_week': 'Diese Woche',
+                'due_later': 'Später'
+            };
+            return texts[status] || status;
+        }
+
+        // Filter tasks
+        function filterTasks(filter) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            switch (filter) {
+                case 'all':
+                    filteredTasks = [...allTasks];
+                    break;
+                case 'heute':
+                    filteredTasks = getTodayTasks();
+                    break;
+                case 'overdue':
+                    filteredTasks = allTasks.filter(task => task.deadline_status === 'overdue');
+                    break;
+                case 'due-today':
+                    filteredTasks = allTasks.filter(task => task.deadline_status === 'due_today');
+                    break;
+                case 'high-priority':
+                    filteredTasks = allTasks.filter(task => task.priority === 'high');
+                    break;
+                case 'hierarchy-level-1':
+                    filteredTasks = allTasks.filter(task => task.hierarchy_level === 1);
+                    break;
+                case 'hierarchy-level-2':
+                    filteredTasks = allTasks.filter(task => task.hierarchy_level === 2);
+                    break;
+                case 'business':
+                    filteredTasks = allTasks.filter(task => task.tags.includes('business'));
+                    break;
+                case 'development':
+                    filteredTasks = allTasks.filter(task => task.tags.includes('development'));
+                    break;
+                default:
+                    filteredTasks = [...allTasks];
+            }
+            
+            renderTasks();
+        }
+
+        // Get today's tasks based on smart analysis
+        function getTodayTasks() {
+            const today = new Date().toLocaleDateString('de-DE');
+            const dayOfWeek = new Date().toLocaleDateString('de-DE', { weekday: 'long' });
+            
+            // Filter tasks for today based on various criteria
+            const todayTasks = allTasks.filter(task => {
+                const title = task.title.toLowerCase();
+                
+                // Tasks with today's date
+                if (task.due_date === today) return true;
+                
+                // Tasks due today
+                if (task.deadline_status === 'due_today') return true;
+                
+                // Overdue tasks (should be done today)
+                if (task.deadline_status === 'overdue') return true;
+                
+                // High priority tasks (should be done today)
+                if (task.priority === 'high') return true;
+                
+                // Tasks with "heute" or "today" in title
+                if (title.includes('heute') || title.includes('today')) return true;
+                
+                // Tasks for current day of week
+                if (dayOfWeek === 'Montag' && (title.includes('montag') || title.includes('monday'))) return true;
+                if (dayOfWeek === 'Dienstag' && (title.includes('dienstag') || title.includes('tuesday'))) return true;
+                if (dayOfWeek === 'Mittwoch' && (title.includes('mittwoch') || title.includes('wednesday'))) return true;
+                if (dayOfWeek === 'Donnerstag' && (title.includes('donnerstag') || title.includes('thursday'))) return true;
+                if (dayOfWeek === 'Freitag' && (title.includes('freitag') || title.includes('friday'))) return true;
+                
+                // Urgent tasks (marked with !!! or 🔥)
+                if (title.includes('!!!') || title.includes('🔥') || title.includes('urgent')) return true;
+                
+                // Business development tasks (high priority for today)
+                if (task.tags.includes('business') && task.smart_score > 70) return true;
+                
+                // PUSH tasks (important for today)
+                if (task.tags.includes('PUSH')) return true;
+                
+                // Meeting tasks (usually scheduled for today)
+                if (task.tags.includes('meeting')) return true;
+                
+                return false;
+            });
+            
+            // Sort by smart score (highest first) and priority
+            return todayTasks.sort((a, b) => {
+                // First sort by priority
+                const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+                const aPriority = priorityOrder[a.priority] || 0;
+                const bPriority = priorityOrder[b.priority] || 0;
+                
+                if (aPriority !== bPriority) {
+                    return bPriority - aPriority;
+                }
+                
+                // Then by smart score
+                return b.smart_score - a.smart_score;
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalTasks').textContent = allTasks.length;
+            document.getElementById('overdueTasks').textContent = allTasks.filter(t => t.deadline_status === 'overdue').length;
+            document.getElementById('highPriorityTasks').textContent = allTasks.filter(t => t.priority === 'high').length;
+            
+            const avgScore = Math.round(allTasks.reduce((sum, task) => sum + task.smart_score, 0) / allTasks.length);
+            document.getElementById('avgSmartScore').textContent = avgScore;
+            
+            const totalDuration = allTasks.reduce((sum, task) => sum + (task.estimated_duration_minutes || 0), 0);
+            document.getElementById('totalDuration').textContent = totalDuration;
+        }
+
+        // Toggle task (placeholder)
+        function toggleTask(taskId) {
+            console.log('Toggle task:', taskId);
+            // Hier könnte Task-Status geändert werden
+        }
+
+        // Enter key support for chat input
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Load initial content
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMarkdownContent();
+        });
+    </script>
+</body>
+</html>
