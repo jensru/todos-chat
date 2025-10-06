@@ -22,15 +22,8 @@ WEEK_END="$WEEK_END_DAY. $CURRENT_MONTH"
 echo "🕐 Aktualisiere Datum: $CURRENT_DATE"
 echo "📅 Woche: $WEEK_START - $WEEK_END $CURRENT_YEAR"
 
-# Dashboard-Datei aktualisieren
-DASHBOARD_FILE="Dashboard - Strukturierte To-do-Übersicht.md"
-
-# Aktuelles Datum in der Datei ersetzen
-sed -i '' "s/_Heute: .*/_Heute: $CURRENT_DATE_/" "$DASHBOARD_FILE"
-sed -i '' "s/_Letzte Aktualisierung: .*/_Letzte Aktualisierung: $CURRENT_DATE_/" "$DASHBOARD_FILE"
-
-# Woche aktualisieren
-sed -i '' "s/## 📅 \*\*Diese Woche (.*)\*\*/## 📅 **Diese Woche ($WEEK_START - $WEEK_END $CURRENT_YEAR)**/" "$DASHBOARD_FILE"
+# Dashboard-Datei aktualisieren - REMOVED (Dashboard-System deprecated)
+# Das moderne System verwendet Tages-Dateien in core/dates/
 
 echo "✅ Datum aktualisiert!"
-echo "📝 Dashboard: $DASHBOARD_FILE"
+echo "📝 Moderne Architektur: Tages-Dateien in core/dates/"

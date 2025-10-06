@@ -53,13 +53,9 @@ git commit -m "$COMMIT_MSG"
 # Website automatisch aktualisieren
 echo "🔄 Aktualisiere Website..."
 
-# Dashboard-Inhalt lesen und für JavaScript escapen (NACH dem Commit, damit aktuelle Änderungen erfasst werden)
-echo "🔧 Escape Dashboard-Inhalt für JavaScript..."
-DASHBOARD_CONTENT=$(cat "core/Dashboard - Strukturierte To-do-Übersicht.md" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed "s/'/\\'/g" | sed 's/`/\\`/g' | sed 's/\$/\\$/g' | tr '\n' '|' | sed 's/|/\\n/g')
-
-# Sidebar-Inhalt lesen und für JavaScript escapen (NACH dem Commit, damit aktuelle Änderungen erfasst werden)
-echo "🔧 Escape Sidebar-Inhalt für JavaScript..."
-SIDEBAR_CONTENT=$(cat "core/right-sidebar.md" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed "s/'/\\'/g" | sed 's/`/\\`/g' | sed 's/\$/\\$/g' | tr '\n' '|' | sed 's/|/\\n/g')
+# Website automatisch aktualisieren - MODERN (ohne Dashboard-System)
+echo "🔄 Aktualisiere Website..."
+echo "✅ Website läuft über API-System (kein Dashboard-Update nötig)"
 
 # Heutige Task-Historie generieren
 TODAY_HISTORY_HTML=""

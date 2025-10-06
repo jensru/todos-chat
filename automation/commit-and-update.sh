@@ -50,9 +50,6 @@ echo "🔄 Führe Log-Rotation durch..."
 git add .
 git commit -m "$COMMIT_MSG"
 
-# Website automatisch aktualisieren
+# Website automatisch aktualisieren - MODERN (ohne Dashboard-System)
 echo "🔄 Aktualisiere Website..."
-node scripts/generate-html.js generate
-
-echo "✅ Website mit modernem Design aktualisiert!"
-echo "🌐 Öffne web/index.html im Browser um die Änderungen zu sehen"
+echo "✅ Website läuft über API-System (kein Dashboard-Update nötig)"

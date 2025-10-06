@@ -5,7 +5,8 @@
 
 COMMAND="$1"
 DATE=$(date +%Y-%m-%d)
-DASHBOARD_FILE="core/Dashboard - Strukturierte To-do-Übersicht.md"
+# Dashboard-Datei - REMOVED (Dashboard-System deprecated)
+# Das moderne System verwendet Tages-Dateien in core/dates/
 
 # Python-Script für Datumsberechnungen
 PYTHON_DATE_SCRIPT='
