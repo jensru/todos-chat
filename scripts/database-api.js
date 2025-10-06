@@ -33,6 +33,7 @@ class DatabaseAPI {
   setupRoutes() {
     // API Routes
     this.app.get('/api/tasks', this.getTasks.bind(this));
+    this.app.get('/api/smart-tasks', this.getSmartTasks.bind(this));
     this.app.get('/api/tasks/:id', this.getTask.bind(this));
     this.app.put('/api/tasks/:id', this.updateTask.bind(this));
     this.app.post('/api/tasks', this.createTask.bind(this));
@@ -118,6 +119,36 @@ class DatabaseAPI {
       res.status(500).json({
         success: false,
         error: error.message
+      });
+    }
+  }
+
+  async getSmartTasks(req, res) {
+    try {
+      // Lade Smart Tasks aus der smart-tasks.json Datei
+      const smartTasksPath = './data/smart-tasks.json';
+      
+      if (!fs.existsSync(smartTasksPath)) {
+        return res.status(404).json({
+          success: false,
+          error: 'Smart Tasks nicht gefunden. Führen Sie zuerst das Smart Task Enhancement aus.',
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      const smartTasksData = JSON.parse(fs.readFileSync(smartTasksPath, 'utf8'));
+      
+      res.json({
+        success: true,
+        tasks: smartTasksData.tasks || [],
+        metadata: smartTasksData.metadata || {},
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        timestamp: new Date().toISOString()
       });
     }
   }
@@ -394,8 +425,17 @@ class DatabaseAPI {
         console.error('Mistral API error:', stderr);
       }
       
-      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      res.send(stdout);
+      // Extrahiere nur die eigentliche Antwort (nach "✅ Mistral Response:")
+      let response = stdout.trim();
+      const responseMatch = response.match(/✅ Mistral Response:\s*(.+)/s);
+      if (responseMatch) {
+        response = responseMatch[1].trim();
+      }
+      
+      res.json({
+        success: true,
+        response: response
+      });
       
     } catch (error) {
       res.status(500).json({

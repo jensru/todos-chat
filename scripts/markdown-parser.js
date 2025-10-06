@@ -72,8 +72,8 @@ class MarkdownTaskParser {
       return;
     }
 
-    // Task-Erkennung: - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen:
-    const taskMatch = line.match(/^- \[([ x])\] (.+?)(?: - (.+))?$/);
+    // Task-Erkennung mit Due Date: - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen: 📅 2025-10-06
+    const taskMatch = line.match(/^- \[([ x])\] (.+?)(?:\s+📅\s+(\d{4}-\d{2}-\d{2}))?$/);
     if (taskMatch) {
       const task = this.createTask(taskMatch, lineNumber, filePath);
       this.tasks.push(task);
@@ -97,18 +97,19 @@ class MarkdownTaskParser {
    * Erstellt ein Task-Objekt
    */
   createTask(match, lineNumber, filePath) {
-    const [, status, title, description] = match;
+    const [, status, title, dueDate] = match;
     
     return {
       id: this.generateTaskId(title, lineNumber),
       title: title.trim(),
-      description: description ? description.trim() : '',
+      description: '',
       status: status === 'x' ? 'completed' : 'pending',
       priority: this.extractPriority(title),
       tags: this.extractTags(title),
       date: this.currentDate,
       week: this.currentWeek,
       project: this.currentProject,
+      due_date: dueDate || null, // Due Date aus Markdown
       line_number: lineNumber,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

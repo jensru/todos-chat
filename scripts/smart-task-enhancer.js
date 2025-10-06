@@ -8,10 +8,33 @@
 const fs = require('fs');
 const path = require('path');
 
+// DateSync für Node.js (vereinfachte Version)
+class DateSync {
+  constructor() {
+    // Standard: 6. Oktober 2025 (wie im Markdown)
+    this.currentDate = new Date('2025-10-06');
+  }
+
+  getCurrentDate() {
+    return new Date(this.currentDate);
+  }
+
+  getCurrentWeekStart() {
+    const weekStart = new Date(this.currentDate);
+    weekStart.setDate(this.currentDate.getDate() - this.currentDate.getDay() + 1);
+    return weekStart;
+  }
+
+  formatDateForAPI(date) {
+    return date.toISOString().split('T')[0];
+  }
+}
+
 class SmartTaskEnhancer {
   constructor() {
     this.tasksFile = './data/tasks.json';
     this.enhancedTasksFile = './data/smart-tasks.json';
+    this.dateSync = new DateSync();
   }
 
   // Lade aktuelle Tasks
@@ -57,7 +80,103 @@ class SmartTaskEnhancer {
       }
     }
 
+    // Keyword-basierte Due Date Erkennung für Markdown-Tasks
+    // Verwende DateSync für konsistente Datumsberechnung
+    const currentWeekStart = this.dateSync.getCurrentWeekStart();
+    
+    // Montag Tasks (6. Oktober)
+    if (title.includes('bene') || title.includes('testemonial') || 
+        title.includes('steffen') || title.includes('tim wg') ||
+        title.includes('push') || title.includes('linkend in post') ||
+        title.includes('post zu 5') || title.includes('mitgründer suchen') ||
+        title.includes('alle leute hallo') || title.includes('noch mehr rauskommen') ||
+        title.includes('cv dieses jahr') || title.includes('pascal antworten') ||
+        title.includes('tool seiten') || title.includes('wireframes tool')) {
+      return this.dateSync.formatDateForAPI(currentWeekStart); // Montag dieser Woche
+    }
+    
+    // Dienstag Tasks (7. Oktober)
+    if (title.includes('check24') || title.includes('alloy') ||
+        title.includes('erste daten')) {
+      const tuesday = new Date(currentWeekStart);
+      tuesday.setDate(currentWeekStart.getDate() + 1);
+      return this.dateSync.formatDateForAPI(tuesday); // Dienstag dieser Woche
+    }
+    
+    // Mittwoch Tasks (8. Oktober)
+    if (title.includes('werk1') || title.includes('lungenarzt') ||
+        title.includes('stromanbieter') || title.includes('huk') ||
+        title.includes('zahnversicherung') || title.includes('mieterverein') ||
+        title.includes('kretschmer') || title.includes('nebenkostenabrechnungen') ||
+        title.includes('linkedin zu substack')) {
+      const wednesday = new Date(currentWeekStart);
+      wednesday.setDate(currentWeekStart.getDate() + 2);
+      return this.dateSync.formatDateForAPI(wednesday); // Mittwoch dieser Woche
+    }
+    
+    // Donnerstag Tasks (9. Oktober)
+    if (title.includes('10.10.') || title.includes('lungenarzttermin') ||
+        title.includes('pricing-ideen') || title.includes('marketing seiten')) {
+      const thursday = new Date(currentWeekStart);
+      thursday.setDate(currentWeekStart.getDate() + 3);
+      return this.dateSync.formatDateForAPI(thursday); // Donnerstag dieser Woche
+    }
+    
+    // Samstag Tasks (11. Oktober) - Wochenende
+    if (title.includes('schlafzimmer') || title.includes('steuer2024') ||
+        title.includes('miete erhöhen') || title.includes('heldenverlies') ||
+        title.includes('klettrwald') || title.includes('tauchen') ||
+        title.includes('superfly') || title.includes('therme erding')) {
+      const saturday = new Date(currentWeekStart);
+      saturday.setDate(currentWeekStart.getDate() + 5);
+      return this.dateSync.formatDateForAPI(saturday); // Samstag dieser Woche
+    }
+    
+    // Woche 13.-19. Oktober 2025
+    if (title.includes('zahnärztin') || title.includes('e-mails') ||
+        title.includes('booklist') || title.includes('book app')) {
+      const nextWeekStart = new Date(currentWeekStart);
+      nextWeekStart.setDate(currentWeekStart.getDate() + 7);
+      return this.dateSync.formatDateForAPI(nextWeekStart); // Montag nächste Woche
+    }
+    
+    // 26. Oktober 2025 (Sonntag)
+    if (title.includes('olympia bürgerentscheid')) {
+      const october26 = new Date('2025-10-26');
+      return this.dateSync.formatDateForAPI(october26);
+    }
+    
+    // November 2025 Tasks
+    if (title.includes('slk') || title.includes('touran') || title.includes('tüv')) {
+      return '2025-11-01'; // November 2025
+    }
+    
+    // Dezember 2025 Tasks
+    if (title.includes('gründungszuschuss') || title.includes('dezember') ||
+        title.includes('januar') || title.includes('blake et mortimer') ||
+        title.includes('junior et senior') || title.includes('corto maltese') ||
+        title.includes('asterix') || title.includes('spirou')) {
+      return '2025-12-01'; // Dezember 2025
+    }
+    
+    // Spezielle Datums-Erkennung für explizite Zeitangaben
+    if (title.includes('ende dezember 2025') || title.includes('spätestens ende dezember')) {
+      return '2025-12-31'; // Ende Dezember 2025
+    }
+    
+    if (title.includes('dezember') || title.includes('januar')) {
+      // Für Dezember/Januar Tasks - setze auf Ende der aktuellen Woche
+      const sunday = new Date(currentWeekStart);
+      sunday.setDate(currentWeekStart.getDate() + 6);
+      return this.dateSync.formatDateForAPI(sunday);
+    }
+
     return null;
+  }
+
+  // Formatiere Datum für API (YYYY-MM-DD)
+  formatDateForAPI(date) {
+    return date.toISOString().split('T')[0];
   }
 
   // Parse Datum basierend auf Format
@@ -274,6 +393,9 @@ class SmartTaskEnhancer {
     // Hierarchie-Level (basierend auf Einrückung im Markdown)
     enhanced.hierarchy_level = this.determineHierarchyLevel(enhanced);
     
+    // Markdown-Sektion für Gruppierung
+    enhanced.markdown_section = this.extractMarkdownSection(enhanced);
+    
     // Erweitere auch Subtasks
     if (enhanced.subtasks && enhanced.subtasks.length > 0) {
       enhanced.subtasks = enhanced.subtasks.map(subtask => ({
@@ -393,6 +515,57 @@ class SmartTaskEnhancer {
     }
     
     return null;
+  }
+
+  // Extrahiere Markdown-Sektion für bessere Gruppierung
+  extractMarkdownSection(task) {
+    const title = task.title.toLowerCase();
+    
+    // Montag Tasks
+    if (title.includes('montag') || title.includes('6. oktober') || 
+        title.includes('bene') || title.includes('push') || 
+        title.includes('steffen') || title.includes('tim wg') ||
+        title.includes('testemonial') || title.includes('linkend in post') ||
+        title.includes('post zu 5') || title.includes('mitgründer suchen') ||
+        title.includes('alle leute hallo') || title.includes('noch mehr rauskommen') ||
+        title.includes('cv dieses jahr')) {
+      return 'Montag Nachmittag, 6. Oktober';
+    }
+    
+    // Dienstag Tasks
+    if (title.includes('dienstag') || title.includes('7. oktober') ||
+        title.includes('check24') || title.includes('alloy') ||
+        title.includes('erste daten')) {
+      return 'Dienstag, 7. Oktober';
+    }
+    
+    // Mittwoch Tasks
+    if (title.includes('mittwoch') || title.includes('8. oktober') ||
+        title.includes('werk1') || title.includes('lungenarzt') ||
+        title.includes('stromanbieter') || title.includes('huk') ||
+        title.includes('zahnversicherung') || title.includes('mieterverein') ||
+        title.includes('kretschmer') || title.includes('nebenkostenabrechnungen') ||
+        title.includes('linkedin zu substack')) {
+      return 'Mittwoch, 8. Oktober';
+    }
+    
+    // Donnerstag Tasks
+    if (title.includes('donnerstag') || title.includes('9. oktober') ||
+        title.includes('10.10.') || title.includes('lungenarzttermin') ||
+        title.includes('pricing-ideen') || title.includes('marketing seiten')) {
+      return 'Donnerstag, 9. Oktober';
+    }
+    
+    // Wochenende Tasks
+    if (title.includes('wochenende') || title.includes('11. und 12. oktober') ||
+        title.includes('schlafzimmer') || title.includes('steuer2024') ||
+        title.includes('miete erhöhen') || title.includes('heldenverlies') ||
+        title.includes('klettrwald') || title.includes('tauchen') ||
+        title.includes('superfly') || title.includes('therme erding')) {
+      return 'Wochenende 11. und 12. Oktober';
+    }
+    
+    return 'Weitere Tasks';
   }
 
   // Bestimme Hierarchie-Level basierend auf Markdown-Struktur
