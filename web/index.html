@@ -680,15 +680,12 @@
             updateStats();
         }
 
-        // Get today's tasks
+        // Get today's tasks - NUR Tasks mit Due Date heute
         function getTodayTasks() {
             const today = dateSync.formatDateForAPI(dateSync.getCurrentDate());
             return allTasks.filter(task => {
                 if (!task.due_date) return false;
-                return task.due_date === today || 
-                       task.priority === 'high' || 
-                       task.deadline_status === 'overdue' ||
-                       task.tags.includes('urgent');
+                return task.due_date === today;
             });
         }
 
