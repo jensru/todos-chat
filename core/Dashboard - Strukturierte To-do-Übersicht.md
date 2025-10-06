@@ -5,13 +5,21 @@
 
 
 
-
 ### **📅 WOCHE: 6. - 12. Oktober 2025**
-- [ ] Kretschmer wegen Zahnzusatz
 
 
-- [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
-- [ ] Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext
+
+#### **Montag Nachmittag, 6. Oktober**
+- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:
+  - [ ] **Zuhören** - ganz wichtig als erstes zuhören
+  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde
+  - [ ] Sofort markieren und später ansprechen
+  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)
+  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen
+  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen
+  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben
+
+- [ ] Steffen app schicken
 - [ ] Tim wg. Coaching
 
 - [ ] **PUSH Präse**
@@ -22,35 +30,43 @@
   - [ ] guided interactions noch mal checken 
   - [ ] microcopy mit psychology noch mal checken
   - [ ] Handout abgespeckt Perfect
-- [ ] **Design Core Prompts für PUSH und Check24)**
-  - [ ] Basic geiles Design von Lovable Input fordern in vibe coding system prompt
-  - [ ] Design in mein Tool: Fixes/Vorgaben in ersten Prompt implementieren
-  - [ ] Evals für mein Tool? https://chatgpt.com/c/68da3c86-0a44-8325-b6ec-be20aaacb16c, https://www.lennysnewsletter.com/p/why-ai-evals-are-the-hottest-new-skill
-
----
-- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
-- [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
-- [ ] Check24 Workshop!!!
-- [ ] Erste Daten für Konzepter generieren. Check24 Workshop!!!
-
-
-
+- [ ] **Linkend In Post** \"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\"
+- [ ] Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext
 - [ ] Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?
-
-  - [ ] Check24 genaues Briefing für den Konzepter
-  - [ ] Check24 Materialien?!?
-- [ ] 0/3 werk1
 - [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
 - [ ] Noch mehr rauskommen aus dem Haus planen!!!
 - [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, Check24!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.
-- [ ] **2.10. Bene (Sustain) Meeting** - Meeting-Vorbereitung:
-  - [ ] **Zuhören** - ganz wichtig als erstes zuhören
-  - [ ] Hilfe wieder anbieten, sobald ich einen Punkt finde
-  - [ ] Sofort markieren und später ansprechen
-  - [ ] Fragen nach größten Herausforderungen (Workflow, Unternehmen, AI-Konzepte durchbringen)
-  - [ ] Agentisches Prototyping-Teaser - wie kann er sich selbst mit Prototyping-Tools agentische Ideen bauen lassen
-  - [ ] Workshop-Teaser - Workshop für Mitarbeiter ansprechen
-  - [ ] Post zusammen machen - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben
+
+#### **Dienstag, 7. Oktober**
+- [ ] Check24 Workshop!!!
+- [ ] Erste Daten für Konzepter generieren. Check24 Workshop!!!
+  - [ ] Check24 genaues Briefing für den Konzepter
+  - [ ] Check24 Materialien?!?
+
+- [ ] **Alloy testen** - Alloy-Tool testen und evaluieren
+- [ ] **Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen
+
+
+
+
+
+
+
+#### **Mittwoch, 8. Oktober**
+- [ ] 0/3 werk1
+- [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
+- [ ] Linkedin zu Substack und zweiter Link zu Tools und Workshops. Psychology war anscheinen gute Prompts
+
+
+#### **Donnerstag, 9. Oktober**
+- [ ] Stromanbieter
+- [ ] Huk
+- [ ] Zahnversicherung
+- [ ] Mieterverein doppelt
+- [ ] Kretschmer wegen Zahnzusatz
+- [ ] Nebenkostenabrechnungen Lich versenden
+- [ ] **10.10. um 10:30 Uhr Lungenarzttermin**
+
 - [ ] **Tool Seiten -> Aktuelle Tools & Lead....**
     - [ ] built your own app with a running agent course!
     - [ ] Marketing für Methode, Tool, Workshops, Kundenprojekte
@@ -58,18 +74,6 @@
 - [ ] **Wireframes Tool**
     - [ ] Value Proposition tests mit beta signup. Echte Wärungen bevor weiter Zeit invest
     - [ ] Chat First
-- [ ] **Simon Kubica Follow-up (Woche 2)**: Wenn echtes Feedback da ist, subtil den Schritt machen: "I could also imagine sharing this more broadly here in Germany … maybe through community or trainings when the time is right." (Email oder WhatsApp)
-
-#### **Mittwoch, 7. Oktober**
-- [ ] Nebenkostenabrechnungen Lich versenden
-- [ ] Linkedin zu Substack und zweiter Link zu Tools und Workshops. Psychology war anscheinen gute Prompts
-
-#### **Mittwoch, 8. Oktober**
-- [ ] **9.10. neue Überweisung Lungenarzt/Pneumologie abholen**
-
-#### **Donnerstag, 9. Oktober**
-- [ ] **10.10. um 10:30 Uhr Lungenarzttermin**
-
 
 - [ ] **💰 Pricing-Ideen sammeln (Sales Seiten aufräumen)** - Alle Pricing-Strategien und Ideen strukturieren:
 - [ ] **Marketing Seiten aufräumen** → kickboost.io Angebote und Tools, Tool Tests, Pivot?

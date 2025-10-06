@@ -1,28 +1,20 @@
 🤖 Mistral API wird aufgerufen...
 ✅ Mistral Response:
-Geld-Fokus:
-- PUSH Präsentation vorbereiten
-- Check24 Workshop
-- Mitgründer suchen (für Sales, Marketing, Dev, Design)
-- Potenzielle Kunden mit Lead Funnels Strategie ansprechen
+**Geld-Fokus:**
+- [ ] Bene (Sustain) Meeting (Vorbereitung: Steffen app schicken, Tim wg. Coaching)
+- [ ] Mitgründer suchen Post?! (Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?)
+- [ ] Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle
+- [ ] CV dieses Jahr Update (Laura, Substain, Prompting Birds, 36Zerovision, Check24\!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die Figma ersetzen, bekannter Experte und Berater von Teams und Freelancern von Check24 bis SAP Innovation zu diesem Thema)
+- [ ] Check24 Workshop
+- [ ] Erste Daten für Konzepter generieren. Check24 Workshop
 
-Tool-Fokus:
-- Alloy-Tool testen und evaluieren
-- Alloy-Dokumentation durcharbeiten und praktisch testen
-- Wireframes Tool entwickeln
-- Aktualisierung der Tool-Website mit aktuellen Tools und Lead-Generierung
+**Tool-Fokus:**
+- [ ] PUSH Präsentation vorbereiten
+- [ ] PUSH Build Test, ergebnis noch scheisse, mehr auf die Logiken eingehen
+- [ ] Post zu 5-Stufen Workflow, auch Prompt Steering ablegen, Fokus auf Komponente und AI First, und AI in den Prototyp. Daran scheitern viele. Setup, Kontext und Konzept. Beste Coder Basis zum Duplizieren auch mit vordefinierten Kontext
+- [ ] Alloy testen und evaluieren
+- [ ] Alloy Guides lesen und testen
 
-Marketing-Fokus:
-- LinkedIn Post zum fünfstufigen Workflow und Prompt Steering
-- Post über die Suche nach Mitgründern (Sales, Marketing, Dev, Design)
-- Vorbereitung für Bene (Sustain) Meeting
-- CV dieses Jahr aktualisieren
-
-Personal:
-- Kretschmer wegen Zahnzusatzversicherung kontaktieren
-- Tim wegen Coaching kontaktieren
-- Lead Funnels Strategie mit potenziellen Kunden aus der letzten Kontaktwelle
-- Mehr rauskommen aus dem Haus planen
-- Simon Kubica Follow-up in Woche 2
-- Meeting-Vorbereitung für Bene (Sustain) Meeting
-- CV dieses Jahr aktualisieren (Laura, Substain, Prompting Birds, 36Zerovision, Check24, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, bekannter Experte und Berater von Teams und Freelancern von Check24 bis SAP Innovation zu diesem Thema)
+**Marketing-Fokus:**
+- [ ] LinkedIn zu Substack und zweiter Link zu Tools und Workshops. Psychology war anscheinend gute Prompts
+- [ ] Post zu „I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I
