@@ -3,7 +3,6 @@
 ## 📅 **TIMELINE: Oktober - Dezember 2025**
 
 
-### **Samstag, 4. Oktober**  
 
 
 
