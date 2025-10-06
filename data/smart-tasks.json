@@ -12,8 +12,8 @@
       "project": null,
       "due_date": "2025-10-06",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.827Z",
-      "updated_at": "2025-10-06T14:35:59.827Z",
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 2,
@@ -24,7 +24,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.988Z"
+      "enhanced_at": "2025-10-06T14:49:13.832Z"
     },
     {
       "id": "task_unknown_steffen_app_schicken_3",
@@ -38,8 +38,8 @@
       "project": null,
       "due_date": "2025-10-06",
       "line_number": 3,
-      "created_at": "2025-10-06T14:35:59.827Z",
-      "updated_at": "2025-10-06T14:35:59.827Z",
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 1,
@@ -50,36 +50,10 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.988Z"
+      "enhanced_at": "2025-10-06T14:49:13.832Z"
     },
     {
-      "id": "task_unknown_tim_wg__coaching_4",
-      "title": "Tim wg. Coaching",
-      "description": "",
-      "status": "completed",
-      "priority": "medium",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 4,
-      "created_at": "2025-10-06T14:35:59.827Z",
-      "updated_at": "2025-10-06T14:35:59.827Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [],
-      "complexity": 1,
-      "estimated_duration_minutes": 30,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "General",
-      "parent_context": null,
-      "hierarchy_level": 1,
-      "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.988Z"
-    },
-    {
-      "id": "task_unknown_pascal_antworten_5",
+      "id": "task_unknown_pascal_antworten_4",
       "title": "Pascal antworten",
       "description": "",
       "status": "pending",
@@ -89,9 +63,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-06",
-      "line_number": 5,
-      "created_at": "2025-10-06T14:35:59.827Z",
-      "updated_at": "2025-10-06T14:35:59.827Z",
+      "line_number": 4,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 1,
@@ -102,323 +76,10 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.988Z"
+      "enhanced_at": "2025-10-06T14:49:13.832Z"
     },
     {
-      "id": "task_unknown___push_pr_se___6",
-      "title": "**PUSH Präse**",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "tags": [
-        "PUSH"
-      ],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 6,
-      "created_at": "2025-10-06T14:35:59.827Z",
-      "updated_at": "2025-10-06T14:35:59.827Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [],
-      "complexity": 1,
-      "estimated_duration_minutes": 30,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "PUSH",
-      "parent_context": null,
-      "hierarchy_level": 1,
-      "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.988Z"
-    },
-    {
-      "id": "task_unknown___push_build_test__ergebnis_no_7",
-      "title": "**PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "tags": [
-        "PUSH"
-      ],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 7,
-      "created_at": "2025-10-06T14:35:59.827Z",
-      "updated_at": "2025-10-06T14:35:59.827Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [
-        {
-          "id": "subtask_3_stufiges_generiere_8",
-          "title": "3 Stufiges generieren nochmal testen, einzel optimieren",
-          "status": "pending",
-          "line_number": 8,
-          "created_at": "2025-10-06T14:35:59.827Z",
-          "hierarchy_level": 2,
-          "parent_task": "**PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**",
-          "category": "PUSH",
-          "priority": "medium",
-          "tags": [
-            "PUSH",
-            "subtask"
-          ]
-        }
-      ],
-      "complexity": 1.5,
-      "estimated_duration_minutes": 45,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "PUSH",
-      "parent_context": {
-        "parent": "PUSH Build Test",
-        "context": "Tool-Optimierung",
-        "section": "Montag Nachmittag"
-      },
-      "hierarchy_level": 1,
-      "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.988Z"
-    },
-    {
-      "id": "task_unknown_3_stufiges_generieren_nochmal__8",
-      "title": "3 Stufiges generieren nochmal testen, einzel optimieren",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 8,
-      "created_at": "2025-10-06T14:35:59.827Z",
-      "updated_at": "2025-10-06T14:35:59.827Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [
-        {
-          "id": "subtask_colors_vorher_defini_9",
-          "title": "colors vorher definieren?",
-          "status": "pending",
-          "line_number": 9,
-          "created_at": "2025-10-06T14:35:59.827Z",
-          "hierarchy_level": 2,
-          "parent_task": "3 Stufiges generieren nochmal testen, einzel optimieren",
-          "category": "General",
-          "priority": "medium",
-          "tags": [
-            "subtask"
-          ]
-        }
-      ],
-      "hierarchy_level": 2,
-      "parent_task": "task_unknown___push_build_test__ergebnis_no_7",
-      "complexity": 1.5,
-      "estimated_duration_minutes": 45,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "General",
-      "parent_context": null,
-      "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.989Z"
-    },
-    {
-      "id": "task_unknown_colors_vorher_definieren__9",
-      "title": "colors vorher definieren?",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 9,
-      "created_at": "2025-10-06T14:35:59.827Z",
-      "updated_at": "2025-10-06T14:35:59.827Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [
-        {
-          "id": "subtask_daily_repeat_und_hub_10",
-          "title": "daily repeat und hub optimieren",
-          "status": "pending",
-          "line_number": 10,
-          "created_at": "2025-10-06T14:35:59.828Z",
-          "hierarchy_level": 2,
-          "parent_task": "colors vorher definieren?",
-          "category": "General",
-          "priority": "medium",
-          "tags": [
-            "subtask"
-          ]
-        }
-      ],
-      "hierarchy_level": 2,
-      "parent_task": "task_unknown_3_stufiges_generieren_nochmal__8",
-      "complexity": 1.5,
-      "estimated_duration_minutes": 45,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "General",
-      "parent_context": null,
-      "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.989Z"
-    },
-    {
-      "id": "task_unknown_daily_repeat_und_hub_optimiere_10",
-      "title": "daily repeat und hub optimieren",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 10,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [
-        {
-          "id": "subtask_guided_interactions__11",
-          "title": "guided interactions noch mal checken",
-          "status": "pending",
-          "line_number": 11,
-          "created_at": "2025-10-06T14:35:59.828Z",
-          "hierarchy_level": 2,
-          "parent_task": "daily repeat und hub optimieren",
-          "category": "General",
-          "priority": "medium",
-          "tags": [
-            "subtask"
-          ]
-        }
-      ],
-      "hierarchy_level": 2,
-      "parent_task": "task_unknown_colors_vorher_definieren__9",
-      "complexity": 1.5,
-      "estimated_duration_minutes": 45,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "General",
-      "parent_context": null,
-      "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.989Z"
-    },
-    {
-      "id": "task_unknown_guided_interactions_noch_mal_c_11",
-      "title": "guided interactions noch mal checken",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 11,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [
-        {
-          "id": "subtask_microcopy_mit_psycho_12",
-          "title": "microcopy mit psychology noch mal checken",
-          "status": "pending",
-          "line_number": 12,
-          "created_at": "2025-10-06T14:35:59.828Z",
-          "hierarchy_level": 2,
-          "parent_task": "guided interactions noch mal checken",
-          "category": "General",
-          "priority": "medium",
-          "tags": [
-            "subtask"
-          ]
-        }
-      ],
-      "hierarchy_level": 2,
-      "parent_task": "task_unknown_daily_repeat_und_hub_optimiere_10",
-      "complexity": 1.5,
-      "estimated_duration_minutes": 45,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "General",
-      "parent_context": null,
-      "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.989Z"
-    },
-    {
-      "id": "task_unknown_microcopy_mit_psychology_noch__12",
-      "title": "microcopy mit psychology noch mal checken",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 12,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [
-        {
-          "id": "subtask_handout_abgespeckt_p_13",
-          "title": "Handout abgespeckt Perfect",
-          "status": "pending",
-          "line_number": 13,
-          "created_at": "2025-10-06T14:35:59.828Z",
-          "hierarchy_level": 2,
-          "parent_task": "microcopy mit psychology noch mal checken",
-          "category": "General",
-          "priority": "medium",
-          "tags": [
-            "subtask"
-          ]
-        }
-      ],
-      "hierarchy_level": 2,
-      "parent_task": "task_unknown_guided_interactions_noch_mal_c_11",
-      "complexity": 1.5,
-      "estimated_duration_minutes": 45,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "General",
-      "parent_context": null,
-      "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.989Z"
-    },
-    {
-      "id": "task_unknown_handout_abgespeckt_perfect_13",
-      "title": "Handout abgespeckt Perfect",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-06",
-      "line_number": 13,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
-      "source_file": "core/dates/2025-10-06.md",
-      "subtasks": [],
-      "hierarchy_level": 2,
-      "parent_task": "task_unknown_microcopy_mit_psychology_noch__12",
-      "complexity": 1,
-      "estimated_duration_minutes": 30,
-      "deadline_status": "due_today",
-      "smart_score": 100,
-      "category": "General",
-      "parent_context": null,
-      "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.989Z"
-    },
-    {
-      "id": "task_unknown___linkend_in_post_____i_m_back_14",
+      "id": "task_unknown___linkend_in_post_____i_m_back_7",
       "title": "**Linkend In Post** \\\"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\\\"",
       "description": "",
       "status": "pending",
@@ -432,9 +93,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-13",
-      "line_number": 14,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
+      "line_number": 7,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 2,
@@ -445,10 +106,10 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.834Z"
     },
     {
-      "id": "task_unknown_post_zu_5_stuefen_workflow__au_15",
+      "id": "task_unknown_post_zu_5_stuefen_workflow__au_8",
       "title": "Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext",
       "description": "",
       "status": "pending",
@@ -462,9 +123,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-06",
-      "line_number": 15,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
+      "line_number": 8,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 2,
@@ -475,10 +136,10 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.835Z"
     },
     {
-      "id": "task_unknown_mitgr_nder_suchen_post____mita_16",
+      "id": "task_unknown_mitgr_nder_suchen_post____mita_9",
       "title": "Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design?",
       "description": "",
       "status": "pending",
@@ -492,9 +153,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-06",
-      "line_number": 16,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
+      "line_number": 9,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 2,
@@ -505,10 +166,10 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.835Z"
     },
     {
-      "id": "task_unknown_alle_leute_hallo_mit_lead_funn_17",
+      "id": "task_unknown_alle_leute_hallo_mit_lead_funn_10",
       "title": "Alle Leute hallo mit lead funnels strategie, potential clients aus der letztenkontaktier welle",
       "description": "",
       "status": "pending",
@@ -520,9 +181,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-06",
-      "line_number": 17,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
+      "line_number": 10,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 1,
@@ -533,10 +194,10 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.835Z"
     },
     {
-      "id": "task_unknown_noch_mehr_rauskommen_aus_dem_h_18",
+      "id": "task_unknown_noch_mehr_rauskommen_aus_dem_h_11",
       "title": "Noch mehr rauskommen aus dem Haus planen!!!",
       "description": "",
       "status": "pending",
@@ -546,9 +207,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-06",
-      "line_number": 18,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
+      "line_number": 11,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 1,
@@ -559,10 +220,10 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.835Z"
     },
     {
-      "id": "task_unknown_cv_dieses_jahr_update__laura___19",
+      "id": "task_unknown_cv_dieses_jahr_update__laura___12",
       "title": "CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, Check24!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.",
       "description": "",
       "status": "pending",
@@ -575,9 +236,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-06",
-      "line_number": 19,
-      "created_at": "2025-10-06T14:35:59.828Z",
-      "updated_at": "2025-10-06T14:35:59.828Z",
+      "line_number": 12,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": [],
       "complexity": 3.5,
@@ -592,10 +253,36 @@
       },
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.835Z"
     },
     {
-      "id": "task_unknown_check24_workshop____2",
+      "id": "task_unknown_tim_wg__coaching_2",
+      "title": "Tim wg. Coaching",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 2,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [],
+      "complexity": 1,
+      "estimated_duration_minutes": 30,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 90,
+      "category": "General",
+      "parent_context": null,
+      "hierarchy_level": 1,
+      "markdown_section": "Montag Nachmittag, 6. Oktober",
+      "enhanced_at": "2025-10-06T14:49:13.835Z"
+    },
+    {
+      "id": "task_unknown_check24_workshop____3",
       "title": "Check24 Workshop!!!",
       "description": "",
       "status": "pending",
@@ -607,9 +294,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-07",
-      "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.829Z",
-      "updated_at": "2025-10-06T14:35:59.829Z",
+      "line_number": 3,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [],
       "complexity": 2,
@@ -624,10 +311,10 @@
       },
       "hierarchy_level": 1,
       "markdown_section": "Dienstag, 7. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
     },
     {
-      "id": "task_unknown_erste_daten_f_r_konzepter_gene_3",
+      "id": "task_unknown_erste_daten_f_r_konzepter_gene_4",
       "title": "Erste Daten für Konzepter generieren. Check24 Workshop!!!",
       "description": "",
       "status": "pending",
@@ -639,17 +326,17 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-07",
-      "line_number": 3,
-      "created_at": "2025-10-06T14:35:59.829Z",
-      "updated_at": "2025-10-06T14:35:59.829Z",
+      "line_number": 4,
+      "created_at": "2025-10-06T14:45:35.431Z",
+      "updated_at": "2025-10-06T14:45:35.431Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [
         {
-          "id": "subtask_check24_genaues_brie_4",
+          "id": "subtask_check24_genaues_brie_5",
           "title": "Check24 genaues Briefing für den Konzepter",
           "status": "pending",
-          "line_number": 4,
-          "created_at": "2025-10-06T14:35:59.829Z",
+          "line_number": 5,
+          "created_at": "2025-10-06T14:45:35.432Z",
           "hierarchy_level": 2,
           "parent_task": "Erste Daten für Konzepter generieren. Check24 Workshop!!!",
           "category": "Marketing",
@@ -672,10 +359,10 @@
       },
       "hierarchy_level": 1,
       "markdown_section": "Dienstag, 7. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
     },
     {
-      "id": "task_unknown_check24_genaues_briefing_f_r_d_4",
+      "id": "task_unknown_check24_genaues_briefing_f_r_d_5",
       "title": "Check24 genaues Briefing für den Konzepter",
       "description": "",
       "status": "pending",
@@ -685,17 +372,17 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-07",
-      "line_number": 4,
-      "created_at": "2025-10-06T14:35:59.829Z",
-      "updated_at": "2025-10-06T14:35:59.829Z",
+      "line_number": 5,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [
         {
-          "id": "subtask_check24_materialien__5",
+          "id": "subtask_check24_materialien__6",
           "title": "Check24 Materialien?!?",
           "status": "pending",
-          "line_number": 5,
-          "created_at": "2025-10-06T14:35:59.829Z",
+          "line_number": 6,
+          "created_at": "2025-10-06T14:45:35.432Z",
           "hierarchy_level": 2,
           "parent_task": "Check24 genaues Briefing für den Konzepter",
           "category": "Check24",
@@ -706,7 +393,7 @@
         }
       ],
       "hierarchy_level": 1,
-      "parent_task": "task_unknown_erste_daten_f_r_konzepter_gene_3",
+      "parent_task": "task_unknown_erste_daten_f_r_konzepter_gene_4",
       "complexity": 1.5,
       "estimated_duration_minutes": 45,
       "deadline_status": "due_tomorrow",
@@ -718,10 +405,10 @@
         "section": "Dienstag"
       },
       "markdown_section": "Dienstag, 7. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.991Z"
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
     },
     {
-      "id": "task_unknown_check24_materialien____5",
+      "id": "task_unknown_check24_materialien____6",
       "title": "Check24 Materialien?!?",
       "description": "",
       "status": "pending",
@@ -731,13 +418,13 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-07",
-      "line_number": 5,
-      "created_at": "2025-10-06T14:35:59.829Z",
-      "updated_at": "2025-10-06T14:35:59.829Z",
+      "line_number": 6,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [],
       "hierarchy_level": 1,
-      "parent_task": "task_unknown_check24_genaues_briefing_f_r_d_4",
+      "parent_task": "task_unknown_check24_genaues_briefing_f_r_d_5",
       "complexity": 1,
       "estimated_duration_minutes": 30,
       "deadline_status": "due_tomorrow",
@@ -749,10 +436,323 @@
         "section": "Dienstag"
       },
       "markdown_section": "Dienstag, 7. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.992Z"
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
     },
     {
-      "id": "task_unknown___alloy_testen_____alloy_tool__6",
+      "id": "task_unknown___push_pr_se___9",
+      "title": "**PUSH Präse**",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [
+        "PUSH"
+      ],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 9,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [],
+      "complexity": 1,
+      "estimated_duration_minutes": 30,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 100,
+      "category": "PUSH",
+      "parent_context": null,
+      "hierarchy_level": 1,
+      "markdown_section": "Montag Nachmittag, 6. Oktober",
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
+    },
+    {
+      "id": "task_unknown___push_build_test__ergebnis_no_10",
+      "title": "**PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [
+        "PUSH"
+      ],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 10,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [
+        {
+          "id": "subtask_3_stufiges_generiere_11",
+          "title": "3 Stufiges generieren nochmal testen, einzel optimieren",
+          "status": "pending",
+          "line_number": 11,
+          "created_at": "2025-10-06T14:45:35.432Z",
+          "hierarchy_level": 2,
+          "parent_task": "**PUSH Build Test, ergebnis noch scheisse, mehr auf die logiken eingehen**",
+          "category": "PUSH",
+          "priority": "medium",
+          "tags": [
+            "PUSH",
+            "subtask"
+          ]
+        }
+      ],
+      "complexity": 1.5,
+      "estimated_duration_minutes": 45,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 100,
+      "category": "PUSH",
+      "parent_context": {
+        "parent": "PUSH Build Test",
+        "context": "Tool-Optimierung",
+        "section": "Montag Nachmittag"
+      },
+      "hierarchy_level": 1,
+      "markdown_section": "Montag Nachmittag, 6. Oktober",
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
+    },
+    {
+      "id": "task_unknown_3_stufiges_generieren_nochmal__11",
+      "title": "3 Stufiges generieren nochmal testen, einzel optimieren",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 11,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [
+        {
+          "id": "subtask_colors_vorher_defini_12",
+          "title": "colors vorher definieren?",
+          "status": "pending",
+          "line_number": 12,
+          "created_at": "2025-10-06T14:45:35.432Z",
+          "hierarchy_level": 2,
+          "parent_task": "3 Stufiges generieren nochmal testen, einzel optimieren",
+          "category": "General",
+          "priority": "medium",
+          "tags": [
+            "subtask"
+          ]
+        }
+      ],
+      "hierarchy_level": 2,
+      "parent_task": "task_unknown___push_build_test__ergebnis_no_10",
+      "complexity": 1.5,
+      "estimated_duration_minutes": 45,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 90,
+      "category": "General",
+      "parent_context": null,
+      "markdown_section": "Weitere Tasks",
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
+    },
+    {
+      "id": "task_unknown_colors_vorher_definieren__12",
+      "title": "colors vorher definieren?",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 12,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [
+        {
+          "id": "subtask_daily_repeat_und_hub_13",
+          "title": "daily repeat und hub optimieren",
+          "status": "pending",
+          "line_number": 13,
+          "created_at": "2025-10-06T14:45:35.432Z",
+          "hierarchy_level": 2,
+          "parent_task": "colors vorher definieren?",
+          "category": "General",
+          "priority": "medium",
+          "tags": [
+            "subtask"
+          ]
+        }
+      ],
+      "hierarchy_level": 2,
+      "parent_task": "task_unknown_3_stufiges_generieren_nochmal__11",
+      "complexity": 1.5,
+      "estimated_duration_minutes": 45,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 90,
+      "category": "General",
+      "parent_context": null,
+      "markdown_section": "Weitere Tasks",
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
+    },
+    {
+      "id": "task_unknown_daily_repeat_und_hub_optimiere_13",
+      "title": "daily repeat und hub optimieren",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 13,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [
+        {
+          "id": "subtask_guided_interactions__14",
+          "title": "guided interactions noch mal checken",
+          "status": "pending",
+          "line_number": 14,
+          "created_at": "2025-10-06T14:45:35.432Z",
+          "hierarchy_level": 2,
+          "parent_task": "daily repeat und hub optimieren",
+          "category": "General",
+          "priority": "medium",
+          "tags": [
+            "subtask"
+          ]
+        }
+      ],
+      "hierarchy_level": 2,
+      "parent_task": "task_unknown_colors_vorher_definieren__12",
+      "complexity": 1.5,
+      "estimated_duration_minutes": 45,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 90,
+      "category": "General",
+      "parent_context": null,
+      "markdown_section": "Weitere Tasks",
+      "enhanced_at": "2025-10-06T14:49:13.836Z"
+    },
+    {
+      "id": "task_unknown_guided_interactions_noch_mal_c_14",
+      "title": "guided interactions noch mal checken",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 14,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [
+        {
+          "id": "subtask_microcopy_mit_psycho_15",
+          "title": "microcopy mit psychology noch mal checken",
+          "status": "pending",
+          "line_number": 15,
+          "created_at": "2025-10-06T14:45:35.432Z",
+          "hierarchy_level": 2,
+          "parent_task": "guided interactions noch mal checken",
+          "category": "General",
+          "priority": "medium",
+          "tags": [
+            "subtask"
+          ]
+        }
+      ],
+      "hierarchy_level": 2,
+      "parent_task": "task_unknown_daily_repeat_und_hub_optimiere_13",
+      "complexity": 1.5,
+      "estimated_duration_minutes": 45,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 90,
+      "category": "General",
+      "parent_context": null,
+      "markdown_section": "Weitere Tasks",
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
+    },
+    {
+      "id": "task_unknown_microcopy_mit_psychology_noch__15",
+      "title": "microcopy mit psychology noch mal checken",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 15,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [
+        {
+          "id": "subtask_handout_abgespeckt_p_16",
+          "title": "Handout abgespeckt Perfect",
+          "status": "pending",
+          "line_number": 16,
+          "created_at": "2025-10-06T14:45:35.432Z",
+          "hierarchy_level": 2,
+          "parent_task": "microcopy mit psychology noch mal checken",
+          "category": "General",
+          "priority": "medium",
+          "tags": [
+            "subtask"
+          ]
+        }
+      ],
+      "hierarchy_level": 2,
+      "parent_task": "task_unknown_guided_interactions_noch_mal_c_14",
+      "complexity": 1.5,
+      "estimated_duration_minutes": 45,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 90,
+      "category": "General",
+      "parent_context": null,
+      "markdown_section": "Weitere Tasks",
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
+    },
+    {
+      "id": "task_unknown_handout_abgespeckt_perfect_16",
+      "title": "Handout abgespeckt Perfect",
+      "description": "",
+      "status": "pending",
+      "priority": "medium",
+      "tags": [],
+      "date": null,
+      "week": null,
+      "project": null,
+      "due_date": "2025-10-07",
+      "line_number": 16,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
+      "source_file": "core/dates/2025-10-07.md",
+      "subtasks": [],
+      "hierarchy_level": 2,
+      "parent_task": "task_unknown_microcopy_mit_psychology_noch__15",
+      "complexity": 1,
+      "estimated_duration_minutes": 30,
+      "deadline_status": "due_tomorrow",
+      "smart_score": 90,
+      "category": "General",
+      "parent_context": null,
+      "markdown_section": "Weitere Tasks",
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
+    },
+    {
+      "id": "task_unknown___alloy_testen_____alloy_tool__18",
       "title": "**Alloy testen** - Alloy-Tool testen und evaluieren",
       "description": "",
       "status": "pending",
@@ -764,9 +764,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-07",
-      "line_number": 6,
-      "created_at": "2025-10-06T14:35:59.829Z",
-      "updated_at": "2025-10-06T14:35:59.829Z",
+      "line_number": 18,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [],
       "complexity": 2.5,
@@ -777,10 +777,10 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Dienstag, 7. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.992Z"
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
     },
     {
-      "id": "task_unknown___alloy_guides_lesen_und_teste_7",
+      "id": "task_unknown___alloy_guides_lesen_und_teste_19",
       "title": "**Alloy Guides lesen und testen** - Alloy-Dokumentation durcharbeiten und praktisch testen",
       "description": "",
       "status": "pending",
@@ -792,9 +792,9 @@
       "week": null,
       "project": null,
       "due_date": "2025-10-07",
-      "line_number": 7,
-      "created_at": "2025-10-06T14:35:59.829Z",
-      "updated_at": "2025-10-06T14:35:59.829Z",
+      "line_number": 19,
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [],
       "complexity": 1,
@@ -805,7 +805,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Dienstag, 7. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.992Z"
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
     },
     {
       "id": "task_unknown_0_3_werk1_2",
@@ -819,8 +819,8 @@
       "project": null,
       "due_date": "2025-10-08",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.830Z",
-      "updated_at": "2025-10-06T14:35:59.830Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": [],
       "complexity": 1,
@@ -831,7 +831,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.992Z"
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
     },
     {
       "id": "task_unknown___9_10__neue__berweisung_lunge_3",
@@ -847,8 +847,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 3,
-      "created_at": "2025-10-06T14:35:59.830Z",
-      "updated_at": "2025-10-06T14:35:59.830Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": [],
       "complexity": 1,
@@ -859,7 +859,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.992Z"
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
     },
     {
       "id": "task_unknown_linkedin_zu_substack_und_zweit_4",
@@ -876,8 +876,8 @@
       "project": null,
       "due_date": "2025-10-08",
       "line_number": 4,
-      "created_at": "2025-10-06T14:35:59.830Z",
-      "updated_at": "2025-10-06T14:35:59.830Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": [],
       "complexity": 3.5,
@@ -888,7 +888,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.992Z"
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
     },
     {
       "id": "task_unknown_stromanbieter_2",
@@ -902,8 +902,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 1,
@@ -914,7 +914,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.992Z"
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
     },
     {
       "id": "task_unknown_huk_3",
@@ -928,8 +928,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 3,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 1,
@@ -940,7 +940,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.992Z"
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
     },
     {
       "id": "task_unknown_zahnversicherung_4",
@@ -956,8 +956,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 4,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 1,
@@ -968,7 +968,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.993Z"
+      "enhanced_at": "2025-10-06T14:49:13.837Z"
     },
     {
       "id": "task_unknown_mieterverein_doppelt_5",
@@ -982,8 +982,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 5,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 1,
@@ -994,7 +994,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.993Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown_kretschmer_wegen_zahnzusatz_6",
@@ -1008,8 +1008,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 6,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 1,
@@ -1020,7 +1020,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.993Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown_nebenkostenabrechnungen_lich_v_7",
@@ -1034,8 +1034,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 7,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 1,
@@ -1046,7 +1046,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.993Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown___tool_seiten____aktuelle_tool_8",
@@ -1063,8 +1063,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 8,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 2.5,
@@ -1075,7 +1075,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown___wireframes_tool___12",
@@ -1091,8 +1091,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 12,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 2.5,
@@ -1103,7 +1103,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown____pricing_ideen_sammeln__sale_15",
@@ -1119,8 +1119,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 15,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 2,
@@ -1131,7 +1131,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Donnerstag, 9. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown___marketing_seiten_aufr_umen___16",
@@ -1148,8 +1148,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 16,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.432Z",
+      "updated_at": "2025-10-06T14:45:35.432Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": [],
       "complexity": 2.5,
@@ -1160,7 +1160,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Donnerstag, 9. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown___10_10__um_10_30_uhr_lungenar_2",
@@ -1177,8 +1177,8 @@
       "project": null,
       "due_date": "2025-10-10",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.433Z",
+      "updated_at": "2025-10-06T14:45:35.433Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": [],
       "complexity": 1,
@@ -1189,7 +1189,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Mittwoch, 8. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown_schlafzimmer_rollos__2025_10_1_3",
@@ -1203,10 +1203,10 @@
       "date": null,
       "week": null,
       "project": null,
-      "due_date": "2025-10-11",
+      "due_date": "2025-10-10",
       "line_number": 3,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.433Z",
+      "updated_at": "2025-10-06T14:45:35.433Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": [],
       "complexity": 1,
@@ -1217,7 +1217,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Wochenende 11. und 12. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown___steuer2024_____steuererkl_ru_4",
@@ -1231,10 +1231,10 @@
       "date": null,
       "week": null,
       "project": null,
-      "due_date": "2025-10-11",
+      "due_date": "2025-10-10",
       "line_number": 4,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.433Z",
+      "updated_at": "2025-10-06T14:45:35.433Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": [],
       "complexity": 1,
@@ -1245,7 +1245,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Wochenende 11. und 12. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown_miete_erh_hen_wenn_nebenkosten_5",
@@ -1257,10 +1257,10 @@
       "date": null,
       "week": null,
       "project": null,
-      "due_date": "2025-10-11",
+      "due_date": "2025-10-10",
       "line_number": 5,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.433Z",
+      "updated_at": "2025-10-06T14:45:35.433Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": [],
       "complexity": 1,
@@ -1271,7 +1271,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Wochenende 11. und 12. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown_immer__heldenverlies__klettrwa_6",
@@ -1283,10 +1283,10 @@
       "date": null,
       "week": null,
       "project": null,
-      "due_date": "2025-10-11",
+      "due_date": "2025-10-10",
       "line_number": 6,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.433Z",
+      "updated_at": "2025-10-06T14:45:35.433Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": [],
       "complexity": 1,
@@ -1297,7 +1297,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Wochenende 11. und 12. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.994Z"
+      "enhanced_at": "2025-10-06T14:49:13.838Z"
     },
     {
       "id": "task_unknown_zahn_rztin__bekomme_ich_noch_d_7",
@@ -1309,21 +1309,21 @@
       "date": null,
       "week": null,
       "project": null,
-      "due_date": "2025-10-19",
+      "due_date": "2025-10-10",
       "line_number": 7,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.433Z",
+      "updated_at": "2025-10-06T14:45:35.433Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": [],
       "complexity": 1,
       "estimated_duration_minutes": 30,
-      "deadline_status": "due_later",
-      "smart_score": 70,
+      "deadline_status": "due_this_week",
+      "smart_score": 75,
       "category": "General",
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.839Z"
     },
     {
       "id": "task_unknown___booklist__but_how_to_ui_the__8",
@@ -1335,21 +1335,21 @@
       "date": null,
       "week": null,
       "project": null,
-      "due_date": "2025-10-19",
+      "due_date": "2025-10-10",
       "line_number": 8,
-      "created_at": "2025-10-06T14:35:59.831Z",
-      "updated_at": "2025-10-06T14:35:59.831Z",
+      "created_at": "2025-10-06T14:45:35.433Z",
+      "updated_at": "2025-10-06T14:45:35.433Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": [],
       "complexity": 1,
       "estimated_duration_minutes": 30,
-      "deadline_status": "due_later",
-      "smart_score": 70,
+      "deadline_status": "due_this_week",
+      "smart_score": 75,
       "category": "General",
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.839Z"
     },
     {
       "id": "task_unknown____push_ux_event_____tag_1_2",
@@ -1366,8 +1366,8 @@
       "project": null,
       "due_date": "2025-10-23",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.832Z",
-      "updated_at": "2025-10-06T14:35:59.832Z",
+      "created_at": "2025-10-06T14:45:35.433Z",
+      "updated_at": "2025-10-06T14:45:35.433Z",
       "source_file": "core/dates/2025-10-23.md",
       "subtasks": [],
       "complexity": 1,
@@ -1378,7 +1378,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.839Z"
     },
     {
       "id": "task_unknown____push_ux_event_____tag_2_2",
@@ -1395,8 +1395,8 @@
       "project": null,
       "due_date": "2025-10-24",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.833Z",
-      "updated_at": "2025-10-06T14:35:59.833Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-10-24.md",
       "subtasks": [],
       "complexity": 1,
@@ -1407,7 +1407,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Montag Nachmittag, 6. Oktober",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.839Z"
     },
     {
       "id": "task_unknown___olympia_b_rgerentscheid______2",
@@ -1421,8 +1421,8 @@
       "project": null,
       "due_date": "2025-10-26",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.833Z",
-      "updated_at": "2025-10-06T14:35:59.833Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-10-26.md",
       "subtasks": [],
       "complexity": 1,
@@ -1433,7 +1433,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.840Z"
     },
     {
       "id": "task_unknown___sp_testens_ende_dezember_202_2",
@@ -1447,8 +1447,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1456,7 +1456,7 @@
           "title": "**150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen",
           "status": "pending",
           "line_number": 3,
-          "created_at": "2025-10-06T14:35:59.834Z",
+          "created_at": "2025-10-06T14:45:35.434Z",
           "hierarchy_level": 2,
           "parent_task": "**Spätestens Ende Dezember 2025** - Antrag für Gründungszuschuss stellen",
           "category": "General",
@@ -1474,7 +1474,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.840Z"
     },
     {
       "id": "task_unknown___150_resttage_alg_i_____minde_3",
@@ -1488,8 +1488,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 3,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1497,7 +1497,7 @@
           "title": "**Besser deutlich früher** - Oktober bis Dezember 2025 für genug Bearbeitungszeit",
           "status": "pending",
           "line_number": 4,
-          "created_at": "2025-10-06T14:35:59.834Z",
+          "created_at": "2025-10-06T14:45:35.434Z",
           "hierarchy_level": 2,
           "parent_task": "**150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen",
           "category": "General",
@@ -1516,7 +1516,7 @@
       "category": "General",
       "parent_context": null,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.840Z"
     },
     {
       "id": "task_unknown___besser_deutlich_fr_her_____o_4",
@@ -1530,8 +1530,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 4,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [],
       "hierarchy_level": 1,
@@ -1543,7 +1543,7 @@
       "category": "General",
       "parent_context": null,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.840Z"
     },
     {
       "id": "task_unknown___einkommensplan_erstellen_____5",
@@ -1557,8 +1557,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 5,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1566,7 +1566,7 @@
           "title": "**ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich",
           "status": "pending",
           "line_number": 6,
-          "created_at": "2025-10-06T14:35:59.834Z",
+          "created_at": "2025-10-06T14:45:35.434Z",
           "hierarchy_level": 2,
           "parent_task": "**Einkommensplan erstellen** - ALG I + Gründungszuschuss kalkulieren:",
           "category": "General",
@@ -1584,7 +1584,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.840Z"
     },
     {
       "id": "task_unknown___alg_i_h_he____65_32___t_glic_6",
@@ -1598,8 +1598,8 @@
       "project": null,
       "due_date": "2025-95-01",
       "line_number": 6,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1607,7 +1607,7 @@
           "title": "**Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat",
           "status": "pending",
           "line_number": 7,
-          "created_at": "2025-10-06T14:35:59.834Z",
+          "created_at": "2025-10-06T14:45:35.434Z",
           "hierarchy_level": 2,
           "parent_task": "**ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich",
           "category": "General",
@@ -1626,7 +1626,7 @@
       "category": "General",
       "parent_context": null,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.995Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown___phase_1__6_monate_____alg_i__7",
@@ -1640,8 +1640,8 @@
       "project": null,
       "due_date": "2025-25-02",
       "line_number": 7,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1649,7 +1649,7 @@
           "title": "**Phase 2 (9 Monate, optional):** Nur 300 € Zuschuss",
           "status": "pending",
           "line_number": 8,
-          "created_at": "2025-10-06T14:35:59.834Z",
+          "created_at": "2025-10-06T14:45:35.434Z",
           "hierarchy_level": 2,
           "parent_task": "**Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat",
           "category": "General",
@@ -1668,7 +1668,7 @@
       "category": "General",
       "parent_context": null,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown___phase_2__9_monate__optional__8",
@@ -1682,8 +1682,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 8,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [],
       "hierarchy_level": 1,
@@ -1695,7 +1695,7 @@
       "category": "General",
       "parent_context": null,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown___optimaler_zeitraum_planen____9",
@@ -1709,8 +1709,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 9,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1718,7 +1718,7 @@
           "title": "**Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026",
           "status": "pending",
           "line_number": 10,
-          "created_at": "2025-10-06T14:35:59.834Z",
+          "created_at": "2025-10-06T14:45:35.434Z",
           "hierarchy_level": 2,
           "parent_task": "**Optimaler Zeitraum planen** - Oktober bis Dezember 2025 für Antrag",
           "category": "General",
@@ -1736,7 +1736,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown___szenario_november_2025____gr_10",
@@ -1750,8 +1750,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 10,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1759,7 +1759,7 @@
           "title": "**Szenario Dezember 2025:** Gründung Januar 2026 → ALG I + Zuschuss bis Juni/Juli 2026",
           "status": "pending",
           "line_number": 11,
-          "created_at": "2025-10-06T14:35:59.834Z",
+          "created_at": "2025-10-06T14:45:35.434Z",
           "hierarchy_level": 2,
           "parent_task": "**Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026",
           "category": "General",
@@ -1778,7 +1778,7 @@
       "category": "General",
       "parent_context": null,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown___szenario_dezember_2025____gr_11",
@@ -1792,8 +1792,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 11,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [],
       "hierarchy_level": 1,
@@ -1805,7 +1805,7 @@
       "category": "General",
       "parent_context": null,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown_slk_und_touran_t_v_12",
@@ -1819,8 +1819,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 12,
-      "created_at": "2025-10-06T14:35:59.834Z",
-      "updated_at": "2025-10-06T14:35:59.834Z",
+      "created_at": "2025-10-06T14:45:35.434Z",
+      "updated_at": "2025-10-06T14:45:35.434Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [],
       "complexity": 1,
@@ -1831,7 +1831,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown_dezember_januar_gr_ndungszusch_2",
@@ -1845,8 +1845,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 2,
-      "created_at": "2025-10-06T14:35:59.835Z",
-      "updated_at": "2025-10-06T14:35:59.835Z",
+      "created_at": "2025-10-06T14:45:35.435Z",
+      "updated_at": "2025-10-06T14:45:35.435Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": [],
       "complexity": 1,
@@ -1857,7 +1857,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown_blake_et_mortimer_3",
@@ -1871,8 +1871,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 3,
-      "created_at": "2025-10-06T14:35:59.835Z",
-      "updated_at": "2025-10-06T14:35:59.835Z",
+      "created_at": "2025-10-06T14:45:35.435Z",
+      "updated_at": "2025-10-06T14:45:35.435Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": [],
       "complexity": 1,
@@ -1883,7 +1883,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown_junior_et_senior_4",
@@ -1897,8 +1897,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 4,
-      "created_at": "2025-10-06T14:35:59.835Z",
-      "updated_at": "2025-10-06T14:35:59.835Z",
+      "created_at": "2025-10-06T14:45:35.435Z",
+      "updated_at": "2025-10-06T14:45:35.435Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": [],
       "complexity": 1,
@@ -1909,7 +1909,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown_corto_maltese_manga_5",
@@ -1923,8 +1923,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 5,
-      "created_at": "2025-10-06T14:35:59.835Z",
-      "updated_at": "2025-10-06T14:35:59.835Z",
+      "created_at": "2025-10-06T14:45:35.435Z",
+      "updated_at": "2025-10-06T14:45:35.435Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": [],
       "complexity": 1,
@@ -1935,7 +1935,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown_asterix_41_6",
@@ -1949,8 +1949,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 6,
-      "created_at": "2025-10-06T14:35:59.835Z",
-      "updated_at": "2025-10-06T14:35:59.835Z",
+      "created_at": "2025-10-06T14:45:35.435Z",
+      "updated_at": "2025-10-06T14:45:35.435Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": [],
       "complexity": 1,
@@ -1961,7 +1961,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     },
     {
       "id": "task_unknown_2_spirou_7",
@@ -1975,8 +1975,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 7,
-      "created_at": "2025-10-06T14:35:59.835Z",
-      "updated_at": "2025-10-06T14:35:59.835Z",
+      "created_at": "2025-10-06T14:45:35.435Z",
+      "updated_at": "2025-10-06T14:45:35.435Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": [],
       "complexity": 1,
@@ -1987,7 +1987,7 @@
       "parent_context": null,
       "hierarchy_level": 1,
       "markdown_section": "Weitere Tasks",
-      "enhanced_at": "2025-10-06T14:36:02.996Z"
+      "enhanced_at": "2025-10-06T14:49:13.841Z"
     }
   ],
   "projects": [],
@@ -2006,10 +2006,10 @@
       "2025-11-01.md",
       "2025-12-01.md"
     ],
-    "parsedAt": "2025-10-06T14:35:59.835Z",
+    "parsedAt": "2025-10-06T14:45:35.435Z",
     "parser": "MultiFileMarkdownParser"
   },
-  "enhanced_at": "2025-10-06T14:36:02.996Z",
+  "enhanced_at": "2025-10-06T14:49:13.841Z",
   "total_tasks": 64,
   "smart_features": {
     "due_dates": 64,
@@ -2021,19 +2021,19 @@
     "categories": {
       "Sustain": 1,
       "General": 39,
-      "PUSH": 4,
       "Marketing": 3,
       "Development": 7,
       "Business": 4,
       "Check24": 2,
+      "PUSH": 4,
       "Personal": 4
     },
     "deadline_status": {
-      "due_today": 17,
-      "due_this_week": 6,
-      "due_tomorrow": 6,
+      "due_today": 8,
+      "due_this_week": 8,
+      "due_tomorrow": 15,
       "due_soon": 13,
-      "due_later": 22
+      "due_later": 20
     }
   }
 }

@@ -82,50 +82,9 @@ echo "" >> "$RESEARCH_LOG"
 echo "### **Erweiterte Pattern-Recognition:**" >> "$RESEARCH_LOG"
 
 # Häufige Änderungsmuster erkennen
-if echo "$STAGED_FILES" | grep -q "Dashboard"; then
-    echo "- 📋 **Todo-Management Pattern**" >> "$RESEARCH_LOG"
-    
-    # Detaillierte Todo-Analyse
-    DASHBOARD_DIFF=$(git diff --cached "Dashboard - Strukturierte To-do-Übersicht.md" 2>/dev/null)
-    if [ ! -z "$DASHBOARD_DIFF" ]; then
-        NEW_TODOS=$(echo "$DASHBOARD_DIFF" | grep -c "^- \[ \]")
-        COMPLETED_TODOS=$(echo "$DASHBOARD_DIFF" | grep -c "^- \[x\]")
-        MOVED_TODOS=$(echo "$DASHBOARD_DIFF" | grep -c "^+.*- \[")
-        
-        echo "  - Neue Todos: $NEW_TODOS" >> "$RESEARCH_LOG"
-        echo "  - Erledigte Todos: $COMPLETED_TODOS" >> "$RESEARCH_LOG"
-        echo "  - Verschobene Todos: $MOVED_TODOS" >> "$RESEARCH_LOG"
-        
-        # Todo-Kategorien erkennen
-        if echo "$DASHBOARD_DIFF" | grep -qi "woche\|week"; then
-            echo "  - 📅 **Wochenplanung Pattern**" >> "$RESEARCH_LOG"
-        fi
-        if echo "$DASHBOARD_DIFF" | grep -qi "sprint\|oktober"; then
-            echo "  - 🚀 **Sprint-Planung Pattern**" >> "$RESEARCH_LOG"
-        fi
-        if echo "$DASHBOARD_DIFF" | grep -qi "marketing\|business"; then
-            echo "  - 💼 **Business-Development Pattern**" >> "$RESEARCH_LOG"
-        fi
-    fi
-fi
+# Dashboard-bezogene Pattern-Recognition - REMOVED (Dashboard-System deprecated)
 
-if echo "$STAGED_FILES" | grep -q "right-sidebar"; then
-    echo "- 🎯 **Prioritäten-Anpassung Pattern**" >> "$RESEARCH_LOG"
-    
-    # Sidebar-Änderungen analysieren
-    SIDEBAR_DIFF=$(git diff --cached "right-sidebar.md" 2>/dev/null)
-    if [ ! -z "$SIDEBAR_DIFF" ]; then
-        if echo "$SIDEBAR_DIFF" | grep -qi "geld\|money"; then
-            echo "  - 💰 **Geld-Fokus Pattern**" >> "$RESEARCH_LOG"
-        fi
-        if echo "$SIDEBAR_DIFF" | grep -qi "tool\|first"; then
-            echo "  - 🛠️ **Tool-First Pattern**" >> "$RESEARCH_LOG"
-        fi
-        if echo "$SIDEBAR_DIFF" | grep -qi "erfolg\|kriterien"; then
-            echo "  - 🎯 **Erfolgs-Messung Pattern**" >> "$RESEARCH_LOG"
-        fi
-    fi
-fi
+# Sidebar-bezogene Pattern-Recognition - REMOVED (Dashboard-System deprecated)
 
 if echo "$STAGED_FILES" | grep -q "\.sh$"; then
     echo "- ⚙️ **Automatisierung-Pattern**" >> "$RESEARCH_LOG"
@@ -153,14 +112,7 @@ fi
 echo "" >> "$RESEARCH_LOG"
 echo "### **Cross-File Pattern Analysis:**" >> "$RESEARCH_LOG"
 
-# Multi-File Workflows erkennen
-if echo "$STAGED_FILES" | grep -q "Dashboard" && echo "$STAGED_FILES" | grep -q "index.html"; then
-    echo "- 🔄 **Todo-zu-Website Workflow**" >> "$RESEARCH_LOG"
-fi
-
-if echo "$STAGED_FILES" | grep -q "right-sidebar" && echo "$STAGED_FILES" | grep -q "index.html"; then
-    echo "- 🎯 **Prioritäten-zu-Website Workflow**" >> "$RESEARCH_LOG"
-fi
+# Multi-File Workflows - Dashboard-bezogene entfernt
 
 if echo "$STAGED_FILES" | grep -q "\.sh" && echo "$STAGED_FILES" | grep -q "\.md"; then
     echo "- ⚙️ **Script-zu-Content Workflow**" >> "$RESEARCH_LOG"
@@ -187,32 +139,7 @@ if echo "$COMMIT_MSG" | grep -qi "automat\|script\|workflow"; then
     echo "- 🤖 **Workflow-Automatisierung**" >> "$RESEARCH_LOG"
 fi
 
-# Content-basierte Feature-Extraktion
-if echo "$STAGED_FILES" | grep -q "Dashboard"; then
-    DASHBOARD_CONTENT=$(cat "Dashboard - Strukturierte To-do-Übersicht.md" 2>/dev/null)
-    
-    # Wiederkehrende Probleme erkennen
-    if echo "$DASHBOARD_CONTENT" | grep -qi "verschieben\|verschiebt"; then
-        echo "- 📅 **Automatische Termin-Verschiebung**" >> "$RESEARCH_LOG"
-    fi
-    
-    if echo "$DASHBOARD_CONTENT" | grep -qi "priorität\|wichtig"; then
-        echo "- ⭐ **Prioritäts-Management**" >> "$RESEARCH_LOG"
-    fi
-    
-    if echo "$DASHBOARD_CONTENT" | grep -qi "deadline\|termin"; then
-        echo "- ⏰ **Deadline-Management**" >> "$RESEARCH_LOG"
-    fi
-    
-    # Workflow-Patterns erkennen
-    if echo "$DASHBOARD_CONTENT" | grep -qi "woche.*woche"; then
-        echo "- 🔄 **Wochenplanung-Automatisierung**" >> "$RESEARCH_LOG"
-    fi
-    
-    if echo "$DASHBOARD_CONTENT" | grep -qi "sprint.*sprint"; then
-        echo "- 🚀 **Sprint-Management**" >> "$RESEARCH_LOG"
-    fi
-fi
+# Content-basierte Feature-Extraktion - Dashboard-bezogene entfernt
 
 # Sidebar-basierte Feature-Extraktion
 if echo "$STAGED_FILES" | grep -q "right-sidebar"; then
