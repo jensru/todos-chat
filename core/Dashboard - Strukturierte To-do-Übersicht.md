@@ -12,8 +12,6 @@
 #### **Montag Nachmittag, 6. Oktober**
 - [ ] Testemonial text an Bene schicken - Zusammenarbeit dokumentieren mit Bildern von dem was wir gemacht haben 📅 2025-10-06
 
-- [ ] Steffen app schicken 📅 2025-10-06
-- [ ] Tim wg. Coaching 📅 2025-10-06
 - [ ] Pascal antworten 📅 2025-10-06
 
 - [ ] **PUSH Präse** 📅 2025-10-06
@@ -32,6 +30,7 @@
 - [ ] CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, Check24!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema. 📅 2025-10-06
 
 #### **Dienstag, 7. Oktober**
+- [ ] Tim wg. Coaching 📅 2025-10-06
 - [ ] Check24 Workshop!!! 📅 2025-10-07
 - [ ] Erste Daten für Konzepter generieren. Check24 Workshop!!! 📅 2025-10-07
   - [ ] Check24 genaues Briefing für den Konzepter 📅 2025-10-07
@@ -76,10 +75,10 @@
 - [ ] **10.10. um 10:30 Uhr Lungenarzttermin** 📅 2025-10-10
 
 ### **Wochenende 11. und 12. Oktober**  
-- [ ] Schlafzimmer Rollos 📅 2025-10-12
-- [ ] **Steuer2024** - Steuererklärung 2024 📅 2025-10-12
-- [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist 📅 2025-10-12
-- [ ] Immer: Heldenverlies, Klettrwald, Tauchen, superfly, Therme Erding, 📅 2025-10-12
+- [ ] Schlafzimmer Rollos 📅 2025-10-111
+- [ ] **Steuer2024** - Steuererklärung 2024 📅 2025-10-11
+- [ ] Miete erhöhen wenn Nebenkostenabrechnung Tela da ist 📅 2025-10-11
+- [ ] Immer: Heldenverlies, Klettrwald, Tauchen, superfly, Therme Erding, 📅 2025-10-11
 
 ### **📅 WOCHE: 13. - 19. Oktober 2025**
 - [ ] Zahnärztin, bekomme ich noch die E-Mails? 📅 2025-10-19
@@ -104,19 +103,19 @@
 ## 📅 **NOVEMBER 2025**
 
 ### **Gründungsplan - ALG I & Gründungszuschuss**
-- [ ] **Spätestens Ende Dezember 2025** - Antrag für Gründungszuschuss stellen 📅 2025-10-26
-  - [ ] **150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen 📅 2025-12-01
-  - [ ] **Besser deutlich früher** - Oktober bis Dezember 2025 für genug Bearbeitungszeit 📅 2025-12-01
-- [ ] **Einkommensplan erstellen** - ALG I + Gründungszuschuss kalkulieren: 📅 2025-12-01
-  - [ ] **ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich 📅 2025-12-01
-  - [ ] **Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat 📅 2025-12-01
-  - [ ] **Phase 2 (9 Monate, optional):** Nur 300 € Zuschuss 📅 2025-12-01
-- [ ] **Optimaler Zeitraum planen** - Oktober bis Dezember 2025 für Antrag 📅 2025-12-01
-  - [ ] **Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026 📅 2025-12-01
-  - [ ] **Szenario Dezember 2025:** Gründung Januar 2026 → ALG I + Zuschuss bis Juni/Juli 2026 📅 2025-12-01
+- [ ] **Spätestens Ende Dezember 2025** - Antrag für Gründungszuschuss stellen 📅 2025-11-01
+  - [ ] **150 Resttage ALG I** - Mindestanforderung am Antragstag erfüllen 📅 2025-11-01
+  - [ ] **Besser deutlich früher** - Oktober bis Dezember 2025 für genug Bearbeitungszeit 📅 2025-11-01
+- [ ] **Einkommensplan erstellen** - ALG I + Gründungszuschuss kalkulieren: 📅 2025-11-01
+  - [ ] **ALG I Höhe:** 65,32 € täglich → 1.959,60 € monatlich 📅 2025-11-01
+  - [ ] **Phase 1 (6 Monate):** ALG I + 300 € Zuschuss = 2.259,60 €/Monat 📅 2025-11-01
+  - [ ] **Phase 2 (9 Monate, optional):** Nur 300 € Zuschuss 📅 2025-11-01
+- [ ] **Optimaler Zeitraum planen** - Oktober bis Dezember 2025 für Antrag 📅 2025-11-01
+  - [ ] **Szenario November 2025:** Gründung Dezember 2025 → ALG I + Zuschuss bis Mai/Juni 2026 📅 2025-11-01
+  - [ ] **Szenario Dezember 2025:** Gründung Januar 2026 → ALG I + Zuschuss bis Juni/Juli 2026 📅 2025-11-01
 
 ### **November 2025 - Persönliche Todos**
-- [ ] SLK und Touran TÜV 📅 2025-12-01
+- [ ] SLK und Touran TÜV 📅 2025-11-01
 
 ---
 

@@ -73,7 +73,7 @@ class MarkdownTaskParser {
     }
 
     // Task-Erkennung mit Due Date: - [ ] **🔥 PUSH fertig** - Alle PUSH Content-Todos abschließen: 📅 2025-10-06
-    const taskMatch = line.match(/^- \[([ x])\] (.+?)(?:\s+📅\s+(\d{4}-\d{2}-\d{2}))?$/);
+    const taskMatch = line.match(/^- \[([ x])\] (.+?)$/);
     if (taskMatch) {
       const task = this.createTask(taskMatch, lineNumber, filePath);
       this.tasks.push(task);
@@ -81,7 +81,7 @@ class MarkdownTaskParser {
     }
 
     // Subtask-Erkennung:   - [ ] letzten Präse Steps inhaltlich
-    const subtaskMatch = line.match(/^  - \[([ x])\] (.+)$/);
+    const subtaskMatch = line.match(/^  - \[([ x])\] (.+?)$/);
     if (subtaskMatch && this.tasks.length > 0) {
       const subtask = this.createSubtask(subtaskMatch, lineNumber);
       const parentTask = this.tasks[this.tasks.length - 1];
@@ -89,6 +89,12 @@ class MarkdownTaskParser {
         parentTask.subtasks = [];
       }
       parentTask.subtasks.push(subtask);
+      
+      // Erstelle auch einen separaten Task für die Subtask
+      const subtaskAsTask = this.createTask(subtaskMatch, lineNumber, filePath);
+      subtaskAsTask.hierarchy_level = 2;
+      subtaskAsTask.parent_task = parentTask.id;
+      this.tasks.push(subtaskAsTask);
       return;
     }
   }
@@ -97,7 +103,10 @@ class MarkdownTaskParser {
    * Erstellt ein Task-Objekt
    */
   createTask(match, lineNumber, filePath) {
-    const [, status, title, dueDate] = match;
+    const [, status, title] = match; // Kein dueDate mehr im Match
+    
+    // Leite Due Date aus dem Dateinamen ab
+    const dueDate = this.extractDueDateFromFilename(filePath);
     
     return {
       id: this.generateTaskId(title, lineNumber),
@@ -109,13 +118,28 @@ class MarkdownTaskParser {
       date: this.currentDate,
       week: this.currentWeek,
       project: this.currentProject,
-      due_date: dueDate || null, // Due Date aus Markdown
+      due_date: dueDate, // Due Date aus Dateinamen
       line_number: lineNumber,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       source_file: filePath,
       subtasks: []
     };
+  }
+
+  /**
+   * Leite Due Date aus dem Dateinamen ab
+   */
+  extractDueDateFromFilename(filePath) {
+    const fileName = path.basename(filePath, '.md');
+    
+    // Prüfe, ob der Dateiname ein Datum im Format YYYY-MM-DD ist
+    const dateMatch = fileName.match(/^(\d{4}-\d{2}-\d{2})$/);
+    if (dateMatch) {
+      return dateMatch[1];
+    }
+    
+    return null;
   }
 
   /**

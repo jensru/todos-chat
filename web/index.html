@@ -265,8 +265,8 @@
         }
         
         .deadline-due-today {
-            background: var(--highlight-light);
-            color: var(--highlight);
+            background: var(--primary-light);
+            color: var(--primary);
         }
         
         .deadline-due-tomorrow {
@@ -680,11 +680,12 @@
             updateStats();
         }
 
-        // Get today's tasks - NUR Tasks mit Due Date heute
+        // Get today's tasks - NUR Tasks mit Due Date heute UND status pending
         function getTodayTasks() {
             const today = dateSync.formatDateForAPI(dateSync.getCurrentDate());
             return allTasks.filter(task => {
                 if (!task.due_date) return false;
+                if (task.status !== 'pending') return false; // Nur offene Tasks
                 return task.due_date === today;
             });
         }

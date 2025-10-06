@@ -128,6 +128,7 @@ class SmartTaskEnhancer {
         title.includes('miete erhöhen') || title.includes('heldenverlies') ||
         title.includes('klettrwald') || title.includes('tauchen') ||
         title.includes('superfly') || title.includes('therme erding')) {
+      const currentWeekStart = this.dateSync.getCurrentWeekStart();
       const saturday = new Date(currentWeekStart);
       saturday.setDate(currentWeekStart.getDate() + 5);
       return this.dateSync.formatDateForAPI(saturday); // Samstag dieser Woche
