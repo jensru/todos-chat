@@ -1,4 +1,4 @@
-# 📋 Todo-System Übergabe - 6. Oktober 2025
+# 📋 Todo-System Übergabe - 7. Oktober 2025
 
 ## ✅ Aktueller Status
 
@@ -6,21 +6,21 @@
 - **Smart Task Dashboard:** `http://localhost:3001/index.html` (Hauptseite)
 - **Mistral AI Chat:** Integriert rechts im Dashboard
 - **Automatische Synchronisation:** Bei jeder Markdown-Änderung
-- **Date-Sync:** Aktuelles Datum: 6. Oktober 2025
+- **Date-Sync:** Aktuelles Datum: 7. Oktober 2025
 
 **📁 Dateistruktur:**
 - **Tages-Markdown-Dateien:** `core/dates/YYYY-MM-DD.md` (ohne Due Dates!)
-- **Dashboard:** `core/Dashboard - Strukturierte To-do-Übersicht.md` (Backup/Source)
 - **Datenbank:** `data/smart-tasks.json` (Single Source of Truth)
 - **API:** `scripts/database-api.js` (Port 3001)
+- **Web-Interface:** `web/index.html` (Moderne UI mit erweiterten Features)
 
 ## 🔄 Workflow
 
-1. **📝 Tasks bearbeiten:** In `core/dates/2025-10-06.md` (oder anderen Tages-Dateien)
+1. **📝 Tasks bearbeiten:** In `core/dates/2025-10-07.md` (oder anderen Tages-Dateien)
 2. **✅ Tasks erledigen:** `- [x] Task-Titel` (ohne Due Date!)
 3. **🔄 Automatische Sync:** `node scripts/multi-file-markdown-parser.js`
 4. **🧹 Auto-Bereinigung:** Erledigte Tasks werden automatisch entfernt
-5. **🌐 Dashboard:** Aktualisiert sich automatisch
+5. **🌐 Dashboard:** Aktualisiert sich automatisch mit neuen Features
 
 ## 🎯 Wichtige Features
 
@@ -31,12 +31,37 @@
 - **Smart Enhancement:** Prioritäten, Kategorien, Komplexität
 - **Mistral Integration:** AI-Chat im Dashboard
 - **Date-Sync:** Persistente Datumssynchronisation
+- **🎨 Erweiterte Web-UI:** Moderne Task-Darstellung mit erledigten Tasks
+- **📋 Intelligente Sortierung:** Erledigte Tasks wandern ans Ende der Listen
+- **🎯 Visueller Separator:** Elegante Trennung zwischen offenen und erledigten Tasks
+- **✅ Einzeilige Darstellung:** Erledigte Tasks kompakt mit ✅ Symbol
+- **🌐 Automatische Updates:** Web-Interface aktualisiert sich nach Sync
 
 **📊 Aktuelle Zahlen:**
-- **Heute offene Tasks:** 15 (6. Oktober 2025)
-- **Gesamt Tasks:** 64
+- **Heute offene Tasks:** 1 (7. Oktober 2025)
+- **Gesamt Tasks:** 64 (3 erledigt, 61 offen)
 - **Tages-Dateien:** 10
 - **Kategorien:** 8
+
+## 🚀 Neueste Entwicklungen (7. Oktober 2025)
+
+**🎨 Web-Interface Verbesserungen:**
+- **Erledigte Tasks sichtbar:** Erledigte Tasks werden jetzt im Web-Interface angezeigt (statt versteckt)
+- **Ausgegraut & durchgestrichen:** Erledigte Tasks werden visuell als inaktiv dargestellt
+- **✅ Einzeilige Darstellung:** Erledigte Tasks zeigen ✅ Symbol direkt im Titel
+- **📋 Intelligente Sortierung:** Erledigte Tasks wandern automatisch ans Ende der Listen
+- **🎯 Visueller Separator:** Elegante Trennlinie zwischen offenen und erledigten Tasks
+- **🌐 "Heute"-Ansicht erweitert:** Zeigt auch erledigte Tasks von heute (aber ausgegraut)
+
+**🔄 Automatisierung verbessert:**
+- **Smart Task Enhancement:** Wird automatisch nach jedem Sync ausgeführt
+- **Web-Interface Updates:** Automatische Aktualisierung nach Markdown-Sync
+- **Server-Restart:** Automatischer Server-Neustart für frische Daten
+
+**🧹 Dashboard-System bereinigt:**
+- **Alte Dashboard-Dateien entfernt:** `core/Dashboard - Strukturierte To-do-Übersicht.md` gelöscht
+- **Deprecated Scripts entfernt:** `scripts/generate-html.js` und andere alte Scripts gelöscht
+- **Automation Scripts aktualisiert:** Alle Scripts bereinigt von Dashboard-Referenzen
 
 ## 🛠️ Wichtige Scripts
 

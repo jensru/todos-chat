@@ -66,8 +66,18 @@ class MultiFileMarkdownParser {
     const remover = new CompletedTaskRemover();
     remover.removeCompletedFromDashboard();
     
+    // Smart Task Enhancement für bessere Web-Darstellung
+    console.log('\n🧠 Führe Smart Task Enhancement durch...');
+    const SmartTaskEnhancer = require('./smart-task-enhancer');
+    const enhancer = new SmartTaskEnhancer();
+    enhancer.enhanceAllTasks();
+    
     console.log('✅ Multi-File-Parsing abgeschlossen!');
     console.log(`📊 ${allTasks.length} Tasks aus ${files.length} Dateien`);
+    
+    // Web-Interface automatisch aktualisieren (Server lädt neue Daten automatisch)
+    console.log('🌐 Web-Interface: http://localhost:3001/index.html');
+    console.log('💡 Tipp: Aktualisieren Sie die Seite (Cmd+R) um die neuesten Änderungen zu sehen');
     
     return result;
   }

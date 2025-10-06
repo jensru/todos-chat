@@ -315,6 +315,61 @@
             color: var(--text-tertiary);
         }
         
+        /* Completed Task Styling */
+        .completed-task {
+            opacity: 0.6;
+            background: var(--bg-secondary) !important;
+            border-color: var(--border-light) !important;
+            cursor: default !important;
+        }
+        
+        .completed-task:hover {
+            border-color: var(--border-light) !important;
+            box-shadow: none !important;
+        }
+        
+        .completed-task .task-title {
+            color: var(--text-tertiary) !important;
+            text-decoration: line-through;
+        }
+        
+        .completed-task .priority-badge,
+        .completed-task .deadline-badge {
+            opacity: 0.7;
+        }
+        
+        .completed-task .due-date-display {
+            background: var(--bg-primary) !important;
+            border-left-color: var(--border-light) !important;
+            color: var(--text-tertiary) !important;
+        }
+        
+        .completed-task .task-stats {
+            color: var(--text-tertiary) !important;
+        }
+        
+        /* Task Separator */
+        .task-separator {
+            display: flex;
+            align-items: center;
+            margin: var(--space-4) 0;
+            gap: var(--space-3);
+        }
+        
+        .separator-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-light);
+        }
+        
+        .separator-text {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
         /* Mistral Interface - Right Side */
         .mistral-sidebar {
             width: 400px;
@@ -680,12 +735,11 @@
             updateStats();
         }
 
-        // Get today's tasks - NUR Tasks mit Due Date heute UND status pending
+        // Get today's tasks - Tasks mit Due Date heute (sowohl offene als auch erledigte)
         function getTodayTasks() {
             const today = dateSync.formatDateForAPI(dateSync.getCurrentDate());
             return allTasks.filter(task => {
                 if (!task.due_date) return false;
-                if (task.status !== 'pending') return false; // Nur offene Tasks
                 return task.due_date === today;
             });
         }
@@ -861,44 +915,76 @@
 
         // Render a group of tasks
         function renderTaskGroup(tasks) {
-            return tasks.map(task => {
-                const hierarchyClass = task.hierarchy_level ? `hierarchy-level-${task.hierarchy_level}` : '';
-                
-                // Remove markdown formatting (**) from task titles
-                const cleanTitle = task.title.replace(/\*\*/g, '').trim();
-                
-                return `
-                    <div class="smart-task-card ${task.priority}-priority ${task.deadline_status.replace('_', '-')} ${hierarchyClass}" onclick="toggleTask('${task.id}')">
-                        <div class="task-content">
-                            <div class="task-title">${cleanTitle}</div>
-                        </div>
-                        <div class="task-meta">
-                            <span class="priority-badge priority-${task.priority}">${task.priority}</span>
-                            ${task.deadline_status !== 'no_deadline' ? `<span class="deadline-badge deadline-${task.deadline_status.replace('_', '-')}">${getDeadlineText(task.deadline_status)}</span>` : ''}
-                        </div>
-                        ${task.due_date ? `
-                            <div class="due-date-display">
-                                📅 ${dateSync.formatDateForDisplay(new Date(task.due_date))}
-                                ${(() => {
-                                    const dueDate = new Date(task.due_date);
-                                    const today = dateSync.getCurrentDate();
-                                    const diffDays = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
-                                    
-                                    if (diffDays === 0) return '<span style="color: var(--highlight); font-weight: 600;">(Heute)</span>';
-                                    if (diffDays === 1) return '<span style="color: var(--primary); font-weight: 500;">(Morgen)</span>';
-                                    if (diffDays === -1) return '<span style="color: var(--highlight); font-weight: 600;">(Gestern)</span>';
-                                    if (diffDays < 0) return `<span style="color: var(--highlight); font-weight: 600;">(vor ${Math.abs(diffDays)} Tagen)</span>`;
-                                    return `<span style="color: var(--text-secondary);">(in ${diffDays} Tagen)</span>`;
-                                })()}
-                            </div>
-                        ` : ''}
-                        <div class="task-stats">
-                            <span>⏱️ ${task.estimated_duration_minutes}min</span>
-                            <span>📁 ${task.category}</span>
-                        </div>
+            // Sort tasks: pending first, completed last
+            const sortedTasks = [...tasks].sort((a, b) => {
+                if (a.status === 'completed' && b.status !== 'completed') return 1;
+                if (a.status !== 'completed' && b.status === 'completed') return -1;
+                return 0;
+            });
+            
+            // Separate pending and completed tasks
+            const pendingTasks = sortedTasks.filter(task => task.status !== 'completed');
+            const completedTasks = sortedTasks.filter(task => task.status === 'completed');
+            
+            let html = '';
+            
+            // Render pending tasks first
+            if (pendingTasks.length > 0) {
+                html += pendingTasks.map(task => renderSingleTask(task)).join('');
+            }
+            
+            // Add separator if there are both pending and completed tasks
+            if (pendingTasks.length > 0 && completedTasks.length > 0) {
+                html += '<div class="task-separator"><div class="separator-line"></div><span class="separator-text">Erledigte Tasks</span><div class="separator-line"></div></div>';
+            }
+            
+            // Render completed tasks last
+            if (completedTasks.length > 0) {
+                html += completedTasks.map(task => renderSingleTask(task)).join('');
+            }
+            
+            return html;
+        }
+        
+        // Render a single task
+        function renderSingleTask(task) {
+            const hierarchyClass = task.hierarchy_level ? `hierarchy-level-${task.hierarchy_level}` : '';
+            const completedClass = task.status === 'completed' ? 'completed-task' : '';
+            
+            // Remove markdown formatting (**) from task titles
+            const cleanTitle = task.title.replace(/\*\*/g, '').trim();
+            
+            return `
+                <div class="smart-task-card ${task.priority}-priority ${task.deadline_status.replace('_', '-')} ${hierarchyClass} ${completedClass}" onclick="toggleTask('${task.id}')">
+                    <div class="task-content">
+                        <div class="task-title">${task.status === 'completed' ? '✅ ' : ''}${cleanTitle}</div>
                     </div>
-                `;
-            }).join('');
+                    <div class="task-meta">
+                        <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+                        ${task.deadline_status !== 'no_deadline' ? `<span class="deadline-badge deadline-${task.deadline_status.replace('_', '-')}">${getDeadlineText(task.deadline_status)}</span>` : ''}
+                    </div>
+                    ${task.due_date ? `
+                        <div class="due-date-display">
+                            📅 ${dateSync.formatDateForDisplay(new Date(task.due_date))}
+                            ${(() => {
+                                const dueDate = new Date(task.due_date);
+                                const today = dateSync.getCurrentDate();
+                                const diffDays = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+                                
+                                if (diffDays === 0) return '<span style="color: var(--highlight); font-weight: 600;">(Heute)</span>';
+                                if (diffDays === 1) return '<span style="color: var(--primary); font-weight: 500;">(Morgen)</span>';
+                                if (diffDays === -1) return '<span style="color: var(--highlight); font-weight: 600;">(Gestern)</span>';
+                                if (diffDays < 0) return `<span style="color: var(--highlight); font-weight: 600;">(vor ${Math.abs(diffDays)} Tagen)</span>`;
+                                return `<span style="color: var(--text-secondary);">(in ${diffDays} Tagen)</span>`;
+                            })()}
+                        </div>
+                    ` : ''}
+                    <div class="task-stats">
+                        <span>⏱️ ${task.estimated_duration_minutes}min</span>
+                        <span>📁 ${task.category}</span>
+                    </div>
+                </div>
+            `;
         }
 
         // Render tasks (fallback)
