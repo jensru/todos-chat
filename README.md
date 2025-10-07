@@ -6,9 +6,8 @@ Ein vollautomatisiertes Todo-Management-System mit Chat-First-Interface und Mist
 
 ```
 todos/
-├── 📋 core/                    # Haupt-Dashboard & Sidebar
-│   ├── Dashboard - Strukturierte To-do-Übersicht.md
-│   └── right-sidebar.md
+├── 📋 core/                    # Tages-Markdown-Dateien
+│   └── dates/                  # YYYY-MM-DD.md Dateien
 │
 ├── 🤖 automation/              # Alle Scripts
 │   ├── commit-and-update.sh     # Haupt-Workflow
@@ -22,6 +21,8 @@ todos/
 │   └── update-tracking.sh       # Tracking-System
 │
 ├── 📊 data/                    # Alle JSON-Dateien
+│   ├── smart-tasks.json        # Single Source of Truth
+│   ├── tasks.json              # Backup-Datenbank
 │   ├── task-history.json
 │   ├── todo-categorization.json
 │   ├── todo-migration-log.json
@@ -36,8 +37,16 @@ todos/
 ├── 🔬 research/                # Research Log
 │   └── chatfirst-research-log.md
 │
-├── 🌐 web/                     # Website
-│   └── index.html
+├── 🌐 web/                     # Moderne Web-App
+│   ├── index.html              # Haupt-Interface (3500+ Zeilen)
+│   ├── index-multi-tab.html    # Multi-Tab-Version
+│   └── database-management.html # Admin-Interface
+│
+├── 🛠️ scripts/                # Backend-Scripts
+│   ├── database-api.js         # Express.js API Server
+│   ├── auto-sync-markdown.js   # Markdown-Synchronisation
+│   ├── smart-task-enhancer.js  # AI-Enhancement
+│   └── date-validator.js       # Datum-Validierung
 │
 └── 🛠️ tools/                  # Setup & Utilities
     ├── setup-mistral-api.sh
@@ -47,18 +56,24 @@ todos/
 
 ## 🚀 **Schnellstart**
 
-### **1. Dashboard & Sidebar finden:**
-- **Dashboard:** `core/Dashboard - Strukturierte To-do-Übersicht.md`
-- **Sidebar:** `core/right-sidebar.md`
+### **1. Web-Interface starten:**
+- **Haupt-Interface:** `http://localhost:3001/index.html`
+- **API-Server:** `node scripts/database-api.js` (Port 3001)
+- **Admin-Interface:** `http://localhost:3001/database-management.html`
 
 ### **2. Haupt-Workflow:**
 ```bash
-./automation/commit-and-update.sh "Deine Nachricht"
+# Server starten
+node scripts/database-api.js
+
+# Web-Interface öffnen
+open http://localhost:3001/index.html
 ```
 
 ### **3. Mit Mistral AI:**
 ```bash
-./automation/commit-and-update.sh "Deine Nachricht" --mistral
+# Mistral-Chat im Web-Interface nutzen
+# Rechts im Dashboard verfügbar
 ```
 
 ## 🤖 **Mistral AI Features**
@@ -129,11 +144,12 @@ todos/
 
 ## 📈 **Workflow**
 
-1. **Todos bearbeiten** in `core/Dashboard - Strukturierte To-do-Übersicht.md`
-2. **Commit machen** mit `./automation/commit-and-update.sh "Nachricht"`
-3. **Mistral analysiert** automatisch (mit --mistral Flag)
-4. **Website aktualisiert** automatisch
-5. **Research Log erweitert** automatisch
+1. **Server starten** mit `node scripts/database-api.js`
+2. **Web-Interface öffnen** auf `http://localhost:3001/index.html`
+3. **Tasks erstellen** über Modal oder Mistral-Chat
+4. **Tasks bearbeiten** mit Inline-Editing (Hover + Klick)
+5. **Drag & Drop** für Kategorie-Änderungen
+6. **Mistral-Chat** für natürliche Sprache-Interaktion
 
 ## 🎯 **Ziel**
 

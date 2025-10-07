@@ -133,86 +133,115 @@
             flex-wrap: wrap;
         }
         
-        .filter-btn {
-            padding: var(--space-2) var(--space-4);
-            border: 1px solid var(--border-medium);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        /* Filter & Sortierung Bar */
+        .filter-sort-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--border-light);
         }
-        
-        .filter-btn:hover {
-            background: var(--secondary-light);
-        }
-        
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        
-        /* Sort Buttons */
-        .sort-buttons {
+
+        .filter-section {
             display: flex;
             gap: var(--space-2);
-            margin-bottom: var(--space-4);
         }
-        
-        .sort-btn {
-            padding: var(--space-2) var(--space-3);
+
+        .sort-section {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .filter-btn {
+            padding: var(--space-3) var(--space-4);
             border: 1px solid var(--border-medium);
-            background: var(--bg-primary);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: var(--text-primary);
-            border-radius: var(--radius-md);
-            font-size: 12px;
-            font-weight: 500;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .filter-btn:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn:hover::before {
+            left: 100%;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, #0056b3 100%);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .sort-btn {
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--border-medium);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-primary);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sort-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
         .sort-btn:hover {
-            background: var(--secondary-light);
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-color: var(--secondary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
+        .sort-btn:hover::before {
+            left: 100%;
+        }
+
         .sort-btn.active {
-            background: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary) 0%, #495057 100%);
             color: white;
             border-color: var(--secondary);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+            transform: translateY(-1px);
         }
-        
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: var(--space-4);
-            margin-bottom: var(--space-6);
-        }
-        
-        .stat-item {
-            background: var(--bg-primary);
-            padding: var(--space-4);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-light);
-        }
-        
-        .stat-value {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: var(--space-1);
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        /* Task Cards */
         .smart-task-card {
             background: var(--bg-primary);
             border: 1px solid var(--border-light);
@@ -224,13 +253,114 @@
             display: flex;
             align-items: center;
             gap: var(--space-3);
+            min-width: 0;
+            overflow: hidden;
             min-height: 50px;
             max-height: 50px;
+            width: 100%;
+            max-width: 100%;
         }
         
         .smart-task-card:hover {
             border-color: var(--primary);
             box-shadow: var(--shadow-sm);
+        }
+
+        /* Editable Elements */
+        .task-title-editable {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            padding: var(--space-1);
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+        
+        .priority-editable,
+        .category-editable,
+        .due-date-editable {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            padding: var(--space-1);
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            flex-shrink: 0; /* Prevents these elements from shrinking */
+            white-space: nowrap; /* Prevents text wrapping in these elements */
+        }
+
+        .task-title-editable:hover,
+        .priority-editable:hover,
+        .category-editable:hover,
+        .due-date-editable:hover {
+            background-color: var(--bg-secondary);
+            transform: scale(1.02);
+        }
+
+        .edit-hint {
+            opacity: 0;
+            font-size: 12px;
+            transition: opacity 0.2s ease;
+            color: var(--text-tertiary);
+        }
+
+        .task-title-editable:hover .edit-hint,
+        .priority-editable:hover .edit-hint,
+        .category-editable:hover .edit-hint,
+        .due-date-editable:hover .edit-hint {
+            opacity: 1;
+        }
+
+        .task-title-text {
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Context Menu Styles */
+        .context-menu {
+            position: absolute;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: var(--space-2);
+            z-index: 1000;
+            min-width: 150px;
+        }
+
+        .context-menu-item {
+            padding: var(--space-2) var(--space-3);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .context-menu-item:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .context-menu-item.danger {
+            color: var(--highlight);
+        }
+
+        .context-menu-item.danger:hover {
+            background-color: var(--highlight-light);
         }
         
         .task-content {
@@ -337,6 +467,7 @@
             border-radius: var(--radius-sm);
             opacity: 0.6;
             transition: all 0.2s ease;
+            flex-shrink: 0; /* Prevents delete button from shrinking */
         }
         
         .delete-task-btn:hover {
@@ -384,6 +515,8 @@
             align-items: center;
             font-size: 12px;
             color: var(--text-tertiary);
+            flex-shrink: 0; /* Prevents task stats from shrinking */
+            white-space: nowrap; /* Prevents text wrapping */
         }
         
         /* Completed Task Styling */
@@ -565,40 +698,6 @@
             cursor: not-allowed;
         }
         
-        /* Quick Actions */
-        .quick-actions {
-            margin-bottom: var(--space-4);
-        }
-        
-        .quick-actions h3 {
-            color: var(--text-primary);
-            font-size: 14px;
-            font-weight: 600;
-            margin: 0 0 var(--space-2) 0;
-        }
-        
-        .quick-actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-2);
-        }
-        
-        .quick-action-btn {
-            padding: var(--space-2) var(--space-3);
-            background: var(--secondary-light);
-            color: var(--text-primary);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .quick-action-btn:hover {
-            background: var(--primary-light);
-            border-color: var(--primary);
-        }
         
         /* Loading */
         .loading {
@@ -607,6 +706,263 @@
             padding: var(--space-4);
         }
         
+        /* Inline-Editing Styles */
+        .task-title-edit {
+            background: var(--background);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 4px 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-primary);
+            width: 100%;
+            max-width: 300px;
+            flex: 1;
+            min-width: 0; /* Allows input to shrink */
+            overflow: hidden; /* Prevents content from overflowing */
+        }
+
+        .task-title-edit:focus {
+            outline: none;
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .priority-badge:hover {
+            cursor: pointer;
+            opacity: 0.8;
+            transform: scale(1.05);
+            transition: all 0.2s ease;
+        }
+
+        .task-stats span:hover {
+            cursor: pointer;
+            opacity: 0.8;
+            transform: scale(1.05);
+            transition: all 0.2s ease;
+        }
+
+        /* Task Stats - Only Category */
+        .task-stats {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            flex-shrink: 0; /* Prevents task stats from shrinking */
+            white-space: nowrap; /* Prevents text wrapping */
+        }
+
+
+        .category-buttons {
+            display: flex;
+            gap: var(--space-1);
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-1);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-primary);
+            border-color: var(--border-medium);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-primary);
+            border-color: var(--border-medium);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-color: var(--secondary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-danger {
+            background: var(--highlight);
+            color: white;
+            border: 1px solid var(--highlight);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 18px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+        }
+
+        .modal-close:hover {
+            background: var(--secondary-light);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: var(--space-4);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-2);
+            padding: var(--space-4);
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* Form Styles for Modals */
+        .form-group {
+            margin-bottom: var(--space-3);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--space-1);
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: var(--space-2);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            background: var(--background);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        /* Category Management Styles */
+        .category-list {
+            margin-bottom: var(--space-4);
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-2);
+            background: var(--secondary-light);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-2);
+        }
+
+        .category-item:hover {
+            background: var(--primary-light);
+        }
+
+        .category-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .category-actions {
+            display: flex;
+            gap: var(--space-2);
+            align-items: end;
+        }
+
+        .category-actions .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .category-actions button {
+            height: fit-content;
+        }
+
         /* Responsive */
         @media (max-width: 1200px) {
             .main-container {
@@ -631,46 +987,101 @@
                     <p>Intelligente Task-Verwaltung mit AI-Unterstützung</p>
                 </div>
                 <div class="header-right">
+                    <button class="btn btn-primary" onclick="openTaskCreationModal()" title="Neuen Task erstellen">
+                        ➕ Neuer Task
+                    </button>
+                    <button class="btn btn-secondary" onclick="openCategoryManagementModal()" title="Kategorien verwalten">
+                        📁 Kategorien
+                    </button>
+                </div>
+                <div class="header-right">
                     <div class="current-date" id="currentDate">Lade Datum...</div>
                 </div>
             </div>
             
-            <!-- Filter Buttons -->
-            <div class="filter-buttons">
-                <button class="filter-btn active" onclick="filterTasks('all')">Alle</button>
-                <button class="filter-btn" onclick="filterTasks('heute')">Heute</button>
-                <button class="filter-btn" onclick="filterTasks('woche')">Diese Woche</button>
-                <button class="filter-btn" onclick="filterTasks('hoch')">Hochpriorität</button>
-                <button class="filter-btn" onclick="filterTasks('überfällig')">Überfällig</button>
-            </div>
-            
-            <!-- Sortierung -->
-            <div class="sort-buttons" style="margin-top: var(--space-3);">
-                <button class="sort-btn active" onclick="setSorting('priority')">📊 Nach Priorität</button>
-                <button class="sort-btn" onclick="setSorting('category')">📁 Nach Kategorie</button>
-            </div>
-            
-            <!-- Stats -->
-            <div class="stats" id="stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalTasks">-</div>
-                    <div class="stat-label">Tasks</div>
+            <!-- Filter & Sortierung Bar -->
+            <div class="filter-sort-bar">
+                <div class="filter-section">
+                    <button class="filter-btn active" onclick="filterTasks('heute')">Heute</button>
+                    <button class="filter-btn" onclick="filterTasks('woche')">Diese Woche</button>
+                    <button class="filter-btn" onclick="filterTasks('all')">Alle</button>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="completedTasks">-</div>
-                    <div class="stat-label">Erledigt</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="dueToday">-</div>
-                    <div class="stat-label">Heute fällig</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="overdueTasks">-</div>
-                    <div class="stat-label">Überfällig</div>
+                <div class="sort-section">
+                    <button class="sort-btn active" onclick="setSorting('priority')">Nach Priorität</button>
+                    <button class="sort-btn" onclick="setSorting('category')">Nach Kategorie</button>
                 </div>
             </div>
             
             <!-- Task Content -->
+            <!-- Task Creation Modal -->
+            <div class="modal-overlay" id="taskCreationModal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📝 Neuen Task erstellen</h3>
+                        <button class="modal-close" onclick="closeTaskCreationModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="taskForm">
+                            <div class="form-group">
+                                <label for="taskTitle">Titel:</label>
+                                <input type="text" id="taskTitle" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskCategory">Kategorie:</label>
+                                <select id="taskCategory" name="category">
+                                    <option value="General">General</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Development">Development</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Personal">Personal</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Priorität:</label>
+                                <select id="taskPriority" name="priority">
+                                    <option value="low">Niedrig</option>
+                                    <option value="medium" selected>Mittel</option>
+                                    <option value="high">Hoch</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDueDate">Fälligkeitsdatum:</label>
+                                <input type="date" id="taskDueDate" name="dueDate">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeTaskCreationModal()">Abbrechen</button>
+                        <button type="button" class="btn btn-primary" onclick="submitTaskForm()">Task erstellen</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Management Modal -->
+            <div class="modal-overlay" id="categoryManagementModal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📁 Kategorien verwalten</h3>
+                        <button class="modal-close" onclick="closeCategoryManagementModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="category-list" id="categoryList">
+                            <!-- Categories will be loaded here -->
+                        </div>
+                        <div class="category-actions">
+                            <div class="form-group">
+                                <label for="newCategoryName">Neue Kategorie:</label>
+                                <input type="text" id="newCategoryName" placeholder="Kategorie-Name eingeben">
+                                <button class="btn btn-primary" onclick="createCategory()">Erstellen</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeCategoryManagementModal()">Schließen</button>
+                    </div>
+                </div>
+            </div>
+
             <div id="smartTasks">
                 <div class="loading">Lade Tasks...</div>
             </div>
@@ -684,20 +1095,6 @@
             </div>
             
             <div class="mistral-chat">
-                <!-- Quick Actions -->
-                <div class="quick-actions">
-                    <h3>⚡ Schnellaktionen</h3>
-                    <div class="quick-actions-grid">
-                        <button class="quick-action-btn" onclick="askMistral('Priorisiere meine heutigen Tasks')">Priorisieren</button>
-                        <button class="quick-action-btn" onclick="askMistral('Zeige mir überfällige Tasks')">Überfällig</button>
-                        <button class="quick-action-btn" onclick="askMistral('Erstelle einen Tagesplan')">Tagesplan</button>
-                        <button class="quick-action-btn" onclick="askMistral('Analysiere meine Task-Verteilung')">Analyse</button>
-                        <button class="quick-action-btn" onclick="createDailyRoutine()">Daily Routine</button>
-                        <button class="quick-action-btn" onclick="updateAllDailyRoutines()">Alle aktualisieren</button>
-                        <button class="quick-action-btn" onclick="openBulkEditor()">Bulk Editor</button>
-                        <button class="quick-action-btn" onclick="showCategoryStats()">Kategorien</button>
-                    </div>
-                </div>
                 
                 <!-- Chat Messages -->
                 <div class="chat-messages" id="chatMessages">
@@ -725,7 +1122,7 @@
         // Global variables
         let allTasks = [];
         let filteredTasks = [];
-        let currentFilter = 'all';
+        let currentFilter = 'heute';
         let currentSorting = 'priority'; // 'priority' oder 'category'
         
         // Get default sorting for current filter
@@ -965,12 +1362,6 @@
             
             container.innerHTML = `
                 <div class="smart-structure-view">
-                    <div style="background: var(--primary-light); border-radius: var(--radius-lg); padding: var(--space-4); margin-bottom: var(--space-6); border: 1px solid var(--primary);">
-                        <h3 style="color: var(--primary); margin: 0 0 var(--space-2) 0;">📅 Aktuelles Datum</h3>
-                        <p style="margin: 0; font-size: 14px; color: var(--text-secondary);">
-                            Heute ist ${dateSync.formatDayOfWeek(dateSync.getCurrentDayOfWeek())}, ${dateSync.getCurrentDate().getDate()}. ${dateSync.formatMonth(dateSync.getCurrentDate().getMonth())} ${dateSync.getCurrentDate().getFullYear()}
-                        </p>
-                    </div>
                     
                     ${overdueTasks.length > 0 ? `
                         <h2 style="color: var(--highlight); font-size: 20px; font-weight: 500; margin: var(--space-6) 0 var(--space-3) 0;">⚠️ Überfällige Tasks</h2>
@@ -1021,10 +1412,6 @@
                 const lowPriorityTasks = filteredTasks.filter(task => task.priority === 'low');
                 
                 container.innerHTML = `
-                    <div style="margin-bottom: var(--space-6);">
-                        <h2 style="color: var(--primary); margin: 0;">📅 Heute - ${dateSync.formatDayOfWeek(dateSync.getCurrentDayOfWeek())}, ${dateSync.getCurrentDate().getDate()}. ${dateSync.formatMonth(dateSync.getCurrentDate().getMonth())}</h2>
-                        <p style="color: var(--text-tertiary); margin: var(--space-2) 0 0 0;">${filteredTasks.length} Tasks für heute</p>
-                    </div>
                     
                     ${highPriorityTasks.length > 0 ? `
                         <div style="margin-bottom: var(--space-6);">
@@ -1064,10 +1451,6 @@
             } else {
                 // Bei Kategorie-Sortierung: Einfach alle Tasks rendern ohne Prioritäts-Überschriften
                 container.innerHTML = `
-                    <div style="margin-bottom: var(--space-6);">
-                        <h2 style="color: var(--primary); margin: 0;">📅 Heute - ${dateSync.formatDayOfWeek(dateSync.getCurrentDayOfWeek())}, ${dateSync.getCurrentDate().getDate()}. ${dateSync.formatMonth(dateSync.getCurrentDate().getMonth())}</h2>
-                        <p style="color: var(--text-tertiary); margin: var(--space-2) 0 0 0;">${filteredTasks.length} Tasks für heute</p>
-                    </div>
                     
                     ${renderTaskGroup(filteredTasks)}
                 `;
@@ -1114,9 +1497,17 @@
             
             let html = '';
             
-            // Render pending tasks first
+            // Render pending tasks first with drop zone
             if (pendingTasks.length > 0) {
-                html += pendingTasks.map(task => renderSingleTask(task)).join('');
+                html += `
+                    <div class="category-drop-zone" 
+                         ondrop="dropOnCategory(event, 'General')" 
+                         ondragover="event.preventDefault(); event.dataTransfer.dropEffect = 'move';"
+                         ondragenter="event.preventDefault(); event.target.style.background='var(--primary-light)';"
+                         ondragleave="event.target.style.background='transparent';">
+                        ${pendingTasks.map(task => renderSingleTask(task)).join('')}
+                    </div>
+                `;
             }
             
             // Add separator if there are both pending and completed tasks
@@ -1124,9 +1515,17 @@
                 html += '<div class="task-separator"><div class="separator-line"></div><span class="separator-text">Erledigte Tasks</span><div class="separator-line"></div></div>';
             }
             
-            // Render completed tasks last
+            // Render completed tasks last with drop zone
             if (completedTasks.length > 0) {
-                html += completedTasks.map(task => renderSingleTask(task)).join('');
+                html += `
+                    <div class="category-drop-zone" 
+                         ondrop="dropOnCategory(event, 'General')" 
+                         ondragover="event.preventDefault(); event.dataTransfer.dropEffect = 'move';"
+                         ondragenter="event.preventDefault(); event.target.style.background='var(--primary-light)';"
+                         ondragleave="event.target.style.background='transparent';">
+                        ${completedTasks.map(task => renderSingleTask(task)).join('')}
+                    </div>
+                `;
             }
             
             return html;
@@ -1267,18 +1666,26 @@
                 <div class="smart-task-card ${task.priority}-priority ${task.deadline_status && task.deadline_status !== null ? task.deadline_status.replace('_', '-') : 'no-deadline'} ${hierarchyClass} ${completedClass}" 
                      draggable="true" 
                      ondragstart="dragStart(event, '${task.id}')" 
-                     ondragend="dragEnd(event)"
-                     onclick="toggleTask('${task.id}')">
+                     ondragend="dragEnd(event)">
                     <div class="task-content">
                         <div class="task-title">
                             <span class="task-checkbox" onclick="event.stopPropagation(); toggleTask('${task.id}')">
                                 ${task.status === 'completed' ? '✅' : '☐'}
                             </span>
-                            ${cleanTitle}
+                            <div class="task-title-editable" onclick="event.stopPropagation(); startEditTitle('${task.id}', '${cleanTitle.replace(/'/g, "\\'")}')">
+                                <span class="task-title-text">${cleanTitle}</span>
+                                <span class="edit-hint">✏️</span>
+                            </div>
+                            <input type="text" class="task-title-edit" style="display: none;" onblur="saveEditTitle('${task.id}')" onkeypress="handleEditKeypress(event, '${task.id}')" />
                         </div>
                     </div>
                     <div class="task-meta">
-                        ${showPriorityBadge ? `<span class="priority-badge priority-${task.priority}">${task.priority}</span>` : ''}
+                        ${showPriorityBadge ? `
+                            <div class="priority-editable" onclick="event.stopPropagation(); showPriorityMenu('${task.id}', '${task.priority}', event)">
+                                <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+                                <span class="edit-hint">⚙️</span>
+                            </div>
+                        ` : ''}
                         ${task.deadline_status && task.deadline_status !== null && task.deadline_status !== 'no_deadline' && task.deadline_status !== 'due_today' ? `<span class="deadline-badge deadline-${task.deadline_status.replace('_', '-')}">${getDeadlineText(task.deadline_status)}</span>` : ''}
                         <button class="delete-task-btn" onclick="event.stopPropagation(); deleteTask('${task.id}')" title="Task löschen">🗑️</button>
                     </div>
@@ -1292,23 +1699,28 @@
                             if (currentFilter === 'heute' && diffDays === 0) return '';
                             
                             return `
-                                <div class="due-date-display">
-                                    📅 ${dateSync.formatDateForDisplay(new Date(task.due_date))}
-                                    ${(() => {
-                                        // Nur zusätzliche Info anzeigen, wenn es nicht "heute" ist
-                                        if (diffDays === 0) return ''; // Keine zusätzliche Info für heute
-                                        if (diffDays === 1) return '<span style="color: var(--primary); font-weight: 500;">(Morgen)</span>';
-                                        if (diffDays === -1) return '<span style="color: var(--highlight); font-weight: 600;">(Gestern)</span>';
-                                        if (diffDays < 0) return `<span style="color: var(--highlight); font-weight: 600;">(vor ${Math.abs(diffDays)} Tagen)</span>`;
-                                        return `<span style="color: var(--text-secondary);">(in ${diffDays} Tagen)</span>`;
-                                    })()}
+                                <div class="due-date-editable" onclick="event.stopPropagation(); showDateMenu('${task.id}', '${task.due_date}', event)">
+                                    <div class="due-date-display">
+                                        📅 ${dateSync.formatDateForDisplay(new Date(task.due_date))}
+                                        ${(() => {
+                                            // Nur zusätzliche Info anzeigen, wenn es nicht "heute" ist
+                                            if (diffDays === 0) return ''; // Keine zusätzliche Info für heute
+                                            if (diffDays === 1) return '<span style="color: var(--primary); font-weight: 500;">(Morgen)</span>';
+                                            if (diffDays === -1) return '<span style="color: var(--highlight); font-weight: 600;">(Gestern)</span>';
+                                            if (diffDays < 0) return `<span style="color: var(--highlight); font-weight: 600;">(vor ${Math.abs(diffDays)} Tagen)</span>`;
+                                            return `<span style="color: var(--text-secondary);">(in ${diffDays} Tagen)</span>`;
+                                        })()}
+                                    </div>
+                                    <span class="edit-hint">📅</span>
                                 </div>
                             `;
                         })()}
                     ` : ''}
                     <div class="task-stats">
-                        <span>⏱️ ${task.estimated_duration_minutes}min</span>
-                        ${currentSorting === 'priority' || (currentSorting === 'category' && task.status === 'completed' && task.category !== 'General') ? `<span>📁 ${task.category}</span>` : ''}
+                        <div class="category-editable" onclick="event.stopPropagation(); showCategoryMenu('${task.id}', '${task.category}', event)">
+                            <span>📁 ${task.category}</span>
+                            <span class="edit-hint">⚙️</span>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1323,15 +1735,7 @@
 
         // Update statistics
         function updateStats() {
-            const totalTasks = allTasks.length;
-            const completedTasks = allTasks.filter(task => task.status === 'completed').length;
-            const dueToday = getTodayTasks().length;
-            const overdueTasks = allTasks.filter(task => task.deadline_status === 'overdue').length;
-            
-            document.getElementById('totalTasks').textContent = totalTasks;
-            document.getElementById('completedTasks').textContent = completedTasks;
-            document.getElementById('dueToday').textContent = dueToday;
-            document.getElementById('overdueTasks').textContent = overdueTasks;
+            // Stats wurden entfernt - Funktion bleibt für Kompatibilität
         }
 
         // Get deadline text
@@ -1383,8 +1787,8 @@
                     task.category = categoryName;
                     task.updated_at = new Date().toISOString();
                     
-                    // Send update to API
-                    updateTaskCategory(task.id, categoryName);
+                    // Send update to API using the universal updateTask function
+                    updateTask(task.id, { category: categoryName });
                     
                     // Re-render current view
                     switch (currentFilter) {
@@ -1418,27 +1822,6 @@
         }
         
         // Update task category in database
-        async function updateTaskCategory(taskId, newCategory) {
-            try {
-                const response = await fetch('http://localhost:3001/api/tasks/update-category', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        taskId: taskId, 
-                        category: newCategory 
-                    })
-                });
-                
-                const data = await response.json();
-                if (!data.success) {
-                    console.error('Failed to update task category:', data.error);
-                }
-            } catch (error) {
-                console.error('Error updating task category:', error);
-            }
-        }
 
         // Toggle task completion
         async function toggleTask(taskId) {
@@ -2386,6 +2769,745 @@
             
             addMessage('assistant', `📊 **Task-Statistiken:**\n\n**Kategorien:**\n${categoryHTML}\n\n**Prioritäten:**\n${priorityHTML}\n\n**Gesamt:** ${allTasks.length} Tasks`);
         }
+
+        // Inline-Editing Functions
+        function startEditTitle(taskId, currentTitle) {
+            console.log('startEditTitle called with:', taskId, currentTitle);
+            
+            // Finde das Task-Element über die Task-ID
+            const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+            console.log('taskElement found:', taskElement);
+            
+            if (!taskElement) {
+                console.error('Task element not found for ID:', taskId);
+                return;
+            }
+            
+            // Finde die Elemente in der neuen Struktur
+            const titleEditable = taskElement.querySelector('.task-title-editable');
+            const titleText = taskElement.querySelector('.task-title-text');
+            const titleInput = taskElement.querySelector('.task-title-edit');
+            
+            console.log('titleEditable:', titleEditable, 'titleText:', titleText, 'titleInput:', titleInput);
+            
+            if (!titleEditable || !titleText || !titleInput) {
+                console.error('Title elements not found');
+                return;
+            }
+            
+            // Verstecke das editable Element und zeige das Input-Feld
+            titleEditable.style.display = 'none';
+            titleInput.style.display = 'inline-block';
+            titleInput.value = currentTitle;
+            titleInput.focus();
+            titleInput.select();
+        }
+
+        function saveEditTitle(taskId) {
+            // Finde das Task-Element über die Task-ID
+            const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+            
+            if (!taskElement) {
+                console.error('Task element not found for ID:', taskId);
+                return;
+            }
+            
+            const titleEditable = taskElement.querySelector('.task-title-editable');
+            const titleText = taskElement.querySelector('.task-title-text');
+            const titleInput = taskElement.querySelector('.task-title-edit');
+            const newTitle = titleInput.value.trim();
+            
+            if (newTitle && newTitle !== titleText.textContent) {
+                updateTask(taskId, { title: newTitle });
+            }
+            
+            // Zeige das editable Element wieder und verstecke das Input-Feld
+            titleEditable.style.display = 'flex';
+            titleInput.style.display = 'none';
+        }
+
+        function handleEditKeypress(event, taskId) {
+            if (event.key === 'Enter') {
+                saveEditTitle(taskId);
+            } else if (event.key === 'Escape') {
+                // Finde das Task-Element über die Task-ID
+                const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+                
+                if (!taskElement) {
+                    console.error('Task element not found for ID:', taskId);
+                    return;
+                }
+                
+                const titleEditable = taskElement.querySelector('.task-title-editable');
+                const titleInput = taskElement.querySelector('.task-title-edit');
+                
+                // Zeige das editable Element wieder und verstecke das Input-Feld
+                titleEditable.style.display = 'flex';
+                titleInput.style.display = 'none';
+            }
+        }
+
+        function startEditPriority(taskId, currentPriority) {
+            const priorities = ['low', 'medium', 'high'];
+            const currentIndex = priorities.indexOf(currentPriority);
+            const nextIndex = (currentIndex + 1) % priorities.length;
+            const newPriority = priorities[nextIndex];
+            
+            updateTask(taskId, { priority: newPriority });
+        }
+
+        function startEditCategory(taskId, currentCategory) {
+            const newCategory = prompt(`Neue Kategorie für Task "${currentCategory}":`, currentCategory);
+            if (newCategory && newCategory.trim() !== currentCategory) {
+                updateTask(taskId, { category: newCategory.trim() });
+            }
+        }
+
+        function startEditDueDate(taskId, currentDueDate) {
+            const newDueDate = prompt(`Neues Fälligkeitsdatum für Task:`, currentDueDate);
+            if (newDueDate && newDueDate !== currentDueDate) {
+                updateTask(taskId, { due_date: newDueDate });
+            }
+        }
+
+        // Context Menu Functions
+        function showPriorityMenu(taskId, currentPriority, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const priorities = [
+                { value: 'low', label: 'Niedrig', icon: '🔵' },
+                { value: 'medium', label: 'Mittel', icon: '🟡' },
+                { value: 'high', label: 'Hoch', icon: '🔴' }
+            ];
+            
+            priorities.forEach(priority => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (priority.value === currentPriority) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `${priority.icon} ${priority.label}`;
+                item.onclick = () => {
+                    updateTask(taskId, { priority: priority.value });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function showCategoryMenu(taskId, currentCategory, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            // Get existing categories
+            const categories = [...new Set(allTasks.map(task => task.category))].sort();
+            
+            categories.forEach(category => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (category === currentCategory) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `📁 ${category}`;
+                item.onclick = () => {
+                    updateTask(taskId, { category: category });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            // Add "New Category" option
+            const newItem = document.createElement('div');
+            newItem.className = 'context-menu-item';
+            newItem.innerHTML = '➕ Neue Kategorie';
+            newItem.onclick = () => {
+                const newCategory = prompt('Neue Kategorie:', '');
+                if (newCategory && newCategory.trim()) {
+                    updateTask(taskId, { category: newCategory.trim() });
+                }
+                closeAllContextMenus();
+            };
+            menu.appendChild(newItem);
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function showDateMenu(taskId, currentDueDate, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+            
+            const dateOptions = [
+                { label: 'Heute', date: today.toISOString().split('T')[0], icon: '📅' },
+                { label: 'Morgen', date: tomorrow.toISOString().split('T')[0], icon: '📅' },
+                { label: 'Nächste Woche', date: nextWeek.toISOString().split('T')[0], icon: '📅' }
+            ];
+            
+            dateOptions.forEach(option => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (option.date === currentDueDate) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `${option.icon} ${option.label}`;
+                item.onclick = () => {
+                    updateTask(taskId, { due_date: option.date });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            // Add custom date picker
+            const customItem = document.createElement('div');
+            customItem.className = 'context-menu-item';
+            customItem.innerHTML = '📅 Benutzerdefiniert';
+            customItem.onclick = () => {
+                const input = document.createElement('input');
+                input.type = 'date';
+                input.value = currentDueDate || '';
+                input.onchange = () => {
+                    if (input.value) {
+                        updateTask(taskId, { due_date: input.value });
+                    }
+                    closeAllContextMenus();
+                };
+                input.click();
+            };
+            menu.appendChild(customItem);
+            
+            // Add "Remove Date" option
+            if (currentDueDate) {
+                const removeItem = document.createElement('div');
+                removeItem.className = 'context-menu-item danger';
+                removeItem.innerHTML = '🗑️ Datum entfernen';
+                removeItem.onclick = () => {
+                    updateTask(taskId, { due_date: null });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(removeItem);
+            }
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function closeAllContextMenus() {
+            const menus = document.querySelectorAll('.context-menu');
+            menus.forEach(menu => menu.remove());
+        }
+
+        function saveEditTitle(taskId) {
+            // Finde das Task-Element über die Task-ID
+            const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+            
+            if (!taskElement) {
+                console.error('Task element not found for ID:', taskId);
+                return;
+            }
+            
+            const titleEditable = taskElement.querySelector('.task-title-editable');
+            const titleText = taskElement.querySelector('.task-title-text');
+            const titleInput = taskElement.querySelector('.task-title-edit');
+            const newTitle = titleInput.value.trim();
+            
+            if (newTitle && newTitle !== titleText.textContent) {
+                updateTask(taskId, { title: newTitle });
+            }
+            
+            // Zeige das editable Element wieder und verstecke das Input-Feld
+            titleEditable.style.display = 'flex';
+            titleInput.style.display = 'none';
+        }
+
+        function handleEditKeypress(event, taskId) {
+            if (event.key === 'Enter') {
+                saveEditTitle(taskId);
+            } else if (event.key === 'Escape') {
+                // Finde das Task-Element über die Task-ID
+                const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+                
+                if (!taskElement) {
+                    console.error('Task element not found for ID:', taskId);
+                    return;
+                }
+                
+                const titleEditable = taskElement.querySelector('.task-title-editable');
+                const titleInput = taskElement.querySelector('.task-title-edit');
+                
+                // Zeige das editable Element wieder und verstecke das Input-Feld
+                titleEditable.style.display = 'flex';
+                titleInput.style.display = 'none';
+            }
+        }
+
+        function startEditPriority(taskId, currentPriority) {
+            const priorities = ['low', 'medium', 'high'];
+            const currentIndex = priorities.indexOf(currentPriority);
+            const nextIndex = (currentIndex + 1) % priorities.length;
+            const newPriority = priorities[nextIndex];
+            
+            updateTask(taskId, { priority: newPriority });
+        }
+
+        function startEditCategory(taskId, currentCategory) {
+            const newCategory = prompt(`Neue Kategorie für Task "${currentCategory}":`, currentCategory);
+            if (newCategory && newCategory.trim() !== currentCategory) {
+                updateTask(taskId, { category: newCategory.trim() });
+            }
+        }
+
+        function startEditDueDate(taskId, currentDueDate) {
+            const newDueDate = prompt(`Neues Fälligkeitsdatum für Task:`, currentDueDate);
+            if (newDueDate && newDueDate !== currentDueDate) {
+                updateTask(taskId, { due_date: newDueDate });
+            }
+        }
+
+        // Context Menu Functions
+        function showPriorityMenu(taskId, currentPriority, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const priorities = [
+                { value: 'low', label: 'Niedrig', icon: '🔵' },
+                { value: 'medium', label: 'Mittel', icon: '🟡' },
+                { value: 'high', label: 'Hoch', icon: '🔴' }
+            ];
+            
+            priorities.forEach(priority => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (priority.value === currentPriority) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `${priority.icon} ${priority.label}`;
+                item.onclick = () => {
+                    updateTask(taskId, { priority: priority.value });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function showCategoryMenu(taskId, currentCategory, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            // Get existing categories
+            const categories = [...new Set(allTasks.map(task => task.category))].sort();
+            
+            categories.forEach(category => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (category === currentCategory) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `📁 ${category}`;
+                item.onclick = () => {
+                    updateTask(taskId, { category: category });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            // Add "New Category" option
+            const newItem = document.createElement('div');
+            newItem.className = 'context-menu-item';
+            newItem.innerHTML = '➕ Neue Kategorie';
+            newItem.onclick = () => {
+                const newCategory = prompt('Neue Kategorie:', '');
+                if (newCategory && newCategory.trim()) {
+                    updateTask(taskId, { category: newCategory.trim() });
+                }
+                closeAllContextMenus();
+            };
+            menu.appendChild(newItem);
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function showDateMenu(taskId, currentDueDate, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+            
+            const dateOptions = [
+                { label: 'Heute', date: today.toISOString().split('T')[0], icon: '📅' },
+                { label: 'Morgen', date: tomorrow.toISOString().split('T')[0], icon: '📅' },
+                { label: 'Nächste Woche', date: nextWeek.toISOString().split('T')[0], icon: '📅' }
+            ];
+            
+            dateOptions.forEach(option => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (option.date === currentDueDate) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `${option.icon} ${option.label}`;
+                item.onclick = () => {
+                    updateTask(taskId, { due_date: option.date });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            // Add custom date picker
+            const customItem = document.createElement('div');
+            customItem.className = 'context-menu-item';
+            customItem.innerHTML = '📅 Benutzerdefiniert';
+            customItem.onclick = () => {
+                const input = document.createElement('input');
+                input.type = 'date';
+                input.value = currentDueDate || '';
+                input.onchange = () => {
+                    if (input.value) {
+                        updateTask(taskId, { due_date: input.value });
+                    }
+                    closeAllContextMenus();
+                };
+                input.click();
+            };
+            menu.appendChild(customItem);
+            
+            // Add "Remove Date" option
+            if (currentDueDate) {
+                const removeItem = document.createElement('div');
+                removeItem.className = 'context-menu-item danger';
+                removeItem.innerHTML = '🗑️ Datum entfernen';
+                removeItem.onclick = () => {
+                    updateTask(taskId, { due_date: null });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(removeItem);
+            }
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function closeAllContextMenus() {
+            const menus = document.querySelectorAll('.context-menu');
+            menus.forEach(menu => menu.remove());
+        }
+
+        // Universal Task Update Function
+        async function updateTask(taskId, updates) {
+            try {
+                const response = await fetch(`/api/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updates)
+                });
+                
+                if (response.ok) {
+                    // Update local data
+                    const task = allTasks.find(t => t.id === taskId);
+                    if (task) {
+                        Object.assign(task, updates);
+                        renderTasks();
+                    }
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error('Error updating task:', error);
+                return false;
+            }
+        }
+
+        // Simplified Inline-Editing Functions
+
+
+        function handleEditKeypress(event, taskId) {
+            if (event.key === 'Enter') {
+                saveEditTitle(taskId);
+            } else if (event.key === 'Escape') {
+                // Finde das Task-Element über die Task-ID
+                const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+                
+                if (!taskElement) {
+                    console.error('Task element not found for ID:', taskId);
+                    return;
+                }
+                
+                const titleEditable = taskElement.querySelector('.task-title-editable');
+                const titleInput = taskElement.querySelector('.task-title-edit');
+                
+                // Zeige das editable Element wieder und verstecke das Input-Feld
+                titleEditable.style.display = 'flex';
+                titleInput.style.display = 'none';
+            }
+        }
+
+        function startEditPriority(taskId, currentPriority) {
+            const priorities = ['low', 'medium', 'high'];
+            const currentIndex = priorities.indexOf(currentPriority);
+            const nextIndex = (currentIndex + 1) % priorities.length;
+            const newPriority = priorities[nextIndex];
+            
+            updateTask(taskId, { priority: newPriority });
+        }
+
+        function startEditCategory(taskId, currentCategory) {
+            const newCategory = prompt(`Neue Kategorie für Task "${currentCategory}":`, currentCategory);
+            if (newCategory && newCategory.trim() !== currentCategory) {
+                updateTask(taskId, { category: newCategory.trim() });
+            }
+        }
+
+
+        // Modal Management Functions
+        function openTaskCreationModal() {
+            document.getElementById('taskCreationModal').style.display = 'flex';
+            document.getElementById('taskTitle').focus();
+        }
+
+        function closeTaskCreationModal() {
+            document.getElementById('taskCreationModal').style.display = 'none';
+            document.getElementById('taskForm').reset();
+        }
+
+        function openCategoryManagementModal() {
+            document.getElementById('categoryManagementModal').style.display = 'flex';
+            loadCategories();
+        }
+
+        function closeCategoryManagementModal() {
+            document.getElementById('categoryManagementModal').style.display = 'none';
+        }
+
+        function submitTaskForm() {
+            const form = document.getElementById('taskForm');
+            const formData = new FormData(form);
+            const taskData = {
+                title: formData.get('title'),
+                category: formData.get('category'),
+                priority: formData.get('priority'),
+                due_date: formData.get('dueDate') || null
+            };
+            
+            createTaskFromModal(taskData);
+        }
+
+        async function createTaskFromModal(taskData) {
+            try {
+                const response = await fetch('/api/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(taskData)
+                });
+                
+                if (response.ok) {
+                    closeTaskCreationModal();
+                    await loadTasks();
+                    addMessage('assistant', `✅ Task "${taskData.title}" erfolgreich erstellt!`);
+                } else {
+                    addMessage('assistant', '❌ Fehler beim Erstellen des Tasks.');
+                }
+            } catch (error) {
+                console.error('Error creating task:', error);
+                addMessage('assistant', '❌ Fehler beim Erstellen des Tasks.');
+            }
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeTaskCreationModal();
+                closeCategoryManagementModal();
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeTaskCreationModal();
+                closeCategoryManagementModal();
+            }
+        });
+
+
+        async function loadCategories() {
+            try {
+                const response = await fetch('/api/smart-tasks');
+                const data = await response.json();
+                
+                // Get unique categories
+                const categories = [...new Set(data.tasks.map(task => task.category))].sort();
+                
+                const categoryList = document.getElementById('categoryList');
+                categoryList.innerHTML = categories.map(category => `
+                    <div class="category-item">
+                        <span class="category-name">${category}</span>
+                        <div class="category-buttons">
+                            <button class="btn btn-small btn-secondary" onclick="renameCategory('${category}')">Umbenennen</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteCategory('${category}')">Löschen</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update task creation form categories
+                updateTaskFormCategories(categories);
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        function updateTaskFormCategories(categories) {
+            const select = document.getElementById('taskCategory');
+            select.innerHTML = categories.map(category => 
+                `<option value="${category}">${category}</option>`
+            ).join('');
+        }
+
+        async function createCategory() {
+            const categoryName = document.getElementById('newCategoryName').value.trim();
+            if (!categoryName) return;
+            
+            try {
+                const response = await fetch('/api/mistral', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `Erstelle eine neue Kategorie namens "${categoryName}"`
+                    })
+                });
+                
+                if (response.ok) {
+                    document.getElementById('newCategoryName').value = '';
+                    await loadCategories();
+                    addMessage('assistant', `✅ Kategorie "${categoryName}" erfolgreich erstellt!`);
+                } else {
+                    addMessage('assistant', '❌ Fehler beim Erstellen der Kategorie.');
+                }
+            } catch (error) {
+                console.error('Error creating category:', error);
+                addMessage('assistant', '❌ Fehler beim Erstellen der Kategorie.');
+            }
+        }
+
+        async function renameCategory(oldName) {
+            const newName = prompt(`Neuer Name für Kategorie "${oldName}":`, oldName);
+            if (!newName || newName === oldName) return;
+            
+            try {
+                const response = await fetch('/api/mistral', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `Benenne die Kategorie "${oldName}" um zu "${newName}"`
+                    })
+                });
+                
+                if (response.ok) {
+                    await loadCategories();
+                    await loadTasks();
+                    addMessage('assistant', `✅ Kategorie "${oldName}" erfolgreich umbenannt zu "${newName}"!`);
+                } else {
+                    addMessage('assistant', '❌ Fehler beim Umbenennen der Kategorie.');
+                }
+            } catch (error) {
+                console.error('Error renaming category:', error);
+                addMessage('assistant', '❌ Fehler beim Umbenennen der Kategorie.');
+            }
+        }
+
+        async function deleteCategory(categoryName) {
+            if (!confirm(`Möchten Sie wirklich alle Tasks der Kategorie "${categoryName}" löschen?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/mistral', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `Lösche alle Tasks der Kategorie "${categoryName}"`
+                    })
+                });
+                
+                if (response.ok) {
+                    await loadCategories();
+                    await loadTasks();
+                    addMessage('assistant', `✅ Alle Tasks der Kategorie "${categoryName}" wurden gelöscht!`);
+                } else {
+                    addMessage('assistant', '❌ Fehler beim Löschen der Kategorie.');
+                }
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                addMessage('assistant', '❌ Fehler beim Löschen der Kategorie.');
+            }
+        }
+
+        // Due Date Inline-Editing
+
     </script>
 </body>
 </html>

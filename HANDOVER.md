@@ -48,18 +48,21 @@
 **🤖 Mistral Tool API Implementation:**
 - **Function Calling:** Mistral kann jetzt direkte Tool-Calls machen statt Text zu parsen
 - **Sichere Tool-Integration:** Keine Shell-Commands mehr, direkte API-Calls
-- **Tool-Definitionen:** create_task, delete_category, move_tasks, query_tasks
+- **Tool-Definitionen:** create_task, delete_category, move_tasks, query_tasks, update_task, create_category, rename_category
 - **Schema-Validierung:** Sichere Parameter-Validierung für alle Tools
-- **Fallback-System:** Graceful Degradation bei API-Fehlern
+- **Englische System-Prompts:** Alle Mistral-Prompts und Tool-Beschreibungen auf Englisch
+- **Sprachliche Flexibilität:** Mistral antwortet immer in der Sprache des Nutzers
 
 **🔒 Security-Verbesserungen:**
 - **Keine Shell-Injection:** Spawn statt exec für bessere Sicherheit
 - **Validierte Parameter:** Alle Tool-Parameter werden validiert
 - **Sichere API-Integration:** Direkte HTTP-Calls statt Shell-Scripts
+- **Keine Fallback-Task-Erstellung:** Nur Error-Kommunikation, keine automatischen Tasks
 
-**⚠️ Aktuelles Problem:**
-- **Mistral Rate Limit:** Free Plan erreicht, Tool-Calls funktionieren nicht
-- **Fallback aktiv:** System funktioniert ohne AI, aber ohne Tool-Automatisierung
+**✅ Mistral API funktioniert wieder:**
+- **Neuer API-Key:** Mistral Tool-Calls funktionieren wieder vollständig
+- **Rate Limits:** Keine Probleme mehr mit API-Limits
+- **Tool-Execution:** Alle Tools werden korrekt ausgeführt
 
 **🎨 Web-Interface Verbesserungen:**
 - **Erledigte Tasks sichtbar:** Erledigte Tasks werden jetzt im Web-Interface angezeigt (statt versteckt)
@@ -68,6 +71,15 @@
 - **📋 Intelligente Sortierung:** Erledigte Tasks wandern automatisch ans Ende der Listen
 - **🎯 Visueller Separator:** Elegante Trennlinie zwischen offenen und erledigten Tasks
 - **🌐 "Heute"-Ansicht erweitert:** Zeigt auch erledigte Tasks von heute (aber ausgegraut)
+
+**🔧 Frontend Refactoring abgeschlossen:**
+- **Inline-Editing:** Hover + Klick für Titel, Context-Menus für Priorität/Kategorie/Datum
+- **Drag & Drop:** Funktioniert in allen Sortierungen und Filtern
+- **Modal-System:** Task-Erstellung und Kategorie-Management in Overlays
+- **UI-Bereinigung:** Alle Statistiken und "Noise" entfernt
+- **Titel-Truncation:** Intelligente Kürzung mit "..." vor rechten Icons
+- **CRUD-Refactoring:** Einheitliche updateTask() Funktion für alle Updates
+- **Button-Design:** Konsistente "secondary gray" Ästhetik
 
 **🔄 Automatisierung verbessert:**
 - **Smart Task Enhancement:** Wird automatisch nach jedem Sync ausgeführt
@@ -78,6 +90,7 @@
 - **Alte Dashboard-Dateien entfernt:** `core/Dashboard - Strukturierte To-do-Übersicht.md` gelöscht
 - **Deprecated Scripts entfernt:** `scripts/generate-html.js` und andere alte Scripts gelöscht
 - **Automation Scripts aktualisiert:** Alle Scripts bereinigt von Dashboard-Referenzen
+- **Task-Duration entfernt:** estimated_duration_minutes Feld aus Frontend und DB entfernt
 
 ## 🛠️ Wichtige Scripts
 

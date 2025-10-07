@@ -460,7 +460,30 @@ ANTWORT:`;
             messages: [
               {
                 role: "system",
-                content: `Du bist ein Tool-Server für Task-Management. Du MUSST die verfügbaren Tools verwenden. Heute ist ${todayFormatted} (${todayString}). Verwende immer das korrekte Datum (${todayString}) für heute. Du kannst Tasks erstellen, suchen, löschen und verschieben.`
+                content: `You are a tool server for task management. You MUST use the available tools. Today is ${todayFormatted} (${todayString}). Always use the correct date (${todayString}) for today.
+
+           Available Tools:
+           - create_task: Create a new task
+           - query_tasks: Search/filter tasks
+           - update_task: Update a task (task_id, title, category, priority, due_date, status)
+           - delete_category: Delete all tasks of a category
+           - move_tasks: Move tasks between dates
+           - create_category: Create a new category
+           - rename_category: Rename an existing category
+
+When a task ID is mentioned, use the corresponding update tools.
+
+Priority Mapping:
+- "hoch" or "high" → "high"
+- "mittel" or "medium" → "medium"  
+- "niedrig" or "low" → "low"
+
+IMPORTANT: Always respond in the same language as the user's input. If the user writes in German, respond in German. If the user writes in English, respond in English.
+
+Edge Cases:
+- Tasks can be created without a title (will use "Untitled Task" as default)
+- Tasks can be created without a category (will use "General" as default)
+- All other fields (due_date, priority) are optional`
               },
               {
                 role: "user",
@@ -468,35 +491,18 @@ ANTWORT:`;
               }
             ],
             tools: [
-              {
-                type: "function",
-                function: {
-                  name: "create_task",
-                  description: "Erstelle einen neuen Task",
-                  parameters: {
-                    type: "object",
-                    properties: {
-                      title: { type: "string", description: "Titel des Tasks" },
-                      category: { type: "string", description: "Kategorie des Tasks" },
-                      due_date: { type: "string", description: "Fälligkeitsdatum (YYYY-MM-DD)" },
-                      priority: { type: "string", enum: ["low", "medium", "high"], description: "Priorität des Tasks" }
-                    },
-                    required: ["title", "category"]
-                  }
-                }
-              },
-              {
-                type: "function",
-                function: {
-                  name: "query_tasks",
-                  description: "Suche und filtere Tasks",
-                  parameters: {
-                    type: "object",
-                    properties: {
-                      category: { type: "string", description: "Kategorie der Tasks" },
-                      status: { type: "string", enum: ["pending", "completed"], description: "Status der Tasks" },
-                      due_date: { type: "string", description: "Fälligkeitsdatum (YYYY-MM-DD)" },
-                      priority: { type: "string", enum: ["low", "medium", "high"], description: "Priorität der Tasks" }
+      {
+        type: "function",
+        function: {
+          name: "create_task",
+                  description: "Create a new task",
+          parameters: {
+            type: "object",
+            properties: {
+                      title: { type: "string", description: "Title of the task" },
+                      category: { type: "string", description: "Category of the task" },
+                      due_date: { type: "string", description: "Due date (YYYY-MM-DD)" },
+                      priority: { type: "string", enum: ["low", "medium", "high"], description: "Priority of the task" }
                     },
                     required: []
                   }
@@ -505,103 +511,160 @@ ANTWORT:`;
               {
                 type: "function",
                 function: {
-                  name: "delete_category",
-                  description: "Lösche alle Tasks einer Kategorie",
+                  name: "query_tasks",
+                  description: "Search and filter tasks",
                   parameters: {
                     type: "object",
                     properties: {
-                      category: { type: "string", description: "Kategorie zum Löschen" }
+                      category: { type: "string", description: "Category of the tasks" },
+                      status: { type: "string", enum: ["pending", "completed"], description: "Status of the tasks" },
+                      due_date: { type: "string", description: "Due date (YYYY-MM-DD)" },
+                      priority: { type: "string", enum: ["low", "medium", "high"], description: "Priority of the tasks" }
                     },
-                    required: ["category"]
+                    required: []
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "delete_category",
+                  description: "Delete all tasks of a category",
+          parameters: {
+            type: "object",
+            properties: {
+                      category: { type: "string", description: "Category to delete" }
+            },
+            required: ["category"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "move_tasks",
+                  description: "Move tasks between dates",
+          parameters: {
+            type: "object",
+            properties: {
+                      category: { type: "string", description: "Category of the tasks" },
+                      from_date: { type: "string", description: "From date (YYYY-MM-DD)" },
+                      to_date: { type: "string", description: "To date (YYYY-MM-DD)" }
+            },
+            required: ["category", "from_date", "to_date"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+                  name: "update_task",
+                  description: "Update an existing task",
+          parameters: {
+            type: "object",
+            properties: {
+                      task_id: { type: "string", description: "ID of the task" },
+                      title: { type: "string", description: "New title of the task" },
+                      category: { type: "string", description: "New category of the task" },
+                      priority: { type: "string", enum: ["low", "medium", "high"], description: "New priority of the task" },
+                      due_date: { type: "string", description: "New due date (YYYY-MM-DD)" },
+                      status: { type: "string", enum: ["pending", "completed"], description: "New status of the task" }
+                    },
+                    required: ["task_id"]
                   }
                 }
               },
               {
                 type: "function",
                 function: {
-                  name: "move_tasks",
-                  description: "Verschiebe Tasks zwischen Daten",
+                  name: "create_category",
+                  description: "Create a new category",
                   parameters: {
                     type: "object",
                     properties: {
-                      category: { type: "string", description: "Kategorie der Tasks" },
-                      from_date: { type: "string", description: "Von Datum (YYYY-MM-DD)" },
-                      to_date: { type: "string", description: "Zu Datum (YYYY-MM-DD)" }
+                      category_name: { type: "string", description: "Name of the new category" }
                     },
-                    required: ["category", "from_date", "to_date"]
+                    required: ["category_name"]
+                  }
+                }
+              },
+              {
+                type: "function",
+                function: {
+                  name: "rename_category",
+                  description: "Rename an existing category",
+                  parameters: {
+                    type: "object",
+                    properties: {
+                      old_category: { type: "string", description: "Current name of the category" },
+                      new_category: { type: "string", description: "New name of the category" }
+                    },
+                    required: ["old_category", "new_category"]
                   }
                 }
               }
             ],
             tool_choice: "auto",
-            max_tokens: 200,
-            temperature: 0.1
-          })
-        });
+        max_tokens: 200,
+        temperature: 0.1
+      })
+    });
 
-        if (!response.ok) {
+    if (!response.ok) {
           throw new Error(`Mistral API Error: ${response.status}`);
-        }
+    }
 
-        const data = await response.json();
+    const data = await response.json();
         const message = data.choices[0].message;
         
         if (message.tool_calls && message.tool_calls.length > 0) {
           // Execute tool calls direkt
           const toolCall = message.tool_calls[0];
-          const { name, arguments: args } = toolCall.function;
-          const params = JSON.parse(args);
-          
+        const { name, arguments: args } = toolCall.function;
+        const params = JSON.parse(args);
+        
           try {
-            let result;
-            switch (name) {
-              case 'create_task':
-                result = await this.executeCreateTaskTool(params);
-                break;
+        let result;
+        switch (name) {
+          case 'create_task':
+            result = await this.executeCreateTaskTool(params);
+            break;
               case 'query_tasks':
                 result = await this.executeQueryTasksTool(params);
                 break;
-              case 'delete_category':
-                result = await this.executeDeleteCategoryTool(params);
+          case 'delete_category':
+            result = await this.executeDeleteCategoryTool(params);
+            break;
+          case 'move_tasks':
+            result = await this.executeMoveTasksTool(params);
+            break;
+              case 'update_task':
+                result = await this.executeUpdateTaskTool(params);
                 break;
-              case 'move_tasks':
-                result = await this.executeMoveTasksTool(params);
+              case 'create_category':
+                result = await this.executeCreateCategoryTool(params);
                 break;
-              default:
-                throw new Error(`Unbekanntes Tool: ${name}`);
-            }
-            
+              case 'rename_category':
+                result = await this.executeRenameCategoryTool(params);
+            break;
+          default:
+                throw new Error(`Unknown tool: ${name}`);
+        }
+        
             res.json({
               success: true,
-              response: `✅ Tool ausgeführt: ${result.message}`
+              response: `✅ Tool executed: ${result.message}`
             });
-          } catch (error) {
-            console.error('Tool-Execution Fehler:', error);
+      } catch (error) {
+            console.error('Tool execution error:', error);
             res.json({
               success: false,
-              error: `Tool-Execution fehlgeschlagen: ${error.message}`
+              error: `Tool execution failed: ${error.message}`
             });
           }
         } else {
           // Fallback für normale Antworten
-          const content = message.content || "Keine Antwort von Mistral erhalten";
-          
-          // Intelligente Todo-Erkennung als Fallback
-          if (this.shouldCreateTodo(prompt, content)) {
-            const todoData = this.parseTodoFromPrompt(prompt);
-            if (todoData) {
-              try {
-                const result = await this.executeCreateTaskTool(todoData);
-                res.json({
-                  success: true,
-                  response: `✅ Todo erstellt (Fallback): "${todoData.title}" in Kategorie "${todoData.category}"`
-                });
-                return;
-              } catch (error) {
-                console.error('Todo-Erstellung fehlgeschlagen:', error);
-              }
-            }
-          }
+          const content = message.content || "No response from Mistral received";
           
           res.json({
             success: true,
@@ -631,54 +694,6 @@ ANTWORT:`;
     }
   }
 
-  // Intelligente Todo-Erkennung
-  shouldCreateTodo(prompt, content) {
-    const todoKeywords = ['erstelle', 'erstelle einen', 'neuen todo', 'neue aufgabe', 'task erstellen', 'todo hinzufügen'];
-    const promptLower = prompt.toLowerCase();
-    return todoKeywords.some(keyword => promptLower.includes(keyword));
-  }
-
-  parseTodoFromPrompt(prompt) {
-    // Einfache Regex-basierte Parsing
-    const titleMatch = prompt.match(/(?:erstelle|erstelle einen|neuen todo|neue aufgabe|task erstellen|todo hinzufügen)[:\s]*["']?([^"']+)["']?/i);
-    if (!titleMatch) return null;
-
-    const title = titleMatch[1].trim();
-    
-    // Kategorie-Erkennung
-    let category = 'General';
-    const categories = ['marketing', 'development', 'business', 'personal', 'push', 'check24', 'sustain'];
-    const promptLower = prompt.toLowerCase();
-    
-    for (const cat of categories) {
-      if (promptLower.includes(cat)) {
-        category = cat.charAt(0).toUpperCase() + cat.slice(1);
-        break;
-      }
-    }
-    
-    // Spezielle Behandlung für Marketing (immer groß geschrieben)
-    if (category === 'Marketing') {
-      category = 'Marketing';
-    }
-
-    // Datum-Erkennung
-    let dueDate = null;
-    if (promptLower.includes('morgen')) {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      dueDate = tomorrow.toISOString().split('T')[0];
-    } else if (promptLower.includes('heute')) {
-      dueDate = new Date().toISOString().split('T')[0];
-    }
-
-    return {
-      title,
-      category,
-      due_date: dueDate,
-      priority: 'medium'
-    };
-  }
 
 
 
@@ -698,8 +713,8 @@ ANTWORT:`;
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: params.title,
-          category: params.category,
+          title: params.title || "Untitled Task",
+          category: params.category || "General",
           status: 'pending',
           priority: params.priority || 'medium',
           due_date: params.due_date || new Date().toISOString().split('T')[0]
@@ -707,12 +722,12 @@ ANTWORT:`;
       });
       
       if (response.ok) {
-        return { success: true, message: `✅ Task "${params.title}" in ${params.category} erstellt.` };
+        return { success: true, message: `✅ Task "${params.title || 'Untitled Task'}" created in ${params.category || 'General'}.` };
       } else {
-        return { success: false, message: `❌ Fehler beim Erstellen des Tasks.` };
+        return { success: false, message: `❌ Error creating task.` };
       }
     } catch (error) {
-      return { success: false, message: `❌ Fehler: ${error.message}` };
+      return { success: false, message: `❌ Error: ${error.message}` };
     }
   }
 
@@ -735,10 +750,10 @@ ANTWORT:`;
       
       return { 
         success: true, 
-        message: `📋 ${filteredTasks.length} Tasks gefunden für ${params.category || 'alle Kategorien'}.` 
+        message: `📋 ${filteredTasks.length} tasks found for ${params.category || 'all categories'}.` 
       };
     } catch (error) {
-      return { success: false, message: `❌ Fehler: ${error.message}` };
+      return { success: false, message: `❌ Error: ${error.message}` };
     }
   }
 
@@ -762,10 +777,10 @@ ANTWORT:`;
       
       return { 
         success: true, 
-        message: `🗑️ ${deletedCount} ${params.category} Tasks gelöscht.` 
+        message: `🗑️ ${deletedCount} ${params.category} tasks deleted.` 
       };
     } catch (error) {
-      return { success: false, message: `❌ Fehler: ${error.message}` };
+      return { success: false, message: `❌ Error: ${error.message}` };
     }
   }
 
@@ -791,10 +806,82 @@ ANTWORT:`;
       
       return { 
         success: true, 
-        message: `📅 ${movedCount} ${params.category} Tasks von ${params.from_date} auf ${params.to_date} verschoben.` 
+        message: `📅 ${movedCount} ${params.category} tasks moved from ${params.from_date} to ${params.to_date}.` 
       };
     } catch (error) {
-      return { success: false, message: `❌ Fehler: ${error.message}` };
+      return { success: false, message: `❌ Error: ${error.message}` };
+    }
+  }
+
+  // New Tool Execution Methods
+  async executeUpdateTaskTool(params) {
+    try {
+      const updateData = {};
+      if (params.title) updateData.title = params.title;
+      if (params.category) updateData.category = params.category;
+      if (params.priority) updateData.priority = params.priority;
+      if (params.due_date) updateData.due_date = params.due_date;
+      if (params.status) updateData.status = params.status;
+
+      const response = await fetch(`http://localhost:3001/api/tasks/${params.task_id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updateData)
+      });
+      
+      if (response.ok) {
+        return { success: true, message: `✅ Task ${params.task_id} updated successfully.` };
+      } else {
+        return { success: false, message: `❌ Error updating task.` };
+      }
+    } catch (error) {
+      return { success: false, message: `❌ Error: ${error.message}` };
+    }
+  }
+
+
+  async executeCreateCategoryTool(params) {
+    try {
+      // Kategorie wird automatisch erstellt, wenn ein Task mit dieser Kategorie erstellt wird
+      // Hier können wir eine Bestätigung zurückgeben
+      return { success: true, message: `✅ Category "${params.category_name}" is ready to use. Create a task with this category to activate it.` };
+    } catch (error) {
+      return { success: false, message: `❌ Error: ${error.message}` };
+    }
+  }
+
+  async executeRenameCategoryTool(params) {
+    try {
+      // Alle Tasks mit der alten Kategorie finden und auf die neue Kategorie ändern
+      const response = await fetch('http://localhost:3001/api/smart-tasks');
+      const data = await response.json();
+      
+      const tasksToUpdate = data.tasks.filter(task => task.category === params.old_category);
+      
+      if (tasksToUpdate.length === 0) {
+        return { success: false, message: `❌ No tasks found with category "${params.old_category}".` };
+      }
+
+      // Alle Tasks aktualisieren
+      let updatedCount = 0;
+      for (const task of tasksToUpdate) {
+        const updateResponse = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ category: params.new_category })
+        });
+        
+        if (updateResponse.ok) {
+          updatedCount++;
+        }
+      }
+
+      return { 
+        success: true, 
+        message: `✅ Category renamed from "${params.old_category}" to "${params.new_category}". ${updatedCount} tasks updated.` 
+      };
+    } catch (error) {
+      return { success: false, message: `❌ Error: ${error.message}` };
     }
   }
 
@@ -816,9 +903,9 @@ ANTWORT:`;
       // Preserve original structure
       const updatedData = tasksData.tasks ? { ...tasksData, tasks: tasksArray } : tasksArray;
       fs.writeFileSync(tasksPath, JSON.stringify(updatedData, null, 2));
-      console.log(`✅ Task ${newTask.id} zu tasks.json hinzugefügt`);
+      console.log(`✅ Task ${newTask.id} added to tasks.json`);
     } catch (error) {
-      console.error(`❌ Fehler beim Hinzufügen zu tasks.json:`, error.message);
+      console.error(`❌ Error adding to tasks.json:`, error.message);
     }
   }
 
@@ -841,12 +928,12 @@ ANTWORT:`;
         // Preserve original structure
         const updatedData = tasksData.tasks ? { ...tasksData, tasks: tasksArray } : tasksArray;
         fs.writeFileSync(tasksPath, JSON.stringify(updatedData, null, 2));
-        console.log(`✅ Task ${taskId} aus tasks.json gelöscht`);
+        console.log(`✅ Task ${taskId} deleted from tasks.json`);
       } else {
-        console.log(`⚠️  Task ${taskId} nicht in tasks.json gefunden`);
+        console.log(`⚠️  Task ${taskId} not found in tasks.json`);
       }
     } catch (error) {
-      console.error(`❌ Fehler beim Löschen aus tasks.json:`, error.message);
+      console.error(`❌ Error deleting from tasks.json:`, error.message);
     }
   }
 
@@ -873,12 +960,12 @@ ANTWORT:`;
         // Preserve original structure
         const updatedData = tasksData.tasks ? { ...tasksData, tasks: tasksArray } : tasksArray;
         fs.writeFileSync(tasksPath, JSON.stringify(updatedData, null, 2));
-        console.log(`✅ tasks.json aktualisiert für Task ${updatedTask.id}`);
+        console.log(`✅ tasks.json updated for task ${updatedTask.id}`);
       } else {
-        console.log(`⚠️  Task ${updatedTask.id} nicht in tasks.json gefunden`);
+        console.log(`⚠️  Task ${updatedTask.id} not found in tasks.json`);
       }
     } catch (error) {
-      console.error(`❌ Fehler beim Update der tasks.json:`, error.message);
+      console.error(`❌ Error updating tasks.json:`, error.message);
     }
   }
 
