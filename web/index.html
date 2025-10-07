@@ -1128,8 +1128,23 @@
             });
             
             // Sortiere Kategorien nach Anzahl der Tasks (größte zuerst)
+            // Filtere "General" Kategorien heraus, wenn alle Tasks erledigt sind
             const sortedCategories = Object.entries(tasksByCategory)
+                .filter(([category, categoryTasks]) => {
+                    if (category === 'General') {
+                        // Zeige "General" nur wenn es noch offene Tasks gibt
+                        return categoryTasks.some(task => task.status !== 'completed');
+                    }
+                    return true;
+                })
                 .sort(([,a], [,b]) => b.length - a.length);
+            
+            // Sammle alle erledigten Tasks (auch aus "General")
+            let allCompletedTasks = [];
+            Object.entries(tasksByCategory).forEach(([category, categoryTasks]) => {
+                const completedTasks = categoryTasks.filter(task => task.status === 'completed');
+                allCompletedTasks = allCompletedTasks.concat(completedTasks);
+            });
             
             const categoryIcons = {
                 'Business': '💼',
@@ -1145,7 +1160,6 @@
             };
             
             let html = '';
-            let allCompletedTasks = [];
             
             sortedCategories.forEach(([category, categoryTasks]) => {
                 const icon = categoryIcons[category] || '📁';
@@ -1170,8 +1184,10 @@
                 const pendingTasks = sortedTasks.filter(task => task.status !== 'completed');
                 const completedTasks = sortedTasks.filter(task => task.status === 'completed');
                 
-                // Sammle alle erledigten Tasks für später
-                allCompletedTasks = allCompletedTasks.concat(completedTasks);
+                // Sammle erledigte Tasks für später (aber nicht aus "General" wenn alle erledigt)
+                if (!(category === 'General' && completedTasks.length === categoryTasks.length)) {
+                    allCompletedTasks = allCompletedTasks.concat(completedTasks);
+                }
                 
                 // Nur Kategorie-Header anzeigen wenn mehr als 1 Task oder wenn es nicht "General" ist
                 if (categoryTasks.length > 1 || category !== 'General') {
@@ -1224,8 +1240,8 @@
             const hierarchyClass = task.hierarchy_level ? `hierarchy-level-${task.hierarchy_level}` : '';
             const completedClass = task.status === 'completed' ? 'completed-task' : '';
             
-            // Remove markdown formatting (**) from task titles
-            const cleanTitle = task.title.replace(/\*\*/g, '').trim();
+            // Remove markdown formatting (**) and category symbols from task titles
+            const cleanTitle = task.title.replace(/\*\*/g, '').replace(/\s*📁\s*[^-\s]+/g, '').trim();
             
             // Bei Kategorie-Sortierung: Priorität-Badge nur anzeigen wenn nicht "medium"
             const showPriorityBadge = currentSorting === 'priority' || task.priority !== 'medium';
@@ -1274,7 +1290,7 @@
                     ` : ''}
                     <div class="task-stats">
                         <span>⏱️ ${task.estimated_duration_minutes}min</span>
-                        ${currentSorting === 'priority' || (currentSorting === 'category' && task.status === 'completed') ? `<span>📁 ${task.category}</span>` : ''}
+                        ${currentSorting === 'priority' || (currentSorting === 'category' && task.status === 'completed' && task.category !== 'General') ? `<span>📁 ${task.category}</span>` : ''}
                     </div>
                 </div>
             `;
