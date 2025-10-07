@@ -45,6 +45,22 @@
 
 ## 🚀 Neueste Entwicklungen (7. Oktober 2025)
 
+**🤖 Mistral Tool API Implementation:**
+- **Function Calling:** Mistral kann jetzt direkte Tool-Calls machen statt Text zu parsen
+- **Sichere Tool-Integration:** Keine Shell-Commands mehr, direkte API-Calls
+- **Tool-Definitionen:** create_task, delete_category, move_tasks, query_tasks
+- **Schema-Validierung:** Sichere Parameter-Validierung für alle Tools
+- **Fallback-System:** Graceful Degradation bei API-Fehlern
+
+**🔒 Security-Verbesserungen:**
+- **Keine Shell-Injection:** Spawn statt exec für bessere Sicherheit
+- **Validierte Parameter:** Alle Tool-Parameter werden validiert
+- **Sichere API-Integration:** Direkte HTTP-Calls statt Shell-Scripts
+
+**⚠️ Aktuelles Problem:**
+- **Mistral Rate Limit:** Free Plan erreicht, Tool-Calls funktionieren nicht
+- **Fallback aktiv:** System funktioniert ohne AI, aber ohne Tool-Automatisierung
+
 **🎨 Web-Interface Verbesserungen:**
 - **Erledigte Tasks sichtbar:** Erledigte Tasks werden jetzt im Web-Interface angezeigt (statt versteckt)
 - **Ausgegraut & durchgestrichen:** Erledigte Tasks werden visuell als inaktiv dargestellt
@@ -95,10 +111,16 @@ node scripts/database-api.js
 
 ## 📝 Nächste Schritte (optional)
 
+**🤖 Mistral Tool API:**
+- **Mistral Agent** auf Mistral Server testen
+- **Alternative API** (OpenAI, Claude) implementieren
+- **Lokale LLM** (Ollama) als Fallback
+- **Rate Limiting** implementieren
+
+**🎨 UI/UX:**
 - Weitere UI-Verbesserungen
-- Erweiterte Mistral-Features
-- Performance-Optimierungen
 - Mobile Responsiveness
+- Performance-Optimierungen
 
 ## 🚀 Server starten
 

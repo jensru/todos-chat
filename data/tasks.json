@@ -13,8 +13,8 @@
       "project": null,
       "due_date": "2025-10-06",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.567Z",
-      "updated_at": "2025-10-07T11:36:36.567Z",
+      "created_at": "2025-10-07T11:51:41.704Z",
+      "updated_at": "2025-10-07T11:51:41.704Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": []
     },
@@ -31,8 +31,8 @@
       "project": null,
       "due_date": "2025-10-06",
       "line_number": 3,
-      "created_at": "2025-10-07T11:36:36.567Z",
-      "updated_at": "2025-10-07T11:36:36.567Z",
+      "created_at": "2025-10-07T11:51:41.705Z",
+      "updated_at": "2025-10-07T11:51:41.705Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": []
     },
@@ -40,17 +40,17 @@
       "id": "task_unknown_pascal_antworten_4",
       "title": "Pascal antworten",
       "description": "",
-      "status": "completed",
+      "status": "pending",
       "priority": "medium",
-      "category": "General",
+      "category": "Business",
       "tags": [],
       "date": null,
       "week": null,
       "project": null,
       "due_date": "2025-10-06",
       "line_number": 4,
-      "created_at": "2025-10-07T11:36:36.567Z",
-      "updated_at": "2025-10-07T11:36:36.567Z",
+      "created_at": "2025-10-07T11:51:41.705Z",
+      "updated_at": "2025-10-07T12:05:05.790Z",
       "source_file": "core/dates/2025-10-06.md",
       "subtasks": []
     },
@@ -67,26 +67,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 3,
-      "created_at": "2025-10-07T11:36:36.567Z",
-      "updated_at": "2025-10-07T11:36:36.567Z",
-      "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
-    },
-    {
-      "id": "task_unknown_linkedin___marketing_4",
-      "title": "Linkedin 📁 Marketing",
-      "description": "",
-      "status": "completed",
-      "priority": "medium",
-      "category": "Marketing",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-07",
-      "line_number": 4,
-      "created_at": "2025-10-07T11:36:36.567Z",
-      "updated_at": "2025-10-07T11:36:36.567Z",
+      "created_at": "2025-10-07T11:51:41.705Z",
+      "updated_at": "2025-10-07T11:51:41.705Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -105,8 +87,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 5,
-      "created_at": "2025-10-07T11:36:36.567Z",
-      "updated_at": "2025-10-07T11:36:36.567Z",
+      "created_at": "2025-10-07T11:51:41.705Z",
+      "updated_at": "2025-10-07T11:51:41.705Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -123,14 +105,14 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 6,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.705Z",
+      "updated_at": "2025-10-07T11:51:41.705Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
     {
-      "id": "task_unknown_tim_wg__coaching__business_____9",
-      "title": "Tim wg. Coaching� Business 🔥 📁 Urgent",
+      "id": "task_unknown_tim_wg__coaching____urgent_9",
+      "title": "Tim wg. Coaching 🔥 📁 Urgent",
       "description": "",
       "status": "completed",
       "priority": "high",
@@ -143,36 +125,45 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 9,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.705Z",
+      "updated_at": "2025-10-07T11:51:41.705Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
     {
-      "id": "task_unknown_pascak_anrufen__business__urge_10",
-      "title": "Pascak anrufen� Business� Urgent 🔥 📁 Business",
+      "id": "task_unknown_pascak_anrufen____business_10",
+      "title": "Pascak anrufen 🔥 📁 Business",
       "description": "",
       "status": "completed",
       "priority": "high",
-      "category": "Business",
+      "category": "Check24",
       "tags": [
-        "urgent"
+        "urgent",
+        "business"
       ],
       "date": null,
       "week": null,
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 10,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.705Z",
+      "updated_at": "2025-10-07T13:36:44.842Z",
       "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
+      "subtasks": [],
+      "complexity": 1,
+      "estimated_duration_minutes": 30,
+      "deadline_status": "due_today",
+      "smart_score": 100,
+      "parent_context": null,
+      "hierarchy_level": 1,
+      "markdown_section": "Weitere Tasks",
+      "enhanced_at": "2025-10-07T11:51:41.717Z"
     },
     {
       "id": "task_unknown___linkend_in_post_____i_m_back_14",
-      "title": "**Linkend In Post** \\\"I'm back at preparing my breakout session for PUSH. Right now I'm optimizing the prompting techniques I started earlier this year – focused on flow-based, user-task-driven interfaces. I've been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I'll share more glimpses into these breakout tests and what I'm teaching. Here's the first one – stay tuned.\\\" 🔥 📁 Marketing",
+      "title": "Linkend In Post - I am back at preparing my breakout session for PUSH. Right now I am optimizing the prompting techniques I started earlier this year focused on flow-based, user-task-driven interfaces. I have been running new tests, rediscovering a few old views, and working hard to compress everything into a sharp one-hour format (no small feat). Over the next weeks, I will share more glimpses into these breakout tests and what I am teaching. Here is the first one stay tuned.",
       "description": "",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "category": "Marketing",
       "tags": [
@@ -185,14 +176,22 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 14,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T12:32:53.233Z",
       "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
+      "subtasks": [],
+      "complexity": 2,
+      "estimated_duration_minutes": 60,
+      "deadline_status": "due_this_week",
+      "smart_score": 100,
+      "parent_context": null,
+      "hierarchy_level": 1,
+      "markdown_section": "Montag Nachmittag, 6. Oktober",
+      "enhanced_at": "2025-10-07T11:51:41.717Z"
     },
     {
       "id": "task_unknown_post_zu_5_stuefen_workflow__au_16",
-      "title": "Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext� Development 📁 Marketing",
+      "title": "Post zu 5 stuefen workflow, auch prompt steering ablegen, fokus auf komponente und auch ai first, und ai in den prototyp. daran scheitern viele. setup, kontext und konzeote. besste coder basis zum duplizieren auch mit vordefnierten kontext� Development� Marketing� Marketing 📁 Marketing",
       "description": "",
       "status": "pending",
       "priority": "medium",
@@ -203,32 +202,20 @@
       "date": null,
       "week": null,
       "project": null,
-      "due_date": "2025-10-07",
+      "due_date": "2025-10-08",
       "line_number": 16,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:39:38.107Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T12:42:36.245Z",
       "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
-    },
-    {
-      "id": "task_unknown_mitgr_nder_suchen_post____mita_18",
-      "title": "Mitgründer suchen Post?!? Mitarbeiter oder Cofounder mehr sales und marketing? Aber auch Dev und Design? 📁 Development",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "category": "Development",
-      "tags": [
-        "social-media"
-      ],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-07",
-      "line_number": 18,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
-      "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
+      "subtasks": [],
+      "complexity": 2,
+      "estimated_duration_minutes": 60,
+      "deadline_status": "due_today",
+      "smart_score": 90,
+      "parent_context": null,
+      "hierarchy_level": 1,
+      "markdown_section": "Montag Nachmittag, 6. Oktober",
+      "enhanced_at": "2025-10-07T11:51:41.717Z"
     },
     {
       "id": "task_unknown_alle_leute_hallo_mit_lead_funn_19",
@@ -243,8 +230,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 19,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -261,32 +248,14 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 20,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
-      "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
-    },
-    {
-      "id": "task_unknown_sales__leute_anschreiben_21",
-      "title": "Sales, Leute anschreiben",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "category": "General",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-07",
-      "line_number": 21,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
     {
       "id": "task_unknown_cv_dieses_jahr_update__laura___23",
-      "title": "CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, Check24!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.� PUSH 🔥 📁 Marketing",
+      "title": "CV dieses Jahr Update: Laura, Substain, Prompting Birds, 36Zerovision, Check24!, PUSH Conference, AI Rapid Prototyping mit eigenen Tools, die figma ersetzen, bekannter Experte und Berater von Teams und Freelnacer von Check24 bis SAP Innovation zu diesem Thema.� Marketing 🔥 📁 Marketing",
       "description": "",
       "status": "pending",
       "priority": "high",
@@ -298,33 +267,24 @@
       "date": null,
       "week": null,
       "project": null,
-      "due_date": "2025-10-07",
+      "due_date": "2025-10-08",
       "line_number": 23,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:39:32.584Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T12:42:48.238Z",
       "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
-    },
-    {
-      "id": "task_unknown___push_pr_se______push_32",
-      "title": "**PUSH Präse** 🔥 📁 PUSH",
-      "description": "",
-      "status": "pending",
-      "priority": "high",
-      "category": "PUSH",
-      "tags": [
-        "urgent",
-        "PUSH"
-      ],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-07",
-      "line_number": 32,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
-      "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
+      "subtasks": [],
+      "complexity": 3.5,
+      "estimated_duration_minutes": 105,
+      "deadline_status": "due_today",
+      "smart_score": 100,
+      "parent_context": {
+        "parent": "Check24 Workshop",
+        "context": "Workshop-Vorbereitung",
+        "section": "Dienstag"
+      },
+      "hierarchy_level": 1,
+      "markdown_section": "Montag Nachmittag, 6. Oktober",
+      "enhanced_at": "2025-10-07T11:51:41.718Z"
     },
     {
       "id": "task_unknown___push_build_test__ergebnis_no_33",
@@ -342,8 +302,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 33,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -360,8 +320,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 34,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -380,8 +340,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 35,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -400,8 +360,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 36,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -420,8 +380,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 37,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -440,8 +400,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 38,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -460,8 +420,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 39,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -480,26 +440,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 40,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
-      "source_file": "core/dates/2025-10-07.md",
-      "subtasks": []
-    },
-    {
-      "id": "task_unknown___check24_workshop________chec_45",
-      "title": "**Check24 Workshop!!!** 📁 Check24",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "category": "Check24",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-07",
-      "line_number": 45,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -516,8 +458,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 47,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [
         {
@@ -527,7 +469,7 @@
           "priority": "medium",
           "category": "Check24",
           "line_number": 48,
-          "created_at": "2025-10-07T11:36:36.568Z"
+          "created_at": "2025-10-07T11:51:41.706Z"
         }
       ]
     },
@@ -544,8 +486,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 48,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [
         {
@@ -555,35 +497,15 @@
           "priority": "medium",
           "category": "Check24",
           "line_number": 49,
-          "created_at": "2025-10-07T11:36:36.568Z"
+          "created_at": "2025-10-07T11:51:41.706Z"
         }
       ],
       "hierarchy_level": 2,
       "parent_task": "task_unknown_erste_daten_f_r_konzepter_gene_47"
     },
     {
-      "id": "task_unknown_check24_materialien______check_49",
-      "title": "Check24 Materialien?!? 📁 Check24",
-      "description": "",
-      "status": "pending",
-      "priority": "medium",
-      "category": "Check24",
-      "tags": [],
-      "date": null,
-      "week": null,
-      "project": null,
-      "due_date": "2025-10-07",
-      "line_number": 49,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
-      "source_file": "core/dates/2025-10-07.md",
-      "subtasks": [],
-      "hierarchy_level": 2,
-      "parent_task": "task_unknown_check24_genaues_briefing_f_r_d_48"
-    },
-    {
-      "id": "task_unknown_alloy__magic_patterns___check2_50",
-      "title": "Alloy, Magic Patterns 📁 Check24",
+      "id": "task_unknown_alloy__magic_patterns__check24_50",
+      "title": "Alloy, Magic Patterns� Check24 📁 Check24",
       "description": "",
       "status": "pending",
       "priority": "medium",
@@ -594,8 +516,8 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 50,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:39:20.298Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T12:12:28.991Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [
         {
@@ -605,7 +527,7 @@
           "priority": "medium",
           "category": "Check24",
           "line_number": 51,
-          "created_at": "2025-10-07T11:36:36.568Z"
+          "created_at": "2025-10-07T11:51:41.706Z"
         }
       ]
     },
@@ -622,12 +544,12 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 51,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": [],
       "hierarchy_level": 2,
-      "parent_task": "task_unknown_alloy__magic_patterns___check2_50"
+      "parent_task": "task_unknown_alloy__magic_patterns__check24_50"
     },
     {
       "id": "task_unknown_mit_anna_abgleich___check24_55",
@@ -642,26 +564,26 @@
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 55,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T11:51:41.706Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
     {
       "id": "task_unknown_check24_hiermit_abgleich__so_w_56",
-      "title": "check24 hiermit abgleich: So when I was asked whether I’d like to join Colin Matthews' AI Prototyping for Product Managers course (https://lnkd.in/d8Fvs2Ri), I didn’t hesitate for a second. I was already experimenting on my own, but the course provided some great tips I wish I had known earlier.",
+      "title": "check24 hiermit abgleich: So when I was asked whether I’d like to join Colin Matthews' AI Prototyping for Product Managers course (https://lnkd.in/d8Fvs2Ri), I didn’t hesitate for a second. I was already experimenting on my own, but the course provided some great tips I wish I had known earlier. Here are a few key ones I'd share with every PM after the course: - Create a build plan—just like you would before handing tasks off to devs or design. - Iterate in small, incremental changes—as if you were running sprints. - Be specific with feedback—name exactly what should (or shouldn't) change, just like with your team. - Use system instructions—this applies across the board. Tools like ChatGPT or Gemini are more helpful when they know what role they’re playing.� Check24 📁 Check24",
       "description": "",
       "status": "pending",
       "priority": "medium",
-      "category": "General",
+      "category": "Check24",
       "tags": [],
       "date": null,
       "week": null,
       "project": null,
       "due_date": "2025-10-07",
       "line_number": 56,
-      "created_at": "2025-10-07T11:36:36.568Z",
-      "updated_at": "2025-10-07T11:36:36.568Z",
+      "created_at": "2025-10-07T11:51:41.706Z",
+      "updated_at": "2025-10-07T12:12:37.078Z",
       "source_file": "core/dates/2025-10-07.md",
       "subtasks": []
     },
@@ -678,8 +600,8 @@
       "project": null,
       "due_date": "2025-10-08",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": []
     },
@@ -696,8 +618,8 @@
       "project": null,
       "due_date": "2025-10-08",
       "line_number": 3,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": []
     },
@@ -714,8 +636,8 @@
       "project": null,
       "due_date": "2025-10-08",
       "line_number": 4,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": []
     },
@@ -732,8 +654,8 @@
       "project": null,
       "due_date": "2025-10-08",
       "line_number": 5,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": []
     },
@@ -750,8 +672,8 @@
       "project": null,
       "due_date": "2025-10-08",
       "line_number": 7,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": []
     },
@@ -768,8 +690,8 @@
       "project": null,
       "due_date": "2025-10-08",
       "line_number": 8,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-08.md",
       "subtasks": []
     },
@@ -786,8 +708,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -804,8 +726,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 3,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -822,8 +744,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 4,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -840,8 +762,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 5,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -858,8 +780,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 6,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -876,8 +798,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 7,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -894,8 +816,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 8,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -912,8 +834,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 12,
-      "created_at": "2025-10-07T11:36:36.569Z",
-      "updated_at": "2025-10-07T11:36:36.569Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -932,8 +854,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 15,
-      "created_at": "2025-10-07T11:36:36.571Z",
-      "updated_at": "2025-10-07T11:36:36.571Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -952,8 +874,8 @@
       "project": null,
       "due_date": "2025-10-09",
       "line_number": 16,
-      "created_at": "2025-10-07T11:36:36.571Z",
-      "updated_at": "2025-10-07T11:36:36.571Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.707Z",
       "source_file": "core/dates/2025-10-09.md",
       "subtasks": []
     },
@@ -972,8 +894,8 @@
       "project": null,
       "due_date": "2025-10-10",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.573Z",
-      "updated_at": "2025-10-07T11:36:36.573Z",
+      "created_at": "2025-10-07T11:51:41.707Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": []
     },
@@ -990,8 +912,8 @@
       "project": null,
       "due_date": "2025-10-10",
       "line_number": 3,
-      "created_at": "2025-10-07T11:36:36.573Z",
-      "updated_at": "2025-10-07T11:36:36.573Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": []
     },
@@ -1008,8 +930,8 @@
       "project": null,
       "due_date": "2025-10-10",
       "line_number": 4,
-      "created_at": "2025-10-07T11:36:36.573Z",
-      "updated_at": "2025-10-07T11:36:36.573Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": []
     },
@@ -1026,8 +948,8 @@
       "project": null,
       "due_date": "2025-10-10",
       "line_number": 5,
-      "created_at": "2025-10-07T11:36:36.573Z",
-      "updated_at": "2025-10-07T11:36:36.573Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": []
     },
@@ -1044,8 +966,8 @@
       "project": null,
       "due_date": "2025-10-10",
       "line_number": 6,
-      "created_at": "2025-10-07T11:36:36.573Z",
-      "updated_at": "2025-10-07T11:36:36.573Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": []
     },
@@ -1062,8 +984,8 @@
       "project": null,
       "due_date": "2025-10-10",
       "line_number": 7,
-      "created_at": "2025-10-07T11:36:36.573Z",
-      "updated_at": "2025-10-07T11:36:36.573Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": []
     },
@@ -1080,8 +1002,8 @@
       "project": null,
       "due_date": "2025-10-10",
       "line_number": 8,
-      "created_at": "2025-10-07T11:36:36.573Z",
-      "updated_at": "2025-10-07T11:36:36.573Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-10.md",
       "subtasks": []
     },
@@ -1101,8 +1023,8 @@
       "project": null,
       "due_date": "2025-10-23",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.574Z",
-      "updated_at": "2025-10-07T11:36:36.574Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-23.md",
       "subtasks": []
     },
@@ -1122,8 +1044,8 @@
       "project": null,
       "due_date": "2025-10-24",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.575Z",
-      "updated_at": "2025-10-07T11:36:36.575Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-24.md",
       "subtasks": []
     },
@@ -1140,8 +1062,8 @@
       "project": null,
       "due_date": "2025-10-26",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.576Z",
-      "updated_at": "2025-10-07T11:36:36.576Z",
+      "created_at": "2025-10-07T11:51:41.708Z",
+      "updated_at": "2025-10-07T11:51:41.708Z",
       "source_file": "core/dates/2025-10-26.md",
       "subtasks": []
     },
@@ -1158,8 +1080,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1169,7 +1091,7 @@
           "priority": "medium",
           "category": "General",
           "line_number": 3,
-          "created_at": "2025-10-07T11:36:36.577Z"
+          "created_at": "2025-10-07T11:51:41.709Z"
         }
       ]
     },
@@ -1186,8 +1108,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 3,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1197,7 +1119,7 @@
           "priority": "medium",
           "category": "General",
           "line_number": 4,
-          "created_at": "2025-10-07T11:36:36.577Z"
+          "created_at": "2025-10-07T11:51:41.709Z"
         }
       ],
       "hierarchy_level": 2,
@@ -1216,8 +1138,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 4,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [],
       "hierarchy_level": 2,
@@ -1236,8 +1158,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 5,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1247,7 +1169,7 @@
           "priority": "medium",
           "category": "General",
           "line_number": 6,
-          "created_at": "2025-10-07T11:36:36.577Z"
+          "created_at": "2025-10-07T11:51:41.709Z"
         }
       ]
     },
@@ -1264,8 +1186,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 6,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1275,7 +1197,7 @@
           "priority": "medium",
           "category": "General",
           "line_number": 7,
-          "created_at": "2025-10-07T11:36:36.577Z"
+          "created_at": "2025-10-07T11:51:41.709Z"
         }
       ],
       "hierarchy_level": 2,
@@ -1294,8 +1216,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 7,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1305,7 +1227,7 @@
           "priority": "medium",
           "category": "General",
           "line_number": 8,
-          "created_at": "2025-10-07T11:36:36.577Z"
+          "created_at": "2025-10-07T11:51:41.709Z"
         }
       ],
       "hierarchy_level": 2,
@@ -1324,8 +1246,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 8,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [],
       "hierarchy_level": 2,
@@ -1344,8 +1266,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 9,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1355,7 +1277,7 @@
           "priority": "medium",
           "category": "General",
           "line_number": 10,
-          "created_at": "2025-10-07T11:36:36.577Z"
+          "created_at": "2025-10-07T11:51:41.709Z"
         }
       ]
     },
@@ -1372,8 +1294,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 10,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [
         {
@@ -1383,7 +1305,7 @@
           "priority": "medium",
           "category": "General",
           "line_number": 11,
-          "created_at": "2025-10-07T11:36:36.577Z"
+          "created_at": "2025-10-07T11:51:41.709Z"
         }
       ],
       "hierarchy_level": 2,
@@ -1402,8 +1324,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 11,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": [],
       "hierarchy_level": 2,
@@ -1422,8 +1344,8 @@
       "project": null,
       "due_date": "2025-11-01",
       "line_number": 12,
-      "created_at": "2025-10-07T11:36:36.577Z",
-      "updated_at": "2025-10-07T11:36:36.577Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-11-01.md",
       "subtasks": []
     },
@@ -1440,8 +1362,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 2,
-      "created_at": "2025-10-07T11:36:36.579Z",
-      "updated_at": "2025-10-07T11:36:36.579Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": []
     },
@@ -1458,8 +1380,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 3,
-      "created_at": "2025-10-07T11:36:36.579Z",
-      "updated_at": "2025-10-07T11:36:36.579Z",
+      "created_at": "2025-10-07T11:51:41.709Z",
+      "updated_at": "2025-10-07T11:51:41.709Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": []
     },
@@ -1476,8 +1398,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 4,
-      "created_at": "2025-10-07T11:36:36.579Z",
-      "updated_at": "2025-10-07T11:36:36.579Z",
+      "created_at": "2025-10-07T11:51:41.710Z",
+      "updated_at": "2025-10-07T11:51:41.710Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": []
     },
@@ -1494,8 +1416,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 5,
-      "created_at": "2025-10-07T11:36:36.579Z",
-      "updated_at": "2025-10-07T11:36:36.579Z",
+      "created_at": "2025-10-07T11:51:41.710Z",
+      "updated_at": "2025-10-07T11:51:41.710Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": []
     },
@@ -1512,8 +1434,8 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 6,
-      "created_at": "2025-10-07T11:36:36.579Z",
-      "updated_at": "2025-10-07T11:36:36.579Z",
+      "created_at": "2025-10-07T11:51:41.710Z",
+      "updated_at": "2025-10-07T11:51:41.710Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": []
     },
@@ -1530,15 +1452,83 @@
       "project": null,
       "due_date": "2025-12-01",
       "line_number": 7,
-      "created_at": "2025-10-07T11:36:36.579Z",
-      "updated_at": "2025-10-07T11:36:36.579Z",
+      "created_at": "2025-10-07T11:51:41.710Z",
+      "updated_at": "2025-10-07T11:51:41.710Z",
       "source_file": "core/dates/2025-12-01.md",
       "subtasks": []
+    },
+    {
+      "id": "task_1759844221370_post__ber_mein_chat_",
+      "title": "post über mein chat first to do tool",
+      "category": "Marketing",
+      "due_date": "2025-10-08",
+      "priority": "medium",
+      "created_at": "2025-10-07T13:37:01.370Z",
+      "updated_at": "2025-10-07T13:43:48.564Z"
+    },
+    {
+      "id": "task_1759844468680__ber_meine_chat_firs",
+      "title": "Über meine chat first todo liste schreiben",
+      "category": "Marketing",
+      "due_date": "2025-10-08",
+      "priority": "medium",
+      "created_at": "2025-10-07T13:41:08.680Z",
+      "updated_at": "2025-10-07T13:43:52.905Z"
+    },
+    {
+      "id": "task_1759844553470_einen_neuen_todo__te",
+      "title": "einen neuen Todo: Test intelligente Erkennung für morgen in Marketing",
+      "category": "Marketing",
+      "status": "pending",
+      "priority": "medium",
+      "due_date": "2025-10-08",
+      "created_at": "2025-10-07T13:42:33.470Z",
+      "updated_at": "2025-10-07T13:42:33.470Z"
+    },
+    {
+      "id": "task_1759844662747_einen_task_f_r_heute",
+      "title": "einen task für heute fällig mit den namen",
+      "category": "General",
+      "status": "completed",
+      "priority": "medium",
+      "due_date": "2025-10-07",
+      "created_at": "2025-10-07T13:44:22.747Z",
+      "updated_at": "2025-10-07T13:51:21.491Z"
+    },
+    {
+      "id": "task_1759845284651_lululbullu",
+      "title": "lululbullu",
+      "category": "todo",
+      "status": "pending",
+      "priority": "medium",
+      "due_date": "2023-10-07",
+      "created_at": "2025-10-07T13:54:44.651Z",
+      "updated_at": "2025-10-07T13:54:44.651Z"
+    },
+    {
+      "id": "task_1759845326071_lululbullu",
+      "title": "lululbullu",
+      "category": "todo",
+      "status": "pending",
+      "priority": "medium",
+      "due_date": "2023-10-07",
+      "created_at": "2025-10-07T13:55:26.071Z",
+      "updated_at": "2025-10-07T13:55:26.071Z"
+    },
+    {
+      "id": "task_1759845981619_test_nach_cleanup",
+      "title": "Test nach Cleanup",
+      "category": "Todo",
+      "status": "pending",
+      "priority": "medium",
+      "due_date": "2025-10-07",
+      "created_at": "2025-10-07T14:06:21.619Z",
+      "updated_at": "2025-10-07T14:06:21.619Z"
     }
   ],
   "metadata": {
-    "last_updated": "2025-10-07T11:39:38.107Z",
-    "total_tasks": 76,
+    "last_updated": "2025-10-07T12:12:40.828Z",
+    "total_tasks": 77,
     "version": "1.0"
   }
 }

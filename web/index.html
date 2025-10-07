@@ -328,6 +328,23 @@
             color: var(--secondary);
         }
         
+        .delete-task-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: var(--space-1);
+            border-radius: var(--radius-sm);
+            opacity: 0.6;
+            transition: all 0.2s ease;
+        }
+        
+        .delete-task-btn:hover {
+            opacity: 1;
+            background: var(--highlight-light);
+            transform: scale(1.1);
+        }
+        
         .deadline-due-soon {
             background: var(--secondary-light);
             color: var(--secondary);
@@ -1247,7 +1264,7 @@
             const showPriorityBadge = currentSorting === 'priority' || task.priority !== 'medium';
             
             return `
-                <div class="smart-task-card ${task.priority}-priority ${task.deadline_status.replace('_', '-')} ${hierarchyClass} ${completedClass}" 
+                <div class="smart-task-card ${task.priority}-priority ${task.deadline_status && task.deadline_status !== null ? task.deadline_status.replace('_', '-') : 'no-deadline'} ${hierarchyClass} ${completedClass}" 
                      draggable="true" 
                      ondragstart="dragStart(event, '${task.id}')" 
                      ondragend="dragEnd(event)"
@@ -1262,7 +1279,8 @@
                     </div>
                     <div class="task-meta">
                         ${showPriorityBadge ? `<span class="priority-badge priority-${task.priority}">${task.priority}</span>` : ''}
-                        ${task.deadline_status !== 'no_deadline' && task.deadline_status !== 'due_today' ? `<span class="deadline-badge deadline-${task.deadline_status.replace('_', '-')}">${getDeadlineText(task.deadline_status)}</span>` : ''}
+                        ${task.deadline_status && task.deadline_status !== null && task.deadline_status !== 'no_deadline' && task.deadline_status !== 'due_today' ? `<span class="deadline-badge deadline-${task.deadline_status.replace('_', '-')}">${getDeadlineText(task.deadline_status)}</span>` : ''}
+                        <button class="delete-task-btn" onclick="event.stopPropagation(); deleteTask('${task.id}')" title="Task löschen">🗑️</button>
                     </div>
                     ${task.due_date ? `
                         ${(() => {
@@ -1423,18 +1441,597 @@
         }
 
         // Toggle task completion
-        function toggleTask(taskId) {
+        async function toggleTask(taskId) {
             const task = allTasks.find(t => t.id === taskId);
             if (task) {
-                task.status = task.status === 'completed' ? 'pending' : 'completed';
-                task.updated_at = new Date().toISOString();
+                const newStatus = task.status === 'completed' ? 'pending' : 'completed';
                 
-                // Update display
-                renderTasks();
-                updateStats();
+                try {
+                    // Update task in database
+                    const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            status: newStatus,
+                            updated_at: new Date().toISOString()
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        // Update local task
+                        task.status = newStatus;
+                        task.updated_at = new Date().toISOString();
+                        
+                        // Update display
+                        renderTasks();
+                        updateStats();
+                        
+                        console.log(`✅ Task ${taskId} toggled to ${newStatus}`);
+                    } else {
+                        console.error('Failed to update task:', data.error);
+                    }
+                } catch (error) {
+                    console.error('Error updating task:', error);
+                }
+            }
+        }
+
+        // Delete task
+        async function deleteTask(taskId) {
+            try {
+                const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
                 
-                // TODO: Send update to API
-                console.log(`Task ${taskId} toggled to ${task.status}`);
+                const data = await response.json();
+                if (data.success) {
+                    // Remove task from local array
+                    allTasks = allTasks.filter(t => t.id !== taskId);
+                    
+                    // Update display
+                    renderTasks();
+                    updateStats();
+                    
+                    console.log(`✅ Task ${taskId} deleted`);
+                } else {
+                    console.error('Failed to delete task:', data.error);
+                    alert('Fehler beim Löschen des Tasks: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error deleting task:', error);
+                alert('Fehler beim Löschen des Tasks: ' + error.message);
+            }
+        }
+
+        // Parse Mistral Action Responses
+        async function parseMistralAction(response) {
+            try {
+                // Try to parse as JSON first
+                const jsonResponse = JSON.parse(response);
+                if (jsonResponse.command && jsonResponse.reply) {
+                    // Parse action command from JSON
+                    const actionMatch = jsonResponse.command.match(/ACTION:(\w+)\|(.+)/);
+                    if (!actionMatch) {
+                        return { executed: false };
+                    }
+                    
+                    const action = actionMatch[1];
+                    const params = actionMatch[2];
+                    
+                    // Parse parameters
+                    const paramObj = {};
+                    params.split('|').forEach(param => {
+                        const [key, value] = param.split(':');
+                        if (key && value) {
+                            paramObj[key] = value;
+                        }
+                    });
+                    
+                    // Execute action based on type
+                    let result = { executed: false };
+                    switch (action) {
+                        case 'CREATE_TASK':
+                            result = await executeCreateTask(paramObj);
+                            break;
+                        case 'DELETE_CATEGORY':
+                            result = await executeDeleteCategory(paramObj);
+                            break;
+                        case 'MOVE_TASKS':
+                            result = await executeMoveTasks(paramObj);
+                            break;
+                        case 'CREATE_MULTIPLE':
+                            result = await executeCreateMultiple(paramObj);
+                            break;
+                        case 'QUERY_TASKS':
+                            result = await executeQueryTasks(paramObj);
+                            break;
+                        default:
+                            return { executed: false };
+                    }
+                    
+                    // Use the user-friendly reply from JSON if action was executed
+                    if (result.executed) {
+                        result.message = jsonResponse.reply;
+                    }
+                    
+                    return result;
+                }
+            } catch (jsonError) {
+                // Fallback: try to parse as old ACTION: format
+                if (!response.includes('ACTION:')) {
+                    return { executed: false };
+                }
+                
+                // Parse action command
+                const actionMatch = response.match(/ACTION:(\w+)\|(.+)/);
+                if (!actionMatch) {
+                    return { executed: false };
+                }
+                
+                const action = actionMatch[1];
+                const params = actionMatch[2];
+                
+                // Parse parameters
+                const paramObj = {};
+                params.split('|').forEach(param => {
+                    const [key, value] = param.split(':');
+                    if (key && value) {
+                        paramObj[key] = value;
+                    }
+                });
+                
+                // Execute action based on type
+                switch (action) {
+                    case 'CREATE_TASK':
+                        return await executeCreateTask(paramObj);
+                    case 'DELETE_CATEGORY':
+                        return await executeDeleteCategory(paramObj);
+                    case 'MOVE_TASKS':
+                        return await executeMoveTasks(paramObj);
+                    case 'CREATE_MULTIPLE':
+                        return await executeCreateMultiple(paramObj);
+                    case 'QUERY_TASKS':
+                        return await executeQueryTasks(paramObj);
+                    default:
+                        return { executed: false };
+                }
+            }
+        }
+
+        // Action Executors
+        async function executeCreateTask(params) {
+            try {
+                const response = await fetch('http://localhost:3001/api/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: params.TITLE || 'Neuer Task',
+                        category: params.CATEGORY || 'General',
+                        status: 'pending',
+                        priority: 'medium',
+                        due_date: params.DUE_DATE || '2025-10-07'
+                    })
+                });
+                
+                if (response.ok) {
+                    const dueDate = params.DUE_DATE ? ` für ${params.DUE_DATE}` : '';
+                    return {
+                        executed: true,
+                        message: `✅ Task "${params.TITLE}" in der Kategorie "${params.CATEGORY}"${dueDate} erstellt.`
+                    };
+                } else {
+                    return {
+                        executed: true,
+                        message: `❌ Fehler beim Erstellen des Tasks.`
+                    };
+                }
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Erstellen des Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function executeDeleteCategory(params) {
+            try {
+                const tasksToDelete = allTasks.filter(task => 
+                    task.category.toLowerCase() === params.CATEGORY.toLowerCase() && 
+                    task.status !== 'completed'
+                );
+                
+                if (tasksToDelete.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine offenen Tasks in der Kategorie "${params.CATEGORY}" gefunden.`
+                    };
+                }
+                
+                let deletedCount = 0;
+                for (const task of tasksToDelete) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        deletedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${deletedCount} Tasks aus der Kategorie "${params.CATEGORY}" gelöscht.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Löschen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function executeMoveTasks(params) {
+            try {
+                const tasksToMove = allTasks.filter(task => 
+                    task.category.toLowerCase() === params.CATEGORY.toLowerCase() && 
+                    task.status !== 'completed'
+                );
+                
+                if (tasksToMove.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine ${params.CATEGORY} Tasks gefunden.`
+                    };
+                }
+                
+                let movedCount = 0;
+                for (const task of tasksToMove) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ due_date: params.TO_DATE })
+                    });
+                    if (response.ok) {
+                        movedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${movedCount} ${params.CATEGORY} Tasks auf ${params.TO_DATE} verschoben.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Verschieben der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function executeCreateMultiple(params) {
+            try {
+                const count = parseInt(params.COUNT) || 1;
+                const category = params.CATEGORY || 'General';
+                const titles = params.TITLES ? params.TITLES.split(',') : [];
+                
+                let createdCount = 0;
+                for (let i = 0; i < count; i++) {
+                    const title = titles[i] || `${category} Task ${i + 1}`;
+                    const response = await fetch('http://localhost:3001/api/tasks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: title.trim(),
+                            category: category,
+                            status: 'pending',
+                            priority: 'medium',
+                            due_date: '2025-10-07'
+                        })
+                    });
+                    if (response.ok) {
+                        createdCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${createdCount} neue Tasks in der Kategorie "${category}" erstellt.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Erstellen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function executeQueryTasks(params) {
+            try {
+                let filteredTasks = [...allTasks];
+                
+                // Apply filters
+                if (params.FILTER) {
+                    const filters = params.FILTER.split(',');
+                    filters.forEach(filter => {
+                        const [key, value] = filter.split('=');
+                        if (key && value) {
+                            switch (key.trim()) {
+                                case 'category':
+                                    filteredTasks = filteredTasks.filter(task => 
+                                        task.category.toLowerCase() === value.toLowerCase()
+                                    );
+                                    break;
+                                case 'date':
+                                    filteredTasks = filteredTasks.filter(task => 
+                                        task.due_date === value
+                                    );
+                                    break;
+                                case 'status':
+                                    filteredTasks = filteredTasks.filter(task => 
+                                        task.status === value
+                                    );
+                                    break;
+                                case 'priority':
+                                    filteredTasks = filteredTasks.filter(task => 
+                                        task.priority === value
+                                    );
+                                    break;
+                            }
+                        }
+                    });
+                }
+                
+                if (filteredTasks.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine Tasks gefunden, die den Kriterien entsprechen.`
+                    };
+                }
+                
+                // Format task list for display
+                let taskList = '';
+                filteredTasks.forEach((task, index) => {
+                    const status = task.status === 'completed' ? '✅' : '⏳';
+                    const priority = task.priority === 'high' ? '🔥' : task.priority === 'low' ? '🌅' : '';
+                    taskList += `${index + 1}. ${status} ${task.title} ${priority} (${task.category})\n`;
+                });
+                
+                return {
+                    executed: true,
+                    message: `📋 Ich habe ${filteredTasks.length} Tasks gefunden:\n\n${taskList}\n\nWas möchtest du mit diesen Tasks machen?`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Abfragen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        // Action Parser for Mistral Commands
+        async function parseAndExecuteAction(prompt) {
+            const lowerPrompt = prompt.toLowerCase();
+            
+            // Pattern 1: Delete all tasks of category
+            const deleteCategoryMatch = lowerPrompt.match(/lösche?\s+(alle\s+)?(todos?|tasks?)\s+(der\s+)?kategorie\s+(\w+)/i);
+            if (deleteCategoryMatch) {
+                const category = deleteCategoryMatch[4];
+                return await deleteTasksByCategory(category);
+            }
+            
+            // Pattern 2: Move tasks from today to tomorrow
+            const moveTasksMatch = lowerPrompt.match(/verschiebe?\s+(die\s+)?(\w+)\s+(todos?|tasks?)\s+(von\s+)?heute\s+(auf\s+)?morgen/i);
+            if (moveTasksMatch) {
+                const category = moveTasksMatch[2];
+                return await moveTasksToTomorrow(category);
+            }
+            
+            // Pattern 3: Create multiple tasks in category
+            const createTasksMatch = lowerPrompt.match(/erstelle?\s+(mir\s+)?(folgende\s+)?(\d+)\s+(todos?|tasks?)\s+(in\s+der\s+)?kategorie\s+(\w+)/i);
+            if (createTasksMatch) {
+                const count = parseInt(createTasksMatch[3]);
+                const category = createTasksMatch[6];
+                return await createMultipleTasks(count, category, prompt);
+            }
+            
+            // Pattern 4: Move all tasks of category to specific date
+            const moveToDateMatch = lowerPrompt.match(/verschiebe?\s+(alle\s+)?(\w+)\s+(todos?|tasks?)\s+(auf\s+)?(\d{1,2}\.\d{1,2}\.?\d{0,4})/i);
+            if (moveToDateMatch) {
+                const category = moveToDateMatch[2];
+                const dateStr = moveToDateMatch[5];
+                return await moveTasksToDate(category, dateStr);
+            }
+            
+            return { executed: false };
+        }
+
+        // Action Functions
+        async function deleteTasksByCategory(category) {
+            try {
+                const tasksToDelete = allTasks.filter(task => 
+                    task.category.toLowerCase() === category.toLowerCase() && 
+                    task.status !== 'completed'
+                );
+                
+                if (tasksToDelete.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine offenen Tasks in der Kategorie "${category}" gefunden.`
+                    };
+                }
+                
+                let deletedCount = 0;
+                for (const task of tasksToDelete) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        deletedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${deletedCount} Tasks aus der Kategorie "${category}" gelöscht.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Löschen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function moveTasksToTomorrow(category) {
+            try {
+                const tasksToMove = allTasks.filter(task => 
+                    task.category.toLowerCase() === category.toLowerCase() && 
+                    task.status !== 'completed' &&
+                    task.due_date === '2025-10-07' // Today
+                );
+                
+                if (tasksToMove.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine ${category} Tasks für heute gefunden.`
+                    };
+                }
+                
+                let movedCount = 0;
+                for (const task of tasksToMove) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ due_date: '2025-10-08' })
+                    });
+                    if (response.ok) {
+                        movedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${movedCount} ${category} Tasks von heute auf morgen verschoben.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Verschieben der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function createMultipleTasks(count, category, originalPrompt) {
+            try {
+                // Extract task titles from the prompt
+                const lines = originalPrompt.split('\n');
+                const taskTitles = [];
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line.match(/^\d+\.\s*(.+)$/)) {
+                        const match = line.match(/^\d+\.\s*(.+)$/);
+                        if (match) {
+                            taskTitles.push(match[1]);
+                        }
+                    }
+                }
+                
+                // If no numbered list found, create generic tasks
+                if (taskTitles.length === 0) {
+                    for (let i = 1; i <= count; i++) {
+                        taskTitles.push(`${category} Task ${i}`);
+                    }
+                }
+                
+                let createdCount = 0;
+                for (const title of taskTitles.slice(0, count)) {
+                    const response = await fetch('http://localhost:3001/api/tasks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: title,
+                            category: category,
+                            status: 'pending',
+                            priority: 'medium',
+                            due_date: '2025-10-07'
+                        })
+                    });
+                    if (response.ok) {
+                        createdCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${createdCount} neue Tasks in der Kategorie "${category}" erstellt.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Erstellen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function moveTasksToDate(category, dateStr) {
+            try {
+                // Parse date string (e.g., "8.10" or "8.10.2025")
+                let targetDate;
+                if (dateStr.includes('.')) {
+                    const parts = dateStr.split('.');
+                    if (parts.length === 2) {
+                        targetDate = `2025-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    } else if (parts.length === 3) {
+                        targetDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    }
+                }
+                
+                if (!targetDate) {
+                    return {
+                        executed: true,
+                        message: `❌ Datum "${dateStr}" konnte nicht erkannt werden. Verwende Format: "8.10" oder "8.10.2025"`
+                    };
+                }
+                
+                const tasksToMove = allTasks.filter(task => 
+                    task.category.toLowerCase() === category.toLowerCase() && 
+                    task.status !== 'completed'
+                );
+                
+                if (tasksToMove.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine ${category} Tasks gefunden.`
+                    };
+                }
+                
+                let movedCount = 0;
+                for (const task of tasksToMove) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ due_date: targetDate })
+                    });
+                    if (response.ok) {
+                        movedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${movedCount} ${category} Tasks auf ${dateStr} verschoben.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Verschieben der Tasks: ${error.message}`
+                };
             }
         }
 
@@ -1453,6 +2050,18 @@
             sendBtn.textContent = 'Sende...';
             
             try {
+                // First, check if the prompt contains actionable commands
+                const actionResult = await parseAndExecuteAction(prompt);
+                if (actionResult.executed) {
+                    addMessage('assistant', actionResult.message);
+                    // Reload tasks to show changes
+                    await loadTasks();
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Senden';
+                    return;
+                }
+                
+                // If no action was executed, proceed with normal Mistral chat
                 const response = await fetch('http://localhost:3001/api/mistral', {
                     method: 'POST',
                     headers: {
@@ -1464,7 +2073,23 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    addMessage('assistant', data.response);
+                    // Check if Mistral returned an action command
+                    const actionResult = await parseMistralAction(data.response);
+                    if (actionResult.executed) {
+                        addMessage('assistant', actionResult.message);
+                        // Reload tasks to show changes
+                        await loadTasks();
+                    } else {
+                        addMessage('assistant', data.response);
+                        
+                        // Check if this was a tool execution (contains "Tool ausgeführt" or task operations)
+                        if (data.response.includes('Tool ausgeführt') || 
+                            data.response.includes('✅ Tool ausgeführt') ||
+                            data.response.includes('Task') && (data.response.includes('erstellt') || data.response.includes('gelöscht') || data.response.includes('verschoben'))) {
+                            // Reload tasks after tool execution
+                            await loadTasks();
+                        }
+                    }
                 } else {
                     addMessage('assistant', `Fehler: ${data.error}`);
                 }
