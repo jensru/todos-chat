@@ -38,6 +38,7 @@ class DatabaseAPI {
     this.app.put('/api/tasks/:id', this.updateTask.bind(this));
     this.app.post('/api/tasks', this.createTask.bind(this));
     this.app.delete('/api/tasks/:id', this.deleteTask.bind(this));
+    this.app.post('/api/tasks/update-category', this.updateTaskCategory.bind(this));
     
     // Sync Routes
     this.app.post('/api/sync/markdown-to-json', this.syncMarkdownToJson.bind(this));
@@ -63,6 +64,11 @@ class DatabaseAPI {
     this.app.post('/api/daily-routine/create', this.createDailyRoutine.bind(this));
     this.app.post('/api/daily-routine/update-all', this.updateAllDailyRoutines.bind(this));
     this.app.get('/api/daily-routine/stats', this.getDailyRoutineStats.bind(this));
+    
+    // Category Management Routes - REMOVED (not implemented yet)
+    // this.app.get('/api/categories', this.getCategories.bind(this));
+    // this.app.post('/api/categories/sync', this.syncCategoriesToMarkdown.bind(this));
+    // this.app.get('/api/categories/stats', this.getCategoryStats.bind(this));
   }
 
   // Markdown Content Endpoints - REMOVED (Dashboard-System deprecated)
@@ -159,6 +165,54 @@ class DatabaseAPI {
       };
       
       this.database.saveTasks(tasks);
+      
+      // Automatische Markdown-Synchronisation
+      await this.syncTaskToMarkdown(tasks[taskIndex]);
+      
+      res.json({
+        success: true,
+        data: tasks[taskIndex]
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+
+  async updateTaskCategory(req, res) {
+    try {
+      const { taskId, category } = req.body;
+      
+      if (!taskId || !category) {
+        return res.status(400).json({
+          success: false,
+          error: 'TaskId und Category sind erforderlich'
+        });
+      }
+      
+      const tasks = this.database.loadTasks();
+      const taskIndex = tasks.findIndex(t => t.id === taskId);
+      
+      if (taskIndex === -1) {
+        return res.status(404).json({
+          success: false,
+          error: 'Task nicht gefunden'
+        });
+      }
+      
+      // Update task category
+      tasks[taskIndex] = {
+        ...tasks[taskIndex],
+        category: category,
+        updated_at: new Date().toISOString()
+      };
+      
+      this.database.saveTasks(tasks);
+      
+      // Automatische Markdown-Synchronisation
+      await this.syncTaskToMarkdown(tasks[taskIndex]);
       
       res.json({
         success: true,
@@ -412,6 +466,83 @@ class DatabaseAPI {
         success: false,
         error: error.message
       });
+    }
+  }
+
+  /**
+   * Synchronisiert einen Task zurück in die entsprechende Markdown-Datei
+   */
+  async syncTaskToMarkdown(task) {
+    try {
+      if (!task.source_file) {
+        console.log(`⚠️  Task ${task.id} hat keine source_file - überspringe Markdown-Sync`);
+        return;
+      }
+      
+      const fs = require('fs');
+      const path = require('path');
+      
+      // Lade die Markdown-Datei
+      const markdownPath = path.resolve(task.source_file);
+      if (!fs.existsSync(markdownPath)) {
+        console.log(`⚠️  Markdown-Datei nicht gefunden: ${markdownPath}`);
+        return;
+      }
+      
+      let content = fs.readFileSync(markdownPath, 'utf8');
+      const lines = content.split('\n');
+      
+      // Finde die entsprechende Zeile basierend auf dem Task-Titel
+      let lineIndex = -1;
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes(task.title)) {
+          lineIndex = i;
+          break;
+        }
+      }
+      
+      if (lineIndex === -1) {
+        console.log(`⚠️  Task "${task.title}" nicht in Markdown-Datei gefunden`);
+        return;
+      }
+      
+      const originalLine = lines[lineIndex];
+      
+      // Extrahiere den reinen Task-Titel (ohne alle Symbole)
+      let cleanTitle = originalLine.replace(/^- \[[ x]\]\s*/, ''); // Entferne Checkbox
+      cleanTitle = cleanTitle.replace(/\s*[🔥🌅]\s*/g, ''); // Entferne Prioritäts-Symbole (nur high/low)
+      cleanTitle = cleanTitle.replace(/\s*📁\s*[^-\s]+/g, ''); // Entferne Kategorie-Symbole
+      cleanTitle = cleanTitle.trim();
+      
+      // Erstelle neue Zeile mit korrekter Formatierung
+      let newLine = `- [${task.status === 'completed' ? 'x' : ' '}] ${cleanTitle}`;
+      
+      // Füge Priorität hinzu (nur wenn nicht medium)
+      if (task.priority === 'high') {
+        newLine += ' 🔥';
+      } else if (task.priority === 'low') {
+        newLine += ' 🌅';
+      }
+      // medium = kein Symbol (Standard)
+      
+      // Füge Kategorie hinzu (nur wenn nicht General)
+      if (task.category && task.category !== 'General') {
+        newLine += ` 📁 ${task.category}`;
+      }
+      
+      // Ersetze die Zeile
+      if (newLine !== originalLine) {
+        lines[lineIndex] = newLine;
+        content = lines.join('\n');
+        
+        // Schreibe die Datei zurück
+        fs.writeFileSync(markdownPath, content, 'utf8');
+        console.log(`✅ Task "${task.title}" in Markdown synchronisiert: ${markdownPath}`);
+        console.log(`   Zeile ${lineIndex + 1}: ${originalLine} → ${newLine}`);
+      }
+      
+    } catch (error) {
+      console.error(`❌ Fehler beim Markdown-Sync für Task ${task.id}:`, error.message);
     }
   }
 

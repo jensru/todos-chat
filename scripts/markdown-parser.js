@@ -114,6 +114,7 @@ class MarkdownTaskParser {
       description: '',
       status: status === 'x' ? 'completed' : 'pending',
       priority: this.extractPriority(title),
+      category: this.extractCategory(title),
       tags: this.extractTags(title),
       date: this.currentDate,
       week: this.currentWeek,
@@ -152,6 +153,8 @@ class MarkdownTaskParser {
       id: this.generateSubtaskId(title, lineNumber),
       title: title.trim(),
       status: status === 'x' ? 'completed' : 'pending',
+      priority: this.extractPriority(title),
+      category: this.extractCategory(title),
       line_number: lineNumber,
       created_at: new Date().toISOString()
     };
@@ -187,10 +190,22 @@ class MarkdownTaskParser {
    */
   extractPriority(title) {
     if (title.includes('🔥')) return 'high';
-    if (title.includes('📅')) return 'medium';
-    if (title.includes('💰')) return 'medium';
     if (title.includes('🌅')) return 'low';
+    // Standard ohne Symbol = medium
     return 'medium';
+  }
+
+  /**
+   * Extrahiert Kategorie aus dem Task-Titel
+   */
+  extractCategory(title) {
+    // Suche nach Kategorie-Pattern: 📁 KategorieName
+    const categoryMatch = title.match(/📁\s*([^-\s]+)/);
+    if (categoryMatch) {
+      return categoryMatch[1];
+    }
+    // Standard ohne Kategorie-Symbol = General
+    return 'General';
   }
 
   /**

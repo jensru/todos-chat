@@ -13,7 +13,8 @@ class AutoSyncService {
   constructor() {
     this.watchPaths = [
       './core/Dashboard - Strukturierte To-do-Übersicht.md',
-      './core/right-sidebar.md'
+      './core/right-sidebar.md',
+      './core/dates' // Überwache das gesamte dates-Verzeichnis
     ];
     this.isWatching = false;
     this.lastSync = new Date();
@@ -33,15 +34,20 @@ class AutoSyncService {
     
     this.watchPaths.forEach(filePath => {
       if (fs.existsSync(filePath)) {
-        this.watchFile(filePath);
+        const stats = fs.statSync(filePath);
+        if (stats.isDirectory()) {
+          this.watchDirectory(filePath);
+        } else {
+          this.watchFile(filePath);
+        }
       } else {
-        console.log(`⚠️  Datei nicht gefunden: ${filePath}`);
+        console.log(`⚠️  Datei/Verzeichnis nicht gefunden: ${filePath}`);
       }
     });
 
     this.isWatching = true;
     console.log('✅ File-Watcher aktiv - überwache Markdown-Änderungen');
-    console.log('📁 Überwachte Dateien:');
+    console.log('📁 Überwachte Pfade:');
     this.watchPaths.forEach(path => console.log(`   • ${path}`));
   }
 
@@ -55,6 +61,35 @@ class AutoSyncService {
         this.syncFile(filePath);
       }
     });
+  }
+
+  /**
+   * Überwacht ein Verzeichnis für alle .md Dateien
+   */
+  watchDirectory(dirPath) {
+    console.log(`📁 Überwache Verzeichnis: ${dirPath}`);
+    
+    // Überwache das Verzeichnis selbst
+    fs.watch(dirPath, (eventType, filename) => {
+      if (filename && filename.endsWith('.md')) {
+        const fullPath = path.join(dirPath, filename);
+        console.log(`📝 Änderung erkannt: ${fullPath}`);
+        this.syncFile(fullPath);
+      }
+    });
+    
+    // Überwache auch alle existierenden .md Dateien im Verzeichnis
+    try {
+      const files = fs.readdirSync(dirPath);
+      files.forEach(file => {
+        if (file.endsWith('.md')) {
+          const fullPath = path.join(dirPath, file);
+          this.watchFile(fullPath);
+        }
+      });
+    } catch (error) {
+      console.log(`⚠️  Fehler beim Lesen des Verzeichnisses ${dirPath}: ${error.message}`);
+    }
   }
 
   /**

@@ -1,16 +1,28 @@
 {
-  "last_sync": "2025-10-07T08:23:26.429Z",
-  "total_syncs": 2,
+  "last_sync": "2025-10-07T11:15:32.515Z",
+  "total_syncs": 4,
   "recent_syncs": [
     {
-      "timestamp": "2025-10-07T08:27:12.868Z",
-      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+      "timestamp": "2025-10-07T11:21:44.899Z",
+      "file": "core/dates/2025-10-07.md",
       "status": "success",
       "error": null
     },
     {
-      "timestamp": "2025-10-07T09:09:02.351Z",
-      "file": "./core/Dashboard - Strukturierte To-do-Übersicht.md",
+      "timestamp": "2025-10-07T11:21:45.592Z",
+      "file": "core/dates/2025-10-07.md",
+      "status": "success",
+      "error": null
+    },
+    {
+      "timestamp": "2025-10-07T11:21:55.849Z",
+      "file": "core/dates/2025-10-07.md",
+      "status": "success",
+      "error": null
+    },
+    {
+      "timestamp": "2025-10-07T11:21:56.876Z",
+      "file": "core/dates/2025-10-07.md",
       "status": "success",
       "error": null
     }
