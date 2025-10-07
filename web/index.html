@@ -615,6 +615,8 @@
                         <button class="quick-action-btn" onclick="askMistral('Zeige mir überfällige Tasks')">Überfällig</button>
                         <button class="quick-action-btn" onclick="askMistral('Erstelle einen Tagesplan')">Tagesplan</button>
                         <button class="quick-action-btn" onclick="askMistral('Analysiere meine Task-Verteilung')">Analyse</button>
+                        <button class="quick-action-btn" onclick="createDailyRoutine()">Daily Routine</button>
+                        <button class="quick-action-btn" onclick="updateAllDailyRoutines()">Alle aktualisieren</button>
                     </div>
                 </div>
                 
@@ -648,9 +650,19 @@
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
+            // Prüfe und aktualisiere Datum automatisch
+            dateSync.checkAndUpdateDate();
+            
             loadTasks();
             setupEventListeners();
             updateCurrentDate();
+            
+            // Höre auf Datumsänderungen
+            window.addEventListener('dateChanged', function(event) {
+                updateCurrentDate();
+                // Lade Tasks neu wenn sich das Datum geändert hat
+                loadTasks();
+            });
         });
         
         // Update current date display
@@ -689,7 +701,7 @@
         // Load tasks from API
         async function loadTasks() {
             try {
-                const response = await fetch('/api/smart-tasks');
+                const response = await fetch('http://localhost:3001/api/smart-tasks');
                 const data = await response.json();
                 allTasks = data.tasks || [];
                 filteredTasks = [...allTasks];
@@ -1051,7 +1063,7 @@
             sendBtn.textContent = 'Sende...';
             
             try {
-                const response = await fetch('/api/mistral', {
+                const response = await fetch('http://localhost:3001/api/mistral', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1104,6 +1116,76 @@
             
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Daily Routine Functions
+        async function createDailyRoutine() {
+            addMessage('user', 'Erstelle Daily Routine für heute');
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/daily-routine/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ days: 1 })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage('assistant', `✅ Daily Routine erstellt! ${data.data.created} Datei(en) aktualisiert.`);
+                    // Lade Tasks neu
+                    loadTasks();
+                } else {
+                    addMessage('assistant', `❌ Fehler: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Daily Routine API Fehler:', error);
+                addMessage('assistant', 'Entschuldigung, es gab einen Fehler beim Erstellen der Daily Routine.');
+            }
+        }
+
+        async function updateAllDailyRoutines() {
+            addMessage('user', 'Aktualisiere alle Daily Routines');
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/daily-routine/update-all', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage('assistant', `✅ Alle Daily Routines aktualisiert! ${data.data.updated} Datei(en) bearbeitet.`);
+                    // Lade Tasks neu
+                    loadTasks();
+                } else {
+                    addMessage('assistant', `❌ Fehler: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Daily Routine API Fehler:', error);
+                addMessage('assistant', 'Entschuldigung, es gab einen Fehler beim Aktualisieren der Daily Routines.');
+            }
+        }
+
+        async function getDailyRoutineStats() {
+            try {
+                const response = await fetch('http://localhost:3001/api/daily-routine/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage('assistant', `📊 Daily Routine Statistiken:\n${data.data.stats}`);
+                } else {
+                    addMessage('assistant', `❌ Fehler: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Daily Routine Stats Fehler:', error);
+                addMessage('assistant', 'Entschuldigung, es gab einen Fehler beim Laden der Statistiken.');
+            }
         }
     </script>
 </body>

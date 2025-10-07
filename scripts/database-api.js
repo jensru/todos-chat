@@ -58,6 +58,11 @@ class DatabaseAPI {
     // AI Integration Routes
     this.app.post('/api/slash-command', this.executeSlashCommand.bind(this));
     this.app.post('/api/mistral', this.askMistral.bind(this));
+    
+    // Daily Routine Routes
+    this.app.post('/api/daily-routine/create', this.createDailyRoutine.bind(this));
+    this.app.post('/api/daily-routine/update-all', this.updateAllDailyRoutines.bind(this));
+    this.app.get('/api/daily-routine/stats', this.getDailyRoutineStats.bind(this));
   }
 
   // Markdown Content Endpoints - REMOVED (Dashboard-System deprecated)
@@ -442,6 +447,94 @@ class DatabaseAPI {
       grouped[project].push(task);
     });
     return grouped;
+  }
+
+  // Daily Routine Endpoints
+  async createDailyRoutine(req, res) {
+    try {
+      const { date, days = 1 } = req.body;
+      const DailyRoutineGenerator = require('./daily-routine-generator');
+      const generator = new DailyRoutineGenerator();
+      
+      let result;
+      
+      if (date) {
+        // Spezifisches Datum
+        result = generator.createDailyFile(new Date(date));
+      } else if (days > 1) {
+        // Mehrere Tage
+        result = generator.createRoutineForNextDays(days);
+      } else {
+        // Heute
+        result = generator.createDailyFile(new Date());
+      }
+      
+      res.json({
+        success: true,
+        data: {
+          created: Array.isArray(result) ? result.length : 1,
+          files: Array.isArray(result) ? result : [result]
+        }
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+
+  async updateAllDailyRoutines(req, res) {
+    try {
+      const DailyRoutineGenerator = require('./daily-routine-generator');
+      const generator = new DailyRoutineGenerator();
+      
+      const updatedFiles = generator.updateAllExistingFiles();
+      
+      res.json({
+        success: true,
+        data: {
+          updated: updatedFiles.length,
+          files: updatedFiles
+        }
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+
+  async getDailyRoutineStats(req, res) {
+    try {
+      const DailyRoutineGenerator = require('./daily-routine-generator');
+      const generator = new DailyRoutineGenerator();
+      
+      // Temporärer Output-Capture für Stats
+      const originalLog = console.log;
+      let statsOutput = '';
+      console.log = (...args) => {
+        statsOutput += args.join(' ') + '\n';
+      };
+      
+      generator.showStats();
+      
+      // Restore console.log
+      console.log = originalLog;
+      
+      res.json({
+        success: true,
+        data: {
+          stats: statsOutput.trim()
+        }
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
   }
 
   start() {

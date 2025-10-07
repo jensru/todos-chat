@@ -18,8 +18,8 @@ class DateSync {
     if (savedDate) {
       this.currentDate = new Date(savedDate);
     } else {
-      // Standard: 6. Oktober 2025 (wie im Markdown)
-      this.currentDate = new Date('2025-10-06');
+      // Standard: Heute (aktuelles Datum)
+      this.currentDate = new Date();
       this.saveCurrentDate();
     }
   }
@@ -112,6 +112,27 @@ class DateSync {
       detail: { currentDate: this.getCurrentDate() }
     });
     window.dispatchEvent(event);
+  }
+
+  // Aktualisiere das Datum auf heute
+  updateToToday() {
+    this.currentDate = new Date();
+    this.saveCurrentDate();
+    this.notifyDateChange();
+  }
+
+  // Prüfe ob das gespeicherte Datum heute ist, falls nicht aktualisiere es
+  checkAndUpdateDate() {
+    const savedDate = new Date(this.currentDate);
+    const today = new Date();
+    
+    // Vergleiche nur Datum (ohne Zeit)
+    const savedDateOnly = new Date(savedDate.getFullYear(), savedDate.getMonth(), savedDate.getDate());
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    
+    if (savedDateOnly.getTime() !== todayOnly.getTime()) {
+      this.updateToToday();
+    }
   }
 
   // Erhalte alle Wochentage für die aktuelle Woche
