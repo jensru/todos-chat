@@ -11,8 +11,8 @@ const path = require('path');
 // DateSync für Node.js (vereinfachte Version)
 class DateSync {
   constructor() {
-    // Standard: 6. Oktober 2025 (wie im Markdown)
-    this.currentDate = new Date('2025-10-06');
+    // Standard: Heute (aktuelles Datum)
+    this.currentDate = new Date();
   }
 
   getCurrentDate() {
@@ -347,9 +347,14 @@ class SmartTaskEnhancer {
   calculateDeadlineStatus(task) {
     if (!task.due_date) return 'no_deadline';
     
-    const today = new Date();
+    const today = this.dateSync.getCurrentDate();
     const dueDate = new Date(task.due_date);
-    const diffDays = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+    
+    // Vergleiche nur Datum (ohne Zeit)
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const dueDateOnly = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+    
+    const diffDays = Math.ceil((dueDateOnly - todayOnly) / (1000 * 60 * 60 * 24));
     
     if (diffDays < 0) return 'overdue';
     if (diffDays === 0) return 'due_today';
