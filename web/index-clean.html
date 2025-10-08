@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Todo Dashboard</title>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="main-styles.css">
-    <link rel="stylesheet" href="task-styles.css">
+    <title>Smart Task Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="ui-guidelines.js"></script>
+    <script src="date-sync.js"></script>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Header -->
-            <header class="header">
+    <div class="main-container">
+        <!-- Smart Task Dashboard - Left Side -->
+        <div class="smart-dashboard">
+            <div class="header">
                 <div class="header-left">
-                    <h1 class="header-title">📋 Smart Todo Dashboard</h1>
-                    <span class="header-date" id="currentDate"></span>
+                    <h1>🎯 Smart Task Dashboard</h1>
+                    <p>Intelligente Task-Verwaltung mit AI-Unterstützung</p>
                 </div>
                 <div class="header-right">
                     <button class="btn btn-primary" onclick="openTaskCreationModal()" title="Neuen Task erstellen">
@@ -27,156 +29,198 @@
                         📁 Kategorien
                     </button>
                 </div>
-            </header>
-
-            <!-- Content Area -->
-            <main class="content-area">
-                <!-- Filter and Sort Bar -->
-                <div class="filter-sort-bar">
-                    <div class="filter-section">
-                        <button class="filter-btn active" onclick="filterTasks('heute')">Heute</button>
-                        <button class="filter-btn" onclick="filterTasks('woche')">Diese Woche</button>
-                        <button class="filter-btn" onclick="filterTasks('all')">Alle</button>
-                    </div>
-                    <div class="sort-section">
-                        <button class="sort-btn active" onclick="setSorting('priority')">Nach Priorität</button>
-                        <button class="sort-btn" onclick="setSorting('category')">Nach Kategorie</button>
-                    </div>
-                </div>
-
-                <!-- Tasks Container -->
-                <div class="tasks-container">
-                    <div id="smartTasks">
-                        <!-- Tasks werden hier dynamisch geladen -->
-                    </div>
-                </div>
-            </main>
-        </div>
-
-        <!-- Mistral AI Sidebar -->
-        <aside class="sidebar">
-            <div class="mistral-sidebar">
-                <div class="mistral-header">
-                    <h2 class="mistral-title">🤖 Mistral AI</h2>
-                </div>
-                
-                <div class="mistral-chat" id="mistralChat">
-                    <!-- Chat messages werden hier dynamisch geladen -->
-                </div>
-                
-                <div class="mistral-input-container">
-                    <textarea 
-                        id="mistralInput" 
-                        class="mistral-input" 
-                        placeholder="Frage Mistral AI nach Hilfe mit deinen Tasks..."
-                        onkeypress="handleMistralKeypress(event)"
-                        rows="2"></textarea>
-                    <div style="margin-top: var(--space-2); display: flex; gap: var(--space-2);">
-                        <button class="btn btn-primary" onclick="sendMistralMessage()">Senden</button>
-                        <button class="btn btn-secondary" onclick="clearMistralChat()">Löschen</button>
-                    </div>
+                <div class="header-right">
+                    <div class="current-date" id="currentDate">Lade Datum...</div>
                 </div>
             </div>
-        </aside>
-    </div>
-
-    <!-- Task Creation Modal -->
-    <div class="modal-overlay" id="taskCreationModal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>📝 Neuen Task erstellen</h3>
-                <button class="modal-close" onclick="closeTaskCreationModal()">×</button>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <div class="search-input-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Nach Tasks suchen..." onkeyup="searchTasks()">
+                    <button class="search-clear-btn" onclick="clearSearch()" title="Suche löschen">✕</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="taskForm">
-                    <div class="form-group">
-                        <label for="taskTitle">Titel *</label>
-                        <input type="text" id="taskTitle" placeholder="Task-Titel eingeben" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskCategory">Kategorie</label>
-                        <input type="text" id="taskCategory" placeholder="Kategorie eingeben" value="General">
-                    </div>
-                    <div class="form-group">
-                        <label for="taskPriority">Priorität</label>
-                        <select id="taskPriority">
-                            <option value="low">Niedrig</option>
-                            <option value="medium" selected>Mittel</option>
-                            <option value="high">Hoch</option>
+            
+            <!-- Filter & Sortierung Bar -->
+            <div class="filter-sort-bar">
+                <div class="filter-section">
+                    <button class="filter-btn active" onclick="filterTasks('heute')">Heute</button>
+                    <button class="filter-btn" onclick="filterTasks('woche')">Diese Woche</button>
+                    <button class="filter-btn" onclick="filterTasks('morgen')">Morgen</button>
+                    <button class="filter-btn" onclick="filterTasks('überfällig')">Überfällig</button>
+                    <button class="filter-btn" onclick="filterTasks('all')">Alle</button>
+                    <button class="filter-btn" onclick="filterTasks('completed')">Nur Erledigte</button>
+                    
+                    <!-- Category Filter Dropdown -->
+                    <div class="filter-dropdown">
+                        <select id="categoryFilter" class="filter-select" onchange="filterTasks('category')">
+                            <option value="">📁 Alle Kategorien</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="taskDueDate">Fälligkeitsdatum</label>
-                        <input type="date" id="taskDueDate">
+                    
+                    <!-- Priority Filter Dropdown -->
+                    <div class="filter-dropdown">
+                        <select id="priorityFilter" class="filter-select" onchange="filterTasks('priority')">
+                            <option value="">⚡ Alle Prioritäten</option>
+                            <option value="high">🔴 Hoch</option>
+                            <option value="medium">🟡 Mittel</option>
+                            <option value="low">🟢 Niedrig</option>
+                        </select>
                     </div>
-                </form>
+                </div>
+                <div class="sort-section">
+                    <button class="sort-btn active" onclick="setSorting('priority')">Nach Priorität</button>
+                    <button class="sort-btn" onclick="setSorting('category')">Nach Kategorie</button>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="hideCompletedToggle" onchange="toggleCompletedTasks()">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">Erledigte ausblenden</span>
+                    </label>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeTaskCreationModal()">Abbrechen</button>
-                <button type="button" class="btn btn-primary" onclick="submitTaskForm()">Task erstellen</button>
+            
+            <!-- Bulk Actions Bar -->
+            <div id="bulkActions" class="bulk-actions-bar" style="display: none;">
+                <div class="bulk-actions-info">
+                    <span id="selectedCount">0</span> Tasks ausgewählt
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn btn-small btn-secondary" onclick="selectAllTasks()">Alle auswählen</button>
+                    <button class="btn btn-small btn-secondary" onclick="deselectAllTasks()">Auswahl aufheben</button>
+                    
+                    <!-- Bulk Category Change -->
+                    <div class="bulk-action-group">
+                        <select id="bulkCategorySelect" class="bulk-select" onchange="bulkChangeCategory()">
+                            <option value="">📁 Kategorie ändern</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Bulk Priority Change -->
+                    <div class="bulk-action-group">
+                        <select id="bulkPrioritySelect" class="bulk-select" onchange="bulkChangePriority()">
+                            <option value="">⚡ Priorität ändern</option>
+                            <option value="high">🔴 Hoch</option>
+                            <option value="medium">🟡 Mittel</option>
+                            <option value="low">🟢 Niedrig</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Bulk Due Date -->
+                    <div class="bulk-action-group">
+                        <button class="btn btn-small btn-secondary" onclick="openBulkDatePicker()">📅 Datum setzen</button>
+                        <button class="btn btn-small btn-secondary" onclick="bulkRemoveDueDate()">🗓️ Datum entfernen</button>
+                    </div>
+                    
+                    <button class="btn btn-small btn-danger" onclick="bulkDeleteTasks()">🗑️ Löschen</button>
+                </div>
+            </div>
+            
+            <!-- Task Content -->
+            <!-- Task Creation Modal -->
+            <div class="modal-overlay" id="taskCreationModal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📝 Neuen Task erstellen</h3>
+                        <button class="modal-close" onclick="closeTaskCreationModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="taskForm">
+                            <div class="form-group">
+                                <label for="taskTitle">Titel:</label>
+                                <input type="text" id="taskTitle" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskCategory">Kategorie:</label>
+                                <select id="taskCategory" name="category">
+                                    <option value="General">General</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Development">Development</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Personal">Personal</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Priorität:</label>
+                                <select id="taskPriority" name="priority">
+                                    <option value="low">Niedrig</option>
+                                    <option value="medium" selected>Mittel</option>
+                                    <option value="high">Hoch</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDueDate">Fälligkeitsdatum:</label>
+                                <input type="text" id="taskDueDate" name="dueDate" placeholder="Datum auswählen..." readonly>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeTaskCreationModal()">Abbrechen</button>
+                        <button type="button" class="btn btn-primary" onclick="submitTaskForm()">Task erstellen</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Management Modal -->
+            <div class="modal-overlay" id="categoryManagementModal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📁 Kategorien verwalten</h3>
+                        <button class="modal-close" onclick="closeCategoryManagementModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="category-list" id="categoryList">
+                            <!-- Categories will be loaded here -->
+                        </div>
+                        <div class="category-actions">
+                            <div class="form-group">
+                                <label for="newCategoryName">Neue Kategorie:</label>
+                                <input type="text" id="newCategoryName" placeholder="Kategorie-Name eingeben">
+                                <button class="btn btn-primary" onclick="createCategory()">Erstellen</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeCategoryManagementModal()">Schließen</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="smartTasks">
+                <div class="loading">Lade Tasks...</div>
+            </div>
+        </div>
+        
+        <!-- Mistral Interface - Right Side -->
+        <div class="mistral-sidebar">
+            <div class="mistral-header">
+                <h2>🤖 Mistral AI Assistant</h2>
+                <p>Intelligente Unterstützung für Ihre Tasks</p>
+            </div>
+            
+            <div class="mistral-chat">
+                
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message assistant">
+                        <div class="message-text">Hallo! Ich bin Ihr AI-Assistent für Task-Management. Wie kann ich Ihnen heute helfen?</div>
+                        <div class="message-time">Jetzt</div>
+                    </div>
+                </div>
+                
+                <!-- Chat Input -->
+                <div class="chat-input-container">
+                    <textarea 
+                        class="chat-input" 
+                        id="chatInput" 
+                        placeholder="Fragen Sie Mistral nach Hilfe bei Ihren Tasks..."
+                        rows="2"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Senden</button>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Category Management Modal -->
-    <div class="modal-overlay" id="categoryManagementModal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>📁 Kategorien verwalten</h3>
-                <button class="modal-close" onclick="closeCategoryManagementModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="category-list" id="categoryList">
-                    <!-- Categories werden hier dynamisch geladen -->
-                </div>
-                <div class="category-actions">
-                    <div class="form-group">
-                        <label for="newCategoryName">Neue Kategorie:</label>
-                        <input type="text" id="newCategoryName" placeholder="Kategorie-Name eingeben">
-                        <button class="btn btn-primary" onclick="createCategory()">Erstellen</button>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeCategoryManagementModal()">Schließen</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript Components -->
-    <script src="date-sync-component.js"></script>
-    <script src="task-component.js"></script>
-    <script src="modal-component.js"></script>
-    <script src="mistral-chat-component.js"></script>
-    <script src="drag-drop-component.js"></script>
-    
-    <!-- Main Application Script -->
-    <script>
-        // Initialize components when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize all components
-            modalComponent.init();
-            mistralChat.init();
-            dragDropComponent.init();
-            
-            // Set current date in header
-            document.getElementById('currentDate').textContent = dateSync.getTodayFormatted();
-            
-            // Load initial data
-            loadTasks();
-            
-            console.log('Smart Todo Dashboard initialized successfully!');
-        });
-
-        // Global error handler
-        window.addEventListener('error', function(event) {
-            console.error('Global error:', event.error);
-        });
-
-        // Global unhandled promise rejection handler
-        window.addEventListener('unhandledrejection', function(event) {
-            console.error('Unhandled promise rejection:', event.reason);
-        });
-    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>

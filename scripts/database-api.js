@@ -31,6 +31,7 @@ class DatabaseAPI {
     this.app.post('/api/tasks', this.createTask.bind(this));
     this.app.delete('/api/tasks/:id', this.deleteTask.bind(this));
     this.app.post('/api/tasks/update-category', this.updateTaskCategory.bind(this));
+    this.app.post('/api/tasks/delete-by-category', this.deleteTasksByCategory.bind(this));
     
     // Stats Routes
     this.app.get('/api/stats', this.getStats.bind(this));
@@ -52,10 +53,8 @@ class DatabaseAPI {
     this.app.post('/api/daily-routine/update-all', this.updateAllDailyRoutines.bind(this));
     this.app.get('/api/daily-routine/stats', this.getDailyRoutineStats.bind(this));
     
-    // Category Management Routes - REMOVED (not implemented yet)
-    // this.app.get('/api/categories', this.getCategories.bind(this));
-    // this.app.post('/api/categories/sync', this.syncCategoriesToMarkdown.bind(this));
-    // this.app.get('/api/categories/stats', this.getCategoryStats.bind(this));
+    // Category Management Routes
+    this.app.get('/api/categories', this.getCategories.bind(this));
   }
 
   // Markdown Content Endpoints - REMOVED (Dashboard-System deprecated)
@@ -83,6 +82,45 @@ class DatabaseAPI {
         timestamp: new Date().toISOString()
       });
     } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  async getCategories(req, res) {
+    try {
+      console.log('📁 GET /api/categories - Lade alle Kategorien');
+      
+      // Lade Smart Tasks aus der smart-tasks.json Datei
+      const smartTasksPath = './data/smart-tasks.json';
+      
+      if (!fs.existsSync(smartTasksPath)) {
+        return res.json({
+          success: true,
+          categories: [],
+          count: 0,
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      const smartTasksData = JSON.parse(fs.readFileSync(smartTasksPath, 'utf8'));
+      const tasks = smartTasksData.tasks || [];
+      const categories = [...new Set(tasks.map(task => task.category).filter(Boolean))].sort();
+      
+      console.log(`✅ ${categories.length} Kategorien gefunden:`, categories);
+      
+      res.json({
+        success: true,
+        categories: categories,
+        count: categories.length,
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error('❌ Fehler beim Laden der Kategorien:', error);
       res.status(500).json({
         success: false,
         error: error.message,
@@ -186,6 +224,58 @@ class DatabaseAPI {
       res.json({
         success: true,
         data: smartTasksData.tasks[taskIndex]
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+
+  async deleteTasksByCategory(req, res) {
+    try {
+      const { category } = req.body;
+      
+      if (!category) {
+        return res.status(400).json({
+          success: false,
+          error: 'Category ist erforderlich'
+        });
+      }
+      
+      // Lade Tasks aus smart-tasks.json
+      const smartTasksPath = './data/smart-tasks.json';
+      
+      if (!fs.existsSync(smartTasksPath)) {
+        return res.status(404).json({
+          success: false,
+          error: 'Smart Tasks nicht gefunden'
+        });
+      }
+      
+      const smartTasksData = JSON.parse(fs.readFileSync(smartTasksPath, 'utf8'));
+      
+      // Filtere Tasks der Kategorie heraus
+      const originalCount = smartTasksData.tasks.length;
+      smartTasksData.tasks = smartTasksData.tasks.filter(task => task.category !== category);
+      const deletedCount = originalCount - smartTasksData.tasks.length;
+      
+      // Speichere zurück in smart-tasks.json
+      fs.writeFileSync(smartTasksPath, JSON.stringify(smartTasksData, null, 2));
+      
+      // Update auch tasks.json für Konsistenz
+      const tasksPath = './data/tasks.json';
+      if (fs.existsSync(tasksPath)) {
+        const tasksData = JSON.parse(fs.readFileSync(tasksPath, 'utf8'));
+        tasksData.tasks = tasksData.tasks.filter(task => task.category !== category);
+        fs.writeFileSync(tasksPath, JSON.stringify(tasksData, null, 2));
+      }
+      
+      res.json({
+        success: true,
+        deletedCount: deletedCount,
+        message: `${deletedCount} Tasks der Kategorie "${category}" wurden gelöscht`
       });
     } catch (error) {
       res.status(500).json({
