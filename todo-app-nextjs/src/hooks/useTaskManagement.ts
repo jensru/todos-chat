@@ -27,9 +27,14 @@ export function useTaskManagement(): {
 
   const loadData = useCallback(async (): Promise<void> => {
     try {
+      console.log('loadData called - loading tasks from service...');
       const loadedTasks = await taskService.loadTasks();
+      console.log('loadData - loaded tasks:', loadedTasks.length, 'tasks');
+      console.log('loadData - first few tasks:', loadedTasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
       setTasks(loadedTasks);
+      console.log('loadData - tasks state updated');
     } catch {
+      console.log('loadData - error loading tasks, setting empty array');
       setTasks([]);
     } finally {
       setLoading(false);
@@ -64,6 +69,7 @@ export function useTaskManagement(): {
   }, [taskService]);
 
   const groupedTasks = useMemo(() => {
+    console.log('groupedTasks memoization - tasks changed, recalculating...');
     const grouped = tasks
       .filter(task => !task.completed)
       .reduce((acc, task) => {
@@ -96,8 +102,10 @@ export function useTaskManagement(): {
     // Sort each group by globalPosition
     Object.keys(grouped).forEach(dateKey => {
       grouped[dateKey].sort((a, b) => a.globalPosition - b.globalPosition);
+      console.log(`groupedTasks - ${dateKey}:`, grouped[dateKey].map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
     });
 
+    console.log('groupedTasks memoization - completed, keys:', Object.keys(grouped));
     return grouped;
   }, [tasks]);
 

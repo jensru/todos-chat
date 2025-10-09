@@ -7,11 +7,13 @@ export class TaskService {
 
   async loadTasks(): Promise<Task[]> {
     try {
+      console.log('TaskService.loadTasks - loading from JSON file...');
       const response = await fetch('/data/smart-tasks-standardized.json');
       
       if (response.ok) {
         const data = await response.json();
         this.tasks = this.parseTasks(data.tasks || []);
+        console.log('TaskService.loadTasks - loaded from JSON:', this.tasks.length, 'tasks');
         
         // Apply LocalStorage changes on top of fresh data
         if (typeof window !== 'undefined') {
@@ -19,17 +21,25 @@ export class TaskService {
           if (localData) {
             const parsedData = JSON.parse(localData);
             if (parsedData.tasks && parsedData.tasks.length > 0) {
+              console.log('TaskService.loadTasks - found localStorage data:', parsedData.tasks.length, 'tasks');
               // Merge LocalStorage changes with fresh data
               const localTasks = this.parseTasks(parsedData.tasks);
               this.tasks = this.mergeTasks(this.tasks, localTasks);
+              console.log('TaskService.loadTasks - merged with localStorage:', this.tasks.length, 'tasks');
+            } else {
+              console.log('TaskService.loadTasks - no localStorage data found');
             }
+          } else {
+            console.log('TaskService.loadTasks - no localStorage key found');
           }
         }
       } else {
+        console.log('TaskService.loadTasks - failed to load JSON file');
         this.tasks = [];
       }
       return this.tasks;
-    } catch {
+    } catch (error) {
+      console.log('TaskService.loadTasks - error:', error);
       this.tasks = [];
       return [];
     }
@@ -228,7 +238,20 @@ export class TaskService {
         version: '1.0'
       };
       
+      console.log('TaskService.saveTasks - saving tasks:', this.tasks.length, 'tasks');
+      console.log('TaskService.saveTasks - first few tasks:', this.tasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+      
       localStorage.setItem(this.storageKey, JSON.stringify(taskData));
+      
+      // Verify the save
+      const saved = localStorage.getItem(this.storageKey);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        console.log('TaskService.saveTasks - verification: saved', parsed.tasks.length, 'tasks');
+        console.log('TaskService.saveTasks - verification: first few tasks:', parsed.tasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+      } else {
+        console.log('TaskService.saveTasks - ERROR: Failed to save to localStorage');
+      }
     }
   }
 
