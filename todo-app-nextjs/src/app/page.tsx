@@ -2,9 +2,8 @@
 'use client';
 
 import { Plus, Target, MessageCircle, Calendar, CheckCircle2 } from 'lucide-react';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
-import { useSortable } from '@dnd-kit/sortable';
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, DragOverEvent } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy, arrayMove, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { TaskCardRefactored as TaskCard } from '@/components/TaskCardRefactored';
@@ -87,6 +86,7 @@ export default function HomePage(): JSX.Element {
 
   // Drag & Drop state
   const [activeTask, setActiveTask] = useState<any>(null);
+  const [liveGroupedTasks, setLiveGroupedTasks] = useState<Record<string, any[]>>({});
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -99,11 +99,68 @@ export default function HomePage(): JSX.Element {
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setActiveTask(active.data.current?.task);
+    setLiveGroupedTasks(groupedTasks); // Initialize live state
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    
+    if (!over || !active) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+    const activeTask = active.data.current?.task;
+    const overTask = over.data.current?.task;
+    const overDateKey = over.data.current?.dateKey;
+
+    if (!activeTask) return;
+
+    const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+
+    if (overTask) {
+      const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+      
+      if (activeDateKey === overDateKey) {
+        // Same date - live reorder
+        const dateTasks = liveGroupedTasks[activeDateKey] || [];
+        const activeIndex = dateTasks.findIndex(t => t.id === activeId);
+        const overIndex = dateTasks.findIndex(t => t.id === overId);
+        
+        if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
+          const newOrder = arrayMove(dateTasks, activeIndex, overIndex);
+          setLiveGroupedTasks(prev => ({
+            ...prev,
+            [activeDateKey]: newOrder
+          }));
+        }
+      } else {
+        // Different date - move to new date
+        const targetDateTasks = liveGroupedTasks[overDateKey] || [];
+        const overIndex = targetDateTasks.findIndex(t => t.id === overId);
+        
+        if (overIndex !== -1) {
+          // Remove from source date
+          const sourceTasks = liveGroupedTasks[activeDateKey] || [];
+          const filteredSourceTasks = sourceTasks.filter(t => t.id !== activeId);
+          
+          // Add to target date at specific position
+          const newTargetTasks = [...targetDateTasks];
+          newTargetTasks.splice(overIndex, 0, { ...activeTask, dueDate: overTask.dueDate });
+          
+          setLiveGroupedTasks(prev => ({
+            ...prev,
+            [activeDateKey]: filteredSourceTasks,
+            [overDateKey]: newTargetTasks
+          }));
+        }
+      }
+    }
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     setActiveTask(null);
+    setLiveGroupedTasks({}); // Reset live state
 
     if (!over || !active) return;
 
@@ -278,11 +335,12 @@ export default function HomePage(): JSX.Element {
           <DndContext
             sensors={sensors}
             onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
             collisionDetection={closestCenter}
           >
             <div className="space-y-6">
-              {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
+              {Object.entries(activeTask ? liveGroupedTasks : groupedTasks).map(([dateKey, dateTasks]) => (
                 <div key={dateKey}>
                   <h3 className="text-lg font-semibold mb-3 flex items-center">
                     <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
