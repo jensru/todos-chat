@@ -100,12 +100,7 @@ export class TaskService {
           return new Date(dateA).getTime() - new Date(dateB).getTime();
         }
         
-        // 2. Sort by priority (true = High Priority first)
-        if (a.priority !== b.priority) {
-          return b.priority ? 1 : -1;
-        }
-        
-        // 3. Sort by global position
+        // 2. Sort by global position only (priority is handled by user drag & drop)
         return a.globalPosition - b.globalPosition;
       });
   }
@@ -139,19 +134,25 @@ export class TaskService {
   // Drag & Drop Methods
   async reorderTasksWithinDate(dateKey: string, taskIds: string[]): Promise<boolean> {
     try {
+      console.log('reorderTasksWithinDate called:', { dateKey, taskIds });
+      
       // Update global positions based on new order
       const baseTime = Date.now();
       taskIds.forEach((taskId, index) => {
         const task = this.tasks.find(t => t.id === taskId);
         if (task) {
+          const oldPosition = task.globalPosition;
           task.globalPosition = baseTime + index;
           task.updatedAt = new Date();
+          console.log(`Updated task ${taskId}: ${oldPosition} -> ${task.globalPosition}`);
         }
       });
 
       await this.saveTasks();
+      console.log('Tasks saved successfully');
       return true;
-    } catch {
+    } catch (error) {
+      console.error('Error in reorderTasksWithinDate:', error);
       return false;
     }
   }

@@ -120,9 +120,13 @@ export function useTaskManagement(): {
 
   // Drag & Drop methods
   const handleReorderWithinDate = useCallback(async (dateKey: string, taskIds: string[]): Promise<void> => {
+    console.log('handleReorderWithinDate called:', { dateKey, taskIds });
     const success = await taskService.reorderTasksWithinDate(dateKey, taskIds);
+    console.log('reorderTasksWithinDate success:', success);
     if (success) {
+      console.log('Reloading data...');
       await loadData(); // Reload to get updated order
+      console.log('Data reloaded');
     }
   }, [taskService, loadData]);
 
