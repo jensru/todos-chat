@@ -86,7 +86,6 @@ export default function HomePage(): JSX.Element {
 
   // Drag & Drop state
   const [activeTask, setActiveTask] = useState<any>(null);
-  const [liveGroupedTasks, setLiveGroupedTasks] = useState<Record<string, any[]>>({});
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -97,21 +96,26 @@ export default function HomePage(): JSX.Element {
 
   // Drag & Drop handlers
   const handleDragStart = (event: DragStartEvent) => {
-    console.log('=== handleDragStart ===', event);
     const { active } = event;
     setActiveTask(active.data.current?.task);
-    setLiveGroupedTasks(groupedTasks); // Initialize live state
-    console.log('Active task set:', active.data.current?.task);
-    console.log('Live grouped tasks initialized:', Object.keys(groupedTasks));
   };
 
   const handleDragOver = (event: DragOverEvent) => {
+    // Simple drag over - no complex live feedback for now
+  };
+
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
-    
+    setActiveTask(null);
+
     if (!over || !active) return;
 
     const activeId = active.id;
     const overId = over.id;
+
+    // If dropped on the same position, do nothing
+    if (activeId === overId) return;
+
     const activeTask = active.data.current?.task;
     const overTask = over.data.current?.task;
 
@@ -119,281 +123,29 @@ export default function HomePage(): JSX.Element {
 
     const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
     const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
-    
-    // Handle live feedback for both same-date and cross-date dragging
+
     if (activeDateKey === overDateKey) {
-      // Same date - live reorder within the same date group
-      const dateTasks = liveGroupedTasks[activeDateKey] || [];
+      // Same date - reorder
+      const dateTasks = groupedTasks[activeDateKey] || [];
       const activeIndex = dateTasks.findIndex(t => t.id === activeId);
       const overIndex = dateTasks.findIndex(t => t.id === overId);
       
-      if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
+      if (activeIndex !== -1 && overIndex !== -1) {
         const newOrder = arrayMove(dateTasks, activeIndex, overIndex);
-        setLiveGroupedTasks(prev => ({
-          ...prev,
-          [activeDateKey]: newOrder
-        }));
+        const taskIds = newOrder.map(t => t.id);
+        await handleReorderWithinDate(activeDateKey, taskIds);
       }
     } else {
-      // Different date - move task to new date at specific position
-      const targetDateTasks = liveGroupedTasks[overDateKey] || [];
+      // Different date - move task
+      const targetDateTasks = groupedTasks[overDateKey] || [];
       const overIndex = targetDateTasks.findIndex(t => t.id === overId);
       
       if (overIndex !== -1) {
-        // Remove from source date
-        const sourceTasks = liveGroupedTasks[activeDateKey] || [];
-        const filteredSourceTasks = sourceTasks.filter(t => t.id !== activeId);
-        
-        // Add to target date at specific position
-        const newTargetTasks = [...targetDateTasks];
-        newTargetTasks.splice(overIndex, 0, { ...activeTask, dueDate: overTask.dueDate });
-        
-        setLiveGroupedTasks(prev => ({
-          ...prev,
-          [activeDateKey]: filteredSourceTasks,
-          [overDateKey]: newTargetTasks
-        }));
-      }
-    }
-  };
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    console.log('=== handleDragEnd START ===', event);
-    const { active, over } = event;
-    
-    console.log('Active:', active);
-    console.log('Over:', over);
-    console.log('Collisions:', event.collisions);
-    
-    if (!over || !active) {
-      console.log('No over or active - returning early');
-      setActiveTask(null);
-      setLiveGroupedTasks({});
-      return;
-    }
-
-    const activeId = active.id;
-    const overId = over.id;
-
-    // Check if dropped on the same position
-    if (activeId === overId) {
-      console.log('Same position drop - checking collisions for alternative target');
-      
-      // Look for alternative targets in collisions
-      const alternativeTarget = event.collisions.find(collision => 
-        collision.id !== activeId && 
-        collision.data?.current?.task
-      );
-      
-      if (alternativeTarget) {
-        console.log('Found alternative target:', alternativeTarget.id);
-        // Use the alternative target
-        const overTask = alternativeTarget.data.current?.task;
-        const overDateKey = alternativeTarget.data.current?.dateKey;
-        
-        if (overTask) {
-          const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
-          
-          if (activeDateKey === overDateKey) {
-            // Same date - use the live reordered tasks for final update
-            const liveDateTasks = liveGroupedTasks[activeDateKey] || [];
-            
-            console.log('Same date debug:', {
-              activeDateKey,
-              liveGroupedTasksKeys: Object.keys(liveGroupedTasks),
-              liveDateTasksLength: liveDateTasks.length,
-              liveDateTasks: liveDateTasks.map(t => ({ id: t.id, title: t.title })),
-              groupedTasksKeys: Object.keys(groupedTasks),
-              groupedTasksLength: groupedTasks[activeDateKey]?.length || 0
-            });
-            
-            if (liveDateTasks.length > 0) {
-              // Use live reordered tasks
-              const taskIds = liveDateTasks.map(t => t.id);
-              console.log('Same date reorder - using live order:', taskIds);
-              await handleReorderWithinDate(activeDateKey, taskIds);
-              console.log('handleReorderWithinDate completed');
-            } else {
-              // Fallback to original logic if live state is empty
-              console.log('FALLBACK: Using groupedTasks because liveGroupedTasks is empty');
-              const dateTasks = groupedTasks[activeDateKey] || [];
-              const activeIndex = dateTasks.findIndex(t => t.id === activeId);
-              const overIndex = dateTasks.findIndex(t => t.id === alternativeTarget.id);
-              
-              console.log('Same date reorder - fallback to groupedTasks:', {
-                activeIndex,
-                overIndex,
-                dateTasks: dateTasks.map(t => ({ id: t.id, title: t.title }))
-              });
-              
-              if (activeIndex !== -1 && overIndex !== -1) {
-                const newOrder = arrayMove(dateTasks, activeIndex, overIndex);
-                const taskIds = newOrder.map(t => t.id);
-                console.log('Fallback - calling handleReorderWithinDate with:', taskIds);
-                await handleReorderWithinDate(activeDateKey, taskIds);
-              } else {
-                console.log('FALLBACK FAILED: activeIndex or overIndex is -1');
-              }
-            }
-          } else {
-            // Different date - use the live positioned task for final update
-            const liveTargetTasks = liveGroupedTasks[overDateKey] || [];
-            const overIndex = liveTargetTasks.findIndex(t => t.id === alternativeTarget.id);
-            
-            console.log('Different date move - using live position:', {
-              overIndex,
-              liveTargetTasks: liveTargetTasks.map(t => ({ id: t.id, title: t.title }))
-            });
-            
-            if (liveTargetTasks.length > 0 && overIndex !== -1) {
-              // Use live positioned tasks
-              await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
-              console.log('handleReorderAcrossDates completed');
-            } else {
-              // Fallback to original logic if live state is empty
-              const targetDateTasks = groupedTasks[overDateKey] || [];
-              const fallbackOverIndex = targetDateTasks.findIndex(t => t.id === alternativeTarget.id);
-              
-              console.log('Different date move - fallback to groupedTasks:', {
-                fallbackOverIndex,
-                targetDateTasks: targetDateTasks.map(t => ({ id: t.id, title: t.title }))
-              });
-              
-              if (fallbackOverIndex !== -1) {
-                console.log('Fallback - calling handleReorderAcrossDates');
-                await handleReorderAcrossDates(activeId as string, overTask.dueDate, fallbackOverIndex);
-              } else {
-                // Final fallback: move to end of target date
-                console.log('Final fallback: calling handleMoveTaskToDate');
-                await handleMoveTaskToDate(activeId as string, overTask.dueDate);
-              }
-            }
-          }
-        }
+        await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
       } else {
-        console.log('No alternative target found in collisions');
+        await handleMoveTaskToDate(activeId as string, overTask.dueDate);
       }
-      
-      setActiveTask(null);
-      setLiveGroupedTasks({});
-      return;
     }
-
-    const activeTask = active.data.current?.task;
-    const overTask = over.data.current?.task;
-    const overDateKey = over.data.current?.dateKey;
-
-    console.log('Tasks:', { activeTask, overTask, overDateKey });
-
-    if (!activeTask) {
-      console.log('No activeTask - returning early');
-      setActiveTask(null);
-      setLiveGroupedTasks({});
-      return;
-    }
-
-    // Get current date key for active task
-    const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
-
-    console.log('Drag End Debug:', {
-      activeId,
-      overId,
-      activeTask: { id: activeTask.id, title: activeTask.title, date: activeDateKey },
-      overTask: overTask ? { id: overTask.id, title: overTask.title, date: overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum' } : null,
-      overDateKey,
-      liveGroupedTasks: Object.keys(liveGroupedTasks).length > 0 ? liveGroupedTasks : 'EMPTY',
-      groupedTasks: Object.keys(groupedTasks).length > 0 ? 'HAS_DATA' : 'EMPTY'
-    });
-
-    if (overTask) {
-      // Dropped on another task
-      const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
-      
-      if (activeDateKey === overDateKey) {
-        // Same date - use the live reordered tasks for final update
-        const liveDateTasks = liveGroupedTasks[activeDateKey] || [];
-        
-        console.log('Same date debug:', {
-          activeDateKey,
-          liveGroupedTasksKeys: Object.keys(liveGroupedTasks),
-          liveDateTasksLength: liveDateTasks.length,
-          liveDateTasks: liveDateTasks.map(t => ({ id: t.id, title: t.title })),
-          groupedTasksKeys: Object.keys(groupedTasks),
-          groupedTasksLength: groupedTasks[activeDateKey]?.length || 0
-        });
-        
-        if (liveDateTasks.length > 0) {
-          // Use live reordered tasks
-          const taskIds = liveDateTasks.map(t => t.id);
-          console.log('Same date reorder - using live order:', taskIds);
-          await handleReorderWithinDate(activeDateKey, taskIds);
-          console.log('handleReorderWithinDate completed');
-        } else {
-          // Fallback to original logic if live state is empty
-          console.log('FALLBACK: Using groupedTasks because liveGroupedTasks is empty');
-          const dateTasks = groupedTasks[activeDateKey] || [];
-          const activeIndex = dateTasks.findIndex(t => t.id === activeId);
-          const overIndex = dateTasks.findIndex(t => t.id === overId);
-          
-          console.log('Same date reorder - fallback to groupedTasks:', {
-            activeIndex,
-            overIndex,
-            dateTasks: dateTasks.map(t => ({ id: t.id, title: t.title }))
-          });
-          
-          if (activeIndex !== -1 && overIndex !== -1) {
-            const newOrder = arrayMove(dateTasks, activeIndex, overIndex);
-            const taskIds = newOrder.map(t => t.id);
-            console.log('Fallback - calling handleReorderWithinDate with:', taskIds);
-            await handleReorderWithinDate(activeDateKey, taskIds);
-          } else {
-            console.log('FALLBACK FAILED: activeIndex or overIndex is -1');
-          }
-        }
-      } else {
-        // Different date - use the live positioned task for final update
-        const liveTargetTasks = liveGroupedTasks[overDateKey] || [];
-        const overIndex = liveTargetTasks.findIndex(t => t.id === overId);
-        
-        console.log('Different date move - using live position:', {
-          overIndex,
-          liveTargetTasks: liveTargetTasks.map(t => ({ id: t.id, title: t.title }))
-        });
-        
-        if (liveTargetTasks.length > 0 && overIndex !== -1) {
-          // Use live positioned tasks
-          await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
-          console.log('handleReorderAcrossDates completed');
-        } else {
-          // Fallback to original logic if live state is empty
-          const targetDateTasks = groupedTasks[overDateKey] || [];
-          const fallbackOverIndex = targetDateTasks.findIndex(t => t.id === overId);
-          
-          console.log('Different date move - fallback to groupedTasks:', {
-            fallbackOverIndex,
-            targetDateTasks: targetDateTasks.map(t => ({ id: t.id, title: t.title }))
-          });
-          
-          if (fallbackOverIndex !== -1) {
-            console.log('Fallback - calling handleReorderAcrossDates');
-            await handleReorderAcrossDates(activeId as string, overTask.dueDate, fallbackOverIndex);
-          } else {
-            // Final fallback: move to end of target date
-            console.log('Final fallback: calling handleMoveTaskToDate');
-            await handleMoveTaskToDate(activeId as string, overTask.dueDate);
-          }
-        }
-      }
-    } else if (overDateKey) {
-      // Dropped on date header or empty space
-      const newDate = overDateKey === 'ohne-datum' ? null : new Date(overDateKey);
-      console.log('Dropped on date header:', { overDateKey, newDate });
-      await handleMoveTaskToDate(activeId as string, newDate);
-    }
-
-    // Reset state after processing
-    setActiveTask(null);
-    setLiveGroupedTasks({});
   };
 
 
@@ -499,17 +251,11 @@ export default function HomePage(): JSX.Element {
           <DndContext
             sensors={sensors}
             onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
             collisionDetection={closestCenter}
-            measuring={{
-              droppable: {
-                strategy: MeasuringStrategy.Always,
-              },
-            }}
           >
             <div className="space-y-6">
-              {Object.entries(activeTask ? liveGroupedTasks : groupedTasks).map(([dateKey, dateTasks]) => (
+              {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
                 <div key={dateKey}>
                   <h3 className="text-lg font-semibold mb-3 flex items-center">
                     <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>

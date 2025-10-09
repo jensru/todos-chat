@@ -27,14 +27,9 @@ export function useTaskManagement(): {
 
   const loadData = useCallback(async (): Promise<void> => {
     try {
-      console.log('loadData called - loading tasks from service...');
       const loadedTasks = await taskService.loadTasks();
-      console.log('loadData - loaded tasks:', loadedTasks.length, 'tasks');
-      console.log('loadData - first few tasks:', loadedTasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
       setTasks(loadedTasks);
-      console.log('loadData - tasks state updated');
     } catch {
-      console.log('loadData - error loading tasks, setting empty array');
       setTasks([]);
     } finally {
       setLoading(false);
@@ -69,7 +64,6 @@ export function useTaskManagement(): {
   }, [taskService]);
 
   const groupedTasks = useMemo(() => {
-    console.log('groupedTasks memoization - tasks changed, recalculating...');
     const grouped = tasks
       .filter(task => !task.completed)
       .reduce((acc, task) => {
@@ -102,10 +96,8 @@ export function useTaskManagement(): {
     // Sort each group by globalPosition
     Object.keys(grouped).forEach(dateKey => {
       grouped[dateKey].sort((a, b) => a.globalPosition - b.globalPosition);
-      console.log(`groupedTasks - ${dateKey}:`, grouped[dateKey].map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
     });
 
-    console.log('groupedTasks memoization - completed, keys:', Object.keys(grouped));
     return grouped;
   }, [tasks]);
 
@@ -135,19 +127,10 @@ export function useTaskManagement(): {
 
   // Drag & Drop methods
   const handleReorderWithinDate = useCallback(async (dateKey: string, taskIds: string[]): Promise<void> => {
-    console.log('handleReorderWithinDate called:', { dateKey, taskIds });
-    
-    // Don't update state immediately - let the service call handle it
-    console.log('Calling taskService.reorderTasksWithinDate...');
     const success = await taskService.reorderTasksWithinDate(dateKey, taskIds);
-    console.log('reorderTasksWithinDate success:', success);
     
     if (success) {
-      // Service call succeeded, reload data to get updated state
-      console.log('Service call succeeded, reloading data...');
       await loadData();
-    } else {
-      console.log('Service call failed');
     }
   }, [taskService, loadData]);
 
@@ -159,18 +142,10 @@ export function useTaskManagement(): {
   }, [taskService, loadData]);
 
   const handleReorderAcrossDates = useCallback(async (taskId: string, targetDate: Date | null, targetIndex: number): Promise<void> => {
-    console.log('handleReorderAcrossDates called:', { taskId, targetDate, targetIndex });
-    
-    // Don't update state immediately - let the service call handle it
     const success = await taskService.reorderTasksAcrossDates(taskId, targetDate, targetIndex);
-    console.log('reorderTasksAcrossDates success:', success);
     
     if (success) {
-      // Service call succeeded, reload data to get updated state
-      console.log('Service call succeeded, reloading data...');
       await loadData();
-    } else {
-      console.log('Service call failed');
     }
   }, [taskService, loadData]);
 
