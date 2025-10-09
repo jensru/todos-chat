@@ -157,6 +157,10 @@ export function useTaskManagement(): {
       // If service call failed, reload data to revert changes
       console.log('Service call failed, reloading data...');
       await loadData();
+    } else {
+      // Service call succeeded, but reload data to ensure UI is in sync
+      console.log('Service call succeeded, reloading data to sync UI...');
+      await loadData();
     }
   }, [taskService, loadData]);
 
