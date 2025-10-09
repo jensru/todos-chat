@@ -40,8 +40,8 @@ function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
+    transition: transition || 'transform 200ms ease',
+    opacity: isDragging ? 0.3 : 1,
   };
 
   return (
@@ -288,12 +288,14 @@ export default function HomePage(): JSX.Element {
             
             <DragOverlay>
               {activeTask ? (
-                <TaskCard
-                  task={activeTask}
-                  onUpdate={handleTaskUpdate}
-                  onDelete={handleTaskDelete}
-                  isDragging={true}
-                />
+                <div className="opacity-50">
+                  <TaskCard
+                    task={activeTask}
+                    onUpdate={handleTaskUpdate}
+                    onDelete={handleTaskDelete}
+                    isDragging={true}
+                  />
+                </div>
               ) : null}
             </DragOverlay>
           </DndContext>
