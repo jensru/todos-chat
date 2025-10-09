@@ -139,18 +139,12 @@ export class TaskService {
   // Drag & Drop Methods
   async reorderTasksWithinDate(dateKey: string, taskIds: string[]): Promise<boolean> {
     try {
-      // Get all tasks for this date
-      const dateTasks = this.tasks.filter(task => {
-        if (task.completed) return false;
-        const taskDate = task.dueDate ? task.dueDate.toISOString().split('T')[0] : 'ohne-datum';
-        return taskDate === dateKey;
-      });
-
       // Update global positions based on new order
+      const baseTime = Date.now();
       taskIds.forEach((taskId, index) => {
         const task = this.tasks.find(t => t.id === taskId);
         if (task) {
-          task.globalPosition = Date.now() + index;
+          task.globalPosition = baseTime + index;
           task.updatedAt = new Date();
         }
       });

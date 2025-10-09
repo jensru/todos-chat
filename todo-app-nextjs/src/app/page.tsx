@@ -42,6 +42,7 @@ function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    opacity: isDragging ? 0.5 : 1,
   };
 
   return (
@@ -104,7 +105,13 @@ export default function HomePage(): JSX.Element {
     const { active, over } = event;
     setActiveTask(null);
 
-    if (!over) return;
+    if (!over || !active) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    // If dropped on the same position, do nothing
+    if (activeId === overId) return;
 
     const activeTask = active.data.current?.task;
     const overTask = over.data.current?.task;
@@ -112,33 +119,35 @@ export default function HomePage(): JSX.Element {
 
     if (!activeTask) return;
 
-    // Same date reordering
-    if (overTask && activeTask.id !== overTask.id) {
-      const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+    // Get current date key for active task
+    const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+
+    if (overTask) {
+      // Dropped on another task
       const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
       
       if (activeDateKey === overDateKey) {
-        // Reorder within same date
+        // Same date - reorder within the same date group
         const dateTasks = groupedTasks[activeDateKey] || [];
-        const activeIndex = dateTasks.findIndex(t => t.id === activeTask.id);
-        const overIndex = dateTasks.findIndex(t => t.id === overTask.id);
+        const activeIndex = dateTasks.findIndex(t => t.id === activeId);
+        const overIndex = dateTasks.findIndex(t => t.id === overId);
         
         if (activeIndex !== -1 && overIndex !== -1) {
           const newOrder = [...dateTasks];
-          newOrder.splice(activeIndex, 1);
-          newOrder.splice(overIndex, 0, activeTask);
+          const [movedTask] = newOrder.splice(activeIndex, 1);
+          newOrder.splice(overIndex, 0, movedTask);
           
           const taskIds = newOrder.map(t => t.id);
           await handleReorderWithinDate(activeDateKey, taskIds);
         }
       } else {
-        // Move to different date
-        await handleMoveTaskToDate(activeTask.id, overTask.dueDate);
+        // Different date - move task to new date
+        await handleMoveTaskToDate(activeId as string, overTask.dueDate);
       }
     } else if (overDateKey) {
-      // Move to date header
+      // Dropped on date header or empty space
       const newDate = overDateKey === 'ohne-datum' ? null : new Date(overDateKey);
-      await handleMoveTaskToDate(activeTask.id, newDate);
+      await handleMoveTaskToDate(activeId as string, newDate);
     }
   };
 
