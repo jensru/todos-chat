@@ -22,10 +22,14 @@ export class TaskService {
             const parsedData = JSON.parse(localData);
             if (parsedData.tasks && parsedData.tasks.length > 0) {
               console.log('TaskService.loadTasks - found localStorage data:', parsedData.tasks.length, 'tasks');
+              console.log('TaskService.loadTasks - localStorage first few tasks:', parsedData.tasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
               // Merge LocalStorage changes with fresh data
               const localTasks = this.parseTasks(parsedData.tasks);
+              console.log('TaskService.loadTasks - parsed local tasks:', localTasks.length, 'tasks');
+              console.log('TaskService.loadTasks - parsed local first few tasks:', localTasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
               this.tasks = this.mergeTasks(this.tasks, localTasks);
               console.log('TaskService.loadTasks - merged with localStorage:', this.tasks.length, 'tasks');
+              console.log('TaskService.loadTasks - merged first few tasks:', this.tasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
             } else {
               console.log('TaskService.loadTasks - no localStorage data found');
             }
@@ -291,6 +295,10 @@ export class TaskService {
   }
 
   private mergeTasks(freshTasks: Task[], localTasks: Task[]): Task[] {
+    console.log('TaskService.mergeTasks - fresh tasks:', freshTasks.length, 'local tasks:', localTasks.length);
+    console.log('TaskService.mergeTasks - fresh first few:', freshTasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+    console.log('TaskService.mergeTasks - local first few:', localTasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+    
     // Create a map of local tasks by ID for quick lookup
     const localTaskMap = new Map(localTasks.map(task => [task.id, task]));
     
@@ -299,6 +307,7 @@ export class TaskService {
       const localTask = localTaskMap.get(freshTask.id);
       if (localTask) {
         // Use local version (has user changes)
+        console.log(`TaskService.mergeTasks - using local version for ${freshTask.id}: position ${freshTask.globalPosition} -> ${localTask.globalPosition}`);
         return localTask;
       }
       return freshTask;
@@ -308,6 +317,10 @@ export class TaskService {
     const freshTaskIds = new Set(freshTasks.map(task => task.id));
     const newLocalTasks = localTasks.filter(task => !freshTaskIds.has(task.id));
     
-    return [...mergedTasks, ...newLocalTasks];
+    const result = [...mergedTasks, ...newLocalTasks];
+    console.log('TaskService.mergeTasks - result:', result.length, 'tasks');
+    console.log('TaskService.mergeTasks - result first few:', result.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+    
+    return result;
   }
 }
