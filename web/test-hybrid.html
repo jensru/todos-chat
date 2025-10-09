@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Migration Test</title>
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- Modulare Architektur -->
+    <script src="js/services/ApiService.js"></script>
+    <script src="js/modules/APIManager.js"></script>
+    <script src="js/modules/TaskService.js"></script>
+    <script src="js/modules/HybridMigration.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="smart-dashboard">
+            <div class="header">
+                <h1>🧪 Hybrid Migration Test</h1>
+                <p>Test der modularen Architektur</p>
+            </div>
+            
+            <div class="test-results" id="testResults">
+                <h3>Test-Ergebnisse:</h3>
+                <div id="testOutput">Lade Tests...</div>
+            </div>
+            
+            <div class="test-buttons">
+                <button onclick="testAPIManager()">Test APIManager</button>
+                <button onclick="testTaskService()">Test TaskService</button>
+                <button onclick="testHybridMigration()">Test Hybrid Migration</button>
+                <button onclick="testCreateTask()">Test Task erstellen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = [];
+        
+        function addTestResult(test, success, message) {
+            testResults.push({ test, success, message });
+            updateTestOutput();
+        }
+        
+        function updateTestOutput() {
+            const output = document.getElementById('testOutput');
+            output.innerHTML = testResults.map(result => 
+                `<div class="test-result ${result.success ? 'success' : 'error'}">
+                    <strong>${result.test}:</strong> ${result.message}
+                </div>`
+            ).join('');
+        }
+        
+        async function testAPIManager() {
+            try {
+                const apiManager = new APIManager();
+                const health = await apiManager.healthCheck();
+                addTestResult('APIManager Health Check', true, 'API ist erreichbar');
+                
+                const tasks = await apiManager.getTasks();
+                addTestResult('APIManager Get Tasks', true, `${tasks.length} Tasks geladen`);
+                
+            } catch (error) {
+                addTestResult('APIManager', false, `Fehler: ${error.message}`);
+            }
+        }
+        
+        async function testTaskService() {
+            try {
+                const taskService = new TaskService();
+                const tasks = await taskService.getAllTasks();
+                addTestResult('TaskService Get All Tasks', true, `${tasks.length} Tasks geladen`);
+                
+            } catch (error) {
+                addTestResult('TaskService', false, `Fehler: ${error.message}`);
+            }
+        }
+        
+        async function testHybridMigration() {
+            try {
+                const hybridMigration = new HybridMigration();
+                await hybridMigration.initialize();
+                addTestResult('Hybrid Migration', true, 'Erfolgreich initialisiert');
+                
+            } catch (error) {
+                addTestResult('Hybrid Migration', false, `Fehler: ${error.message}`);
+            }
+        }
+        
+        async function testCreateTask() {
+            try {
+                const apiManager = new APIManager();
+                const testTask = {
+                    title: 'Test Task von Hybrid Migration',
+                    category: 'Test',
+                    priority: 'medium',
+                    status: 'pending'
+                };
+                
+                const result = await apiManager.createTask(testTask);
+                addTestResult('Task erstellen', true, `Task "${testTask.title}" erstellt`);
+                
+            } catch (error) {
+                addTestResult('Task erstellen', false, `Fehler: ${error.message}`);
+            }
+        }
+        
+        // Automatischer Test beim Laden
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 Starte automatische Tests...');
+            setTimeout(() => {
+                testAPIManager();
+                testTaskService();
+                testHybridMigration();
+            }, 1000);
+        });
+    </script>
+    
+    <style>
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .test-result.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .test-result.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .test-buttons button {
+            margin: 5px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .test-buttons button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</body>
+</html>
+

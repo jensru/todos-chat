@@ -1,0 +1,3975 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="ui-guidelines.js"></script>
+    <script src="date-sync.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Smart Task Dashboard - Left Side -->
+        <div class="smart-dashboard">
+            <div class="header">
+                <div class="header-left">
+                    <h1>🎯 Smart Task Dashboard</h1>
+                    <p>Intelligente Task-Verwaltung mit AI-Unterstützung</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" onclick="openTaskCreationModal()" title="Neuen Task erstellen">
+                        ➕ Neuer Task
+                    </button>
+                    <button class="btn btn-secondary" onclick="openCategoryManagementModal()" title="Kategorien verwalten">
+                        📁 Kategorien
+                    </button>
+                </div>
+                <div class="header-right">
+                    <div class="current-date" id="currentDate">Lade Datum...</div>
+                </div>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <div class="search-input-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Nach Tasks suchen..." onkeyup="searchTasks()">
+                    <button class="search-clear-btn" onclick="clearSearch()" title="Suche löschen">✕</button>
+                </div>
+            </div>
+            
+            <!-- Filter & Sortierung Bar -->
+            <div class="filter-sort-bar">
+                <div class="filter-section">
+                    <button class="filter-btn active" onclick="filterTasks('heute')">Heute</button>
+                    <button class="filter-btn" onclick="filterTasks('woche')">Diese Woche</button>
+                    <button class="filter-btn" onclick="filterTasks('morgen')">Morgen</button>
+                    <button class="filter-btn" onclick="filterTasks('überfällig')">Überfällig</button>
+                    <button class="filter-btn" onclick="filterTasks('all')">Alle</button>
+                    <button class="filter-btn" onclick="filterTasks('completed')">Nur Erledigte</button>
+                    
+                    <!-- Category Filter Dropdown -->
+                    <div class="filter-dropdown">
+                        <select id="categoryFilter" class="filter-select" onchange="filterTasks('category')">
+                            <option value="">📁 Alle Kategorien</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Priority Filter Dropdown -->
+                    <div class="filter-dropdown">
+                        <select id="priorityFilter" class="filter-select" onchange="filterTasks('priority')">
+                            <option value="">⚡ Alle Prioritäten</option>
+                            <option value="high">🔴 Hoch</option>
+                            <option value="medium">🟡 Mittel</option>
+                            <option value="low">🟢 Niedrig</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="sort-section">
+                    <button class="sort-btn active" onclick="setSorting('priority')">Nach Priorität</button>
+                    <button class="sort-btn" onclick="setSorting('category')">Nach Kategorie</button>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="hideCompletedToggle" onchange="toggleCompletedTasks()">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">Erledigte ausblenden</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Bulk Actions Bar -->
+            <div id="bulkActions" class="bulk-actions-bar" style="display: none;">
+                <div class="bulk-actions-info">
+                    <span id="selectedCount">0</span> Tasks ausgewählt
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn btn-small btn-secondary" onclick="selectAllTasks()">Alle auswählen</button>
+                    <button class="btn btn-small btn-secondary" onclick="deselectAllTasks()">Auswahl aufheben</button>
+                    
+                    <!-- Bulk Category Change -->
+                    <div class="bulk-action-group">
+                        <select id="bulkCategorySelect" class="bulk-select" onchange="bulkChangeCategory()">
+                            <option value="">📁 Kategorie ändern</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Bulk Priority Change -->
+                    <div class="bulk-action-group">
+                        <select id="bulkPrioritySelect" class="bulk-select" onchange="bulkChangePriority()">
+                            <option value="">⚡ Priorität ändern</option>
+                            <option value="high">🔴 Hoch</option>
+                            <option value="medium">🟡 Mittel</option>
+                            <option value="low">🟢 Niedrig</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Bulk Due Date -->
+                    <div class="bulk-action-group">
+                        <button class="btn btn-small btn-secondary" onclick="openBulkDatePicker()">📅 Datum setzen</button>
+                        <button class="btn btn-small btn-secondary" onclick="bulkRemoveDueDate()">🗓️ Datum entfernen</button>
+                    </div>
+                    
+                    <button class="btn btn-small btn-danger" onclick="bulkDeleteTasks()">🗑️ Löschen</button>
+                </div>
+            </div>
+            
+            <!-- Task Content -->
+            <!-- Task Creation Modal -->
+            <div class="modal-overlay" id="taskCreationModal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📝 Neuen Task erstellen</h3>
+                        <button class="modal-close" onclick="closeTaskCreationModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="taskForm">
+                            <div class="form-group">
+                                <label for="taskTitle">Titel:</label>
+                                <input type="text" id="taskTitle" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskCategory">Kategorie:</label>
+                                <select id="taskCategory" name="category">
+                                    <option value="General">General</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Development">Development</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Personal">Personal</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Priorität:</label>
+                                <select id="taskPriority" name="priority">
+                                    <option value="low">Niedrig</option>
+                                    <option value="medium" selected>Mittel</option>
+                                    <option value="high">Hoch</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDueDate">Fälligkeitsdatum:</label>
+                                <input type="text" id="taskDueDate" name="dueDate" placeholder="Datum auswählen..." readonly>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeTaskCreationModal()">Abbrechen</button>
+                        <button type="button" class="btn btn-primary" onclick="submitTaskForm()">Task erstellen</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Management Modal -->
+            <div class="modal-overlay" id="categoryManagementModal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📁 Kategorien verwalten</h3>
+                        <button class="modal-close" onclick="closeCategoryManagementModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="category-list" id="categoryList">
+                            <!-- Categories will be loaded here -->
+                        </div>
+                        <div class="category-actions">
+                            <div class="form-group">
+                                <label for="newCategoryName">Neue Kategorie:</label>
+                                <input type="text" id="newCategoryName" placeholder="Kategorie-Name eingeben">
+                                <button class="btn btn-primary" onclick="createCategory()">Erstellen</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeCategoryManagementModal()">Schließen</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="smartTasks">
+                <div class="loading">Lade Tasks...</div>
+            </div>
+        </div>
+        
+        <!-- Mistral Interface - Right Side -->
+        <div class="mistral-sidebar">
+            <div class="mistral-header">
+                <h2>🤖 Mistral AI Assistant</h2>
+                <p>Intelligente Unterstützung für Ihre Tasks</p>
+            </div>
+            
+            <div class="mistral-chat">
+                
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message assistant">
+                        <div class="message-text">Hallo! Ich bin Ihr AI-Assistent für Task-Management. Wie kann ich Ihnen heute helfen?</div>
+                        <div class="message-time">Jetzt</div>
+                    </div>
+                </div>
+                
+                <!-- Chat Input -->
+                <div class="chat-input-container">
+                    <textarea 
+                        class="chat-input" 
+                        id="chatInput" 
+                        placeholder="Fragen Sie Mistral nach Hilfe bei Ihren Tasks..."
+                        rows="2"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Senden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let allTasks = [];
+        let filteredTasks = [];
+        let currentFilter = 'heute';
+        let currentSorting = 'priority'; // 'priority' oder 'category'
+        let hideCompleted = false; // Toggle für erledigte Tasks
+        let selectedTasks = new Set(); // Multi-select für Bulk-Operationen
+        let searchQuery = ''; // Aktuelle Suchanfrage
+        
+        // Get default sorting for current filter
+        function getDefaultSorting(filter) {
+            if (filter === 'heute' || filter === 'woche') {
+                return 'category';
+            }
+            return 'priority';
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded - Dashboard wird initialisiert');
+            
+            // Prüfe und aktualisiere Datum automatisch
+            try {
+            dateSync.checkAndUpdateDate();
+                console.log('DateSync erfolgreich');
+            } catch (error) {
+                console.error('DateSync Fehler:', error);
+            }
+            
+            // Initialize Flatpickr for date picker
+            try {
+                flatpickr("#taskDueDate", {
+                    dateFormat: "Y-m-d",
+                    locale: flatpickr.l10ns.de, // Use German localization object
+                    allowInput: false,
+                    clickOpens: true,
+                    placeholder: "Datum auswählen...",
+                    minDate: "today",
+                    firstDayOfWeek: 1, // Monday = 1, Sunday = 0
+                    weekNumbers: true, // Show week numbers
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // Optional: Add custom logic when date changes
+                    }
+                });
+                console.log('Flatpickr erfolgreich initialisiert');
+            } catch (error) {
+                console.error('Flatpickr Fehler:', error);
+            }
+            
+            console.log('Lade Tasks...');
+            loadTasks();
+            
+            console.log('Lade Kategorien...');
+            loadCategories();
+            
+            console.log('Setup Event Listeners...');
+            setupEventListeners();
+            
+            console.log('Update Current Date...');
+            updateCurrentDate();
+            
+            // Lade gespeicherten Tab
+            loadSavedTab();
+            
+            // Höre auf Datumsänderungen
+            window.addEventListener('dateChanged', function(event) {
+                updateCurrentDate();
+                // Lade Tasks neu wenn sich das Datum geändert hat
+                loadTasks();
+            });
+        });
+        
+        // Update current date display
+        function updateCurrentDate() {
+            const currentDateElement = document.getElementById('currentDate');
+            if (currentDateElement) {
+                const today = dateSync.getCurrentDate();
+                const dayName = dateSync.formatDayOfWeek(today.getDay());
+                const dayNumber = today.getDate();
+                const monthName = dateSync.formatMonth(today.getMonth());
+                const year = today.getFullYear();
+                
+                currentDateElement.textContent = `${dayName}, ${dayNumber}. ${monthName} ${year}`;
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Auto-resize textarea
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+        }
+
+        // Load tasks from API
+        async function loadTasks() {
+            try {
+                console.log('Lade Tasks...');
+                const response = await fetch('http://localhost:3001/api/smart-tasks');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Tasks geladen:', data.tasks?.length || 0);
+                
+                allTasks = data.tasks || [];
+                
+                // Ensure all tasks have a position property
+                allTasks.forEach((task, index) => {
+                    if (task.position === undefined) {
+                        task.position = index;
+                    }
+                });
+                
+                filteredTasks = [...allTasks];
+                
+                console.log('Rendere Tasks...');
+                renderTasks();
+                updateStats();
+                
+                // Lade Kategorien nach dem Laden der Tasks
+                console.log('Lade Kategorien nach Tasks...');
+                await loadCategories();
+                
+                console.log('Tasks erfolgreich geladen und gerendert');
+            } catch (error) {
+                console.error('Fehler beim Laden der Tasks:', error);
+                const container = document.getElementById('smartTasks');
+                if (container) {
+                    container.innerHTML = `<div class="loading">Fehler beim Laden der Tasks: ${error.message}</div>`;
+                }
+            }
+        }
+
+        // Filter tasks
+        function filterTasks(filter) {
+            currentFilter = filter;
+            
+            // Set default sorting for this filter
+            currentSorting = getDefaultSorting(filter);
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update sort button states
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            const activeSortBtn = document.querySelector(`.sort-btn[onclick*="${currentSorting}"]`);
+            if (activeSortBtn) {
+                activeSortBtn.classList.add('active');
+            }
+            
+            // Speichere aktiven Tab
+            saveActiveTab(filter);
+            
+            switch (filter) {
+                case 'all':
+                    filteredTasks = [...allTasks];
+                    renderMarkdownStructure();
+                    break;
+                case 'heute':
+                    filteredTasks = getTodayTasks();
+                    renderTodayView();
+                    break;
+                case 'woche':
+                    filteredTasks = getWeekTasks();
+                    renderMarkdownStructure();
+                    break;
+                case 'morgen':
+                    filteredTasks = getTomorrowTasks();
+                    renderTasks();
+                    break;
+                case 'überfällig':
+                    filteredTasks = getOverdueTasks();
+                    renderTasks();
+                    break;
+                case 'completed':
+                    filteredTasks = allTasks.filter(task => task.status === 'completed');
+                    renderTasks();
+                    break;
+                case 'category':
+                    const selectedCategory = document.getElementById('categoryFilter').value;
+                    if (selectedCategory) {
+                        filteredTasks = allTasks.filter(task => task.category === selectedCategory);
+                        renderTasks();
+                    } else {
+                        filteredTasks = [...allTasks];
+                        renderMarkdownStructure();
+                    }
+                    break;
+                case 'priority':
+                    const selectedPriority = document.getElementById('priorityFilter').value;
+                    if (selectedPriority) {
+                        filteredTasks = allTasks.filter(task => task.priority === selectedPriority);
+                        renderTasks();
+                    } else {
+                        filteredTasks = [...allTasks];
+                        renderMarkdownStructure();
+                    }
+                    break;
+                case 'hoch':
+                    filteredTasks = allTasks.filter(task => task.priority === 'high');
+                    renderTasks();
+                    break;
+            }
+            
+            // Apply search if there's an active search query
+            if (searchQuery) {
+                applySearch();
+            }
+            
+            updateStats();
+        }
+
+        // Helper functions for new filters
+        function getTomorrowTasks() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+            
+            return allTasks.filter(task => {
+                if (task.status === 'completed') return false;
+                return task.due_date === tomorrowStr;
+            });
+        }
+
+        function getOverdueTasks() {
+            const today = new Date().toISOString().split('T')[0];
+            
+            return allTasks.filter(task => {
+                if (task.status === 'completed') return false;
+                if (!task.due_date) return false;
+                return task.due_date < today;
+            });
+        }
+
+        // Search functions
+        function searchTasks() {
+            const searchInput = document.getElementById('searchInput');
+            searchQuery = searchInput.value.toLowerCase().trim();
+            
+            // Update clear button visibility
+            const clearBtn = document.querySelector('.search-clear-btn');
+            if (clearBtn) {
+                clearBtn.style.display = searchQuery ? 'block' : 'none';
+            }
+            
+            // Apply search to current filtered tasks
+            applySearch();
+        }
+
+        function applySearch() {
+            if (!searchQuery) {
+                // No search query, show all filtered tasks
+                filteredTasks = getBaseFilteredTasks();
+            } else {
+                // Apply search to base filtered tasks
+                const baseTasks = getBaseFilteredTasks();
+                filteredTasks = baseTasks.filter(task => 
+                    task.title.toLowerCase().includes(searchQuery)
+                );
+            }
+            
+            // Re-render with search results
+            renderTasks();
+            updateStats();
+        }
+
+        function getBaseFilteredTasks() {
+            // Get tasks based on current filter (without search)
+            switch (currentFilter) {
+                case 'all':
+                    return [...allTasks];
+                case 'heute':
+                    return getTodayTasks();
+                case 'woche':
+                    return getWeekTasks();
+                case 'morgen':
+                    return getTomorrowTasks();
+                case 'überfällig':
+                    return getOverdueTasks();
+                case 'completed':
+                    return allTasks.filter(task => task.status === 'completed');
+                case 'category':
+                    const selectedCategory = document.getElementById('categoryFilter').value;
+                    return selectedCategory ? 
+                        allTasks.filter(task => task.category === selectedCategory) : 
+                        [...allTasks];
+                case 'priority':
+                    const selectedPriority = document.getElementById('priorityFilter').value;
+                    return selectedPriority ? 
+                        allTasks.filter(task => task.priority === selectedPriority) : 
+                        [...allTasks];
+                default:
+                    return [...allTasks];
+            }
+        }
+
+        function clearSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = '';
+            searchQuery = '';
+            
+            // Hide clear button
+            const clearBtn = document.querySelector('.search-clear-btn');
+            if (clearBtn) {
+                clearBtn.style.display = 'none';
+            }
+            
+            // Reset to base filtered tasks
+            applySearch();
+        }
+
+        // Toggle completed tasks visibility
+        function toggleCompletedTasks() {
+            hideCompleted = document.getElementById('hideCompletedToggle').checked;
+            
+            // Re-apply current filter with new visibility setting
+            filterTasks(currentFilter);
+        }
+
+        // Multi-select functions
+        function toggleTaskSelection(taskId) {
+            if (selectedTasks.has(taskId)) {
+                selectedTasks.delete(taskId);
+            } else {
+                selectedTasks.add(taskId);
+            }
+            updateBulkActionsVisibility();
+        }
+
+        function selectAllTasks() {
+            const checkboxes = document.querySelectorAll('.task-checkbox-select');
+            checkboxes.forEach(checkbox => {
+                const taskId = checkbox.getAttribute('data-task-id');
+                selectedTasks.add(taskId);
+                checkbox.checked = true;
+            });
+            updateBulkActionsVisibility();
+        }
+
+        function deselectAllTasks() {
+            selectedTasks.clear();
+            const checkboxes = document.querySelectorAll('.task-checkbox-select');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            updateBulkActionsVisibility();
+        }
+
+        function updateBulkActionsVisibility() {
+            const bulkActions = document.getElementById('bulkActions');
+            const selectedCount = document.getElementById('selectedCount');
+            
+            if (bulkActions && selectedCount) {
+                selectedCount.textContent = selectedTasks.size;
+                bulkActions.style.display = selectedTasks.size > 0 ? 'flex' : 'none';
+            }
+        }
+
+        // Bulk delete function
+        async function bulkDeleteTasks() {
+            if (selectedTasks.size === 0) return;
+            
+            if (!confirm(`Möchten Sie wirklich ${selectedTasks.size} Tasks löschen?`)) {
+                return;
+            }
+
+            let deletedCount = 0;
+            for (const taskId of selectedTasks) {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        deletedCount++;
+                    }
+                } catch (error) {
+                    console.error('Error deleting task:', error);
+                }
+            }
+
+            selectedTasks.clear();
+            await loadTasks();
+            updateBulkActionsVisibility();
+            addMessage('assistant', `✅ ${deletedCount} Tasks erfolgreich gelöscht!`);
+        }
+
+        // Bulk category change function
+        async function bulkChangeCategory() {
+            const categorySelect = document.getElementById('bulkCategorySelect');
+            const newCategory = categorySelect.value;
+            
+            if (!newCategory || selectedTasks.size === 0) {
+                categorySelect.value = '';
+                return;
+            }
+
+            let updatedCount = 0;
+            for (const taskId of selectedTasks) {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ category: newCategory })
+                    });
+                    if (response.ok) {
+                        updatedCount++;
+                    }
+                } catch (error) {
+                    console.error('Error updating task category:', error);
+                }
+            }
+
+            selectedTasks.clear();
+            await loadTasks();
+            updateBulkActionsVisibility();
+            addMessage('assistant', `✅ ${updatedCount} Tasks zur Kategorie "${newCategory}" verschoben!`);
+            categorySelect.value = '';
+        }
+
+        // Bulk priority change function
+        async function bulkChangePriority() {
+            const prioritySelect = document.getElementById('bulkPrioritySelect');
+            const newPriority = prioritySelect.value;
+            
+            if (!newPriority || selectedTasks.size === 0) {
+                prioritySelect.value = '';
+                return;
+            }
+
+            let updatedCount = 0;
+            for (const taskId of selectedTasks) {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ priority: newPriority })
+                    });
+                    if (response.ok) {
+                        updatedCount++;
+                    }
+                } catch (error) {
+                    console.error('Error updating task priority:', error);
+                }
+            }
+
+            selectedTasks.clear();
+            await loadTasks();
+            updateBulkActionsVisibility();
+            addMessage('assistant', `✅ ${updatedCount} Tasks auf Priorität "${newPriority}" gesetzt!`);
+            prioritySelect.value = '';
+        }
+
+        // Bulk due date functions
+        function openBulkDatePicker() {
+            if (selectedTasks.size === 0) return;
+
+            // Create a visible input element for bulk date selection
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Datum für alle ausgewählten Tasks...';
+            input.readOnly = true;
+
+            // Style the input
+            input.style.position = 'fixed';
+            input.style.top = '50%';
+            input.style.left = '50%';
+            input.style.transform = 'translate(-50%, -50%)';
+            input.style.zIndex = '10000';
+            input.style.padding = '12px 16px';
+            input.style.border = '2px solid var(--primary)';
+            input.style.borderRadius = '8px';
+            input.style.fontSize = '16px';
+            input.style.backgroundColor = 'var(--bg-primary)';
+            input.style.color = 'var(--text-primary)';
+            input.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+            input.style.minWidth = '300px';
+
+            document.body.appendChild(input);
+
+            // Initialize Flatpickr
+            const flatpickrInstance = flatpickr(input, {
+                dateFormat: "Y-m-d",
+                locale: flatpickr.l10ns.de,
+                allowInput: false,
+                clickOpens: true,
+                placeholder: "Datum für alle Tasks...",
+                minDate: "today",
+                position: "auto center",
+                firstDayOfWeek: 1,
+                weekNumbers: true,
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (dateStr) {
+                        bulkSetDueDate(dateStr);
+                    }
+                    document.body.removeChild(input);
+                    instance.destroy();
+                },
+                onClose: function() {
+                    setTimeout(() => {
+                        if (document.body.contains(input)) {
+                            document.body.removeChild(input);
+                        }
+                        instance.destroy();
+                    }, 100);
+                }
+            });
+
+            input.focus();
+            flatpickrInstance.open();
+        }
+
+        async function bulkSetDueDate(dueDate) {
+            let updatedCount = 0;
+            for (const taskId of selectedTasks) {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ due_date: dueDate })
+                    });
+                    if (response.ok) {
+                        updatedCount++;
+                    }
+                } catch (error) {
+                    console.error('Error updating task due date:', error);
+                }
+            }
+
+            selectedTasks.clear();
+            await loadTasks();
+            updateBulkActionsVisibility();
+            addMessage('assistant', `✅ ${updatedCount} Tasks auf ${dueDate} gesetzt!`);
+        }
+
+        async function bulkRemoveDueDate() {
+            if (selectedTasks.size === 0) return;
+
+            let updatedCount = 0;
+            for (const taskId of selectedTasks) {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ due_date: null })
+                    });
+                    if (response.ok) {
+                        updatedCount++;
+                    }
+                } catch (error) {
+                    console.error('Error removing task due date:', error);
+                }
+            }
+
+            selectedTasks.clear();
+            await loadTasks();
+            updateBulkActionsVisibility();
+            addMessage('assistant', `✅ Fälligkeitsdatum von ${updatedCount} Tasks entfernt!`);
+        }
+
+        // Set sorting method
+        function setSorting(sorting) {
+            currentSorting = sorting;
+            
+            // Update button states
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Re-render current view with new sorting
+            switch (currentFilter) {
+                case 'all':
+                    filteredTasks = [...allTasks];
+                    renderTasks();
+                    break;
+                case 'heute':
+                    filteredTasks = getTodayTasks();
+                    renderTodayView();
+                    break;
+                case 'woche':
+                    filteredTasks = getWeekTasks();
+                    renderMarkdownStructure();
+                    break;
+                case 'hoch':
+                    filteredTasks = allTasks.filter(task => task.priority === 'high');
+                    renderTasks();
+                    break;
+                case 'überfällig':
+                    filteredTasks = allTasks.filter(task => task.deadline_status === 'overdue');
+                    renderTasks();
+                    break;
+            }
+        }
+
+        // Get today's tasks - Tasks mit Due Date heute (sowohl offene als auch erledigte)
+        function getTodayTasks() {
+            const today = dateSync.formatDateForAPI(dateSync.getCurrentDate());
+            return allTasks.filter(task => {
+                if (!task.due_date) return false;
+                return task.due_date === today;
+            });
+        }
+
+        // Get week's tasks
+        function getWeekTasks() {
+            const currentWeekStart = dateSync.getCurrentWeekStart();
+            const nextWeekStart = dateSync.getNextWeekStart();
+            
+            return allTasks.filter(task => {
+                if (!task.due_date) return false;
+                const taskDate = new Date(task.due_date);
+                return taskDate >= currentWeekStart && taskDate < nextWeekStart;
+            });
+        }
+
+        // Render Smart Task Structure View (Dynamic)
+        function renderMarkdownStructure() {
+            const container = document.getElementById('smartTasks');
+            
+            // Get current week and next week using DateSync
+            const currentWeekStart = dateSync.getCurrentWeekStart();
+            const nextWeekStart = dateSync.getNextWeekStart();
+            
+            // Group tasks by due dates and categories
+            const thisWeekTasks = filteredTasks.filter(task => {
+                if (!task.due_date) return false;
+                const taskDate = new Date(task.due_date);
+                return taskDate >= currentWeekStart && taskDate < nextWeekStart;
+            });
+            
+            // Separate completed tasks from this week
+            const thisWeekCompletedTasks = thisWeekTasks.filter(task => task.status === 'completed');
+            const thisWeekPendingTasks = thisWeekTasks.filter(task => task.status !== 'completed');
+            
+            const nextWeekTasks = filteredTasks.filter(task => {
+                if (!task.due_date) return false;
+                const taskDate = new Date(task.due_date);
+                const nextWeekEnd = new Date(nextWeekStart);
+                nextWeekEnd.setDate(nextWeekStart.getDate() + 7);
+                return taskDate >= nextWeekStart && taskDate < nextWeekEnd;
+            });
+            
+            const overdueTasks = filteredTasks.filter(task => {
+                if (!task.due_date) return false;
+                const taskDate = new Date(task.due_date);
+                return taskDate < currentWeekStart;
+            });
+            
+            const noDateTasks = filteredTasks.filter(task => !task.due_date);
+            
+            // Get later tasks (beyond next week)
+            const laterTasks = filteredTasks.filter(task => {
+                if (!task.due_date) return false;
+                const taskDate = new Date(task.due_date);
+                const nextWeekEnd = new Date(nextWeekStart);
+                nextWeekEnd.setDate(nextWeekStart.getDate() + 7);
+                return taskDate >= nextWeekEnd;
+            });
+            
+            // Group later tasks by month
+            const tasksByMonth = {};
+            laterTasks.forEach(task => {
+                const taskDate = new Date(task.due_date);
+                const monthKey = `${taskDate.getFullYear()}-${String(taskDate.getMonth() + 1).padStart(2, '0')}`;
+                const monthName = dateSync.formatMonth(taskDate.getMonth());
+                const year = taskDate.getFullYear();
+                const displayKey = `${monthName} ${year}`;
+                
+                if (!tasksByMonth[displayKey]) {
+                    tasksByMonth[displayKey] = [];
+                }
+                tasksByMonth[displayKey].push(task);
+            });
+            
+            // Get week days from DateSync
+            const weekDays = dateSync.getWeekDays();
+            
+            container.innerHTML = `
+                <div class="smart-structure-view">
+                    
+                    ${overdueTasks.length > 0 ? `
+                        <h2 style="color: var(--highlight); font-size: 20px; font-weight: 500; margin: var(--space-6) 0 var(--space-3) 0;">⚠️ Überfällige Tasks</h2>
+                        ${renderTaskGroup(overdueTasks)}
+                    ` : ''}
+                    
+                    <h2 style="color: var(--text-primary); font-size: 20px; font-weight: 500; margin: var(--space-6) 0 var(--space-3) 0;">📅 Diese Woche (${dateSync.getCurrentWeekRange()})</h2>
+                    
+                    ${weekDays.map(day => {
+                        const tasks = thisWeekPendingTasks.filter(task => task.due_date === day.apiFormat);
+                        if (tasks.length === 0) return '';
+                        
+                        return `
+                            <h3 style="color: var(--text-primary); font-size: 16px; font-weight: 500; margin: var(--space-4) 0 var(--space-2) 0;">${day.dayName}, ${day.dayNumber}. ${day.monthName}</h3>
+                            ${renderTaskGroup(tasks)}
+                        `;
+                    }).join('')}
+                    
+                    ${nextWeekTasks.length > 0 ? `
+                        <h2 style="color: var(--text-primary); font-size: 20px; font-weight: 500; margin: var(--space-6) 0 var(--space-3) 0;">📅 Nächste Woche (${dateSync.getNextWeekRange()})</h2>
+                        ${renderTaskGroup(nextWeekTasks)}
+                    ` : ''}
+                    
+                    ${Object.keys(tasksByMonth).length > 0 ? `
+                        <h2 style="color: var(--text-primary); font-size: 20px; font-weight: 500; margin: var(--space-6) 0 var(--space-3) 0;">📅 Spätere Termine</h2>
+                        ${Object.keys(tasksByMonth).sort().map(month => `
+                            <h3 style="color: var(--text-primary); font-size: 16px; font-weight: 500; margin: var(--space-4) 0 var(--space-2) 0;">📅 ${month}</h3>
+                            ${renderTaskGroup(tasksByMonth[month])}
+                        `).join('')}
+                    ` : ''}
+                    
+                    ${noDateTasks.length > 0 ? `
+                        <h2 style="color: var(--text-primary); font-size: 20px; font-weight: 500; margin: var(--space-6) 0 var(--space-3) 0;">📋 Tasks ohne Datum</h2>
+                        ${renderTaskGroup(noDateTasks)}
+                    ` : ''}
+                    
+                    ${thisWeekCompletedTasks.length > 0 ? `
+                        <h2 style="color: var(--text-tertiary); font-size: 20px; font-weight: 500; margin: var(--space-6) 0 var(--space-3) 0;">✅ Erledigte Tasks dieser Woche</h2>
+                        ${renderTaskGroup(thisWeekCompletedTasks)}
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Render today's view with dynamic sections
+        function renderTodayView() {
+            const container = document.getElementById('smartTasks');
+            
+            if (currentSorting === 'priority') {
+                // Group tasks by priority
+                const highPriorityTasks = filteredTasks.filter(task => task.priority === 'high' || task.deadline_status === 'overdue');
+                const mediumPriorityTasks = filteredTasks.filter(task => task.priority === 'medium' && task.deadline_status !== 'overdue');
+                const lowPriorityTasks = filteredTasks.filter(task => task.priority === 'low');
+                
+                container.innerHTML = `
+                    
+                    ${highPriorityTasks.length > 0 ? `
+                        <div style="margin-bottom: var(--space-6);">
+                            <h3 style="color: var(--highlight); margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
+                                🔥 HOCHPRIORITÄT (${highPriorityTasks.length} Tasks)
+                            </h3>
+                            ${renderTaskGroup(highPriorityTasks)}
+                        </div>
+                    ` : ''}
+                    
+                    ${mediumPriorityTasks.length > 0 ? `
+                        <div style="margin-bottom: var(--space-6);">
+                            <h3 style="color: var(--text-primary); margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
+                                ⚡ MITTELPRIORITÄT (${mediumPriorityTasks.length} Tasks)
+                            </h3>
+                            ${renderTaskGroup(mediumPriorityTasks)}
+                        </div>
+                    ` : ''}
+                    
+                    ${lowPriorityTasks.length > 0 ? `
+                        <div style="margin-bottom: var(--space-6);">
+                            <h3 style="color: var(--text-primary); margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
+                                📝 NIEDRIGPRIORITÄT (${lowPriorityTasks.length} Tasks)
+                            </h3>
+                            ${renderTaskGroup(lowPriorityTasks)}
+                        </div>
+                    ` : ''}
+                    
+                    <div style="background: var(--primary-light); border-radius: var(--radius-lg); padding: var(--space-4); margin-top: var(--space-6); border: 1px solid var(--primary);">
+                        <h4 style="color: var(--primary); margin: 0 0 var(--space-2) 0;">💡 Heute-Fokus</h4>
+                        <p style="margin: 0; font-size: 14px; color: var(--text-secondary);">
+                            Konzentrieren Sie sich zuerst auf die <strong>Hochpriorität</strong> Tasks. 
+                            ${highPriorityTasks.length > 0 ? `Sie haben ${highPriorityTasks.length} überfällige oder hochprioritäre Tasks.` : 'Alle Hochpriorität-Tasks sind erledigt!'}
+                        </p>
+                    </div>
+                `;
+            } else {
+                // Bei Kategorie-Sortierung: Einfach alle Tasks rendern ohne Prioritäts-Überschriften
+                container.innerHTML = `
+                    
+                    ${renderTaskGroup(filteredTasks)}
+                `;
+            }
+        }
+
+        // Render a group of tasks with dynamic sorting
+        function renderTaskGroup(tasks) {
+            if (tasks.length === 0) return '';
+            
+            if (currentSorting === 'priority') {
+                return renderByPriority(tasks);
+            } else {
+                return renderByCategory(tasks);
+            }
+        }
+        
+        // Render tasks grouped by priority (category as label)
+        function renderByPriority(tasks) {
+            // Sort by priority first, then by status
+            const sortedTasks = [...tasks].sort((a, b) => {
+                // First: pending vs completed
+                if (a.status === 'completed' && b.status !== 'completed') return 1;
+                if (a.status !== 'completed' && b.status === 'completed') return -1;
+                
+                // Second: priority order
+                const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+                const aPriority = priorityOrder[a.priority] || 2;
+                const bPriority = priorityOrder[b.priority] || 2;
+                
+                if (aPriority !== bPriority) return bPriority - aPriority;
+                
+                // Third: deadline status
+                const deadlineOrder = { 'overdue': 4, 'due_today': 3, 'due_tomorrow': 2, 'due_soon': 1, 'due_this_week': 1, 'due_later': 0, 'no_deadline': 0 };
+                const aDeadline = deadlineOrder[a.deadline_status] || 0;
+                const bDeadline = deadlineOrder[b.deadline_status] || 0;
+                
+                return bDeadline - aDeadline;
+            });
+            
+            // Separate pending and completed tasks
+            const pendingTasks = sortedTasks.filter(task => task.status !== 'completed');
+            const completedTasks = sortedTasks.filter(task => task.status === 'completed');
+            
+            let html = '';
+            
+            // Render pending tasks first with drop zone
+            if (pendingTasks.length > 0) {
+                html += `
+                    <div class="category-drop-zone" 
+                         ondrop="dropOnCategory(event, 'General')" 
+                         ondragover="event.preventDefault(); event.dataTransfer.dropEffect = 'move';"
+                         ondragenter="event.preventDefault(); event.target.style.background='var(--primary-light)';"
+                         ondragleave="event.target.style.background='transparent';">
+                        ${pendingTasks.map(task => renderSingleTask(task)).join('')}
+                    </div>
+                `;
+            }
+            
+            // Add separator if there are both pending and completed tasks
+            if (pendingTasks.length > 0 && completedTasks.length > 0) {
+                html += '<div class="task-separator"><div class="separator-line"></div><span class="separator-text">Erledigte Tasks</span><div class="separator-line"></div></div>';
+            }
+            
+            // Render completed tasks last with drop zone
+            if (completedTasks.length > 0) {
+                html += `
+                    <div class="category-drop-zone" 
+                         ondrop="dropOnCategory(event, 'General')" 
+                         ondragover="event.preventDefault(); event.dataTransfer.dropEffect = 'move';"
+                         ondragenter="event.preventDefault(); event.target.style.background='var(--primary-light)';"
+                         ondragleave="event.target.style.background='transparent';">
+                        ${completedTasks.map(task => renderSingleTask(task)).join('')}
+                    </div>
+                `;
+            }
+            
+            return html;
+        }
+        
+        // Render tasks grouped by category (priority as label)
+        function renderByCategory(tasks) {
+            // Gruppiere Tasks nach Kategorien
+            const tasksByCategory = {};
+            tasks.forEach(task => {
+                const category = task.category || 'General';
+                if (!tasksByCategory[category]) {
+                    tasksByCategory[category] = [];
+                }
+                tasksByCategory[category].push(task);
+            });
+            
+            // Sortiere Kategorien nach Anzahl der Tasks (größte zuerst)
+            // Filtere Kategorien heraus, wenn alle Tasks erledigt sind
+            const sortedCategories = Object.entries(tasksByCategory)
+                .filter(([category, categoryTasks]) => {
+                    // Zeige Kategorie nur wenn es noch offene Tasks gibt
+                        return categoryTasks.some(task => task.status !== 'completed');
+                })
+                .sort(([,a], [,b]) => b.length - a.length);
+            
+            // Sammle alle erledigten Tasks (auch aus "General")
+            let allCompletedTasks = [];
+            Object.entries(tasksByCategory).forEach(([category, categoryTasks]) => {
+                const completedTasks = categoryTasks.filter(task => task.status === 'completed');
+                allCompletedTasks = allCompletedTasks.concat(completedTasks);
+            });
+            
+            const categoryIcons = {
+                'Business': '💼',
+                'Development': '💻',
+                'Marketing': '📢',
+                'PUSH': '🚀',
+                'Personal': '👤',
+                'General': '📋',
+                'Check24': '🏢',
+                'Sustain': '🌱',
+                'Meetings': '🤝',
+                'Unbekannt': '❓'
+            };
+            
+            let html = '';
+            
+            sortedCategories.forEach(([category, categoryTasks]) => {
+                const icon = categoryIcons[category] || '📁';
+                
+                // Sort tasks by priority first, then by status
+                const sortedTasks = [...categoryTasks].sort((a, b) => {
+                    // First: pending vs completed
+                    if (a.status === 'completed' && b.status !== 'completed') return 1;
+                    if (a.status !== 'completed' && b.status === 'completed') return -1;
+                    
+                    // Second: priority order
+                    const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+                    const aPriority = priorityOrder[a.priority] || 2;
+                    const bPriority = priorityOrder[b.priority] || 2;
+                    
+                    if (aPriority !== bPriority) return bPriority - aPriority;
+                    
+                    return 0;
+                });
+                
+                // Separate pending and completed tasks
+                const pendingTasks = sortedTasks.filter(task => task.status !== 'completed');
+                const completedTasks = sortedTasks.filter(task => task.status === 'completed');
+                
+                // Sammle erledigte Tasks für später (aber nicht aus "General" wenn alle erledigt)
+                if (!(category === 'General' && completedTasks.length === categoryTasks.length)) {
+                    allCompletedTasks = allCompletedTasks.concat(completedTasks);
+                }
+                
+                // Nur Kategorie-Header anzeigen wenn mehr als 1 Task oder wenn es nicht "General" ist
+                if (categoryTasks.length > 1 || category !== 'General') {
+                    html += `
+                        <div style="margin: var(--space-3) 0 var(--space-2) 0; padding: var(--space-2) var(--space-3); background: var(--secondary-light); border-radius: var(--radius-md); border-left: 3px solid var(--primary);"
+                             ondrop="dropOnCategory(event, '${category}')" 
+                             ondragover="event.preventDefault(); event.dataTransfer.dropEffect = 'move';"
+                             ondragenter="event.preventDefault(); event.target.style.background='var(--primary-light)';"
+                             ondragleave="event.target.style.background='var(--secondary-light)';">
+                            <span style="font-size: 12px; font-weight: 600; color: var(--text-primary);">
+                                ${icon} ${category} (${pendingTasks.length})
+                            </span>
+                        </div>
+                    `;
+                }
+                
+                // Render nur pending tasks hier mit Drop-Zone
+                if (pendingTasks.length > 0) {
+                    html += `
+                        <div class="category-drop-zone" 
+                             ondrop="dropOnCategory(event, '${category}')" 
+                             ondragover="event.preventDefault(); event.dataTransfer.dropEffect = 'move';"
+                             ondragenter="event.preventDefault(); event.target.style.background='var(--primary-light)';"
+                             ondragleave="event.target.style.background='transparent';">
+                            ${pendingTasks.map(task => renderSingleTask(task)).join('')}
+                        </div>
+                    `;
+                }
+            });
+            
+            // Alle erledigten Tasks ganz nach unten ohne Kategorie-Header
+            if (allCompletedTasks.length > 0) {
+                html += '<div class="task-separator"><div class="separator-line"></div><span class="separator-text">Erledigte Tasks</span><div class="separator-line"></div></div>';
+                html += `
+                    <div class="category-drop-zone" 
+                         ondrop="dropOnCategory(event, 'General')" 
+                         ondragover="event.preventDefault(); event.dataTransfer.dropEffect = 'move';"
+                         ondragenter="event.preventDefault(); event.target.style.background='var(--primary-light)';"
+                         ondragleave="event.target.style.background='transparent';">
+                        ${allCompletedTasks.map(task => renderSingleTask(task)).join('')}
+                    </div>
+                `;
+            }
+            
+            return html;
+        }
+        
+        // Render a single task
+        function renderSingleTask(task) {
+            const hierarchyClass = task.hierarchy_level ? `hierarchy-level-${task.hierarchy_level}` : '';
+            const completedClass = task.status === 'completed' ? 'completed-task' : '';
+            
+            // Remove markdown formatting (**) and category symbols from task titles
+            const cleanTitle = task.title.replace(/\*\*/g, '').replace(/\s*📁\s*[^-\s]+/g, '').trim();
+            
+            // Bei Kategorie-Sortierung: Priorität-Badge nur anzeigen wenn nicht "medium"
+            const showPriorityBadge = currentSorting === 'priority' || task.priority !== 'medium';
+            
+            // Zeige Priorität-Button nur wenn Priorität nicht sichtbar ist
+            const showPriorityButton = !showPriorityBadge && task.status !== 'completed';
+            
+            return `
+                <div class="smart-task-card ${task.priority}-priority ${task.deadline_status && task.deadline_status !== null ? task.deadline_status.replace('_', '-') : 'no-deadline'} ${hierarchyClass} ${completedClass}" 
+                     draggable="true" 
+                     ondragstart="dragStart(event, '${task.id}')" 
+                     ondragend="dragEnd(event)"
+                     data-task-id="${task.id}"
+                     ondragover="dragOver(event)"
+                     ondragenter="dragEnter(event)"
+                     ondragleave="dragLeave(event)"
+                     ondrop="drop(event)">
+                    <div class="task-select">
+                        <input type="checkbox" class="task-checkbox-select" data-task-id="${task.id}" onchange="toggleTaskSelection('${task.id}')">
+                    </div>
+                    <div class="task-content">
+                        <div class="task-title">
+                            <span class="task-checkbox" onclick="event.stopPropagation(); toggleTask('${task.id}')">
+                                ${task.status === 'completed' ? '✅' : '☐'}
+                            </span>
+                            <div class="task-title-editable" onclick="event.stopPropagation(); startEditTitle('${task.id}', '${cleanTitle.replace(/'/g, "\\'")}')">
+                                <span class="task-title-text">${cleanTitle}</span>
+                                <span class="edit-hint">✏️</span>
+                            </div>
+                            <input type="text" class="task-title-edit" style="display: none;" onblur="saveEditTitle('${task.id}')" onkeypress="handleEditKeypress(event, '${task.id}')" />
+                        </div>
+                    </div>
+                    <div class="task-meta">
+                        ${showPriorityBadge ? `
+                            <div class="priority-editable" onclick="event.stopPropagation(); showPriorityMenu('${task.id}', '${task.priority}', event)">
+                                <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+                                <span class="edit-hint">⚙️</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${showPriorityButton ? `
+                            <div class="priority-add-button" onclick="event.stopPropagation(); showPriorityMenu('${task.id}', '${task.priority}', event)" title="Priorität hinzufügen">
+                                <span class="priority-add-icon">⚡</span>
+                            </div>
+                        ` : ''}
+                        ${task.deadline_status && task.deadline_status !== null && task.deadline_status !== 'no_deadline' && task.deadline_status !== 'due_today' ? `<span class="deadline-badge deadline-${task.deadline_status.replace('_', '-')}">${getDeadlineText(task.deadline_status)}</span>` : ''}
+                        <button class="delete-task-btn" onclick="event.stopPropagation(); deleteTask('${task.id}')" title="Task löschen">🗑️</button>
+                    </div>
+                    ${task.due_date ? `
+                        ${(() => {
+                            const dueDate = new Date(task.due_date);
+                            const today = dateSync.getCurrentDate();
+                            const diffDays = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+                            
+                            // Bei "Heute" Filterung: Kein Datums-Label für heute fällige Tasks
+                            if (currentFilter === 'heute' && diffDays === 0) return '';
+                            
+                            return `
+                                <div class="due-date-editable" onclick="event.stopPropagation(); openDatePicker('${task.id}', '${task.due_date}', event)">
+                                    <div class="due-date-display">
+                                        📅 ${dateSync.formatDateForDisplay(new Date(task.due_date))}
+                                        ${(() => {
+                                            // Nur zusätzliche Info anzeigen, wenn es nicht "heute" ist
+                                            if (diffDays === 0) return ''; // Keine zusätzliche Info für heute
+                                            if (diffDays === 1) return '<span style="color: var(--primary); font-weight: 500;">(Morgen)</span>';
+                                            if (diffDays === -1) return '<span style="color: var(--highlight); font-weight: 600;">(Gestern)</span>';
+                                            if (diffDays < 0) return `<span style="color: var(--highlight); font-weight: 600;">(vor ${Math.abs(diffDays)} Tagen)</span>`;
+                                            return `<span style="color: var(--text-secondary);">(in ${diffDays} Tagen)</span>`;
+                                        })()}
+                                    </div>
+                                    <span class="edit-hint">📅</span>
+                                </div>
+                            `;
+                        })()}
+                    ` : ''}
+                    <div class="task-stats">
+                        <div class="category-editable" onclick="event.stopPropagation(); showCategoryMenu('${task.id}', '${task.category}', event)">
+                            <span>📁 ${task.category}</span>
+                            <span class="edit-hint">⚙️</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render tasks (fallback)
+        function renderTasks() {
+            const container = document.getElementById('smartTasks');
+            if (!container) {
+                console.error('smartTasks container nicht gefunden');
+                return;
+            }
+            
+            try {
+                // Apply hide completed filter if enabled
+                let tasksToRender = filteredTasks;
+                if (hideCompleted) {
+                    tasksToRender = filteredTasks.filter(task => task.status !== 'completed');
+                }
+                
+                if (tasksToRender.length === 0) {
+                    container.innerHTML = '<div class="loading">Keine Tasks gefunden</div>';
+                    return;
+                }
+                
+                container.innerHTML = renderTaskGroup(tasksToRender);
+            } catch (error) {
+                console.error('Fehler beim Rendern der Tasks:', error);
+                container.innerHTML = '<div class="loading">Fehler beim Rendern der Tasks</div>';
+            }
+        }
+
+
+        // Update statistics
+        function updateStats() {
+            // Stats wurden entfernt - Funktion bleibt für Kompatibilität
+        }
+
+        // Get deadline text
+        function getDeadlineText(status) {
+            const statusMap = {
+                'overdue': 'Überfällig',
+                'due_today': 'Heute',
+                'due_tomorrow': 'Morgen',
+                'due_soon': 'Bald',
+                'due_this_week': 'Diese Woche',
+                'due_later': 'Später',
+                'no_deadline': 'Kein Datum'
+            };
+            return statusMap[status] || status;
+        }
+
+        // Drag & Drop Functions
+        let draggedTaskId = null;
+        
+        function dragStart(event, taskId) {
+            draggedTaskId = taskId;
+            event.dataTransfer.effectAllowed = 'move';
+            event.target.style.opacity = '0.5';
+            
+            // Add visual feedback for drag operation
+            event.target.classList.add('dragging');
+        }
+        
+        function dragEnd(event) {
+            event.target.style.opacity = '';
+            event.target.classList.remove('dragging');
+            draggedTaskId = null;
+            
+            // Remove all drop indicators
+            document.querySelectorAll('.drop-indicator').forEach(indicator => {
+                indicator.remove();
+            });
+        }
+        
+        function dragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+            
+            // Show drop indicator
+            showDropIndicator(event);
+        }
+        
+        function dragEnter(event) {
+            event.preventDefault();
+            event.target.classList.add('drag-over');
+        }
+        
+        function dragLeave(event) {
+            event.target.classList.remove('drag-over');
+        }
+        
+        function drop(event) {
+            event.preventDefault();
+            event.target.classList.remove('drag-over');
+            
+            if (!draggedTaskId) return;
+            
+            const targetTaskId = event.target.closest('.smart-task-card')?.getAttribute('data-task-id');
+            if (!targetTaskId || targetTaskId === draggedTaskId) return;
+            
+            // Update task positions
+            updateTaskPositions(draggedTaskId, targetTaskId);
+        }
+        
+        function showDropIndicator(event) {
+            // Remove existing indicators
+            document.querySelectorAll('.drop-indicator').forEach(indicator => {
+                indicator.remove();
+            });
+            
+            const taskCard = event.target.closest('.smart-task-card');
+            if (!taskCard) return;
+            
+            const indicator = document.createElement('div');
+            indicator.className = 'drop-indicator';
+            indicator.style.cssText = `
+                height: 2px;
+                background: var(--primary);
+                margin: 4px 0;
+                border-radius: 1px;
+                box-shadow: 0 0 8px var(--primary);
+            `;
+            
+            // Insert indicator above the task
+            taskCard.parentNode.insertBefore(indicator, taskCard);
+        }
+        
+        async function updateTaskPositions(draggedTaskId, targetTaskId) {
+            try {
+                // Get current tasks
+                const draggedTask = allTasks.find(task => task.id === draggedTaskId);
+                const targetTask = allTasks.find(task => task.id === targetTaskId);
+                
+                if (!draggedTask || !targetTask) return;
+                
+                // Update positions based on category and priority
+                const draggedPosition = draggedTask.position || 0;
+                const targetPosition = targetTask.position || 0;
+                
+                // Swap positions
+                await fetch(`http://localhost:3001/api/tasks/${draggedTaskId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ position: targetPosition })
+                });
+                
+                await fetch(`http://localhost:3001/api/tasks/${targetTaskId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ position: draggedPosition })
+                });
+                
+                // Reload tasks to reflect changes
+                await loadTasks();
+                
+                addMessage('assistant', '✅ Task-Position erfolgreich aktualisiert!');
+                
+            } catch (error) {
+                console.error('Error updating task positions:', error);
+                addMessage('assistant', '❌ Fehler beim Aktualisieren der Position.');
+            }
+        }
+        
+        function dropOnCategory(event, categoryName) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Reset drop zone styling
+            event.target.style.background = 'var(--secondary-light)';
+            
+            if (draggedTaskId) {
+                const task = allTasks.find(t => t.id === draggedTaskId);
+                if (task && task.category !== categoryName) {
+                    console.log(`Moving task ${task.title} to category ${categoryName}`);
+                    
+                    // Update task category
+                    task.category = categoryName;
+                    task.updated_at = new Date().toISOString();
+                    
+                    // Send update to API using the universal updateTask function
+                    updateTask(task.id, { category: categoryName });
+                    
+                    // Re-render current view
+                    switch (currentFilter) {
+                        case 'all':
+                            filteredTasks = [...allTasks];
+                            renderTasks();
+                            break;
+                        case 'heute':
+                            filteredTasks = getTodayTasks();
+                            renderTodayView();
+                            break;
+                        case 'woche':
+                            filteredTasks = getWeekTasks();
+                            renderMarkdownStructure();
+                            break;
+                        case 'hoch':
+                            filteredTasks = allTasks.filter(task => task.priority === 'high');
+                            renderTasks();
+                            break;
+                        case 'überfällig':
+                            filteredTasks = allTasks.filter(task => task.deadline_status === 'overdue');
+                            renderTasks();
+                            break;
+                    }
+                    
+                    updateStats();
+                }
+            }
+            
+            draggedTaskId = null;
+        }
+        
+        // Update task category in database
+
+        // Toggle task completion
+        async function toggleTask(taskId) {
+            const task = allTasks.find(t => t.id === taskId);
+            if (task) {
+                const newStatus = task.status === 'completed' ? 'pending' : 'completed';
+                
+                try {
+                    // Update task in database
+                    const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            status: newStatus,
+                            updated_at: new Date().toISOString()
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        // Update local task
+                        task.status = newStatus;
+                        task.updated_at = new Date().toISOString();
+                        
+                        // Update display
+                        renderTasks();
+                        updateStats();
+                        
+                        console.log(`✅ Task ${taskId} toggled to ${newStatus}`);
+                    } else {
+                        console.error('Failed to update task:', data.error);
+                    }
+                } catch (error) {
+                    console.error('Error updating task:', error);
+                }
+            }
+        }
+
+        // Delete task
+        async function deleteTask(taskId) {
+            try {
+                const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    // Remove task from local array
+                    allTasks = allTasks.filter(t => t.id !== taskId);
+                    
+                    // Update display
+                    renderTasks();
+                    updateStats();
+                    
+                    console.log(`✅ Task ${taskId} deleted`);
+                } else {
+                    console.error('Failed to delete task:', data.error);
+                    alert('Fehler beim Löschen des Tasks: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error deleting task:', error);
+                alert('Fehler beim Löschen des Tasks: ' + error.message);
+            }
+        }
+
+        // Parse Mistral Action Responses
+        async function parseMistralAction(response) {
+            try {
+                // Try to parse as JSON first
+                const jsonResponse = JSON.parse(response);
+                if (jsonResponse.command && jsonResponse.reply) {
+                    // Parse action command from JSON
+                    const actionMatch = jsonResponse.command.match(/ACTION:(\w+)\|(.+)/);
+                    if (!actionMatch) {
+                        return { executed: false };
+                    }
+                    
+                    const action = actionMatch[1];
+                    const params = actionMatch[2];
+                    
+                    // Parse parameters
+                    const paramObj = {};
+                    params.split('|').forEach(param => {
+                        const [key, value] = param.split(':');
+                        if (key && value) {
+                            paramObj[key] = value;
+                        }
+                    });
+                    
+                    // Execute action based on type
+                    let result = { executed: false };
+                    switch (action) {
+                        case 'CREATE_TASK':
+                            result = await executeCreateTask(paramObj);
+                            break;
+                        case 'DELETE_CATEGORY':
+                            result = await executeDeleteCategory(paramObj);
+                            break;
+                        case 'MOVE_TASKS':
+                            result = await executeMoveTasks(paramObj);
+                            break;
+                        case 'CREATE_MULTIPLE':
+                            result = await executeCreateMultiple(paramObj);
+                            break;
+                        case 'QUERY_TASKS':
+                            result = await executeQueryTasks(paramObj);
+                            break;
+                        default:
+                            return { executed: false };
+                    }
+                    
+                    // Use the user-friendly reply from JSON if action was executed
+                    if (result.executed) {
+                        result.message = jsonResponse.reply;
+                    }
+                    
+                    return result;
+                }
+            } catch (jsonError) {
+                // Fallback: try to parse as old ACTION: format
+                if (!response.includes('ACTION:')) {
+                    return { executed: false };
+                }
+                
+                // Parse action command
+                const actionMatch = response.match(/ACTION:(\w+)\|(.+)/);
+                if (!actionMatch) {
+                    return { executed: false };
+                }
+                
+                const action = actionMatch[1];
+                const params = actionMatch[2];
+                
+                // Parse parameters
+                const paramObj = {};
+                params.split('|').forEach(param => {
+                    const [key, value] = param.split(':');
+                    if (key && value) {
+                        paramObj[key] = value;
+                    }
+                });
+                
+                // Execute action based on type
+                switch (action) {
+                    case 'CREATE_TASK':
+                        return await executeCreateTask(paramObj);
+                    case 'DELETE_CATEGORY':
+                        return await executeDeleteCategory(paramObj);
+                    case 'MOVE_TASKS':
+                        return await executeMoveTasks(paramObj);
+                    case 'CREATE_MULTIPLE':
+                        return await executeCreateMultiple(paramObj);
+                    case 'QUERY_TASKS':
+                        return await executeQueryTasks(paramObj);
+                    default:
+                        return { executed: false };
+                }
+            }
+        }
+
+        // Action Executors
+        async function executeCreateTask(params) {
+            try {
+                const response = await fetch('http://localhost:3001/api/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: params.TITLE || 'Neuer Task',
+                        category: params.CATEGORY || 'General',
+                        status: 'pending',
+                        priority: 'medium',
+                        due_date: params.DUE_DATE || '2025-10-07'
+                    })
+                });
+                
+                if (response.ok) {
+                    const dueDate = params.DUE_DATE ? ` für ${params.DUE_DATE}` : '';
+                    return {
+                        executed: true,
+                        message: `✅ Task "${params.TITLE}" in der Kategorie "${params.CATEGORY}"${dueDate} erstellt.`
+                    };
+                } else {
+                    return {
+                        executed: true,
+                        message: `❌ Fehler beim Erstellen des Tasks.`
+                    };
+                }
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Erstellen des Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function executeDeleteCategory(params) {
+            try {
+                const tasksToDelete = allTasks.filter(task => 
+                    task.category.toLowerCase() === params.CATEGORY.toLowerCase() && 
+                    task.status !== 'completed'
+                );
+                
+                if (tasksToDelete.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine offenen Tasks in der Kategorie "${params.CATEGORY}" gefunden.`
+                    };
+                }
+                
+                let deletedCount = 0;
+                for (const task of tasksToDelete) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        deletedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${deletedCount} Tasks aus der Kategorie "${params.CATEGORY}" gelöscht.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Löschen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function executeMoveTasks(params) {
+            try {
+                const tasksToMove = allTasks.filter(task => 
+                    task.category.toLowerCase() === params.CATEGORY.toLowerCase() && 
+                    task.status !== 'completed'
+                );
+                
+                if (tasksToMove.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine ${params.CATEGORY} Tasks gefunden.`
+                    };
+                }
+                
+                let movedCount = 0;
+                for (const task of tasksToMove) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ due_date: params.TO_DATE })
+                    });
+                    if (response.ok) {
+                        movedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${movedCount} ${params.CATEGORY} Tasks auf ${params.TO_DATE} verschoben.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Verschieben der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function executeCreateMultiple(params) {
+            try {
+                const count = parseInt(params.COUNT) || 1;
+                const category = params.CATEGORY || 'General';
+                const titles = params.TITLES ? params.TITLES.split(',') : [];
+                
+                let createdCount = 0;
+                for (let i = 0; i < count; i++) {
+                    const title = titles[i] || `${category} Task ${i + 1}`;
+                    const response = await fetch('http://localhost:3001/api/tasks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: title.trim(),
+                            category: category,
+                            status: 'pending',
+                            priority: 'medium',
+                            due_date: '2025-10-07'
+                        })
+                    });
+                    if (response.ok) {
+                        createdCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${createdCount} neue Tasks in der Kategorie "${category}" erstellt.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Erstellen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function executeQueryTasks(params) {
+            try {
+                let filteredTasks = [...allTasks];
+                
+                // Apply filters
+                if (params.FILTER) {
+                    const filters = params.FILTER.split(',');
+                    filters.forEach(filter => {
+                        const [key, value] = filter.split('=');
+                        if (key && value) {
+                            switch (key.trim()) {
+                                case 'category':
+                                    filteredTasks = filteredTasks.filter(task => 
+                                        task.category.toLowerCase() === value.toLowerCase()
+                                    );
+                                    break;
+                                case 'date':
+                                    filteredTasks = filteredTasks.filter(task => 
+                                        task.due_date === value
+                                    );
+                                    break;
+                                case 'status':
+                                    filteredTasks = filteredTasks.filter(task => 
+                                        task.status === value
+                                    );
+                                    break;
+                                case 'priority':
+                                    filteredTasks = filteredTasks.filter(task => 
+                                        task.priority === value
+                                    );
+                                    break;
+                            }
+                        }
+                    });
+                }
+                
+                if (filteredTasks.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine Tasks gefunden, die den Kriterien entsprechen.`
+                    };
+                }
+                
+                // Format task list for display
+                let taskList = '';
+                filteredTasks.forEach((task, index) => {
+                    const status = task.status === 'completed' ? '✅' : '⏳';
+                    const priority = task.priority === 'high' ? '🔥' : task.priority === 'low' ? '🌅' : '';
+                    taskList += `${index + 1}. ${status} ${task.title} ${priority} (${task.category})\n`;
+                });
+                
+                return {
+                    executed: true,
+                    message: `📋 Ich habe ${filteredTasks.length} Tasks gefunden:\n\n${taskList}\n\nWas möchtest du mit diesen Tasks machen?`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Abfragen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        // Action Parser for Mistral Commands
+        async function parseAndExecuteAction(prompt) {
+            const lowerPrompt = prompt.toLowerCase();
+            
+            // Pattern 1: Delete all tasks of category
+            const deleteCategoryMatch = lowerPrompt.match(/lösche?\s+(alle\s+)?(todos?|tasks?)\s+(der\s+)?kategorie\s+(\w+)/i);
+            if (deleteCategoryMatch) {
+                const category = deleteCategoryMatch[4];
+                return await deleteTasksByCategory(category);
+            }
+            
+            // Pattern 2: Move tasks from today to tomorrow
+            const moveTasksMatch = lowerPrompt.match(/verschiebe?\s+(die\s+)?(\w+)\s+(todos?|tasks?)\s+(von\s+)?heute\s+(auf\s+)?morgen/i);
+            if (moveTasksMatch) {
+                const category = moveTasksMatch[2];
+                return await moveTasksToTomorrow(category);
+            }
+            
+            // Pattern 3: Create multiple tasks in category
+            const createTasksMatch = lowerPrompt.match(/erstelle?\s+(mir\s+)?(folgende\s+)?(\d+)\s+(todos?|tasks?)\s+(in\s+der\s+)?kategorie\s+(\w+)/i);
+            if (createTasksMatch) {
+                const count = parseInt(createTasksMatch[3]);
+                const category = createTasksMatch[6];
+                return await createMultipleTasks(count, category, prompt);
+            }
+            
+            // Pattern 3b: Create multiple tasks from natural language list
+            const createListMatch = lowerPrompt.match(/erstelle?\s+(mir\s+)?(folgende\s+)?(todos?|tasks?):?\s*(.+)/i);
+            if (createListMatch) {
+                const taskList = createListMatch[4];
+                return await createTasksFromList(taskList, prompt);
+            }
+            
+            // Pattern 3c: Create tasks from bullet points or dashes
+            if (prompt.includes('•') || prompt.includes('-') || prompt.includes('*')) {
+                return await createTasksFromBulletPoints(prompt);
+            }
+            
+            // Pattern 4: Move all tasks of category to specific date
+            const moveToDateMatch = lowerPrompt.match(/verschiebe?\s+(alle\s+)?(\w+)\s+(todos?|tasks?)\s+(auf\s+)?(\d{1,2}\.\d{1,2}\.?\d{0,4})/i);
+            if (moveToDateMatch) {
+                const category = moveToDateMatch[2];
+                const dateStr = moveToDateMatch[5];
+                return await moveTasksToDate(category, dateStr);
+            }
+            
+            // Pattern 4: Sorting Commands
+            const sortMatch = lowerPrompt.match(/sortiere?\s+(?:die\s+)?(?:todos?|tasks?|aufgaben?)\s+(?:nach\s+)?(\w+)/i);
+            if (sortMatch) {
+                const sortType = sortMatch[1];
+                return await executeSortingCommand(sortType);
+            }
+            
+            // Pattern 5: Show sorted tasks
+            const showSortedMatch = lowerPrompt.match(/zeige?\s+(?:mir\s+)?(?:die\s+)?(?:todos?|tasks?|aufgaben?)\s+(?:nach\s+)?(\w+)\s+(?:sortiert|geordnet)/i);
+            if (showSortedMatch) {
+                const sortType = showSortedMatch[1];
+                return await executeSortingCommand(sortType, true);
+            }
+            
+            return { executed: false };
+        }
+
+        // Bulk Category Change for KI
+        async function bulkChangeCategory(oldCategory, newCategory) {
+            try {
+                const tasksToUpdate = allTasks.filter(task => 
+                    task.category && task.category.toLowerCase() === oldCategory.toLowerCase()
+                );
+                
+                if (tasksToUpdate.length === 0) {
+                    return { 
+                        executed: true, 
+                        message: `Keine Tasks in der Kategorie "${oldCategory}" gefunden.` 
+                    };
+                }
+                
+                for (const task of tasksToUpdate) {
+                    await fetch(`/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...task, category: newCategory })
+                    });
+                }
+                
+                // Reload tasks to show changes
+                await loadTasks();
+                renderTasks();
+                
+                return { 
+                    executed: true, 
+                    message: `${tasksToUpdate.length} Tasks von "${oldCategory}" zu "${newCategory}" verschoben.` 
+                };
+            } catch (error) {
+                console.error('Error changing category:', error);
+                return { 
+                    executed: false, 
+                    message: `Fehler beim Ändern der Kategorie: ${error.message}` 
+                };
+            }
+        }
+
+        // Bulk Priority Change for KI
+        async function bulkChangePriority(oldPriority, newPriority) {
+            try {
+                const tasksToUpdate = allTasks.filter(task => 
+                    task.priority && task.priority.toLowerCase() === oldPriority.toLowerCase()
+                );
+                
+                if (tasksToUpdate.length === 0) {
+                    return { 
+                        executed: true, 
+                        message: `Keine Tasks mit Priorität "${oldPriority}" gefunden.` 
+                    };
+                }
+                
+                for (const task of tasksToUpdate) {
+                    await fetch(`/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...task, priority: newPriority })
+                    });
+                }
+                
+                // Reload tasks to show changes
+                await loadTasks();
+                renderTasks();
+                
+                return { 
+                    executed: true, 
+                    message: `${tasksToUpdate.length} Tasks von Priorität "${oldPriority}" zu "${newPriority}" geändert.` 
+                };
+            } catch (error) {
+                console.error('Error changing priority:', error);
+                return { 
+                    executed: false, 
+                    message: `Fehler beim Ändern der Priorität: ${error.message}` 
+                };
+            }
+        }
+
+        // Bulk Due Date Change for KI
+        async function bulkSetDueDate(dueDate) {
+            try {
+                const tasksToUpdate = allTasks.filter(task => !task.completed);
+                
+                if (tasksToUpdate.length === 0) {
+                    return { 
+                        executed: true, 
+                        message: `Keine offenen Tasks gefunden.` 
+                    };
+                }
+                
+                for (const task of tasksToUpdate) {
+                    await fetch(`/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...task, dueDate: dueDate })
+                    });
+                }
+                
+                // Reload tasks to show changes
+                await loadTasks();
+                renderTasks();
+                
+                return { 
+                    executed: true, 
+                    message: `Fälligkeitsdatum "${dueDate}" für ${tasksToUpdate.length} Tasks gesetzt.` 
+                };
+            } catch (error) {
+                console.error('Error setting due date:', error);
+                return { 
+                    executed: false, 
+                    message: `Fehler beim Setzen des Fälligkeitsdatums: ${error.message}` 
+                };
+            }
+        }
+
+        // Bulk Remove Due Date for KI
+        async function bulkRemoveDueDate() {
+            try {
+                const tasksToUpdate = allTasks.filter(task => 
+                    !task.completed && task.dueDate
+                );
+                
+                if (tasksToUpdate.length === 0) {
+                    return { 
+                        executed: true, 
+                        message: `Keine Tasks mit Fälligkeitsdatum gefunden.` 
+                    };
+                }
+                
+                for (const task of tasksToUpdate) {
+                    await fetch(`/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...task, dueDate: null })
+                    });
+                }
+                
+                // Reload tasks to show changes
+                await loadTasks();
+                renderTasks();
+                
+                return { 
+                    executed: true, 
+                    message: `Fälligkeitsdatum von ${tasksToUpdate.length} Tasks entfernt.` 
+                };
+            } catch (error) {
+                console.error('Error removing due date:', error);
+                return { 
+                    executed: false, 
+                    message: `Fehler beim Entfernen des Fälligkeitsdatums: ${error.message}` 
+                };
+            }
+        }
+
+        // Filter Command Execution for KI
+        async function executeFilterCommand(filterType, category, priority) {
+            try {
+                let filteredTasks = [...allTasks];
+                
+                switch (filterType) {
+                    case 'heute':
+                        filteredTasks = filteredTasks.filter(task => {
+                            if (!task.dueDate) return false;
+                            const today = new Date().toISOString().split('T')[0];
+                            return task.dueDate === today;
+                        });
+                        break;
+                    case 'morgen':
+                        filteredTasks = getTomorrowTasks();
+                        break;
+                    case 'diese woche':
+                        filteredTasks = filteredTasks.filter(task => {
+                            if (!task.dueDate) return false;
+                            const taskDate = new Date(task.dueDate);
+                            const today = new Date();
+                            const weekEnd = new Date(today);
+                            weekEnd.setDate(today.getDate() + 7);
+                            return taskDate >= today && taskDate <= weekEnd;
+                        });
+                        break;
+                    case 'überfällig':
+                        filteredTasks = getOverdueTasks();
+                        break;
+                    case 'erledigt':
+                        filteredTasks = filteredTasks.filter(task => task.completed);
+                        break;
+                    default:
+                        if (category) {
+                            filteredTasks = filteredTasks.filter(task => 
+                                task.category && task.category.toLowerCase() === category.toLowerCase()
+                            );
+                        } else if (priority) {
+                            filteredTasks = filteredTasks.filter(task => 
+                                task.priority && task.priority.toLowerCase() === priority.toLowerCase()
+                            );
+                        }
+                        break;
+                }
+                
+                // Apply filter to UI
+                filteredTasks = filteredTasks;
+                await loadTasks(); // Reload tasks from backend
+                renderTasks();
+                
+                return { 
+                    executed: true, 
+                    message: `${filteredTasks.length} Tasks gefunden für Filter "${filterType}".` 
+                };
+            } catch (error) {
+                console.error('Error executing filter:', error);
+                return { 
+                    executed: false, 
+                    message: `Fehler beim Filtern: ${error.message}` 
+                };
+            }
+        }
+
+        // Search Command Execution for KI
+        async function executeSearchCommand(searchTerm) {
+            try {
+                const searchResults = allTasks.filter(task => 
+                    task.title.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+                
+                // Apply search to UI
+                searchQuery = searchTerm;
+                await loadTasks(); // Reload tasks from backend
+                applySearch();
+                renderTasks();
+                
+                return { 
+                    executed: true, 
+                    message: `${searchResults.length} Tasks gefunden für "${searchTerm}".` 
+                };
+            } catch (error) {
+                console.error('Error executing search:', error);
+                return { 
+                    executed: false, 
+                    message: `Fehler beim Suchen: ${error.message}` 
+                };
+            }
+        }
+
+        // Toggle Completed Tasks for KI
+        async function executeToggleCompleted(showCompleted) {
+            try {
+                hideCompleted = !showCompleted;
+                await loadTasks(); // Reload tasks from backend
+                renderTasks();
+                
+                return { 
+                    executed: true, 
+                    message: showCompleted ? 
+                        `Nur erledigte Tasks werden angezeigt.` : 
+                        `Erledigte Tasks werden ausgeblendet.` 
+                };
+            } catch (error) {
+                console.error('Error toggling completed:', error);
+                return { 
+                    executed: false, 
+                    message: `Fehler beim Umschalten: ${error.message}` 
+                };
+            }
+        }
+
+        // Sorting Command Execution
+        async function executeSortingCommand(sortType, showOnly = false) {
+            try {
+                let sortedTasks = [...allTasks];
+                let sortDescription = '';
+                
+                switch (sortType.toLowerCase()) {
+                    case 'fälligkeit':
+                    case 'fälligkeitsdatum':
+                    case 'datum':
+                    case 'due':
+                        sortedTasks = sortTasksByDueDate(allTasks);
+                        sortDescription = 'Fälligkeitsdatum';
+                        break;
+                        
+                    case 'priorität':
+                    case 'priority':
+                    case 'wichtigkeit':
+                        sortedTasks = sortTasksByPriority(allTasks);
+                        sortDescription = 'Priorität';
+                        break;
+                        
+                    case 'kategorie':
+                    case 'category':
+                    case 'kategorien':
+                        sortedTasks = sortTasksByCategory(allTasks);
+                        sortDescription = 'Kategorie';
+                        break;
+                        
+                    case 'erstellung':
+                    case 'erstellungsdatum':
+                    case 'created':
+                    case 'neu':
+                        sortedTasks = sortTasksByCreationDate(allTasks);
+                        sortDescription = 'Erstellungsdatum';
+                        break;
+                        
+                    case 'name':
+                    case 'titel':
+                    case 'title':
+                    case 'alphabetisch':
+                        sortedTasks = sortTasksByName(allTasks);
+                        sortDescription = 'Name (alphabetisch)';
+                        break;
+                        
+                    case 'position':
+                    case 'reihenfolge':
+                    case 'order':
+                        sortedTasks = sortTasksByPosition(allTasks);
+                        sortDescription = 'Position';
+                        break;
+                        
+                    default:
+                        return {
+                            executed: false,
+                            message: `❌ Unbekannte Sortierung: "${sortType}". Verfügbare Sortierungen: Fälligkeit, Priorität, Kategorie, Erstellungsdatum, Name, Position`
+                        };
+                }
+                
+                if (showOnly) {
+                    // Show sorted tasks in chat
+                    const taskList = sortedTasks.slice(0, 10).map(task => 
+                        `• ${task.title} (${task.category}, ${task.priority}, ${task.due_date || 'Kein Datum'})`
+                    ).join('\n');
+                    
+                    const moreText = sortedTasks.length > 10 ? `\n... und ${sortedTasks.length - 10} weitere Tasks` : '';
+                    
+                    return {
+                        executed: true,
+                        message: `📊 **Tasks sortiert nach ${sortDescription}:**\n\n${taskList}${moreText}`
+                    };
+                } else {
+                    // Apply sorting to current view
+                    filteredTasks = sortedTasks;
+                    renderTasks();
+                    
+                    return {
+                        executed: true,
+                        message: `✅ Tasks wurden nach ${sortDescription} sortiert!`
+                    };
+                }
+                
+            } catch (error) {
+                console.error('Error executing sorting command:', error);
+                return {
+                    executed: false,
+                    message: `❌ Fehler beim Sortieren: ${error.message}`
+                };
+            }
+        }
+
+        // Sorting Functions
+        function sortTasksByDueDate(tasks) {
+            return tasks.sort((a, b) => {
+                if (!a.due_date && !b.due_date) return 0;
+                if (!a.due_date) return 1;
+                if (!b.due_date) return -1;
+                return new Date(a.due_date) - new Date(b.due_date);
+            });
+        }
+
+        function sortTasksByPriority(tasks) {
+            const priorityOrder = { 'high': 1, 'medium': 2, 'low': 3 };
+            return tasks.sort((a, b) => {
+                const aPriority = priorityOrder[a.priority] || 2;
+                const bPriority = priorityOrder[b.priority] || 2;
+                return aPriority - bPriority;
+            });
+        }
+
+        function sortTasksByCategory(tasks) {
+            return tasks.sort((a, b) => {
+                if (a.category === b.category) return 0;
+                if (!a.category) return 1;
+                if (!b.category) return -1;
+                return a.category.localeCompare(b.category);
+            });
+        }
+
+        function sortTasksByCreationDate(tasks) {
+            return tasks.sort((a, b) => {
+                const aDate = new Date(a.created_at || a.id);
+                const bDate = new Date(b.created_at || b.id);
+                return bDate - aDate; // Newest first
+            });
+        }
+
+        function sortTasksByName(tasks) {
+            return tasks.sort((a, b) => {
+                return a.title.localeCompare(b.title);
+            });
+        }
+
+        function sortTasksByPosition(tasks) {
+            return tasks.sort((a, b) => {
+                const aPos = a.position || 0;
+                const bPos = b.position || 0;
+                return aPos - bPos;
+            });
+        }
+
+        // Action Functions
+        async function deleteTasksByCategory(category) {
+            try {
+                const tasksToDelete = allTasks.filter(task => 
+                    task.category.toLowerCase() === category.toLowerCase() && 
+                    task.status !== 'completed'
+                );
+                
+                if (tasksToDelete.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine offenen Tasks in der Kategorie "${category}" gefunden.`
+                    };
+                }
+                
+                let deletedCount = 0;
+                for (const task of tasksToDelete) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        deletedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${deletedCount} Tasks aus der Kategorie "${category}" gelöscht.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Löschen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function moveTasksToTomorrow(category) {
+            try {
+                const tasksToMove = allTasks.filter(task => 
+                    task.category.toLowerCase() === category.toLowerCase() && 
+                    task.status !== 'completed' &&
+                    task.due_date === '2025-10-07' // Today
+                );
+                
+                if (tasksToMove.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine ${category} Tasks für heute gefunden.`
+                    };
+                }
+                
+                let movedCount = 0;
+                for (const task of tasksToMove) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ due_date: '2025-10-08' })
+                    });
+                    if (response.ok) {
+                        movedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${movedCount} ${category} Tasks von heute auf morgen verschoben.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Verschieben der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function createMultipleTasks(count, category, originalPrompt) {
+            try {
+                // Extract task titles from the prompt
+                const lines = originalPrompt.split('\n');
+                const taskTitles = [];
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line.match(/^\d+\.\s*(.+)$/)) {
+                        const match = line.match(/^\d+\.\s*(.+)$/);
+                        if (match) {
+                            taskTitles.push(match[1]);
+                        }
+                    }
+                }
+                
+                // If no numbered list found, create generic tasks
+                if (taskTitles.length === 0) {
+                    for (let i = 1; i <= count; i++) {
+                        taskTitles.push(`${category} Task ${i}`);
+                    }
+                }
+                
+                let createdCount = 0;
+                for (const title of taskTitles.slice(0, count)) {
+                    const response = await fetch('http://localhost:3001/api/tasks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: title,
+                            category: category,
+                            status: 'pending',
+                            priority: 'medium',
+                            due_date: '2025-10-07'
+                        })
+                    });
+                    if (response.ok) {
+                        createdCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${createdCount} neue Tasks in der Kategorie "${category}" erstellt.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Erstellen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        // Create tasks from natural language list
+        async function createTasksFromList(taskList, originalPrompt) {
+            try {
+                // Extract tasks from comma-separated or line-separated list
+                const tasks = taskList.split(/[,;\n]/).map(task => task.trim()).filter(task => task.length > 0);
+                
+                // Extract category from prompt if mentioned
+                const categoryMatch = originalPrompt.match(/kategorie\s+(\w+)/i);
+                const category = categoryMatch ? categoryMatch[1] : 'General';
+                
+                let createdCount = 0;
+                for (const title of tasks) {
+                    const response = await fetch('http://localhost:3001/api/tasks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: title,
+                            category: category,
+                            status: 'pending',
+                            priority: 'medium',
+                            due_date: '2025-10-07'
+                        })
+                    });
+                    if (response.ok) {
+                        createdCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${createdCount} Tasks erstellt: ${tasks.join(', ')}`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Erstellen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        // Create tasks from bullet points
+        async function createTasksFromBulletPoints(originalPrompt) {
+            try {
+                const lines = originalPrompt.split('\n');
+                const tasks = [];
+                
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    // Match bullet points: •, -, *, or numbered lists
+                    if (trimmed.match(/^[•\-\*]\s*(.+)$/) || trimmed.match(/^\d+\.\s*(.+)$/)) {
+                        const match = trimmed.match(/^[•\-\*]\s*(.+)$/) || trimmed.match(/^\d+\.\s*(.+)$/);
+                        if (match) {
+                            tasks.push(match[1].trim());
+                        }
+                    }
+                }
+                
+                // Extract category from prompt if mentioned
+                const categoryMatch = originalPrompt.match(/kategorie\s+(\w+)/i);
+                const category = categoryMatch ? categoryMatch[1] : 'General';
+                
+                let createdCount = 0;
+                for (const title of tasks) {
+                    const response = await fetch('http://localhost:3001/api/tasks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: title,
+                            category: category,
+                            status: 'pending',
+                            priority: 'medium',
+                            due_date: '2025-10-07'
+                        })
+                    });
+                    if (response.ok) {
+                        createdCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${createdCount} Tasks aus Bullet Points erstellt: ${tasks.join(', ')}`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Erstellen der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        async function moveTasksToDate(category, dateStr) {
+            try {
+                // Parse date string (e.g., "8.10" or "8.10.2025")
+                let targetDate;
+                if (dateStr.includes('.')) {
+                    const parts = dateStr.split('.');
+                    if (parts.length === 2) {
+                        targetDate = `2025-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    } else if (parts.length === 3) {
+                        targetDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    }
+                }
+                
+                if (!targetDate) {
+                    return {
+                        executed: true,
+                        message: `❌ Datum "${dateStr}" konnte nicht erkannt werden. Verwende Format: "8.10" oder "8.10.2025"`
+                    };
+                }
+                
+                const tasksToMove = allTasks.filter(task => 
+                    task.category.toLowerCase() === category.toLowerCase() && 
+                    task.status !== 'completed'
+                );
+                
+                if (tasksToMove.length === 0) {
+                    return {
+                        executed: true,
+                        message: `Keine ${category} Tasks gefunden.`
+                    };
+                }
+                
+                let movedCount = 0;
+                for (const task of tasksToMove) {
+                    const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ due_date: targetDate })
+                    });
+                    if (response.ok) {
+                        movedCount++;
+                    }
+                }
+                
+                return {
+                    executed: true,
+                    message: `✅ ${movedCount} ${category} Tasks auf ${dateStr} verschoben.`
+                };
+            } catch (error) {
+                return {
+                    executed: true,
+                    message: `❌ Fehler beim Verschieben der Tasks: ${error.message}`
+                };
+            }
+        }
+
+        // Mistral AI Functions
+        async function askMistral(prompt) {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            // Add user message
+            addMessage('user', prompt);
+            
+            // Clear input and disable send button
+            chatInput.value = '';
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Sende...';
+            
+            try {
+                // First, check if the prompt contains actionable commands
+                const actionResult = await parseAndExecuteAction(prompt);
+                if (actionResult.executed) {
+                    addMessage('assistant', actionResult.message);
+                    // Reload tasks to show changes
+                    await loadTasks();
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Senden';
+                    return;
+                }
+                
+                // If no action was executed, proceed with normal Mistral chat
+                const response = await fetch('http://localhost:3001/api/mistral', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Check if Mistral returned an action command
+                    const actionResult = await parseMistralAction(data.response);
+                    if (actionResult.executed) {
+                        addMessage('assistant', actionResult.message);
+                        // Reload tasks to show changes
+                        await loadTasks();
+                    } else {
+                        addMessage('assistant', data.response);
+                        
+                        // Check if this was a tool execution (contains "Tool ausgeführt" or task operations)
+                        if (data.response.includes('Tool ausgeführt') || 
+                            data.response.includes('✅ Tool ausgeführt') ||
+                            data.response.includes('Task') && (data.response.includes('erstellt') || data.response.includes('gelöscht') || data.response.includes('verschoben'))) {
+                            // Reload tasks after tool execution
+                            await loadTasks();
+                        }
+                    }
+                } else {
+                    addMessage('assistant', `Fehler: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Mistral API Fehler:', error);
+                addMessage('assistant', 'Entschuldigung, es gab einen Fehler beim Verbinden mit Mistral.');
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Senden';
+            }
+        }
+
+        // Send message
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const message = chatInput.value.trim();
+            
+            if (message) {
+                askMistral(message);
+            }
+        }
+
+        // Add message to chat
+        function addMessage(sender, text) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('de-DE', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            messageDiv.innerHTML = `
+                <div class="message-text">${text}</div>
+                <div class="message-time">${timeString}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Daily Routine Functions
+        async function createDailyRoutine() {
+            addMessage('user', 'Erstelle Daily Routine für heute');
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/daily-routine/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ days: 1 })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage('assistant', `✅ Daily Routine erstellt! ${data.data.created} Datei(en) aktualisiert.`);
+                    // Lade Tasks neu
+                    loadTasks();
+                } else {
+                    addMessage('assistant', `❌ Fehler: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Daily Routine API Fehler:', error);
+                addMessage('assistant', 'Entschuldigung, es gab einen Fehler beim Erstellen der Daily Routine.');
+            }
+        }
+
+        async function updateAllDailyRoutines() {
+            addMessage('user', 'Aktualisiere alle Daily Routines');
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/daily-routine/update-all', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage('assistant', `✅ Alle Daily Routines aktualisiert! ${data.data.updated} Datei(en) bearbeitet.`);
+                    // Lade Tasks neu
+                    loadTasks();
+                } else {
+                    addMessage('assistant', `❌ Fehler: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Daily Routine API Fehler:', error);
+                addMessage('assistant', 'Entschuldigung, es gab einen Fehler beim Aktualisieren der Daily Routines.');
+            }
+        }
+
+        async function getDailyRoutineStats() {
+            try {
+                const response = await fetch('http://localhost:3001/api/daily-routine/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage('assistant', `📊 Daily Routine Statistiken:\n${data.data.stats}`);
+                } else {
+                    addMessage('assistant', `❌ Fehler: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Daily Routine Stats Fehler:', error);
+                addMessage('assistant', 'Entschuldigung, es gab einen Fehler beim Laden der Statistiken.');
+            }
+        }
+
+        // Tab Memory Functions
+        function saveActiveTab(tabName) {
+            localStorage.setItem('todo-dashboard-active-tab', tabName);
+        }
+
+        function loadSavedTab() {
+            const savedTab = localStorage.getItem('todo-dashboard-active-tab');
+            if (savedTab && savedTab !== 'all') {
+                // Simuliere Klick auf den gespeicherten Tab
+                const tabButton = document.querySelector(`[onclick="filterTasks('${savedTab}')"]`);
+                if (tabButton) {
+                    // Kleine Verzögerung, damit die Tasks bereits geladen sind
+                    setTimeout(() => {
+                        tabButton.click();
+                    }, 100);
+                }
+            }
+        }
+
+        // Bulk Editor Functions
+        function openBulkEditor() {
+            addMessage('user', 'Öffne Bulk Editor für Kategorien und Prioritäten');
+            
+            const bulkEditorHTML = `
+                <div style="background: var(--bg-primary); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: var(--space-4); margin: var(--space-4) 0;">
+                    <h4 style="margin: 0 0 var(--space-3) 0; color: var(--primary);">📝 Bulk Editor</h4>
+                    
+                    <div style="margin-bottom: var(--space-3);">
+                        <label style="display: block; margin-bottom: var(--space-1); font-weight: 500;">Kategorie ändern:</label>
+                        <select id="bulkCategory" style="width: 100%; padding: var(--space-2); border: 1px solid var(--border-medium); border-radius: var(--radius-md);">
+                            <option value="">-- Kategorie auswählen --</option>
+                            <option value="Business">Business</option>
+                            <option value="Development">Development</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="PUSH">PUSH</option>
+                            <option value="Personal">Personal</option>
+                            <option value="General">General</option>
+                            <option value="Check24">Check24</option>
+                            <option value="Sustain">Sustain</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: var(--space-3);">
+                        <label style="display: block; margin-bottom: var(--space-1); font-weight: 500;">Priorität ändern:</label>
+                        <select id="bulkPriority" style="width: 100%; padding: var(--space-2); border: 1px solid var(--border-medium); border-radius: var(--radius-md);">
+                            <option value="">-- Priorität auswählen --</option>
+                            <option value="high">🔥 Hoch</option>
+                            <option value="medium">⚡ Mittel (Standard)</option>
+                            <option value="low">🌅 Niedrig</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: var(--space-3);">
+                        <label style="display: block; margin-bottom: var(--space-1); font-weight: 500;">Filter für Tasks:</label>
+                        <select id="bulkFilter" style="width: 100%; padding: var(--space-2); border: 1px solid var(--border-medium); border-radius: var(--radius-md);">
+                            <option value="all">Alle Tasks</option>
+                            <option value="heute">Nur heutige Tasks</option>
+                            <option value="hoch">Nur hochprioritäre Tasks</option>
+                            <option value="überfällig">Nur überfällige Tasks</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: var(--space-2);">
+                        <button onclick="applyBulkChanges()" style="flex: 1; padding: var(--space-2) var(--space-3); background: var(--primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer;">Anwenden</button>
+                        <button onclick="previewBulkChanges()" style="flex: 1; padding: var(--space-2) var(--space-3); background: var(--secondary-light); color: var(--text-primary); border: 1px solid var(--border-light); border-radius: var(--radius-md); cursor: pointer;">Vorschau</button>
+                    </div>
+                </div>
+            `;
+            
+            addMessage('assistant', bulkEditorHTML);
+        }
+
+        function previewBulkChanges() {
+            const category = document.getElementById('bulkCategory').value;
+            const priority = document.getElementById('bulkPriority').value;
+            const filter = document.getElementById('bulkFilter').value;
+            
+            if (!category && !priority) {
+                addMessage('assistant', '❌ Bitte wähle mindestens eine Kategorie oder Priorität aus.');
+                return;
+            }
+            
+            // Filtere Tasks basierend auf Auswahl
+            let tasksToUpdate = [...allTasks];
+            if (filter === 'heute') {
+                tasksToUpdate = getTodayTasks();
+            } else if (filter === 'hoch') {
+                tasksToUpdate = allTasks.filter(task => task.priority === 'high');
+            } else if (filter === 'überfällig') {
+                tasksToUpdate = allTasks.filter(task => task.deadline_status === 'overdue');
+            }
+            
+            const changes = [];
+            tasksToUpdate.forEach(task => {
+                const changesForTask = [];
+                if (category && task.category !== category) {
+                    changesForTask.push(`Kategorie: ${task.category} → ${category}`);
+                }
+                if (priority && task.priority !== priority) {
+                    changesForTask.push(`Priorität: ${task.priority} → ${priority}`);
+                }
+                if (changesForTask.length > 0) {
+                    changes.push(`• ${task.title}: ${changesForTask.join(', ')}`);
+                }
+            });
+            
+            if (changes.length === 0) {
+                addMessage('assistant', '✅ Keine Änderungen erforderlich. Alle Tasks entsprechen bereits den gewählten Kriterien.');
+            } else {
+                addMessage('assistant', `📋 **Vorschau der Änderungen (${changes.length} Tasks):**\n\n${changes.slice(0, 10).join('\n')}${changes.length > 10 ? `\n\n... und ${changes.length - 10} weitere Tasks` : ''}`);
+            }
+        }
+
+        function applyBulkChanges() {
+            const category = document.getElementById('bulkCategory').value;
+            const priority = document.getElementById('bulkPriority').value;
+            const filter = document.getElementById('bulkFilter').value;
+            
+            if (!category && !priority) {
+                addMessage('assistant', '❌ Bitte wähle mindestens eine Kategorie oder Priorität aus.');
+                return;
+            }
+            
+            // Filtere Tasks basierend auf Auswahl
+            let tasksToUpdate = [...allTasks];
+            if (filter === 'heute') {
+                tasksToUpdate = getTodayTasks();
+            } else if (filter === 'hoch') {
+                tasksToUpdate = allTasks.filter(task => task.priority === 'high');
+            } else if (filter === 'überfällig') {
+                tasksToUpdate = allTasks.filter(task => task.deadline_status === 'overdue');
+            }
+            
+            let updatedCount = 0;
+            tasksToUpdate.forEach(task => {
+                let updated = false;
+                if (category && task.category !== category) {
+                    task.category = category;
+                    updated = true;
+                }
+                if (priority && task.priority !== priority) {
+                    task.priority = priority;
+                    updated = true;
+                }
+                if (updated) {
+                    updatedCount++;
+                }
+            });
+            
+            if (updatedCount === 0) {
+                addMessage('assistant', '✅ Keine Änderungen erforderlich. Alle Tasks entsprechen bereits den gewählten Kriterien.');
+            } else {
+                addMessage('assistant', `✅ **${updatedCount} Tasks erfolgreich aktualisiert!**\n\nDie Änderungen sind lokal gespeichert. Um sie dauerhaft zu machen, müssen sie noch in die Markdown-Dateien synchronisiert werden.`);
+                
+                // Aktualisiere die Anzeige
+                renderTasks();
+                updateStats();
+            }
+        }
+
+        function showCategoryStats() {
+            addMessage('user', 'Zeige Kategorie- und Prioritäts-Statistiken');
+            
+            // Berechne Statistiken
+            const categoryStats = {};
+            const priorityStats = {};
+            
+            allTasks.forEach(task => {
+                categoryStats[task.category] = (categoryStats[task.category] || 0) + 1;
+                priorityStats[task.priority] = (priorityStats[task.priority] || 0) + 1;
+            });
+            
+            const categoryHTML = Object.entries(categoryStats)
+                .sort(([,a], [,b]) => b - a)
+                .map(([category, count]) => `• **${category}**: ${count} Tasks`)
+                .join('\n');
+                
+            const priorityHTML = Object.entries(priorityStats)
+                .map(([priority, count]) => `• **${priority}**: ${count} Tasks`)
+                .join('\n');
+            
+            addMessage('assistant', `📊 **Task-Statistiken:**\n\n**Kategorien:**\n${categoryHTML}\n\n**Prioritäten:**\n${priorityHTML}\n\n**Gesamt:** ${allTasks.length} Tasks`);
+        }
+
+        // Inline-Editing Functions
+        function startEditTitle(taskId, currentTitle) {
+            console.log('startEditTitle called with:', taskId, currentTitle);
+            
+            // Finde das Task-Element über die Task-ID
+            const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+            console.log('taskElement found:', taskElement);
+            
+            if (!taskElement) {
+                console.error('Task element not found for ID:', taskId);
+                return;
+            }
+            
+            // Finde die Elemente in der neuen Struktur
+            const titleEditable = taskElement.querySelector('.task-title-editable');
+            const titleText = taskElement.querySelector('.task-title-text');
+            const titleInput = taskElement.querySelector('.task-title-edit');
+            
+            console.log('titleEditable:', titleEditable, 'titleText:', titleText, 'titleInput:', titleInput);
+            
+            if (!titleEditable || !titleText || !titleInput) {
+                console.error('Title elements not found');
+                return;
+            }
+            
+            // Verstecke das editable Element und zeige das Input-Feld
+            titleEditable.style.display = 'none';
+            titleInput.style.display = 'inline-block';
+            titleInput.value = currentTitle;
+            titleInput.focus();
+            titleInput.select();
+        }
+
+        function saveEditTitle(taskId) {
+            // Finde das Task-Element über die Task-ID
+            const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+            
+            if (!taskElement) {
+                console.error('Task element not found for ID:', taskId);
+                return;
+            }
+            
+            const titleEditable = taskElement.querySelector('.task-title-editable');
+            const titleText = taskElement.querySelector('.task-title-text');
+            const titleInput = taskElement.querySelector('.task-title-edit');
+            const newTitle = titleInput.value.trim();
+            
+            if (newTitle && newTitle !== titleText.textContent) {
+                updateTask(taskId, { title: newTitle });
+            }
+            
+            // Zeige das editable Element wieder und verstecke das Input-Feld
+            titleEditable.style.display = 'flex';
+            titleInput.style.display = 'none';
+        }
+
+        function handleEditKeypress(event, taskId) {
+            if (event.key === 'Enter') {
+                saveEditTitle(taskId);
+            } else if (event.key === 'Escape') {
+                // Finde das Task-Element über die Task-ID
+                const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+                
+                if (!taskElement) {
+                    console.error('Task element not found for ID:', taskId);
+                    return;
+                }
+                
+                const titleEditable = taskElement.querySelector('.task-title-editable');
+                const titleInput = taskElement.querySelector('.task-title-edit');
+                
+                // Zeige das editable Element wieder und verstecke das Input-Feld
+                titleEditable.style.display = 'flex';
+                titleInput.style.display = 'none';
+            }
+        }
+
+        function startEditPriority(taskId, currentPriority) {
+            const priorities = ['low', 'medium', 'high'];
+            const currentIndex = priorities.indexOf(currentPriority);
+            const nextIndex = (currentIndex + 1) % priorities.length;
+            const newPriority = priorities[nextIndex];
+            
+            updateTask(taskId, { priority: newPriority });
+        }
+
+        function startEditCategory(taskId, currentCategory) {
+            const newCategory = prompt(`Neue Kategorie für Task "${currentCategory}":`, currentCategory);
+            if (newCategory && newCategory.trim() !== currentCategory) {
+                updateTask(taskId, { category: newCategory.trim() });
+            }
+        }
+
+        function startEditDueDate(taskId, currentDueDate) {
+            const newDueDate = prompt(`Neues Fälligkeitsdatum für Task:`, currentDueDate);
+            if (newDueDate && newDueDate !== currentDueDate) {
+                updateTask(taskId, { due_date: newDueDate });
+            }
+        }
+
+        // Context Menu Functions
+        function showPriorityMenu(taskId, currentPriority, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const priorities = [
+                { value: 'low', label: 'Niedrig', icon: '🔵' },
+                { value: 'medium', label: 'Mittel', icon: '🟡' },
+                { value: 'high', label: 'Hoch', icon: '🔴' }
+            ];
+            
+            priorities.forEach(priority => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (priority.value === currentPriority) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `${priority.icon} ${priority.label}`;
+                item.onclick = () => {
+                    updateTask(taskId, { priority: priority.value });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function showCategoryMenu(taskId, currentCategory, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            // Get existing categories
+            const categories = [...new Set(allTasks.map(task => task.category))].sort();
+            
+            categories.forEach(category => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (category === currentCategory) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `📁 ${category}`;
+                item.onclick = () => {
+                    updateTask(taskId, { category: category });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            // Add "New Category" option
+            const newItem = document.createElement('div');
+            newItem.className = 'context-menu-item';
+            newItem.innerHTML = '➕ Neue Kategorie';
+            newItem.onclick = () => {
+                const newCategory = prompt('Neue Kategorie:', '');
+                if (newCategory && newCategory.trim()) {
+                    updateTask(taskId, { category: newCategory.trim() });
+                }
+                closeAllContextMenus();
+            };
+            menu.appendChild(newItem);
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function showDateMenu(taskId, currentDueDate, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+            
+            const dateOptions = [
+                { label: 'Heute', date: today.toISOString().split('T')[0], icon: '📅' },
+                { label: 'Morgen', date: tomorrow.toISOString().split('T')[0], icon: '📅' },
+                { label: 'Nächste Woche', date: nextWeek.toISOString().split('T')[0], icon: '📅' }
+            ];
+            
+            dateOptions.forEach(option => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (option.date === currentDueDate) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `${option.icon} ${option.label}`;
+                item.onclick = () => {
+                    updateTask(taskId, { due_date: option.date });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            // Add custom date picker
+            const customItem = document.createElement('div');
+            customItem.className = 'context-menu-item';
+            customItem.innerHTML = '📅 Benutzerdefiniert';
+            customItem.onclick = () => {
+                // Close context menu first
+                closeAllContextMenus();
+                
+                // Create a visible input element positioned near the task
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = 'Datum auswählen...';
+                input.readOnly = true;
+                input.value = currentDueDate || '';
+                
+                // Style the input to be visible and positioned well
+                input.style.position = 'fixed';
+                input.style.top = '50%';
+                input.style.left = '50%';
+                input.style.transform = 'translate(-50%, -50%)';
+                input.style.zIndex = '10000';
+                input.style.padding = '12px 16px';
+                input.style.border = '2px solid var(--primary)';
+                input.style.borderRadius = '8px';
+                input.style.fontSize = '16px';
+                input.style.backgroundColor = 'var(--bg-primary)';
+                input.style.color = 'var(--text-primary)';
+                input.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+                input.style.minWidth = '200px';
+                
+                document.body.appendChild(input);
+                
+                // Initialize Flatpickr for this input
+                const flatpickrInstance = flatpickr(input, {
+                    dateFormat: "Y-m-d",
+                    locale: "de",
+                    allowInput: false,
+                    clickOpens: true,
+                    placeholder: "Datum auswählen...",
+                    minDate: "today",
+                    position: "auto center",
+                    onChange: function(selectedDates, dateStr, instance) {
+                        if (dateStr) {
+                            updateTask(taskId, { due_date: dateStr });
+                        }
+                        // Clean up
+                        document.body.removeChild(input);
+                        instance.destroy();
+                    },
+                    onClose: function() {
+                        // Clean up when calendar closes
+                        setTimeout(() => {
+                            if (document.body.contains(input)) {
+                                document.body.removeChild(input);
+                            }
+                            instance.destroy();
+                        }, 100);
+                    }
+                });
+                
+                // Focus and open the calendar immediately
+                input.focus();
+                flatpickrInstance.open();
+            };
+            menu.appendChild(customItem);
+            
+            // Add "Remove Date" option
+            if (currentDueDate) {
+                const removeItem = document.createElement('div');
+                removeItem.className = 'context-menu-item danger';
+                removeItem.innerHTML = '🗑️ Datum entfernen';
+                removeItem.onclick = () => {
+                    updateTask(taskId, { due_date: null });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(removeItem);
+            }
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function closeAllContextMenus() {
+            const menus = document.querySelectorAll('.context-menu');
+            menus.forEach(menu => menu.remove());
+        }
+
+        // Direct date picker function (European calendar)
+        function openDatePicker(taskId, currentDueDate, event) {
+            // Create a visible input element positioned near the task
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Datum auswählen...';
+            input.readOnly = true;
+            input.value = currentDueDate || '';
+            
+            // Style the input to be visible and positioned well
+            input.style.position = 'fixed';
+            input.style.top = '50%';
+            input.style.left = '50%';
+            input.style.transform = 'translate(-50%, -50%)';
+            input.style.zIndex = '10000';
+            input.style.padding = '12px 16px';
+            input.style.border = '2px solid var(--primary)';
+            input.style.borderRadius = '8px';
+            input.style.fontSize = '16px';
+            input.style.backgroundColor = 'var(--bg-primary)';
+            input.style.color = 'var(--text-primary)';
+            input.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+            input.style.minWidth = '200px';
+            
+            document.body.appendChild(input);
+            
+            // Initialize Flatpickr with European settings
+            const flatpickrInstance = flatpickr(input, {
+                dateFormat: "Y-m-d",
+                locale: flatpickr.l10ns.de, // Use German localization object
+                allowInput: false,
+                clickOpens: true,
+                placeholder: "Datum auswählen...",
+                minDate: "today",
+                position: "auto center",
+                // European calendar settings
+                firstDayOfWeek: 1, // Monday = 1, Sunday = 0
+                weekNumbers: true, // Show week numbers
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (dateStr) {
+                        updateTask(taskId, { due_date: dateStr });
+                    }
+                    // Clean up
+                    document.body.removeChild(input);
+                    instance.destroy();
+                },
+                onClose: function() {
+                    // Clean up when calendar closes
+                    setTimeout(() => {
+                        if (document.body.contains(input)) {
+                            document.body.removeChild(input);
+                        }
+                        instance.destroy();
+                    }, 100);
+                }
+            });
+            
+            // Focus and open the calendar immediately
+            input.focus();
+            flatpickrInstance.open();
+        }
+
+        function saveEditTitle(taskId) {
+            // Finde das Task-Element über die Task-ID
+            const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+            
+            if (!taskElement) {
+                console.error('Task element not found for ID:', taskId);
+                return;
+            }
+            
+            const titleEditable = taskElement.querySelector('.task-title-editable');
+            const titleText = taskElement.querySelector('.task-title-text');
+            const titleInput = taskElement.querySelector('.task-title-edit');
+            const newTitle = titleInput.value.trim();
+            
+            if (newTitle && newTitle !== titleText.textContent) {
+                updateTask(taskId, { title: newTitle });
+            }
+            
+            // Zeige das editable Element wieder und verstecke das Input-Feld
+            titleEditable.style.display = 'flex';
+            titleInput.style.display = 'none';
+        }
+
+        function handleEditKeypress(event, taskId) {
+            if (event.key === 'Enter') {
+                saveEditTitle(taskId);
+            } else if (event.key === 'Escape') {
+                // Finde das Task-Element über die Task-ID
+                const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+                
+                if (!taskElement) {
+                    console.error('Task element not found for ID:', taskId);
+                    return;
+                }
+                
+                const titleEditable = taskElement.querySelector('.task-title-editable');
+                const titleInput = taskElement.querySelector('.task-title-edit');
+                
+                // Zeige das editable Element wieder und verstecke das Input-Feld
+                titleEditable.style.display = 'flex';
+                titleInput.style.display = 'none';
+            }
+        }
+
+        function startEditPriority(taskId, currentPriority) {
+            const priorities = ['low', 'medium', 'high'];
+            const currentIndex = priorities.indexOf(currentPriority);
+            const nextIndex = (currentIndex + 1) % priorities.length;
+            const newPriority = priorities[nextIndex];
+            
+            updateTask(taskId, { priority: newPriority });
+        }
+
+        function startEditCategory(taskId, currentCategory) {
+            const newCategory = prompt(`Neue Kategorie für Task "${currentCategory}":`, currentCategory);
+            if (newCategory && newCategory.trim() !== currentCategory) {
+                updateTask(taskId, { category: newCategory.trim() });
+            }
+        }
+
+        function startEditDueDate(taskId, currentDueDate) {
+            const newDueDate = prompt(`Neues Fälligkeitsdatum für Task:`, currentDueDate);
+            if (newDueDate && newDueDate !== currentDueDate) {
+                updateTask(taskId, { due_date: newDueDate });
+            }
+        }
+
+        // Context Menu Functions
+        function showPriorityMenu(taskId, currentPriority, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const priorities = [
+                { value: 'low', label: 'Niedrig', icon: '🔵' },
+                { value: 'medium', label: 'Mittel', icon: '🟡' },
+                { value: 'high', label: 'Hoch', icon: '🔴' }
+            ];
+            
+            priorities.forEach(priority => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (priority.value === currentPriority) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `${priority.icon} ${priority.label}`;
+                item.onclick = () => {
+                    updateTask(taskId, { priority: priority.value });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function showCategoryMenu(taskId, currentCategory, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            // Get existing categories
+            const categories = [...new Set(allTasks.map(task => task.category))].sort();
+            
+            categories.forEach(category => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (category === currentCategory) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `📁 ${category}`;
+                item.onclick = () => {
+                    updateTask(taskId, { category: category });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            // Add "New Category" option
+            const newItem = document.createElement('div');
+            newItem.className = 'context-menu-item';
+            newItem.innerHTML = '➕ Neue Kategorie';
+            newItem.onclick = () => {
+                const newCategory = prompt('Neue Kategorie:', '');
+                if (newCategory && newCategory.trim()) {
+                    updateTask(taskId, { category: newCategory.trim() });
+                }
+                closeAllContextMenus();
+            };
+            menu.appendChild(newItem);
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        function closeAllContextMenus() {
+            const menus = document.querySelectorAll('.context-menu');
+            menus.forEach(menu => menu.remove());
+        }
+
+        // Direct date picker function (European calendar)
+        function openDatePicker(taskId, currentDueDate, event) {
+            // Create a visible input element positioned near the task
+                const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Datum auswählen...';
+            input.readOnly = true;
+                input.value = currentDueDate || '';
+            
+            // Style the input to be visible and positioned well
+            input.style.position = 'fixed';
+            input.style.top = '50%';
+            input.style.left = '50%';
+            input.style.transform = 'translate(-50%, -50%)';
+            input.style.zIndex = '10000';
+            input.style.padding = '12px 16px';
+            input.style.border = '2px solid var(--primary)';
+            input.style.borderRadius = '8px';
+            input.style.fontSize = '16px';
+            input.style.backgroundColor = 'var(--bg-primary)';
+            input.style.color = 'var(--text-primary)';
+            input.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+            input.style.minWidth = '200px';
+            
+            document.body.appendChild(input);
+            
+            // Initialize Flatpickr with European settings
+            const flatpickrInstance = flatpickr(input, {
+                dateFormat: "Y-m-d",
+                locale: flatpickr.l10ns.de, // Use German localization object
+                allowInput: false,
+                clickOpens: true,
+                placeholder: "Datum auswählen...",
+                minDate: "today",
+                position: "auto center",
+                // European calendar settings
+                firstDayOfWeek: 1, // Monday = 1, Sunday = 0
+                weekNumbers: true, // Show week numbers
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (dateStr) {
+                        updateTask(taskId, { due_date: dateStr });
+                    }
+                    // Clean up
+                    document.body.removeChild(input);
+                    instance.destroy();
+                },
+                onClose: function() {
+                    // Clean up when calendar closes
+            setTimeout(() => {
+                        if (document.body.contains(input)) {
+                            document.body.removeChild(input);
+                        }
+                        instance.destroy();
+                    }, 100);
+                }
+            });
+            
+            // Focus and open the calendar immediately
+            input.focus();
+            flatpickrInstance.open();
+        }
+
+        // Universal Task Update Function
+        async function updateTask(taskId, updates) {
+            try {
+                const response = await fetch(`/api/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updates)
+                });
+                
+                if (response.ok) {
+                    // Update local data
+                    const task = allTasks.find(t => t.id === taskId);
+                    if (task) {
+                        Object.assign(task, updates);
+                        renderTasks();
+                    }
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error('Error updating task:', error);
+                return false;
+            }
+        }
+
+        // Simplified Inline-Editing Functions
+
+
+        function handleEditKeypress(event, taskId) {
+            if (event.key === 'Enter') {
+                saveEditTitle(taskId);
+            } else if (event.key === 'Escape') {
+                // Finde das Task-Element über die Task-ID
+                const taskElement = document.querySelector(`[ondragstart*="${taskId}"]`);
+                
+                if (!taskElement) {
+                    console.error('Task element not found for ID:', taskId);
+                    return;
+                }
+                
+                const titleEditable = taskElement.querySelector('.task-title-editable');
+                const titleInput = taskElement.querySelector('.task-title-edit');
+                
+                // Zeige das editable Element wieder und verstecke das Input-Feld
+                titleEditable.style.display = 'flex';
+                titleInput.style.display = 'none';
+            }
+        }
+
+        function startEditPriority(taskId, currentPriority) {
+            const priorities = ['low', 'medium', 'high'];
+            const currentIndex = priorities.indexOf(currentPriority);
+            const nextIndex = (currentIndex + 1) % priorities.length;
+            const newPriority = priorities[nextIndex];
+            
+            updateTask(taskId, { priority: newPriority });
+        }
+
+        function startEditCategory(taskId, currentCategory) {
+            const newCategory = prompt(`Neue Kategorie für Task "${currentCategory}":`, currentCategory);
+            if (newCategory && newCategory.trim() !== currentCategory) {
+                updateTask(taskId, { category: newCategory.trim() });
+            }
+        }
+
+
+        // Modal Management Functions
+        function openTaskCreationModal() {
+            document.getElementById('taskCreationModal').style.display = 'flex';
+            document.getElementById('taskTitle').focus();
+        }
+
+        function closeTaskCreationModal() {
+            document.getElementById('taskCreationModal').style.display = 'none';
+            document.getElementById('taskForm').reset();
+        }
+
+        function openCategoryManagementModal() {
+            document.getElementById('categoryManagementModal').style.display = 'flex';
+            loadCategories();
+        }
+
+        function closeCategoryManagementModal() {
+            document.getElementById('categoryManagementModal').style.display = 'none';
+        }
+
+        function submitTaskForm() {
+            const form = document.getElementById('taskForm');
+            const formData = new FormData(form);
+            const taskData = {
+                title: formData.get('title'),
+                category: formData.get('category'),
+                priority: formData.get('priority'),
+                due_date: formData.get('dueDate') || null
+            };
+            
+            createTaskFromModal(taskData);
+        }
+
+        async function createTaskFromModal(taskData) {
+            try {
+                const response = await fetch('/api/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(taskData)
+                });
+                
+                if (response.ok) {
+                    closeTaskCreationModal();
+                    await loadTasks();
+                    addMessage('assistant', `✅ Task "${taskData.title}" erfolgreich erstellt!`);
+                } else {
+                    addMessage('assistant', '❌ Fehler beim Erstellen des Tasks.');
+                }
+            } catch (error) {
+                console.error('Error creating task:', error);
+                addMessage('assistant', '❌ Fehler beim Erstellen des Tasks.');
+            }
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeTaskCreationModal();
+                closeCategoryManagementModal();
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeTaskCreationModal();
+                closeCategoryManagementModal();
+            }
+        });
+
+
+        async function loadCategories() {
+            try {
+                const response = await fetch('/api/smart-tasks');
+                const data = await response.json();
+                
+                // Get unique categories
+                const categories = [...new Set(data.tasks.map(task => task.category))].sort();
+                
+                const categoryList = document.getElementById('categoryList');
+                categoryList.innerHTML = categories.map(category => `
+                    <div class="category-item">
+                        <span class="category-name">${category}</span>
+                        <div class="category-buttons">
+                            <button class="btn btn-small btn-secondary" onclick="renameCategory('${category}')">Umbenennen</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteCategory('${category}')">Löschen</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update task creation form categories
+                updateTaskFormCategories(categories);
+                
+                // Update bulk category select
+                const bulkCategorySelect = document.getElementById('bulkCategorySelect');
+                if (bulkCategorySelect) {
+                    bulkCategorySelect.innerHTML = '<option value="">📁 Kategorie ändern</option>' + 
+                        categories.map(category => `<option value="${category}">${category}</option>`).join('');
+                }
+                
+                // Update category filter dropdown
+                const categoryFilter = document.getElementById('categoryFilter');
+                if (categoryFilter) {
+                    console.log('Lade Kategorien in Filter-Dropdown:', categories);
+                    categoryFilter.innerHTML = '<option value="">📁 Alle Kategorien</option>' + 
+                        categories.map(category => `<option value="${category}">${category}</option>`).join('');
+                } else {
+                    console.error('Category Filter Element nicht gefunden!');
+                }
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        function updateTaskFormCategories(categories) {
+            const select = document.getElementById('taskCategory');
+            select.innerHTML = categories.map(category => 
+                `<option value="${category}">${category}</option>`
+            ).join('');
+        }
+
+        async function createCategory() {
+            const categoryName = document.getElementById('newCategoryName').value.trim();
+            if (!categoryName) return;
+            
+            try {
+                const response = await fetch('/api/mistral', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `Erstelle eine neue Kategorie namens "${categoryName}"`
+                    })
+                });
+                
+                if (response.ok) {
+                    document.getElementById('newCategoryName').value = '';
+                    await loadCategories();
+                    addMessage('assistant', `✅ Kategorie "${categoryName}" erfolgreich erstellt!`);
+                } else {
+                    addMessage('assistant', '❌ Fehler beim Erstellen der Kategorie.');
+                }
+            } catch (error) {
+                console.error('Error creating category:', error);
+                addMessage('assistant', '❌ Fehler beim Erstellen der Kategorie.');
+            }
+        }
+
+        async function renameCategory(oldName) {
+            const newName = prompt(`Neuer Name für Kategorie "${oldName}":`, oldName);
+            if (!newName || newName === oldName) return;
+            
+            try {
+                const response = await fetch('/api/mistral', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `Benenne die Kategorie "${oldName}" um zu "${newName}"`
+                    })
+                });
+                
+                if (response.ok) {
+                    await loadCategories();
+                    await loadTasks();
+                    addMessage('assistant', `✅ Kategorie "${oldName}" erfolgreich umbenannt zu "${newName}"!`);
+                } else {
+                    addMessage('assistant', '❌ Fehler beim Umbenennen der Kategorie.');
+                }
+            } catch (error) {
+                console.error('Error renaming category:', error);
+                addMessage('assistant', '❌ Fehler beim Umbenennen der Kategorie.');
+            }
+        }
+
+        async function deleteCategory(categoryName) {
+            if (!confirm(`Möchten Sie wirklich alle Tasks der Kategorie "${categoryName}" löschen?`)) {
+                return;
+            }
+            
+            try {
+                // Direkte API-Lösung statt Mistral
+                const response = await fetch('/api/tasks/delete-by-category', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        category: categoryName
+                    })
+                });
+                
+                if (response.ok) {
+                    await loadCategories();
+                    await loadTasks();
+                    addMessage('assistant', `✅ Alle Tasks der Kategorie "${categoryName}" wurden gelöscht!`);
+                } else {
+                    // Fallback: Mistral API
+                    const mistralResponse = await fetch('/api/mistral', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            prompt: `Lösche alle Tasks der Kategorie "${categoryName}"`
+                        })
+                    });
+                    
+                    if (mistralResponse.ok) {
+                    await loadCategories();
+                    await loadTasks();
+                    addMessage('assistant', `✅ Alle Tasks der Kategorie "${categoryName}" wurden gelöscht!`);
+                } else {
+                    addMessage('assistant', '❌ Fehler beim Löschen der Kategorie.');
+                    }
+                }
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                addMessage('assistant', '❌ Fehler beim Löschen der Kategorie.');
+            }
+        }
+
+        function showDateMenu(taskId, currentDueDate, event) {
+            closeAllContextMenus();
+            
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+            
+            const dateOptions = [
+                { label: 'Heute', date: today.toISOString().split('T')[0], icon: '📅' },
+                { label: 'Morgen', date: tomorrow.toISOString().split('T')[0], icon: '📅' },
+                { label: 'Nächste Woche', date: nextWeek.toISOString().split('T')[0], icon: '📅' }
+            ];
+            
+            dateOptions.forEach(option => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                if (option.date === currentDueDate) {
+                    item.style.backgroundColor = 'var(--primary-light)';
+                }
+                item.innerHTML = `${option.icon} ${option.label}`;
+                item.onclick = () => {
+                    updateTask(taskId, { due_date: option.date });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(item);
+            });
+            
+            // Add custom date picker
+            const customItem = document.createElement('div');
+            customItem.className = 'context-menu-item';
+            customItem.innerHTML = '📅 Benutzerdefiniert';
+            customItem.onclick = () => {
+                // Close context menu first
+                closeAllContextMenus();
+                
+                // Create a visible input element positioned near the task
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = 'Datum auswählen...';
+                input.readOnly = true;
+                input.value = currentDueDate || '';
+                
+                // Style the input to be visible and positioned well
+                input.style.position = 'fixed';
+                input.style.top = '50%';
+                input.style.left = '50%';
+                input.style.transform = 'translate(-50%, -50%)';
+                input.style.zIndex = '10000';
+                input.style.padding = '12px 16px';
+                input.style.border = '2px solid var(--primary)';
+                input.style.borderRadius = '8px';
+                input.style.fontSize = '16px';
+                input.style.backgroundColor = 'var(--bg-primary)';
+                input.style.color = 'var(--text-primary)';
+                input.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+                input.style.minWidth = '200px';
+                
+                document.body.appendChild(input);
+                
+                // Initialize Flatpickr for this input
+                const flatpickrInstance = flatpickr(input, {
+                    dateFormat: "Y-m-d",
+                    locale: "de",
+                    allowInput: false,
+                    clickOpens: true,
+                    placeholder: "Datum auswählen...",
+                    minDate: "today",
+                    position: "auto center",
+                    onChange: function(selectedDates, dateStr, instance) {
+                        if (dateStr) {
+                            updateTask(taskId, { due_date: dateStr });
+                        }
+                        // Clean up
+                        document.body.removeChild(input);
+                        instance.destroy();
+                    },
+                    onClose: function() {
+                        // Clean up when calendar closes
+                        setTimeout(() => {
+                            if (document.body.contains(input)) {
+                                document.body.removeChild(input);
+                            }
+                            instance.destroy();
+                        }, 100);
+                    }
+                });
+                
+                // Focus and open the calendar immediately
+                input.focus();
+                flatpickrInstance.open();
+            };
+            menu.appendChild(customItem);
+            
+            // Add "Remove Date" option
+            if (currentDueDate) {
+                const removeItem = document.createElement('div');
+                removeItem.className = 'context-menu-item danger';
+                removeItem.innerHTML = '🗑️ Datum entfernen';
+                removeItem.onclick = () => {
+                    updateTask(taskId, { due_date: null });
+                    closeAllContextMenus();
+                };
+                menu.appendChild(removeItem);
+            }
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeAllContextMenus, { once: true });
+            }, 0);
+        }
+
+        // Due Date Inline-Editing
+
+    </script>
+</body>
+</html>

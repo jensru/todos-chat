@@ -154,3 +154,4 @@ web/
 ---
 
 **Bereit für Phase 1? Lass uns mit CSS-Auslagern starten!** 🚀
+

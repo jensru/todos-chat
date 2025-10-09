@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="ui-guidelines.js"></script>
+    <script src="date-sync.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Smart Task Dashboard - Left Side -->
+        <div class="smart-dashboard">
+            <div class="header">
+                <div class="header-left">
+                    <h1>🎯 Smart Task Dashboard</h1>
+                    <p>Intelligente Task-Verwaltung mit AI-Unterstützung</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" data-action="create-task" title="Neuen Task erstellen">
+                        ➕ Neuer Task
+                    </button>
+                    <button class="btn btn-secondary" onclick="openCategoryManagementModal()" title="Kategorien verwalten">
+                        📁 Kategorien
+                    </button>
+                </div>
+                <div class="header-right">
+                    <div class="current-date" id="currentDate">Lade Datum...</div>
+                </div>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <div class="search-input-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Nach Tasks suchen..." data-search>
+                    <button class="search-clear-btn" onclick="clearSearch()" title="Suche löschen">✕</button>
+                </div>
+            </div>
+            
+            <!-- Filter & Sortierung Bar -->
+            <div class="filter-sort-bar">
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="today">Heute</button>
+                    <button class="filter-btn" data-filter="week">Diese Woche</button>
+                    <button class="filter-btn" data-filter="tomorrow">Morgen</button>
+                    <button class="filter-btn" data-filter="overdue">Überfällig</button>
+                    <button class="filter-btn" data-filter="all">Alle</button>
+                    <button class="filter-btn" data-filter="completed">Nur Erledigte</button>
+                    
+                    <!-- Category Filter Dropdown -->
+                    <div class="filter-dropdown">
+                        <select id="categoryFilter" class="filter-select" onchange="filterTasks('category')">
+                            <option value="">📁 Alle Kategorien</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Priority Filter Dropdown -->
+                    <div class="filter-dropdown">
+                        <select id="priorityFilter" class="filter-select" onchange="filterTasks('priority')">
+                            <option value="">⚡ Alle Prioritäten</option>
+                            <option value="high">🔴 Hoch</option>
+                            <option value="medium">🟡 Mittel</option>
+                            <option value="low">🟢 Niedrig</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="sort-section">
+                    <button class="sort-btn active" data-sort="priority">Nach Priorität</button>
+                    <button class="sort-btn" data-sort="category">Nach Kategorie</button>
+                    <button class="sort-btn" data-sort="due-date">Nach Datum</button>
+                    <button class="sort-btn" data-sort="title">Nach Titel</button>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="hideCompletedToggle" onchange="toggleCompletedTasks()">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">Erledigte ausblenden</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Bulk Actions Bar -->
+            <div id="bulkActions" class="bulk-actions-bar" style="display: none;">
+                <div class="bulk-actions-info">
+                    <span id="selectedCount">0</span> Tasks ausgewählt
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn btn-small btn-secondary" onclick="selectAllTasks()">Alle auswählen</button>
+                    <button class="btn btn-small btn-secondary" onclick="deselectAllTasks()">Auswahl aufheben</button>
+                    
+                    <!-- Bulk Category Change -->
+                    <div class="bulk-action-group">
+                        <select id="bulkCategorySelect" class="bulk-select" onchange="bulkChangeCategory()">
+                            <option value="">📁 Kategorie ändern</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Bulk Priority Change -->
+                    <div class="bulk-action-group">
+                        <select id="bulkPrioritySelect" class="bulk-select" onchange="bulkChangePriority()">
+                            <option value="">⚡ Priorität ändern</option>
+                            <option value="high">🔴 Hoch</option>
+                            <option value="medium">🟡 Mittel</option>
+                            <option value="low">🟢 Niedrig</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Bulk Status Change -->
+                    <div class="bulk-action-group">
+                        <select id="bulkStatusSelect" class="bulk-select" onchange="bulkChangeStatus()">
+                            <option value="">📋 Status ändern</option>
+                            <option value="pending">⏳ Offen</option>
+                            <option value="completed">✅ Erledigt</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Bulk Delete -->
+                    <button class="btn btn-small btn-danger" onclick="bulkDeleteTasks()" title="Ausgewählte Tasks löschen">
+                        🗑️ Löschen
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tasks Container -->
+            <div class="tasks-container" data-tasks-container>
+                <div class="loading-indicator" data-loading style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Lade Tasks...</p>
+                </div>
+                <!-- Tasks werden hier dynamisch eingefügt -->
+            </div>
+            
+            <!-- Task Statistics -->
+            <div class="task-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Gesamt:</span>
+                    <span class="stat-value" id="totalTasks">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Offen:</span>
+                    <span class="stat-value" id="pendingTasks">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Erledigt:</span>
+                    <span class="stat-value" id="completedTasks">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Heute:</span>
+                    <span class="stat-value" id="todayTasks">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mistral AI Chat - Right Side -->
+        <div class="mistral-chat">
+            <div class="chat-header">
+                <h2>🤖 Mistral AI Assistant</h2>
+                <p>Intelligente Task-Unterstützung</p>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message ai-message">
+                    <div class="message-content">
+                        <p>👋 Hallo! Ich bin dein AI-Assistent für Task-Management.</p>
+                        <p>Du kannst mich fragen:</p>
+                        <ul>
+                            <li>"Erstelle einen Task für morgen"</li>
+                            <li>"Zeige mir alle Tasks von heute"</li>
+                            <li>"Lösche alle Tasks der Kategorie 'Test'"</li>
+                            <li>"Verschiebe alle Arbeit-Tasks auf nächste Woche"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Frage Mistral AI..." onkeypress="handleChatKeyPress(event)">
+                    <button class="chat-send-btn" onclick="sendMistralMessage()" title="Nachricht senden">
+                        📤
+                    </button>
+                </div>
+                <div class="chat-status" id="chatStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modulare JavaScript-Architektur -->
+    <script src="js/services/ApiService.js"></script>
+    <script src="js/modules/APIManager.js"></script>
+    <script src="js/modules/TaskService.js"></script>
+    <script src="js/modules/UIComponent.js"></script>
+    <script src="js/modules/LegacyCompatibility.js"></script>
+    
+    <!-- Initialisierung -->
+    <script>
+        
+        // Initialize modulare Architektur
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initialisiere modulare Architektur...');
+            
+            // Prüfe und aktualisiere Datum automatisch
+            try {
+                dateSync.checkAndUpdateDate();
+                console.log('✅ DateSync erfolgreich');
+            } catch (error) {
+                console.error('❌ DateSync Fehler:', error);
+            }
+            
+            // Initialize Flatpickr for date picker
+            try {
+                flatpickr("#taskDueDate", {
+                    dateFormat: "Y-m-d",
+                    locale: flatpickr.l10ns.de,
+                    allowInput: false,
+                    clickOpens: true,
+                    placeholder: "Datum auswählen...",
+                    minDate: "today",
+                    firstDayOfWeek: 1,
+                    weekNumbers: true
+                });
+                console.log('✅ Flatpickr initialisiert');
+            } catch (error) {
+                console.error('❌ Flatpickr Fehler:', error);
+            }
+            
+            // Initialize UIComponent
+            try {
+                window.uiComponent = new UIComponent();
+                window.uiComponent.initialize();
+                console.log('✅ UIComponent initialisiert');
+                
+                // Initialize Legacy Compatibility
+                window.legacyCompatibility = new LegacyCompatibility(window.uiComponent);
+                console.log('✅ LegacyCompatibility initialisiert');
+            } catch (error) {
+                console.error('❌ UIComponent Fehler:', error);
+            }
+            
+            console.log('🎉 Modulare Architektur erfolgreich initialisiert!');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morgen Filter Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Morgen Filter Debug</h1>
+    
+    <div class="debug">
+        <h3>Test-Ergebnisse:</h3>
+        <div id="results"></div>
+    </div>
+    
+    <button onclick="testTomorrowFilter()">Test Morgen Filter</button>
+    <button onclick="testAPI()">Test API</button>
+    <button onclick="testDateCalculation()">Test Datumsberechnung</button>
+    
+    <script>
+        let allTasks = [];
+        
+        function addResult(message, type = 'debug') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+        
+        async function testAPI() {
+            try {
+                addResult('🔄 Lade Tasks von API...');
+                const response = await fetch('http://localhost:3001/api/smart-tasks');
+                const data = await response.json();
+                
+                allTasks = data.tasks || [];
+                addResult(`✅ ${allTasks.length} Tasks geladen`, 'success');
+                
+                // Zeige Tasks für morgen
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const tomorrowStr = tomorrow.toISOString().split('T')[0];
+                
+                const tomorrowTasks = allTasks.filter(task => {
+                    if (task.status === 'completed') return false;
+                    return task.due_date === tomorrowStr;
+                });
+                
+                addResult(`📅 Morgen (${tomorrowStr}): ${tomorrowTasks.length} Tasks`, 'success');
+                tomorrowTasks.forEach(task => {
+                    addResult(`  - ${task.title} (${task.due_date}, ${task.status})`);
+                });
+                
+            } catch (error) {
+                addResult(`❌ API Fehler: ${error.message}`, 'error');
+            }
+        }
+        
+        function testDateCalculation() {
+            const today = new Date();
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const todayStr = today.toISOString().split('T')[0];
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+            
+            addResult(`📅 Heute: ${todayStr}`, 'success');
+            addResult(`📅 Morgen: ${tomorrowStr}`, 'success');
+        }
+        
+        function testTomorrowFilter() {
+            if (allTasks.length === 0) {
+                addResult('❌ Keine Tasks geladen. Führe zuerst API-Test aus.', 'error');
+                return;
+            }
+            
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+            
+            addResult(`🔍 Teste Morgen Filter für ${tomorrowStr}...`);
+            
+            const tomorrowTasks = allTasks.filter(task => {
+                if (task.status === 'completed') return false;
+                return task.due_date === tomorrowStr;
+            });
+            
+            addResult(`✅ ${tomorrowTasks.length} Tasks für morgen gefunden`, 'success');
+            
+            if (tomorrowTasks.length === 0) {
+                addResult('⚠️ Keine Tasks für morgen gefunden. Mögliche Ursachen:', 'error');
+                addResult('  - Alle Tasks für morgen sind erledigt');
+                addResult('  - Keine Tasks haben due_date = ' + tomorrowStr);
+                addResult('  - Tasks haben andere due_date Werte');
+                
+                // Zeige alle due_date Werte
+                const allDueDates = [...new Set(allTasks.map(t => t.due_date).filter(Boolean))];
+                addResult(`📋 Alle due_date Werte: ${allDueDates.join(', ')}`);
+            }
+        }
+        
+        // Automatischer Test beim Laden
+        document.addEventListener('DOMContentLoaded', function() {
+            addResult('🚀 Debug-Tool geladen');
+            testAPI();
+        });
+    </script>
+</body>
+</html>
+

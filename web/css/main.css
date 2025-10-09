@@ -1,5 +1,5 @@
-        /* Import Google Sans */
-        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
+        /* Helvetica Font Family */
+        @import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@400&display=swap');
         
         /* CSS Custom Properties - Dark Mode UI Guidelines */
         :root {
@@ -98,8 +98,9 @@
         .header-left h1 {
             color: var(--primary);
             font-size: 32px;
-            font-weight: 600;
+            font-weight: 400;
             margin: 0 0 var(--space-2) 0;
+            font-family: 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
         .header-left p {
@@ -208,27 +209,35 @@
         }
         
         .filter-select {
-            padding: var(--space-2) var(--space-3);
+            padding: var(--space-3) var(--space-4);
             border: 1px solid var(--border-medium);
-            border-radius: var(--radius-md);
-            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
             color: var(--text-primary);
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 400;
+            font-family: 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
             min-width: 120px;
+            height: 40px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
         }
         
         .filter-select:hover {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--border-medium) 100%);
             border-color: var(--primary);
-            box-shadow: var(--shadow-sm), var(--glow-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md), var(--glow-primary);
         }
         
         .filter-select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: var(--shadow-md), var(--glow-primary);
+            box-shadow: var(--shadow-lg), var(--glow-primary);
+            transform: translateY(-1px);
         }
 
         .sort-section {
@@ -243,7 +252,8 @@
             color: var(--text-primary);
             border-radius: var(--radius-lg);
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 400;
+            font-family: 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: var(--shadow-sm);
@@ -288,7 +298,8 @@
             color: var(--text-primary);
             border-radius: var(--radius-lg);
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 400;
+            font-family: 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: var(--shadow-sm);
@@ -573,7 +584,7 @@
         }
 
         .task-title-text {
-            font-weight: 600;
+            font-weight: 400;
             color: var(--text-primary);
             line-height: 1.4;
             overflow: hidden;
@@ -582,6 +593,7 @@
             flex: 1;
             min-width: 0; /* Allows text to shrink */
             max-width: calc(100% - 30px); /* Reserve space for edit hint */
+            font-family: 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         /* Context Menu Styles */
@@ -626,7 +638,7 @@
         
         .task-title {
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 400;
             color: var(--text-primary);
             margin: 0;
             line-height: 1.2;
@@ -638,6 +650,7 @@
             display: flex;
             align-items: center;
             gap: var(--space-2);
+            font-family: 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
         .task-checkbox {
@@ -1278,7 +1291,7 @@
 
         /* Flatpickr Custom Styling */
         .flatpickr-calendar {
-            font-family: 'Google Sans', Helvetica, Arial, sans-serif !important;
+            font-family: 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             border-radius: var(--radius-lg) !important;
             box-shadow: var(--shadow-lg) !important;
             border: 1px solid var(--border-light) !important;
