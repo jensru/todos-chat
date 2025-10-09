@@ -149,10 +149,6 @@ export function useTaskManagement(): {
       return updatedTasks;
     });
     
-    // TEMPORARY: Skip service call to test if state update works
-    console.log('TEMPORARY: Skipping service call to test state update');
-    return;
-    
     const success = await taskService.reorderTasksWithinDate(dateKey, taskIds);
     console.log('reorderTasksWithinDate success:', success);
     

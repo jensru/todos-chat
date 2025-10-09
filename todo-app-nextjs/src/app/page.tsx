@@ -175,13 +175,12 @@ export default function HomePage(): JSX.Element {
     const activeId = active.id;
     const overId = over.id;
 
-    // TEMPORARY: Skip same position check to test collision detection
-    console.log('Active ID:', activeId, 'Over ID:', overId);
+    // Check if dropped on the same position
     if (activeId === overId) {
-      console.log('Same position drop - but continuing for testing');
-      // setActiveTask(null);
-      // setLiveGroupedTasks({});
-      // return;
+      console.log('Same position drop - returning early');
+      setActiveTask(null);
+      setLiveGroupedTasks({});
+      return;
     }
 
     const activeTask = active.data.current?.task;
@@ -406,7 +405,7 @@ export default function HomePage(): JSX.Element {
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
-            collisionDetection={rectIntersection}
+            collisionDetection={closestCenter}
             measuring={{
               droppable: {
                 strategy: MeasuringStrategy.Always,
@@ -424,7 +423,11 @@ export default function HomePage(): JSX.Element {
                     </span>
                   </h3>
                   
-                  <SortableContext items={dateTasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
+                  <SortableContext 
+                    items={dateTasks.map(t => t.id)} 
+                    strategy={verticalListSortingStrategy}
+                    id={`sortable-${dateKey}`}
+                  >
                     <div className="space-y-2">
                       {dateTasks.map((task) => (
                         <SortableTaskCard
