@@ -127,9 +127,27 @@ export function useTaskManagement(): {
 
   // Drag & Drop methods
   const handleReorderWithinDate = useCallback(async (dateKey: string, taskIds: string[]): Promise<void> => {
+    // Update state immediately for smooth animation
+    setTasks(prevTasks => {
+      const baseTime = Date.now();
+      return prevTasks.map(task => {
+        const index = taskIds.indexOf(task.id);
+        if (index !== -1) {
+          return {
+            ...task,
+            globalPosition: baseTime + index,
+            updatedAt: new Date()
+          };
+        }
+        return task;
+      });
+    });
+    
+    // Then save to service
     const success = await taskService.reorderTasksWithinDate(dateKey, taskIds);
     
-    if (success) {
+    if (!success) {
+      // If service call failed, reload data to revert changes
       await loadData();
     }
   }, [taskService, loadData]);
@@ -142,9 +160,49 @@ export function useTaskManagement(): {
   }, [taskService, loadData]);
 
   const handleReorderAcrossDates = useCallback(async (taskId: string, targetDate: Date | null, targetIndex: number): Promise<void> => {
+    // Update state immediately for smooth animation
+    setTasks(prevTasks => {
+      const task = prevTasks.find(t => t.id === taskId);
+      if (!task) return prevTasks;
+      
+      const targetDateKey = targetDate ? targetDate.toISOString().split('T')[0] : 'ohne-datum';
+      
+      // Get all tasks for the target date (excluding the moving task)
+      const targetDateTasks = prevTasks.filter(t => {
+        if (t.completed || t.id === taskId) return false;
+        const taskDateKey = t.dueDate ? t.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+        return taskDateKey === targetDateKey;
+      });
+      
+      // Sort by current global position
+      targetDateTasks.sort((a, b) => a.globalPosition - b.globalPosition);
+      
+      // Insert at target position
+      targetDateTasks.splice(targetIndex, 0, task);
+      
+      // Calculate new positions
+      const baseTime = Date.now();
+      const updatedTasks = prevTasks.map(t => {
+        const index = targetDateTasks.findIndex(tt => tt.id === t.id);
+        if (index !== -1) {
+          return {
+            ...t,
+            dueDate: targetDate,
+            globalPosition: baseTime + index,
+            updatedAt: new Date()
+          };
+        }
+        return t;
+      });
+      
+      return updatedTasks;
+    });
+    
+    // Then save to service
     const success = await taskService.reorderTasksAcrossDates(taskId, targetDate, targetIndex);
     
-    if (success) {
+    if (!success) {
+      // If service call failed, reload data to revert changes
       await loadData();
     }
   }, [taskService, loadData]);
