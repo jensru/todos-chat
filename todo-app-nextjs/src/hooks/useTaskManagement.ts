@@ -115,9 +115,9 @@ export function useTaskManagement(): {
       const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
 
       if (dateString === today.toISOString().split('T')[0]) {
-        return 'Heute';
+        return `Heute (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})`;
       } else if (dateString === tomorrow.toISOString().split('T')[0]) {
-        return 'Morgen';
+        return `Morgen (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})`;
       } else {
         return date.toLocaleDateString('de-DE', {
           weekday: 'long',

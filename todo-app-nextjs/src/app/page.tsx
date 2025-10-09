@@ -92,10 +92,11 @@ function SortableDateHeader({ dateKey, formatDate, taskCount }: {
 
   return (
     <div ref={setNodeRef} style={style} className="my-2">
-      <h3 className="text-lg font-semibold px-3 py-2 bg-muted/20 rounded-md text-center">
-        {formatDate(dateKey)}
-        <span className="ml-2 text-sm text-muted-foreground">
-          ({taskCount})
+      <h3 className="text-lg font-semibold px-3 py-2 bg-muted/20 rounded-md flex items-center">
+        <span className="flex-1"></span>
+        <span className="text-center">{formatDate(dateKey)}</span>
+        <span className="flex-1 text-right text-sm text-muted-foreground">
+          {taskCount} Tasks
         </span>
       </h3>
     </div>
@@ -329,10 +330,6 @@ export default function HomePage(): JSX.Element {
       {/* Chat Panel */}
       <div className="w-full lg:w-1/3 lg:max-w-[500px] border-r border-border bg-muted/30">
         <div className="p-4 border-b border-border">
-          <h2 className="text-lg font-semibold flex items-center">
-            <MessageCircle className="h-5 w-5 mr-2" />
-            Chat
-          </h2>
         </div>
         <div className="p-4 space-y-4">
           {messages.map((message) => (
@@ -369,19 +366,6 @@ export default function HomePage(): JSX.Element {
       {/* Canvas Panel */}
       <div className="flex-1 p-6 overflow-y-auto">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold flex items-center">
-              <Calendar className="h-6 w-6 mr-2" />
-              Canvas
-            </h1>
-            {stats && (
-              <div className="text-sm text-muted-foreground flex items-center">
-                <CheckCircle2 className="h-4 w-4 mr-1" />
-                {stats.active} aktiv • {stats.highPriority} High Priority • {stats.completionRate}% erledigt
-              </div>
-            )}
-          </div>
 
           {/* Goals Section */}
           {goals.length > 0 && (
@@ -462,6 +446,16 @@ export default function HomePage(): JSX.Element {
               ) : null}
             </DragOverlay>
           </DndContext>
+
+          {/* Statistics */}
+          {stats && tasks.length > 0 && (
+            <div className="mt-8 text-center">
+              <div className="text-sm text-muted-foreground flex items-center justify-center">
+                <CheckCircle2 className="h-4 w-4 mr-1" />
+                {stats.active} aktiv • {stats.highPriority} High Priority • {stats.completionRate}% erledigt
+              </div>
+            </div>
+          )}
 
           {/* Empty State */}
           {tasks.length === 0 && (
