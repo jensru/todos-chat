@@ -13,11 +13,11 @@ Eine moderne, hochperformante Todo-App mit KI-Integration, gebaut mit Next.js 15
 - **Kontextuelle Antworten** - KI versteht deine Aufgaben und Ziele
 
 ### 📋 Task-Management
-- **Drag & Drop** zwischen Tagen
+- **Drag & Drop** zwischen Tagen ✅ Vollständig funktional
 - **Priority-System** mit Star-Icons
 - **Kategorie-Management** für bessere Organisation
 - **Unteraufgaben** für detaillierte Planung
-- **Datum-Sortierung** mit intelligenter Gruppierung
+- **Chronologische Sortierung** mit intelligenter Gruppierung ✅
 - **Real-time Updates** mit LocalStorage-Sync
 
 ### 🎨 UI/UX

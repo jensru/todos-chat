@@ -3,7 +3,7 @@
 
 import { Plus, Target, MessageCircle, Calendar, CheckCircle2 } from 'lucide-react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, DragOverEvent, MeasuringStrategy, rectIntersection } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, arrayMove, useSortable } from '@dnd-kit/sortable';
+import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { TaskCardRefactored as TaskCard } from '@/components/TaskCardRefactored';
@@ -17,11 +17,11 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 
 // Sortable Task Card Component
-function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
+function SortableTaskCard({ task, onUpdate, onDelete, activeTask }: {
   task: any;
-  dateKey: string;
   onUpdate: (taskId: string, updates: Partial<any>) => Promise<void>;
   onDelete: (taskId: string) => Promise<void>;
+  activeTask?: any;
 }) {
   const {
     attributes,
@@ -33,8 +33,8 @@ function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
   } = useSortable({ 
     id: task.id,
     data: {
-      task,
-      dateKey
+      type: 'task',
+      task
     }
   });
 
@@ -43,7 +43,7 @@ function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
     transition: isDragging ? 'none' : (transition || 'transform 200ms ease'),
     opacity: isDragging ? 0.3 : 1,
     zIndex: isDragging ? 1000 : 'auto',
-    pointerEvents: isDragging ? 'none' : 'auto',
+    pointerEvents: isDragging ? 'none' as const : 'auto' as const,
   };
 
   return (
@@ -60,6 +60,48 @@ function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
   );
 }
 
+// Sortable Date Header Component
+function SortableDateHeader({ dateKey, formatDate, taskCount }: {
+  dateKey: string;
+  formatDate: (dateString: string) => string;
+  taskCount: number;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ 
+    id: `header-${dateKey}`,
+    data: {
+      type: 'date-header',
+      dateKey,
+      date: dateKey === 'ohne-datum' ? null : new Date(dateKey)
+    }
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: isDragging ? 'none' : (transition || 'transform 200ms ease'),
+    opacity: isDragging ? 0.3 : 1,
+    zIndex: isDragging ? 1000 : 'auto',
+    pointerEvents: isDragging ? 'none' as const : 'auto' as const,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className="my-6">
+      <h3 className="text-lg font-semibold px-4 py-3 bg-muted/20 rounded-lg text-center">
+        {formatDate(dateKey)}
+        <span className="ml-2 text-sm text-muted-foreground">
+          ({taskCount})
+        </span>
+      </h3>
+    </div>
+  );
+}
+
 export default function HomePage(): JSX.Element {
   const {
     tasks,
@@ -69,10 +111,7 @@ export default function HomePage(): JSX.Element {
     handleAddTask,
     getTaskStats,
     groupedTasks,
-    formatDate,
-    handleReorderWithinDate,
-    handleMoveTaskToDate,
-    handleReorderAcrossDates
+    formatDate
   } = useTaskManagement();
 
   const {
@@ -119,35 +158,72 @@ export default function HomePage(): JSX.Element {
     if (activeId === overId) return;
 
     const activeTask = active.data.current?.task;
-    const overTask = over.data.current?.task;
+    const overElement = over.data.current;
 
-    if (!activeTask || !overTask) return;
+    if (!activeTask || !overElement) return;
 
-    const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
-    const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+    // Get flat list of all items (headers + tasks)
+    const flatList = getFlatList();
+    const activeIndex = flatList.findIndex(item => item.id === activeId);
+    const overIndex = flatList.findIndex(item => item.id === overId);
 
-    if (activeDateKey === overDateKey) {
-      // Same date - reorder
-      const dateTasks = groupedTasks[activeDateKey] || [];
-      const activeIndex = dateTasks.findIndex(t => t.id === activeId);
-      const overIndex = dateTasks.findIndex(t => t.id === overId);
-      
-      if (activeIndex !== -1 && overIndex !== -1) {
-        const newOrder = arrayMove(dateTasks, activeIndex, overIndex);
-        const taskIds = newOrder.map(t => t.id);
-        await handleReorderWithinDate(activeDateKey, taskIds);
-      }
-    } else {
-      // Different date - move task
-      const targetDateTasks = groupedTasks[overDateKey] || [];
-      const overIndex = targetDateTasks.findIndex(t => t.id === overId);
-      
-      if (overIndex !== -1) {
-        await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
-      } else {
-        await handleMoveTaskToDate(activeId as string, overTask.dueDate);
-      }
+    if (activeIndex === -1 || overIndex === -1) return;
+
+    // Calculate new position based on drop target
+    let newDate: Date | null = null;
+    let newPosition = Date.now();
+
+    if (overElement.type === 'date-header') {
+      // Dropped on date header - change date
+      newDate = overElement.date;
+      newPosition = Date.now();
+    } else if (overElement.type === 'task') {
+      // Dropped on task - keep same date, adjust position
+      newDate = overElement.task.dueDate || null;
+      newPosition = overElement.task.globalPosition;
     }
+
+    // Update task with new date and position
+    await handleTaskUpdate(activeTask.id, {
+      dueDate: newDate || undefined,
+      globalPosition: newPosition,
+      updatedAt: new Date()
+    });
+  };
+
+  // Helper function to create flat list of all items
+  const getFlatList = () => {
+    const flatList: Array<{id: string, type: string, task?: any, dateKey?: string, date?: Date | null}> = [];
+    
+    // Sort date keys chronologically
+    const sortedDateKeys = Object.keys(groupedTasks).sort((a, b) => {
+      if (a === 'ohne-datum') return 1; // Put "ohne-datum" at the end
+      if (b === 'ohne-datum') return -1;
+      return new Date(a).getTime() - new Date(b).getTime();
+    });
+    
+    sortedDateKeys.forEach(dateKey => {
+      const dateTasks = groupedTasks[dateKey];
+      
+      // Add date header
+      flatList.push({
+        id: `header-${dateKey}`,
+        type: 'date-header',
+        dateKey,
+        date: dateKey === 'ohne-datum' ? null : new Date(dateKey)
+      });
+      
+      // Add tasks for this date
+      dateTasks.forEach(task => {
+        flatList.push({
+          id: task.id,
+          type: 'task',
+          task
+        });
+      });
+    });
+    
+    return flatList;
   };
 
 
@@ -261,41 +337,35 @@ export default function HomePage(): JSX.Element {
               },
             }}
           >
-            <div className="space-y-6">
-              {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
-                <div key={dateKey}>
-                  <h3 className="text-lg font-semibold mb-3 flex items-center">
-                    <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-                    {formatDate(dateKey)}
-                    <span className="ml-2 text-sm text-muted-foreground">
-                      ({dateTasks.length})
-                    </span>
-                  </h3>
-                  
-                  <SortableContext 
-                    items={dateTasks.map(t => t.id)} 
-                    strategy={verticalListSortingStrategy}
-                    id={`sortable-${dateKey}`}
-                  >
-                    <div className="space-y-2">
-                      {dateTasks.map((task) => (
-                        <SortableTaskCard
-                          key={task.id}
-                          task={task}
-                          dateKey={dateKey}
-                          onUpdate={handleTaskUpdate}
-                          onDelete={handleTaskDelete}
-                        />
-                      ))}
-                    </div>
-                  </SortableContext>
-                </div>
-              ))}
-            </div>
+            <SortableContext 
+              items={getFlatList().map(item => item.id)} 
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="space-y-2">
+                {getFlatList().map((item) => (
+                  <div key={item.id}>
+                    {item.type === 'date-header' ? (
+                      <SortableDateHeader
+                        dateKey={item.dateKey!}
+                        formatDate={formatDate}
+                        taskCount={groupedTasks[item.dateKey!]?.length || 0}
+                      />
+                    ) : (
+                      <SortableTaskCard
+                        task={item.task}
+                        onUpdate={handleTaskUpdate}
+                        onDelete={handleTaskDelete}
+                        activeTask={activeTask}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </SortableContext>
             
             <DragOverlay>
               {activeTask ? (
-                <div className="opacity-50">
+                <div className="opacity-90 rotate-3 scale-105 shadow-2xl">
                   <TaskCard
                     task={activeTask}
                     onUpdate={handleTaskUpdate}
