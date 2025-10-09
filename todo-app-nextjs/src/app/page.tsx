@@ -155,101 +155,122 @@ export default function HomePage(): JSX.Element {
     const { active, over } = event;
     setActiveTask(null);
 
-    if (!over || !active) return;
+    if (!over || !active.data.current) {
+      return;
+    }
 
-    const activeId = active.id;
-    const overId = over.id;
-
-    // If dropped on the same position, do nothing
-    if (activeId === overId) return;
-
-    const activeTask = active.data.current?.task;
+    const activeTask = active.data.current.task;
     const overElement = over.data.current;
 
-    if (!activeTask || !overElement) return;
+    console.log('🎯 Drag end:', {
+      task: activeTask.title,
+      overType: overElement.type
+    });
 
-    // Get flat list of all items (headers + tasks)
-    const flatList = getFlatList();
-    const activeIndex = flatList.findIndex(item => item.id === activeId);
-    const overIndex = flatList.findIndex(item => item.id === overId);
+    // Get the current flat list order (only tasks, not headers)
+    const currentFlatList = getFlatList().filter(item => item.type === 'task');
+    const overIndex = currentFlatList.findIndex(item => item.id === over.id);
 
-    if (activeIndex === -1 || overIndex === -1) return;
-
-    // Calculate new date and position based on drop target
-    let newDate: Date | null = null;
-    let newPosition = Date.now();
-
+    // Handle date header drops
     if (overElement.type === 'date-header') {
-      // Dropped on date header - change date
-      newDate = overElement.date;
-      
-      // Debug logging
-      console.log('Date-header drop:', {
-        dateKey: overElement.dateKey,
-        date: overElement.date,
-        targetDateTasks: groupedTasks[overElement.dateKey]?.length || 0
-      });
-      
-      // Simple: position at end of this date group
+      const newDate = overElement.date;
       const targetDateKey = overElement.dateKey;
       const targetDateTasks = groupedTasks[targetDateKey] || [];
-      
-      const dateString = targetDateKey === 'ohne-datum' ? '999999' : targetDateKey.replace(/-/g, '');
-      const nextPosition = targetDateTasks.length + 1;
-      newPosition = parseInt(dateString + String(nextPosition).padStart(2, '0'));
-      
-      console.log('Calculated position:', {
-        dateString,
-        nextPosition,
+
+      // Calculate position at end of date group
+      const maxPosition = targetDateTasks.length > 0
+        ? Math.max(...targetDateTasks.map(t => t.globalPosition))
+        : 0;
+      const newPosition = maxPosition + 100; // Add 100 for spacing
+
+      console.log('📅 Date header drop:', {
+        newDate,
         newPosition
       });
-      
-    } else if (overElement.type === 'task') {
-      // Dropped on task - keep same date, position after target task
-      newDate = overElement.task.dueDate || null;
-      
-      const taskDateKey = overElement.task.dueDate ? 
-        overElement.task.dueDate.toISOString().split('T')[0] : 
-        'ohne-datum';
-      
-      // Find position after target task in same date group
-      const sameDateTasks = groupedTasks[taskDateKey] || [];
-      const targetTaskIndex = sameDateTasks.findIndex(t => t.id === overElement.task.id);
-      
-      console.log('Task drop:', {
-        taskDateKey,
-        targetTaskIndex,
-        sameDateTasksLength: sameDateTasks.length,
-        targetTask: overElement.task.title
+
+      await handleTaskUpdateOptimistic(activeTask.id, {
+        dueDate: newDate,
+        globalPosition: newPosition,
+        updatedAt: new Date()
       });
-      
-      if (targetTaskIndex !== -1) {
-        const nextPosition = targetTaskIndex + 2; // Position after target task
-        const dateString = taskDateKey === 'ohne-datum' ? '999999' : taskDateKey.replace(/-/g, '');
-        newPosition = parseInt(dateString + String(nextPosition).padStart(2, '0'));
-        
-        console.log('Calculated task position:', {
-          dateString,
-          nextPosition,
-          newPosition
-        });
+      return;
+    }
+
+    // Handle task-to-task drops: Calculate position BETWEEN neighbors
+    const overTask = overElement.task;
+    const overTaskDate = overTask.dueDate;
+
+    // Find the index of the active (dragged) task
+    const activeIndex = currentFlatList.findIndex(item => item.id === active.id);
+
+    // Determine if we're moving down or up
+    const movingDown = activeIndex < overIndex;
+
+    let newPosition: number;
+
+    if (overIndex === 0) {
+      // Dropped at the beginning
+      const nextTask = currentFlatList[0].task;
+      newPosition = nextTask.globalPosition - 100;
+    } else if (overIndex >= currentFlatList.length - 1) {
+      // Dropped at the end
+      const prevTask = currentFlatList[currentFlatList.length - 1].task;
+      newPosition = prevTask.globalPosition + 100;
+    } else {
+      // Dropped between two tasks - calculate midpoint
+      // When moving down, we want to be AFTER the target
+      // When moving up, we want to be BEFORE the target
+      if (movingDown) {
+        // Moving down: position between overTask and next task
+        const nextTask = currentFlatList[overIndex + 1]?.task;
+        if (nextTask) {
+          newPosition = (overTask.globalPosition + nextTask.globalPosition) / 2;
+        } else {
+          // No next task, place after overTask
+          newPosition = overTask.globalPosition + 100;
+        }
       } else {
-        newPosition = overElement.task.globalPosition + 1;
+        // Moving up: position between previous task and overTask
+        const prevTask = currentFlatList[overIndex - 1]?.task;
+        if (prevTask) {
+          newPosition = (prevTask.globalPosition + overTask.globalPosition) / 2;
+        } else {
+          // No previous task, place before overTask
+          newPosition = overTask.globalPosition - 100;
+        }
       }
     }
 
-    // OPTIMISTIC UPDATE: Update state immediately for smooth animation
-    const success = await handleTaskUpdateOptimistic(activeTask.id, {
-      dueDate: newDate || undefined,
-      globalPosition: newPosition,
-      updatedAt: new Date()
+    console.log('🔄 Task-to-task drop:', {
+      newPosition,
+      newDate: overTaskDate,
+      overTask: overTask.title
     });
 
-    // If DB update failed, revert the optimistic update
-    if (!success) {
-      // The handleTaskUpdateOptimistic will handle the revert internally
-      console.warn('Task update failed, reverting optimistic changes');
+    // Update ONLY the moved task - O(1) operation!
+    // Also update the date to match the target task's date
+    await handleTaskUpdateOptimistic(activeTask.id, {
+      globalPosition: newPosition,
+      dueDate: overTaskDate, // ← FIX: Übernehme das Datum des Ziel-Tasks!
+      updatedAt: new Date()
+    });
+  };
+
+  // Rebalance positions if they get too close together
+  const rebalancePositions = async () => {
+    console.log('🔧 Rebalancing all task positions...');
+
+    const flatList = getFlatList().filter(item => item.type === 'task');
+
+    // Update each task with evenly spaced positions (100, 200, 300...)
+    for (let i = 0; i < flatList.length; i++) {
+      const newPosition = (i + 1) * 100;
+      await handleTaskUpdateOptimistic(flatList[i].task.id, {
+        globalPosition: newPosition
+      });
     }
+
+    console.log('✅ Rebalancing complete');
   };
 
   // Helper function to create flat list of all items
@@ -274,7 +295,7 @@ export default function HomePage(): JSX.Element {
         date: dateKey === 'ohne-datum' ? null : new Date(dateKey)
       });
       
-      // Add tasks for this date (sorted by globalPosition)
+      // Add tasks for this date (sorted by globalPosition to maintain DB order)
       const sortedTasks = [...dateTasks].sort((a, b) => a.globalPosition - b.globalPosition);
       sortedTasks.forEach(task => {
         flatList.push({

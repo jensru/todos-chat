@@ -12,12 +12,23 @@ export class ApiTaskService {
       }
       
       const data = await response.json();
-      const tasks = (data.tasks || []).map((task: any) => ({
-        ...task,
-        dueDate: task.dueDate ? new Date(task.dueDate) : null,
-        createdAt: new Date(task.createdAt),
-        updatedAt: new Date(task.updatedAt)
-      }));
+      console.log('ApiTaskService.loadTasks - raw API response sample:', data.tasks[0]);
+      
+      const tasks = (data.tasks || []).map((task: any) => {
+        const convertedTask = {
+          ...task,
+          dueDate: task.dueDate ? new Date(task.dueDate) : null,
+          createdAt: new Date(task.createdAt),
+          updatedAt: new Date(task.updatedAt)
+        };
+        console.log('ApiTaskService.loadTasks - converted task sample:', {
+          id: convertedTask.id,
+          title: convertedTask.title,
+          dueDate: convertedTask.dueDate,
+          dueDateType: typeof convertedTask.dueDate
+        });
+        return convertedTask;
+      });
       
       console.log('ApiTaskService.loadTasks - loaded', tasks.length, 'tasks from API');
       return tasks;

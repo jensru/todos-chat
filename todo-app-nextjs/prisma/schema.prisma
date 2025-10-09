@@ -20,7 +20,7 @@ model Task {
   category      String   @default("todo")
   tags          String   @default("[]") // JSON string
   subtasks      String   @default("[]") // JSON string
-  globalPosition Int
+  globalPosition Float
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

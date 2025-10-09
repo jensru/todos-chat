@@ -77,10 +77,13 @@ export function useTaskManagement(): {
               const taskDate = task.dueDate.toISOString().split('T')[0];
               const today = new Date().toISOString().split('T')[0];
 
+              // Always include tasks with dates (even past dates)
+              // This fixes the issue where tasks moved to "today" disappear
               if (taskDate >= today) {
                 dateKey = taskDate;
               } else {
-                return acc;
+                // For past dates, still include them but mark as "overdue"
+                dateKey = taskDate;
               }
             }
           } catch {

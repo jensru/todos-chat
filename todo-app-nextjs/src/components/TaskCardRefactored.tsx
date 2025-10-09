@@ -2,13 +2,25 @@
 'use client';
 
 import { Star, Calendar, Folder, Edit, Save, X, Trash2, GripVertical } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Task } from '@/lib/types';
+
+// Helper function to safely convert date to ISO string
+const safeDateToISO = (date: any): string => {
+  if (!date) return '';
+  try {
+    const dateObj = date instanceof Date ? date : new Date(date);
+    if (isNaN(dateObj.getTime())) return '';
+    return dateObj.toISOString().split('T')[0];
+  } catch {
+    return '';
+  }
+};
 
 interface ITaskCardProps {
   task: Task;
@@ -23,7 +35,13 @@ interface ITaskCardProps {
 export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = false, dragHandleProps, dragRef }: ITaskCardProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
-  const [editDueDate, setEditDueDate] = useState(task.dueDate ? task.dueDate.toISOString().split('T')[0] : '');
+  const [editDueDate, setEditDueDate] = useState(safeDateToISO(task.dueDate));
+
+  // Sync edit state when task changes (e.g., after drag & drop)
+  useEffect(() => {
+    setEditTitle(task.title);
+    setEditDueDate(safeDateToISO(task.dueDate));
+  }, [task.title, task.dueDate]);
 
   const handleToggleComplete = (): void => {
     onUpdate(task.id, { completed: !task.completed });
@@ -46,7 +64,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
 
   const handleCancelEdit = (): void => {
     setEditTitle(task.title);
-    setEditDueDate(task.dueDate ? task.dueDate.toISOString().split('T')[0] : '');
+    setEditDueDate(safeDateToISO(task.dueDate));
     setIsEditing(false);
   };
 
