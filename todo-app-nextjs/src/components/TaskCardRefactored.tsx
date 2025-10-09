@@ -47,8 +47,8 @@ export function TaskCardRefactored({ task, onUpdate, onDelete }: ITaskCardProps)
   };
 
   return (
-    <Card className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''}`} style={{ minHeight: '20px' }}>
-      <CardContent className="py-0">
+    <Card className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md`}>
+      <CardContent className="px-3 py-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 flex-1 min-w-0">
             {/* Checkbox */}

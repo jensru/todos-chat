@@ -145,7 +145,7 @@ export default function HomePage(): JSX.Element {
                   </span>
                 </h3>
                 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {dateTasks.map((task) => (
                     <TaskCard
                       key={task.id}
