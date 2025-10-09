@@ -64,7 +64,7 @@ export function useTaskManagement(): {
   }, [taskService]);
 
   const groupedTasks = useMemo(() => {
-    return tasks
+    const grouped = tasks
       .filter(task => !task.completed)
       .reduce((acc, task) => {
         let dateKey = 'ohne-datum';
@@ -92,6 +92,13 @@ export function useTaskManagement(): {
         acc[dateKey].push(task);
         return acc;
       }, {} as Record<string, Task[]>);
+
+    // Sort each group by globalPosition
+    Object.keys(grouped).forEach(dateKey => {
+      grouped[dateKey].sort((a, b) => a.globalPosition - b.globalPosition);
+    });
+
+    return grouped;
   }, [tasks]);
 
   const formatDate = useCallback((dateString: string): string => {
@@ -121,12 +128,30 @@ export function useTaskManagement(): {
   // Drag & Drop methods
   const handleReorderWithinDate = useCallback(async (dateKey: string, taskIds: string[]): Promise<void> => {
     console.log('handleReorderWithinDate called:', { dateKey, taskIds });
+    
+    // Update state immediately for better UX
+    setTasks(prevTasks => {
+      const baseTime = Date.now();
+      return prevTasks.map(task => {
+        const index = taskIds.indexOf(task.id);
+        if (index !== -1) {
+          return {
+            ...task,
+            globalPosition: baseTime + index,
+            updatedAt: new Date()
+          };
+        }
+        return task;
+      });
+    });
+    
     const success = await taskService.reorderTasksWithinDate(dateKey, taskIds);
     console.log('reorderTasksWithinDate success:', success);
-    if (success) {
-      console.log('Reloading data...');
-      await loadData(); // Reload to get updated order
-      console.log('Data reloaded');
+    
+    if (!success) {
+      // If service call failed, reload data to revert changes
+      console.log('Service call failed, reloading data...');
+      await loadData();
     }
   }, [taskService, loadData]);
 
