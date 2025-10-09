@@ -112,11 +112,9 @@ export default function HomePage(): JSX.Element {
     handleAddTask,
     getTaskStats,
     groupedTasks,
-    formatDate
+    formatDate,
+    handleTaskUpdateOptimistic
   } = taskManagement;
-  
-  // Get the optimistic update function (TypeScript workaround)
-  const handleTaskUpdateOptimistic = (taskManagement as any).handleTaskUpdateOptimistic;
   
 
   const {
@@ -161,6 +159,11 @@ export default function HomePage(): JSX.Element {
 
     const activeTask = active.data.current.task;
     const overElement = over.data.current;
+
+    if (!overElement) {
+      console.log('🎯 Drag end: No over element');
+      return;
+    }
 
     console.log('🎯 Drag end:', {
       task: activeTask.title,
