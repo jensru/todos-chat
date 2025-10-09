@@ -86,6 +86,7 @@ export default function HomePage(): JSX.Element {
 
   // Drag & Drop state
   const [activeTask, setActiveTask] = useState<any>(null);
+  const [liveGroupedTasks, setLiveGroupedTasks] = useState<Record<string, any[]>>({});
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -98,19 +99,65 @@ export default function HomePage(): JSX.Element {
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setActiveTask(active.data.current?.task);
+    setLiveGroupedTasks(groupedTasks); // Initialize live state
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    
+    if (!over || !active) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+    const activeTask = active.data.current?.task;
+    const overTask = over.data.current?.task;
+
+    if (!activeTask || !overTask) return;
+
+    const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+    const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+    
+    // Only handle cross-date dragging for live feedback
+    if (activeDateKey !== overDateKey) {
+      const targetDateTasks = liveGroupedTasks[overDateKey] || [];
+      const overIndex = targetDateTasks.findIndex(t => t.id === overId);
+      
+      if (overIndex !== -1) {
+        // Remove from source date
+        const sourceTasks = liveGroupedTasks[activeDateKey] || [];
+        const filteredSourceTasks = sourceTasks.filter(t => t.id !== activeId);
+        
+        // Add to target date at specific position
+        const newTargetTasks = [...targetDateTasks];
+        newTargetTasks.splice(overIndex, 0, { ...activeTask, dueDate: overTask.dueDate });
+        
+        setLiveGroupedTasks(prev => ({
+          ...prev,
+          [activeDateKey]: filteredSourceTasks,
+          [overDateKey]: newTargetTasks
+        }));
+      }
+    }
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
-    setActiveTask(null);
-
-    if (!over || !active) return;
+    
+    if (!over || !active) {
+      setActiveTask(null);
+      setLiveGroupedTasks({});
+      return;
+    }
 
     const activeId = active.id;
     const overId = over.id;
 
     // If dropped on the same position, do nothing
-    if (activeId === overId) return;
+    if (activeId === overId) {
+      setActiveTask(null);
+      setLiveGroupedTasks({});
+      return;
+    }
 
     const activeTask = active.data.current?.task;
     const overTask = over.data.current?.task;
@@ -177,6 +224,10 @@ export default function HomePage(): JSX.Element {
       console.log('Dropped on date header:', { overDateKey, newDate });
       await handleMoveTaskToDate(activeId as string, newDate);
     }
+
+    // Reset state after processing
+    setActiveTask(null);
+    setLiveGroupedTasks({});
   };
 
 
@@ -282,11 +333,12 @@ export default function HomePage(): JSX.Element {
           <DndContext
             sensors={sensors}
             onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
             collisionDetection={closestCenter}
           >
             <div className="space-y-6">
-              {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
+              {Object.entries(activeTask ? liveGroupedTasks : groupedTasks).map(([dateKey, dateTasks]) => (
                 <div key={dateKey}>
                   <h3 className="text-lg font-semibold mb-3 flex items-center">
                     <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
