@@ -131,10 +131,12 @@ export function useTaskManagement(): {
     
     // Update state immediately for better UX
     setTasks(prevTasks => {
+      console.log('Updating tasks state with new order:', taskIds);
       const baseTime = Date.now();
-      return prevTasks.map(task => {
+      const updatedTasks = prevTasks.map(task => {
         const index = taskIds.indexOf(task.id);
         if (index !== -1) {
+          console.log(`Updating task ${task.id} position from ${task.globalPosition} to ${baseTime + index}`);
           return {
             ...task,
             globalPosition: baseTime + index,
@@ -143,7 +145,13 @@ export function useTaskManagement(): {
         }
         return task;
       });
+      console.log('Updated tasks:', updatedTasks.map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+      return updatedTasks;
     });
+    
+    // TEMPORARY: Skip service call to test if state update works
+    console.log('TEMPORARY: Skipping service call to test state update');
+    return;
     
     const success = await taskService.reorderTasksWithinDate(dateKey, taskIds);
     console.log('reorderTasksWithinDate success:', success);

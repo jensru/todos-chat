@@ -208,7 +208,25 @@ export default function HomePage(): JSX.Element {
           // Use live reordered tasks
           const taskIds = liveDateTasks.map(t => t.id);
           console.log('Same date reorder - using live order:', taskIds);
-          await handleReorderWithinDate(activeDateKey, taskIds);
+          
+          // TEMPORARY: Skip service call, just update state
+          console.log('TEMPORARY: Skipping service call, updating state directly');
+          setTasks(prevTasks => {
+            const baseTime = Date.now();
+            return prevTasks.map(task => {
+              const index = taskIds.indexOf(task.id);
+              if (index !== -1) {
+                return {
+                  ...task,
+                  globalPosition: baseTime + index,
+                  updatedAt: new Date()
+                };
+              }
+              return task;
+            });
+          });
+          
+          // await handleReorderWithinDate(activeDateKey, taskIds);
           console.log('handleReorderWithinDate completed');
         } else {
           // Fallback to original logic if live state is empty
