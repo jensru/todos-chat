@@ -3,11 +3,37 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const { message, context } = await request.json();
+    const { message: userMessage, context, tools, toolChoice } = await request.json();
     
     const apiKey = process.env.NEXT_PUBLIC_MISTRAL_API_KEY || 'nsAs8hgBt7OIuUPhioIvUyVMUzH0MtLz';
     if (!apiKey) {
       return NextResponse.json({ error: 'API Key not configured' }, { status: 500 });
+    }
+
+    // Prepare request body
+    const requestBody: any = {
+      model: 'mistral-large-latest',
+      messages: [
+        {
+          role: 'system',
+          content: `Du bist ein hilfreicher KI-Assistent für Aufgabenmanagement. 
+          Antworte auf Deutsch, sei produktiv und hilfreich.
+          Du kannst verschiedene Tools verwenden, um Aufgaben zu erstellen, zu filtern, zu löschen und zu verwalten.
+          Kontext: ${JSON.stringify(context)}`
+        },
+        {
+          role: 'user',
+          content: userMessage
+        }
+      ],
+      temperature: 0.8,
+      max_tokens: 500
+    };
+
+    // Add tools if provided
+    if (tools && tools.length > 0) {
+      requestBody.tools = tools;
+      requestBody.tool_choice = toolChoice || 'auto';
     }
 
     // Use direct HTTP request to Mistral API
@@ -17,39 +43,36 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({
-        model: 'mistral-large-latest',
-        messages: [
-          {
-            role: 'system',
-            content: `Du bist ein hilfreicher KI-Assistent für Aufgabenmanagement. 
-            Antworte auf Deutsch, sei produktiv und hilfreich.
-            Kontext: ${JSON.stringify(context)}`
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ],
-        temperature: 0.8,
-        max_tokens: 300
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       if (response.status === 429) {
         return NextResponse.json({ 
           error: 'Rate limit exceeded', 
-          message: 'Bitte warte einen Moment, bevor du eine weitere Anfrage stellst.' 
+          errorMessage: 'Bitte warte einen Moment, bevor du eine weitere Anfrage stellst.' 
         }, { status: 429 });
       }
       throw new Error(`Mistral API error: ${response.status}`);
     }
 
     const data = await response.json();
-    const aiResponse = data.choices[0]?.message?.content || 'Entschuldigung, ich konnte keine Antwort generieren.';
+    const aiMessage = data.choices[0]?.message;
+    const aiResponse = aiMessage?.content || '';
+    const toolCalls = aiMessage?.tool_calls || null;
     
-    return NextResponse.json({ response: aiResponse });
+    // If we have tool calls but no content, provide a helpful message
+    let finalResponse = aiResponse;
+    if (toolCalls && toolCalls.length > 0 && !aiResponse) {
+      finalResponse = 'Ich verstehe! Ich führe deine Anfrage aus...';
+    } else if (!aiResponse && !toolCalls) {
+      finalResponse = 'Entschuldigung, ich konnte keine Antwort generieren.';
+    }
+    
+    return NextResponse.json({ 
+      response: finalResponse,
+      toolCalls: toolCalls
+    });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to generate response', details: error.message }, { status: 500 });
   }

@@ -68,7 +68,18 @@ export class ApiTaskService {
       console.log('ApiTaskService.addTask - adding new task:', task.title);
       
       // Calculate date-based position for new task
-      const dateKey = task.dueDate ? task.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+      let dateKey = 'ohne-datum';
+      if (task.dueDate) {
+        try {
+          // Ensure dueDate is a valid Date object
+          const dueDate = task.dueDate instanceof Date ? task.dueDate : new Date(task.dueDate);
+          if (!isNaN(dueDate.getTime())) {
+            dateKey = dueDate.toISOString().split('T')[0];
+          }
+        } catch (error) {
+          console.warn('Invalid dueDate in addTask:', task.dueDate, error);
+        }
+      }
       const dateString = dateKey === 'ohne-datum' ? '999999' : dateKey.replace(/-/g, '');
       const positionInDate = String(99).padStart(2, '0'); // Place at end of date group
       const globalPosition = parseInt(dateString + positionInDate);

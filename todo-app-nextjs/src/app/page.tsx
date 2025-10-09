@@ -1,7 +1,7 @@
 // src/app/page.tsx - Main App with Professional Architecture
 'use client';
 
-import { Plus, Target, MessageCircle, Calendar, CheckCircle2 } from 'lucide-react';
+import { Plus, Target, MessageCircle, Calendar, CheckCircle2, Mic, MicOff, Trash2 } from 'lucide-react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, DragOverEvent, MeasuringStrategy, rectIntersection } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -13,8 +13,28 @@ import { Input } from '@/components/ui/input';
 import { useGoals } from '@/hooks/useGoals';
 import { useMistralChat } from '@/hooks/useMistralChat';
 import { useTaskManagement } from '@/hooks/useTaskManagement';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { JSX } from 'react';
+
+// Speech Recognition types
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any;
+    SpeechRecognition: any;
+  }
+}
+
+interface SpeechRecognition {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onstart: (() => void) | null;
+  onresult: ((event: any) => void) | null;
+  onerror: ((event: any) => void) | null;
+  onend: (() => void) | null;
+}
 
 // Sortable Task Card Component
 function SortableTaskCard({ task, onUpdate, onDelete, activeTask }: {
@@ -95,7 +115,7 @@ function SortableDateHeader({ dateKey, formatDate, taskCount }: {
       <h3 className="text-lg font-semibold px-3 py-2 bg-muted/20 rounded-md flex items-center">
         <span className="flex-1"></span>
         <span className="text-center">{formatDate(dateKey)}</span>
-        <span className="flex-1 text-right text-sm text-muted-foreground">
+        <span className="flex-1 text-right text-sm text-muted-foreground font-normal">
           {taskCount} Tasks
         </span>
       </h3>
@@ -122,12 +142,71 @@ export default function HomePage(): JSX.Element {
     messages,
     chatInput,
     setChatInput,
-    handleSendMessage
+    handleSendMessage,
+    clearChat
   } = useMistralChat();
+
+  // Create task service object for Mistral tools
+  const taskService = {
+    handleAddTask,
+    handleTaskUpdate,
+    handleTaskDelete,
+    tasks,
+    getTaskStats
+  };
 
   const { goals } = useGoals();
 
+  // Audio input state
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+
   const stats = getTaskStats();
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      const recognitionInstance = new SpeechRecognition();
+      
+      recognitionInstance.continuous = false;
+      recognitionInstance.interimResults = false;
+      recognitionInstance.lang = 'de-DE';
+      
+      recognitionInstance.onstart = () => {
+        setIsListening(true);
+      };
+      
+      recognitionInstance.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setChatInput(transcript);
+        setIsListening(false);
+      };
+      
+      recognitionInstance.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+      
+      recognitionInstance.onend = () => {
+        setIsListening(false);
+      };
+      
+      setRecognition(recognitionInstance);
+    }
+  }, []);
+
+  const startListening = () => {
+    if (recognition && !isListening) {
+      recognition.start();
+    }
+  };
+
+  const stopListening = () => {
+    if (recognition && isListening) {
+      recognition.stop();
+    }
+  };
 
   // Drag & Drop state
   const [activeTask, setActiveTask] = useState<any>(null);
@@ -329,7 +408,17 @@ export default function HomePage(): JSX.Element {
     <div className="flex h-screen bg-background">
       {/* Chat Panel */}
       <div className="w-full lg:w-1/3 lg:max-w-[500px] border-r border-border bg-muted/30">
-        <div className="p-4 border-b border-border">
+        <div className="p-4 border-b border-border flex justify-between items-center">
+          <h2 className="text-lg font-semibold">KI-Assistent</h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearChat}
+            title="Chat-Verlauf löschen"
+            className="text-muted-foreground hover:text-destructive"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
         </div>
         <div className="p-4 space-y-4">
           {messages.map((message) => (
@@ -354,11 +443,20 @@ export default function HomePage(): JSX.Element {
               onChange={(e) => setChatInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  handleSendMessage({ tasks: tasks.length, goals: goals.length });
+                  handleSendMessage({ tasks: tasks.length, goals: goals.length, taskService });
                 }
               }}
             />
-            <Button onClick={() => handleSendMessage({ tasks: tasks.length, goals: goals.length })}>Send</Button>
+            <Button 
+              variant={isListening ? "destructive" : "outline"}
+              size="icon"
+              onClick={isListening ? stopListening : startListening}
+              disabled={!recognition}
+              title={isListening ? "Aufnahme stoppen" : "Spracheingabe starten"}
+            >
+              {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+            </Button>
+            <Button onClick={() => handleSendMessage({ tasks: tasks.length, goals: goals.length, taskService })}>Send</Button>
           </div>
         </div>
       </div>
