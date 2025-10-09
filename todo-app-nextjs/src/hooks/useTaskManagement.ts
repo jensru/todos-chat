@@ -3,8 +3,8 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 
-import { TaskService } from '@/lib/services/TaskService';
-import { Task } from '@/lib/types';
+import { ApiTaskService } from '@/lib/services/ApiTaskService';
+import { ITask as Task } from '@/lib/types';
 
 export function useTaskManagement(): {
   tasks: Task[];
@@ -20,10 +20,12 @@ export function useTaskManagement(): {
   handleReorderWithinDate: (dateKey: string, taskIds: string[]) => Promise<void>;
   handleMoveTaskToDate: (taskId: string, newDate: Date | null) => Promise<void>;
   handleReorderAcrossDates: (taskId: string, targetDate: Date | null, targetIndex: number) => Promise<void>;
+  // Optimistic update for smooth drag & drop
+  handleTaskUpdateOptimistic: (taskId: string, updates: Partial<Task>) => Promise<boolean>;
 } {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
-  const [taskService] = useState(() => new TaskService());
+  const [taskService] = useState(() => new ApiTaskService());
 
   const loadData = useCallback(async (): Promise<void> => {
     try {
@@ -60,8 +62,8 @@ export function useTaskManagement(): {
   }, [taskService, loadData]);
 
   const getTaskStats = useCallback(() => {
-    return taskService.getTaskStats();
-  }, [taskService]);
+    return taskService.getTaskStats(tasks);
+  }, [taskService, tasks]);
 
   const groupedTasks = useMemo(() => {
     const grouped = tasks
@@ -207,6 +209,44 @@ export function useTaskManagement(): {
     }
   }, [taskService, loadData]);
 
+  // Optimistic update for smooth drag & drop animation
+  const handleTaskUpdateOptimistic = useCallback(async (taskId: string, updates: Partial<Task>): Promise<boolean> => {
+    // Store original task for potential revert
+    const originalTask = tasks.find(t => t.id === taskId);
+    if (!originalTask) return false;
+
+    // Update state immediately for smooth animation
+    setTasks(prevTasks => 
+      prevTasks.map(task =>
+        task.id === taskId ? { ...task, ...updates } : task
+      )
+    );
+    
+    // Try to update in the service
+    try {
+      const success = await taskService.updateTask(taskId, updates);
+      if (!success) {
+        // Revert optimistic update if service call failed
+        setTasks(prevTasks => 
+          prevTasks.map(task =>
+            task.id === taskId ? originalTask : task
+          )
+        );
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error('Task update failed:', error);
+      // Revert optimistic update
+      setTasks(prevTasks => 
+        prevTasks.map(task =>
+          task.id === taskId ? originalTask : task
+        )
+      );
+      return false;
+    }
+  }, [taskService, tasks]);
+
   useEffect(() => {
     loadData();
   }, [loadData]);
@@ -224,6 +264,8 @@ export function useTaskManagement(): {
     // Drag & Drop methods
     handleReorderWithinDate,
     handleMoveTaskToDate,
-    handleReorderAcrossDates
+    handleReorderAcrossDates,
+    // Optimistic update
+    handleTaskUpdateOptimistic
   };
 }

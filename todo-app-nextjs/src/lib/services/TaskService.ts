@@ -37,6 +37,9 @@ export class TaskService {
             console.log('TaskService.loadTasks - no localStorage key found');
           }
         }
+        
+        // Migrate to date-based positioning if needed (AFTER localStorage merge)
+        this.migrateToDateBasedPositions();
       } else {
         console.log('TaskService.loadTasks - failed to load JSON file');
         this.tasks = [];
@@ -256,6 +259,12 @@ export class TaskService {
       } else {
         console.log('TaskService.saveTasks - ERROR: Failed to save to localStorage');
       }
+
+      // Auto-sync to database (silent, no user notification)
+      console.log('TaskService.saveTasks - triggering auto-sync...');
+      this.syncToDatabaseSilent().catch(error => {
+        console.error('TaskService.saveTasks - auto-sync failed:', error);
+      });
     }
   }
 
@@ -322,5 +331,159 @@ export class TaskService {
     console.log('TaskService.mergeTasks - result first few:', result.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
     
     return result;
+  }
+
+  // Migrate existing tasks to date-based positioning
+  private migrateToDateBasedPositions(): void {
+    console.log('TaskService.migrateToDateBasedPositions - starting migration...');
+    
+    // Check if any task has old-style positioning (timestamp-based)
+    const needsMigration = this.tasks.some(task => {
+      const position = task.globalPosition.toString();
+      // Old positions are timestamps (13+ digits) or simple numbers
+      // New positions are date-based (10 digits: YYYYMMDDXX)
+      return position.length > 10 || parseInt(position) < 2000000000;
+    });
+
+    if (!needsMigration) {
+      console.log('TaskService.migrateToDateBasedPositions - no migration needed');
+      return;
+    }
+
+    console.log('TaskService.migrateToDateBasedPositions - migrating tasks...');
+    console.log('TaskService.migrateToDateBasedPositions - tasks before migration:', this.tasks.map(t => ({ id: t.id, title: t.title, position: t.globalPosition, dueDate: t.dueDate })));
+    
+    // Group tasks by date
+    const tasksByDate: Record<string, Task[]> = {};
+    
+    this.tasks.forEach(task => {
+      const dateKey = task.dueDate ? 
+        task.dueDate.toISOString().split('T')[0] : 
+        'ohne-datum';
+      
+      if (!tasksByDate[dateKey]) {
+        tasksByDate[dateKey] = [];
+      }
+      tasksByDate[dateKey].push(task);
+    });
+
+    console.log('TaskService.migrateToDateBasedPositions - grouped by date:', Object.keys(tasksByDate));
+
+    // Assign new date-based positions
+    Object.entries(tasksByDate).forEach(([dateKey, tasks]) => {
+      const dateString = dateKey === 'ohne-datum' ? '999999' : dateKey.replace(/-/g, '');
+      
+      console.log(`TaskService.migrateToDateBasedPositions - processing date ${dateKey} (${dateString}) with ${tasks.length} tasks`);
+      
+      tasks.forEach((task, index) => {
+        const positionInDate = String(index + 1).padStart(2, '0');
+        const oldPosition = task.globalPosition;
+        task.globalPosition = parseInt(dateString + positionInDate);
+        task.updatedAt = new Date();
+        console.log(`Migrated task ${task.id} (${task.title}) from position ${oldPosition} to ${task.globalPosition}`);
+      });
+    });
+
+    console.log('TaskService.migrateToDateBasedPositions - migration complete');
+    console.log('TaskService.migrateToDateBasedPositions - tasks after migration:', this.tasks.map(t => ({ id: t.id, title: t.title, position: t.globalPosition, dueDate: t.dueDate })));
+    
+    // Save migrated data
+    this.saveTasks();
+  }
+
+  // Clear localStorage cache to force fresh migration
+  public clearCache(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(this.storageKey);
+      console.log('TaskService.clearCache - localStorage cleared');
+    }
+  }
+
+  // Export current tasks as JSON file for backup/sync
+  public exportTasks(): void {
+    if (typeof window !== 'undefined') {
+      const taskData = {
+        tasks: this.tasks,
+        lastUpdated: new Date().toISOString(),
+        version: '1.0',
+        exported: true
+      };
+      
+      const dataStr = JSON.stringify(taskData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `tasks-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      console.log('TaskService.exportTasks - exported', this.tasks.length, 'tasks');
+    }
+  }
+
+  // Sync current tasks to database via API (silent, no user notification)
+  private async syncToDatabaseSilent(): Promise<void> {
+    try {
+      console.log('TaskService.syncToDatabaseSilent - STARTING auto-sync with', this.tasks.length, 'tasks...');
+      console.log('TaskService.syncToDatabaseSilent - first few tasks:', this.tasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, completed: t.completed })));
+      
+      const response = await fetch('/api/sync-tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tasks: this.tasks,
+          lastUpdated: new Date().toISOString()
+        }),
+      });
+
+      console.log('TaskService.syncToDatabaseSilent - response status:', response.status);
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('TaskService.syncToDatabaseSilent - ✅ AUTO-SYNC SUCCESSFUL:', result.message);
+        console.log('TaskService.syncToDatabaseSilent - sync count:', result.syncCount);
+      } else {
+        const errorText = await response.text();
+        console.error('TaskService.syncToDatabaseSilent - ❌ AUTO-SYNC FAILED:', response.status, errorText);
+      }
+    } catch (error) {
+      console.error('TaskService.syncToDatabaseSilent - ❌ AUTO-SYNC ERROR:', error);
+    }
+  }
+
+  // Manual sync function (for debugging if needed)
+  public async syncToDatabase(): Promise<boolean> {
+    try {
+      console.log('TaskService.syncToDatabase - manual sync', this.tasks.length, 'tasks to database...');
+      
+      const response = await fetch('/api/sync-tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tasks: this.tasks,
+          lastUpdated: new Date().toISOString()
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Sync failed: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('TaskService.syncToDatabase - sync successful:', result);
+      
+      return true;
+    } catch (error) {
+      console.error('TaskService.syncToDatabase - sync failed:', error);
+      return false;
+    }
   }
 }

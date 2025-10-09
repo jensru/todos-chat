@@ -3,7 +3,7 @@
 
 import { Plus, Target, MessageCircle, Calendar, CheckCircle2 } from 'lucide-react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, DragOverEvent, MeasuringStrategy, rectIntersection } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { TaskCardRefactored as TaskCard } from '@/components/TaskCardRefactored';
@@ -91,8 +91,8 @@ function SortableDateHeader({ dateKey, formatDate, taskCount }: {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className="my-6">
-      <h3 className="text-lg font-semibold px-4 py-3 bg-muted/20 rounded-lg text-center">
+    <div ref={setNodeRef} style={style} className="my-2">
+      <h3 className="text-lg font-semibold px-3 py-2 bg-muted/20 rounded-md text-center">
         {formatDate(dateKey)}
         <span className="ml-2 text-sm text-muted-foreground">
           ({taskCount})
@@ -103,6 +103,7 @@ function SortableDateHeader({ dateKey, formatDate, taskCount }: {
 }
 
 export default function HomePage(): JSX.Element {
+  const taskManagement = useTaskManagement();
   const {
     tasks,
     loading,
@@ -112,7 +113,11 @@ export default function HomePage(): JSX.Element {
     getTaskStats,
     groupedTasks,
     formatDate
-  } = useTaskManagement();
+  } = taskManagement;
+  
+  // Get the optimistic update function (TypeScript workaround)
+  const handleTaskUpdateOptimistic = (taskManagement as any).handleTaskUpdateOptimistic;
+  
 
   const {
     messages,
@@ -145,6 +150,7 @@ export default function HomePage(): JSX.Element {
     // Simple drag over - no complex live feedback for now
   };
 
+
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     setActiveTask(null);
@@ -169,26 +175,81 @@ export default function HomePage(): JSX.Element {
 
     if (activeIndex === -1 || overIndex === -1) return;
 
-    // Calculate new position based on drop target
+    // Calculate new date and position based on drop target
     let newDate: Date | null = null;
     let newPosition = Date.now();
 
     if (overElement.type === 'date-header') {
       // Dropped on date header - change date
       newDate = overElement.date;
-      newPosition = Date.now();
+      
+      // Debug logging
+      console.log('Date-header drop:', {
+        dateKey: overElement.dateKey,
+        date: overElement.date,
+        targetDateTasks: groupedTasks[overElement.dateKey]?.length || 0
+      });
+      
+      // Simple: position at end of this date group
+      const targetDateKey = overElement.dateKey;
+      const targetDateTasks = groupedTasks[targetDateKey] || [];
+      
+      const dateString = targetDateKey === 'ohne-datum' ? '999999' : targetDateKey.replace(/-/g, '');
+      const nextPosition = targetDateTasks.length + 1;
+      newPosition = parseInt(dateString + String(nextPosition).padStart(2, '0'));
+      
+      console.log('Calculated position:', {
+        dateString,
+        nextPosition,
+        newPosition
+      });
+      
     } else if (overElement.type === 'task') {
-      // Dropped on task - keep same date, adjust position
+      // Dropped on task - keep same date, position after target task
       newDate = overElement.task.dueDate || null;
-      newPosition = overElement.task.globalPosition;
+      
+      const taskDateKey = overElement.task.dueDate ? 
+        overElement.task.dueDate.toISOString().split('T')[0] : 
+        'ohne-datum';
+      
+      // Find position after target task in same date group
+      const sameDateTasks = groupedTasks[taskDateKey] || [];
+      const targetTaskIndex = sameDateTasks.findIndex(t => t.id === overElement.task.id);
+      
+      console.log('Task drop:', {
+        taskDateKey,
+        targetTaskIndex,
+        sameDateTasksLength: sameDateTasks.length,
+        targetTask: overElement.task.title
+      });
+      
+      if (targetTaskIndex !== -1) {
+        const nextPosition = targetTaskIndex + 2; // Position after target task
+        const dateString = taskDateKey === 'ohne-datum' ? '999999' : taskDateKey.replace(/-/g, '');
+        newPosition = parseInt(dateString + String(nextPosition).padStart(2, '0'));
+        
+        console.log('Calculated task position:', {
+          dateString,
+          nextPosition,
+          newPosition
+        });
+      } else {
+        newPosition = overElement.task.globalPosition + 1;
+      }
     }
 
-    // Update task with new date and position
-    await handleTaskUpdate(activeTask.id, {
+    // OPTIMISTIC UPDATE: Update state immediately for smooth animation
+    const success = await handleTaskUpdateOptimistic(activeTask.id, {
       dueDate: newDate || undefined,
       globalPosition: newPosition,
       updatedAt: new Date()
     });
+
+    // If DB update failed, revert the optimistic update
+    if (!success) {
+      // The handleTaskUpdateOptimistic will handle the revert internally
+      console.warn('Task update failed, reverting optimistic changes');
+    }
   };
 
   // Helper function to create flat list of all items
@@ -213,8 +274,9 @@ export default function HomePage(): JSX.Element {
         date: dateKey === 'ohne-datum' ? null : new Date(dateKey)
       });
       
-      // Add tasks for this date
-      dateTasks.forEach(task => {
+      // Add tasks for this date (sorted by globalPosition)
+      const sortedTasks = [...dateTasks].sort((a, b) => a.globalPosition - b.globalPosition);
+      sortedTasks.forEach(task => {
         flatList.push({
           id: task.id,
           type: 'task',
