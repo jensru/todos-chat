@@ -7,17 +7,11 @@ export class TaskService {
 
   async loadTasks(): Promise<Task[]> {
     try {
-      console.log('TaskService: Starting to load tasks...');
-      
-      // Load from standardized JSON files first (always fresh data)
       const response = await fetch('/data/smart-tasks-standardized.json');
-      console.log('TaskService: Fetch response status:', response.status);
       
       if (response.ok) {
         const data = await response.json();
-        console.log('TaskService: Raw data received, tasks count:', data.tasks?.length || 0);
         this.tasks = this.parseTasks(data.tasks || []);
-        console.log('TaskService: Parsed tasks:', this.tasks.length);
         
         // Apply LocalStorage changes on top of fresh data
         if (typeof window !== 'undefined') {
@@ -28,19 +22,14 @@ export class TaskService {
               // Merge LocalStorage changes with fresh data
               const localTasks = this.parseTasks(parsedData.tasks);
               this.tasks = this.mergeTasks(this.tasks, localTasks);
-              console.log('TaskService: Merged with localStorage:', this.tasks.length);
             }
           }
         }
       } else {
-        console.error('TaskService: Failed to fetch data, status:', response.status);
         this.tasks = [];
       }
-
-      console.log('TaskService: Returning tasks:', this.tasks.length);
       return this.tasks;
-    } catch (error) {
-      console.error('Error loading tasks:', error);
+    } catch {
       this.tasks = [];
       return [];
     }
@@ -60,8 +49,7 @@ export class TaskService {
         return true;
       }
       return false;
-    } catch (error) {
-      console.error('Error updating task:', error);
+    } catch {
       return false;
     }
   }
@@ -79,8 +67,7 @@ export class TaskService {
       this.tasks.push(newTask);
       await this.saveTasks();
       return true;
-    } catch (error) {
-      console.error('Error adding task:', error);
+    } catch {
       return false;
     }
   }
@@ -94,8 +81,7 @@ export class TaskService {
         return true;
       }
       return false;
-    } catch (error) {
-      console.error('Error deleting task:', error);
+    } catch {
       return false;
     }
   }
@@ -162,7 +148,7 @@ export class TaskService {
     }
   }
 
-  private parseTasks(rawTasks: any[]): Task[] {
+  private parseTasks(rawTasks: unknown[]): Task[] {
     return rawTasks.map(task => ({
       id: task.id,
       title: task.title,
@@ -172,7 +158,7 @@ export class TaskService {
       dueDate: this.parseDate(task.dueDate),
       category: task.category || undefined,
       tags: task.tags || [],
-      subtasks: (task.subtasks || []).map((subtask: any) => ({
+      subtasks: (task.subtasks || []).map((subtask: unknown) => ({
         id: subtask.id,
         title: subtask.title,
         completed: subtask.completed || false
@@ -189,12 +175,10 @@ export class TaskService {
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) {
-        console.warn('Invalid date:', dateString);
         return undefined;
       }
       return date;
-    } catch (error) {
-      console.warn('Error parsing date:', dateString, error);
+    } catch {
       return undefined;
     }
   }

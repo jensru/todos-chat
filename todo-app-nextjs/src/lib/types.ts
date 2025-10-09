@@ -8,7 +8,7 @@ export interface ITask {
   dueDate?: Date;
   category?: string;
   tags: string[];
-  subtasks: Subtask[];
+  subtasks: ISubtask[];
   createdAt: Date;
   updatedAt: Date;
   globalPosition: number;
@@ -37,9 +37,9 @@ export interface IMessage {
   timestamp: Date;
 }
 
-export interface IWorkingStyleDNA {
-  preferredTaskBreakdown: number;
-  quickWinsFirst: boolean;
-  typicalDueDateRange: number;
-  [key: string]: unknown;
-}
+// Type aliases for easier usage
+export type Task = ITask;
+export type Subtask = ISubtask;
+export type Goal = IGoal;
+export type Message = IMessage;
+

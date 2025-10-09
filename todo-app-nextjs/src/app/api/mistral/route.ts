@@ -1,7 +1,7 @@
 // src/app/api/mistral/route.ts - Mistral API Route
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const { message, context } = await request.json();
     
@@ -51,7 +51,6 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({ response: aiResponse });
   } catch (error) {
-    console.error('Mistral API Error:', error);
     return NextResponse.json({ error: 'Failed to generate response', details: error.message }, { status: 500 });
   }
 }

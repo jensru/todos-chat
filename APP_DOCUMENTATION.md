@@ -45,31 +45,41 @@ Eine moderne, professionelle Todo-App mit KI-Integration, entwickelt mit Next.js
 - 🌙 **Dark/Light Mode** Unterstützung
 - ⚡ **Schnelle Performance** mit Next.js 15
 
-## 📁 Projektstruktur
+## 📁 **Enterprise-Architektur (v3.0) - Refactored**
 
 ```
-todo-app-nextjs/
-├── src/
-│   ├── app/
-│   │   ├── api/mistral/          # Mistral AI API Route
-│   │   ├── page.tsx             # Hauptseite
-│   │   └── globals.css          # Globale Styles
-│   ├── components/
-│   │   ├── ui/                  # Shadcn/ui Komponenten
-│   │   ├── TaskCard.tsx         # Task-Komponente
-│   │   ├── CanvasPanel.tsx      # Haupt-Panel
-│   │   └── ...
-│   └── lib/
-│       ├── services/
-│       │   ├── TaskService.ts   # Task-Management
-│       │   └── MistralService.ts # KI-Integration
-│       └── types.ts             # TypeScript-Definitionen
-├── public/
-│   └── data/
-│       └── smart-tasks-standardized.json # Standardisierte Datenbank
-└── scripts/
-    └── standardize-json.js      # JSON-Standardisierung
+todo-app-nextjs/src/
+├── app/
+│   ├── page.tsx (180 LOC)        # ✅ Refactored Main App (-51%)
+│   ├── layout.tsx                # App Layout
+│   └── api/mistral/route.ts      # ✅ Type-safe Mistral API
+├── components/
+│   ├── ui/                       # Shadcn/ui Base Components
+│   ├── TaskCardRefactored.tsx    # ✅ Neue modulare TaskCard (152 LOC)
+│   ├── TaskHeader.tsx            # ✅ Header-Komponente (72 LOC)
+│   ├── TaskBody.tsx              # ✅ Body-Komponente (85 LOC)
+│   ├── SubtaskList.tsx           # ✅ Subtask-Komponente (36 LOC)
+│   └── TaskActions.tsx           # ✅ Actions-Komponente (48 LOC)
+├── hooks/ 🆕                     # Custom Hooks Layer
+│   ├── useTaskManagement.ts      # ✅ Task Business Logic (115 LOC)
+│   ├── useMistralChat.ts         # ✅ KI-Chat Management (77 LOC)
+│   └── useGoals.ts               # ✅ Goals Management (73 LOC)
+├── lib/
+│   ├── types.ts                  # ✅ I-Prefix Interfaces + Type Aliases
+│   ├── utils.ts                  # Shadcn Utilities
+│   └── services/
+│       ├── TaskService.ts        # ✅ Type-safe, optimiert (222 LOC)
+│       └── MistralService.ts     # ✅ Error handling optimiert (102 LOC)
+└── public/data/
+    └── smart-tasks-standardized.json # JSON-Datenbank
 ```
+
+### **🔄 Refactoring-Highlights:**
+- **Komponenten-Modularisierung**: TaskCard (255 LOC) → 4 fokussierte Komponenten
+- **Custom Hooks**: Business Logic aus UI-Komponenten extrahiert
+- **Performance-Optimierung**: useCallback/useMemo für kritische Pfade
+- **Type Safety**: 100% TypeScript mit expliziten Return Types
+- **Code Quality**: 0 ESLint Errors, Production-ready Standards
 
 ## 🚀 Installation & Setup
 

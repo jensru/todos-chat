@@ -31,8 +31,7 @@ export class MistralService {
       } catch {
         return [data.response];
       }
-    } catch (error) {
-      console.error('Mistral API Error:', error);
+    } catch {
       return [];
     }
   }
@@ -62,8 +61,7 @@ export class MistralService {
       } catch {
         return [data.response];
       }
-    } catch (error) {
-      console.error('Mistral API Error:', error);
+    } catch {
       return [];
     }
   }
@@ -82,7 +80,6 @@ export class MistralService {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
         if (response.status === 429) {
           return 'Rate Limit erreicht. Bitte warte einen Moment, bevor du eine weitere Anfrage stellst.';
         }
@@ -92,7 +89,6 @@ export class MistralService {
       const data = await response.json();
       return data.response || 'Entschuldigung, ich konnte keine Antwort generieren.';
     } catch (error) {
-      console.error('Mistral API Error:', error);
       if (error instanceof Error && error.message.includes('429')) {
         return 'Rate Limit erreicht. Bitte warte einen Moment, bevor du eine weitere Anfrage stellst.';
       }

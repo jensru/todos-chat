@@ -2,208 +2,38 @@
 'use client';
 
 import { Plus, Target, MessageCircle, Calendar, CheckCircle2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
 
-import { TaskCard } from '@/components/TaskCard';
+import { TaskCardRefactored as TaskCard } from '@/components/TaskCardRefactored';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { MistralService } from '@/lib/services/MistralService';
-import { TaskService } from '@/lib/services/TaskService';
-import { Task, Goal, Message, WorkingStyleDNA } from '@/lib/types';
+import { useGoals } from '@/hooks/useGoals';
+import { useMistralChat } from '@/hooks/useMistralChat';
+import { useTaskManagement } from '@/hooks/useTaskManagement';
 
-export default function HomePage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [goals, setGoals] = useState<Goal[]>([]);
-  const [messages, setMessages] = useState<Message[]>([
-    { id: '1', type: 'bot', text: 'Hey, woran willst du heute arbeiten?', timestamp: new Date() }
-  ]);
-  const [taskService] = useState(() => new TaskService());
-  const [mistralService, setMistralService] = useState<MistralService | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [chatInput, setChatInput] = useState('');
+export default function HomePage(): JSX.Element {
+  const {
+    tasks,
+    loading,
+    handleTaskUpdate,
+    handleTaskDelete,
+    handleAddTask,
+    getTaskStats,
+    groupedTasks,
+    formatDate
+  } = useTaskManagement();
 
-  useEffect(() => {
-    loadData();
-    
-    // Initialize MistralService after component mounts (client-side only)
-    if (typeof window !== 'undefined') {
-      console.log('Initializing MistralService...');
-      try {
-        setMistralService(new MistralService());
-        console.log('MistralService initialized successfully');
-      } catch (error) {
-        console.error('Failed to initialize MistralService:', error);
-        setMistralService(null);
-      }
-    }
-  }, []);
+  const {
+    messages,
+    chatInput,
+    setChatInput,
+    handleSendMessage
+  } = useMistralChat();
 
-  const loadData = async () => {
-    try {
-      console.log('Loading data...');
-      
-      // Load tasks directly without timeout for now
-      const loadedTasks = await taskService.loadTasks();
-      console.log('Loaded tasks:', loadedTasks.length);
-      setTasks(loadedTasks);
-      
-      // Load other data from localStorage
-      if (typeof window !== 'undefined') {
-        const savedData = localStorage.getItem('todo-app-data');
-        if (savedData) {
-          const data = JSON.parse(savedData);
-          setGoals(data.goals || []);
-        }
-      }
-    } catch (error) {
-      console.error('Error loading data:', error);
-      // Set empty tasks if loading fails
-      setTasks([]);
-    } finally {
-      console.log('Setting loading to false');
-      setLoading(false);
-    }
-  };
+  const { goals } = useGoals();
 
-  const handleTaskUpdate = async (taskId: string, updates: Partial<Task>) => {
-    const success = await taskService.updateTask(taskId, updates);
-    if (success) {
-      setTasks(prev => prev.map(task => 
-        task.id === taskId ? { ...task, ...updates } : task
-      ));
-    }
-  };
+  const stats = getTaskStats();
 
-  const handleTaskDelete = async (taskId: string) => {
-    const success = await taskService.deleteTask(taskId);
-    if (success) {
-      setTasks(prev => prev.filter(task => task.id !== taskId));
-    }
-  };
-
-  const handleAddTask = async (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const success = await taskService.addTask(taskData);
-    if (success) {
-      await loadData(); // Reload to get the new task
-    }
-  };
-
-  const handleSendMessage = async () => {
-    if (!chatInput.trim()) return;
-
-    const userMessage = chatInput.trim();
-    setChatInput('');
-
-    // Add user message
-    const newUserMessage: Message = {
-      id: Date.now().toString(),
-      type: 'user',
-      text: userMessage,
-      timestamp: new Date()
-    };
-    setMessages(prev => [...prev, newUserMessage]);
-
-    // Generate AI response
-    if (mistralService) {
-      try {
-        console.log('Generating AI response for:', userMessage);
-        const aiResponse = await mistralService.generateSmartResponse(userMessage, {
-          tasks: tasks.length,
-          goals: goals.length
-        });
-
-        const botMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'bot',
-          text: aiResponse,
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, botMessage]);
-      } catch (error) {
-        console.error('Error generating AI response:', error);
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'bot',
-          text: 'Entschuldigung, ich konnte keine Antwort generieren. Bitte versuche es später erneut.',
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, errorMessage]);
-      }
-    } else {
-      const fallbackMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'bot',
-        text: 'KI-Service wird noch initialisiert... Bitte warte einen Moment.',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, fallbackMessage]);
-    }
-  };
-
-  const groupedTasks = tasks
-    .filter(task => !task.completed) // Nur aktive Tasks anzeigen
-    .reduce((acc, task) => {
-      let dateKey = 'ohne-datum';
-      
-      if (task.dueDate) {
-        try {
-          // Prüfe ob das Datum gültig ist
-          if (!isNaN(task.dueDate.getTime())) {
-            const taskDate = task.dueDate.toISOString().split('T')[0];
-            const today = new Date().toISOString().split('T')[0];
-            
-            // Nur heute und zukünftige Tage anzeigen
-            if (taskDate >= today) {
-              dateKey = taskDate;
-            } else {
-              return acc; // Vergangene Tasks überspringen
-            }
-          }
-        } catch (error) {
-          console.warn('Invalid dueDate for task:', task.id, task.dueDate);
-          dateKey = 'ohne-datum';
-        }
-      }
-      
-      if (!acc[dateKey]) {
-        acc[dateKey] = [];
-      }
-      acc[dateKey].push(task);
-      return acc;
-    }, {} as Record<string, Task[]>);
-
-  const formatDate = (dateString: string) => {
-    if (dateString === 'ohne-datum') return 'Ohne Datum';
-    
-    try {
-      const date = new Date(dateString);
-      const today = new Date();
-      const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-      
-      if (dateString === today.toISOString().split('T')[0]) {
-        return 'Heute';
-      } else if (dateString === tomorrow.toISOString().split('T')[0]) {
-        return 'Morgen';
-      } else {
-        return date.toLocaleDateString('de-DE', {
-          weekday: 'long',
-          day: 'numeric',
-          month: 'long'
-        });
-      }
-    } catch (error) {
-      return 'Ungültiges Datum';
-    }
-  };
-
-  const stats = taskService.getTaskStats();
-
-  // Debug: Log task information
-  console.log('Total tasks:', tasks.length);
-  console.log('Active tasks:', tasks.filter(task => !task.completed).length);
-  console.log('Completed tasks:', tasks.filter(task => task.completed).length);
-  console.log('Grouped tasks:', Object.keys(groupedTasks).length);
 
   if (loading) {
     return (
@@ -249,11 +79,11 @@ export default function HomePage() {
               onChange={(e) => setChatInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  handleSendMessage();
+                  handleSendMessage({ tasks: tasks.length, goals: goals.length });
                 }
               }}
             />
-            <Button onClick={handleSendMessage}>Send</Button>
+            <Button onClick={() => handleSendMessage({ tasks: tasks.length, goals: goals.length })}>Send</Button>
           </div>
         </div>
       </div>

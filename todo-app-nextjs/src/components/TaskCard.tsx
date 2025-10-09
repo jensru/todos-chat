@@ -18,7 +18,7 @@ interface ITaskCardProps {
   onDelete: (taskId: string) => void;
 }
 
-export function TaskCard({ task, onUpdate, onDelete }: TaskCardProps) {
+export function TaskCard({ task, onUpdate, onDelete }: ITaskCardProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDescription, setEditDescription] = useState(task.description || '');
@@ -26,15 +26,15 @@ export function TaskCard({ task, onUpdate, onDelete }: TaskCardProps) {
   const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
 
-  const handleToggleComplete = () => {
+  const handleToggleComplete = (): void => {
     onUpdate(task.id, { completed: !task.completed });
   };
 
-  const handlePriorityToggle = () => {
+  const handlePriorityToggle = (): void => {
     onUpdate(task.id, { priority: !task.priority });
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = (): void => {
     onUpdate(task.id, {
       title: editTitle,
       description: editDescription,
@@ -43,7 +43,7 @@ export function TaskCard({ task, onUpdate, onDelete }: TaskCardProps) {
     setIsEditing(false);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (): void => {
     setEditTitle(task.title);
     setEditDescription(task.description || '');
     setEditCategory(task.category || '');
@@ -52,7 +52,7 @@ export function TaskCard({ task, onUpdate, onDelete }: TaskCardProps) {
     setIsEditing(false);
   };
 
-  const handleAddSubtask = () => {
+  const handleAddSubtask = (): void => {
     const subtaskTitle = prompt('Unteraufgabe hinzufügen:');
     if (subtaskTitle) {
       const newSubtask: Subtask = {
@@ -66,7 +66,7 @@ export function TaskCard({ task, onUpdate, onDelete }: TaskCardProps) {
     }
   };
 
-  const handleToggleSubtask = (subtaskId: string) => {
+  const handleToggleSubtask = (subtaskId: string): void => {
     const updatedSubtasks = task.subtasks.map(subtask =>
       subtask.id === subtaskId 
         ? { ...subtask, completed: !subtask.completed }
@@ -76,7 +76,7 @@ export function TaskCard({ task, onUpdate, onDelete }: TaskCardProps) {
     onUpdate(task.id, { subtasks: updatedSubtasks });
   };
 
-  const handleCategoryChange = (value: string) => {
+  const handleCategoryChange = (value: string): void => {
     if (value === 'new') {
       setShowNewCategoryInput(true);
     } else if (value === 'none') {
@@ -86,7 +86,7 @@ export function TaskCard({ task, onUpdate, onDelete }: TaskCardProps) {
     }
   };
 
-  const handleAddNewCategory = () => {
+  const handleAddNewCategory = (): void => {
     if (newCategoryName.trim()) {
       setEditCategory(newCategoryName.trim());
       setShowNewCategoryInput(false);
