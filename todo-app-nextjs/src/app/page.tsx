@@ -159,22 +159,28 @@ export default function HomePage(): JSX.Element {
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
-    setActiveTask(null);
-    setLiveGroupedTasks({}); // Reset live state
-
+    
     if (!over || !active) return;
 
     const activeId = active.id;
     const overId = over.id;
 
     // If dropped on the same position, do nothing
-    if (activeId === overId) return;
+    if (activeId === overId) {
+      setActiveTask(null);
+      setLiveGroupedTasks({});
+      return;
+    }
 
     const activeTask = active.data.current?.task;
     const overTask = over.data.current?.task;
     const overDateKey = over.data.current?.dateKey;
 
-    if (!activeTask) return;
+    if (!activeTask) {
+      setActiveTask(null);
+      setLiveGroupedTasks({});
+      return;
+    }
 
     // Get current date key for active task
     const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
@@ -185,7 +191,7 @@ export default function HomePage(): JSX.Element {
       
       if (activeDateKey === overDateKey) {
         // Same date - reorder within the same date group using arrayMove
-        const dateTasks = groupedTasks[activeDateKey] || [];
+        const dateTasks = liveGroupedTasks[activeDateKey] || groupedTasks[activeDateKey] || [];
         const activeIndex = dateTasks.findIndex(t => t.id === activeId);
         const overIndex = dateTasks.findIndex(t => t.id === overId);
         
@@ -205,7 +211,7 @@ export default function HomePage(): JSX.Element {
         }
       } else {
         // Different date - move task to new date at specific position
-        const targetDateTasks = groupedTasks[overDateKey] || [];
+        const targetDateTasks = liveGroupedTasks[overDateKey] || groupedTasks[overDateKey] || [];
         const overIndex = targetDateTasks.findIndex(t => t.id === overId);
         
         console.log('Moving to different date:', {
@@ -230,6 +236,10 @@ export default function HomePage(): JSX.Element {
       const newDate = overDateKey === 'ohne-datum' ? null : new Date(overDateKey);
       await handleMoveTaskToDate(activeId as string, newDate);
     }
+
+    // Reset state after processing
+    setActiveTask(null);
+    setLiveGroupedTasks({});
   };
 
 
