@@ -42,6 +42,8 @@ function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
     transform: CSS.Transform.toString(transform),
     transition: isDragging ? 'none' : (transition || 'transform 200ms ease'),
     opacity: isDragging ? 0.3 : 1,
+    zIndex: isDragging ? 1000 : 'auto',
+    pointerEvents: isDragging ? 'none' : 'auto',
   };
 
   return (
@@ -253,6 +255,11 @@ export default function HomePage(): JSX.Element {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             collisionDetection={closestCenter}
+            measuring={{
+              droppable: {
+                strategy: MeasuringStrategy.WhileDragging,
+              },
+            }}
           >
             <div className="space-y-6">
               {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
