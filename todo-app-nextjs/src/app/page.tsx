@@ -117,8 +117,22 @@ export default function HomePage(): JSX.Element {
     const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
     const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
     
-    // Only handle cross-date dragging for live feedback
-    if (activeDateKey !== overDateKey) {
+    // Handle live feedback for both same-date and cross-date dragging
+    if (activeDateKey === overDateKey) {
+      // Same date - live reorder within the same date group
+      const dateTasks = liveGroupedTasks[activeDateKey] || [];
+      const activeIndex = dateTasks.findIndex(t => t.id === activeId);
+      const overIndex = dateTasks.findIndex(t => t.id === overId);
+      
+      if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
+        const newOrder = arrayMove(dateTasks, activeIndex, overIndex);
+        setLiveGroupedTasks(prev => ({
+          ...prev,
+          [activeDateKey]: newOrder
+        }));
+      }
+    } else {
+      // Different date - move task to new date at specific position
       const targetDateTasks = liveGroupedTasks[overDateKey] || [];
       const overIndex = targetDateTasks.findIndex(t => t.id === overId);
       
@@ -163,7 +177,11 @@ export default function HomePage(): JSX.Element {
     const overTask = over.data.current?.task;
     const overDateKey = over.data.current?.dateKey;
 
-    if (!activeTask) return;
+    if (!activeTask) {
+      setActiveTask(null);
+      setLiveGroupedTasks({});
+      return;
+    }
 
     // Get current date key for active task
     const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
@@ -181,36 +199,23 @@ export default function HomePage(): JSX.Element {
       const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
       
       if (activeDateKey === overDateKey) {
-        // Same date - reorder within the same date group using arrayMove
-        const dateTasks = groupedTasks[activeDateKey] || [];
-        const activeIndex = dateTasks.findIndex(t => t.id === activeId);
-        const overIndex = dateTasks.findIndex(t => t.id === overId);
+        // Same date - use the live reordered tasks for final update
+        const liveDateTasks = liveGroupedTasks[activeDateKey] || [];
+        const taskIds = liveDateTasks.map(t => t.id);
         
-        console.log('Same date reorder:', {
-          activeIndex,
-          overIndex,
-          dateTasks: dateTasks.map(t => ({ id: t.id, title: t.title }))
-        });
-        
-        if (activeIndex !== -1 && overIndex !== -1) {
-          const newOrder = arrayMove(dateTasks, activeIndex, overIndex);
-          const taskIds = newOrder.map(t => t.id);
-          console.log('Calling handleReorderWithinDate with:', taskIds);
-          await handleReorderWithinDate(activeDateKey, taskIds);
-        }
+        console.log('Same date reorder - using live order:', taskIds);
+        await handleReorderWithinDate(activeDateKey, taskIds);
       } else {
-        // Different date - move task to new date at specific position
-        const targetDateTasks = groupedTasks[overDateKey] || [];
-        const overIndex = targetDateTasks.findIndex(t => t.id === overId);
+        // Different date - use the live positioned task for final update
+        const liveTargetTasks = liveGroupedTasks[overDateKey] || [];
+        const overIndex = liveTargetTasks.findIndex(t => t.id === overId);
         
-        console.log('Different date move:', {
+        console.log('Different date move - using live position:', {
           overIndex,
-          targetDateTasks: targetDateTasks.map(t => ({ id: t.id, title: t.title }))
+          liveTargetTasks: liveTargetTasks.map(t => ({ id: t.id, title: t.title }))
         });
         
-        // Ensure overIndex is valid (not -1)
         if (overIndex !== -1) {
-          console.log('Calling handleReorderAcrossDates');
           await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
         } else {
           // Fallback: move to end of target date
