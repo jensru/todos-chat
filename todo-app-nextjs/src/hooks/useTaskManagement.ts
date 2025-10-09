@@ -16,6 +16,10 @@ export function useTaskManagement(): {
   groupedTasks: Record<string, Task[]>;
   formatDate: (dateString: string) => string;
   loadData: () => Promise<void>;
+  // Drag & Drop methods
+  handleReorderWithinDate: (dateKey: string, taskIds: string[]) => Promise<void>;
+  handleMoveTaskToDate: (taskId: string, newDate: Date | null) => Promise<void>;
+  handleReorderAcrossDates: (taskId: string, targetDate: Date | null, targetIndex: number) => Promise<void>;
 } {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
@@ -114,6 +118,28 @@ export function useTaskManagement(): {
     }
   }, []);
 
+  // Drag & Drop methods
+  const handleReorderWithinDate = useCallback(async (dateKey: string, taskIds: string[]): Promise<void> => {
+    const success = await taskService.reorderTasksWithinDate(dateKey, taskIds);
+    if (success) {
+      await loadData(); // Reload to get updated order
+    }
+  }, [taskService, loadData]);
+
+  const handleMoveTaskToDate = useCallback(async (taskId: string, newDate: Date | null): Promise<void> => {
+    const success = await taskService.moveTaskToDate(taskId, newDate);
+    if (success) {
+      await loadData(); // Reload to get updated data
+    }
+  }, [taskService, loadData]);
+
+  const handleReorderAcrossDates = useCallback(async (taskId: string, targetDate: Date | null, targetIndex: number): Promise<void> => {
+    const success = await taskService.reorderTasksAcrossDates(taskId, targetDate, targetIndex);
+    if (success) {
+      await loadData(); // Reload to get updated data
+    }
+  }, [taskService, loadData]);
+
   useEffect(() => {
     loadData();
   }, [loadData]);
@@ -127,6 +153,10 @@ export function useTaskManagement(): {
     getTaskStats,
     groupedTasks,
     formatDate,
-    loadData
+    loadData,
+    // Drag & Drop methods
+    handleReorderWithinDate,
+    handleMoveTaskToDate,
+    handleReorderAcrossDates
   };
 }

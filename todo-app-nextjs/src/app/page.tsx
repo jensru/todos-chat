@@ -2,6 +2,10 @@
 'use client';
 
 import { Plus, Target, MessageCircle, Calendar, CheckCircle2 } from 'lucide-react';
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 import { TaskCardRefactored as TaskCard } from '@/components/TaskCardRefactored';
 import { Button } from '@/components/ui/button';
@@ -10,6 +14,49 @@ import { Input } from '@/components/ui/input';
 import { useGoals } from '@/hooks/useGoals';
 import { useMistralChat } from '@/hooks/useMistralChat';
 import { useTaskManagement } from '@/hooks/useTaskManagement';
+import { useState } from 'react';
+import type { JSX } from 'react';
+
+// Sortable Task Card Component
+function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
+  task: any;
+  dateKey: string;
+  onUpdate: (taskId: string, updates: Partial<any>) => Promise<void>;
+  onDelete: (taskId: string) => Promise<void>;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ 
+    id: task.id,
+    data: {
+      task,
+      dateKey
+    }
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <TaskCard
+        task={task}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+        isDragging={isDragging}
+        dragHandleProps={{ ...attributes, ...listeners }}
+        dragRef={setNodeRef}
+      />
+    </div>
+  );
+}
 
 export default function HomePage(): JSX.Element {
   const {
@@ -20,7 +67,10 @@ export default function HomePage(): JSX.Element {
     handleAddTask,
     getTaskStats,
     groupedTasks,
-    formatDate
+    formatDate,
+    handleReorderWithinDate,
+    handleMoveTaskToDate,
+    handleReorderAcrossDates
   } = useTaskManagement();
 
   const {
@@ -33,6 +83,64 @@ export default function HomePage(): JSX.Element {
   const { goals } = useGoals();
 
   const stats = getTaskStats();
+
+  // Drag & Drop state
+  const [activeTask, setActiveTask] = useState<any>(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
+  // Drag & Drop handlers
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    setActiveTask(active.data.current?.task);
+  };
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveTask(null);
+
+    if (!over) return;
+
+    const activeTask = active.data.current?.task;
+    const overTask = over.data.current?.task;
+    const overDateKey = over.data.current?.dateKey;
+
+    if (!activeTask) return;
+
+    // Same date reordering
+    if (overTask && activeTask.id !== overTask.id) {
+      const activeDateKey = activeTask.dueDate ? activeTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+      const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+      
+      if (activeDateKey === overDateKey) {
+        // Reorder within same date
+        const dateTasks = groupedTasks[activeDateKey] || [];
+        const activeIndex = dateTasks.findIndex(t => t.id === activeTask.id);
+        const overIndex = dateTasks.findIndex(t => t.id === overTask.id);
+        
+        if (activeIndex !== -1 && overIndex !== -1) {
+          const newOrder = [...dateTasks];
+          newOrder.splice(activeIndex, 1);
+          newOrder.splice(overIndex, 0, activeTask);
+          
+          const taskIds = newOrder.map(t => t.id);
+          await handleReorderWithinDate(activeDateKey, taskIds);
+        }
+      } else {
+        // Move to different date
+        await handleMoveTaskToDate(activeTask.id, overTask.dueDate);
+      }
+    } else if (overDateKey) {
+      // Move to date header
+      const newDate = overDateKey === 'ohne-datum' ? null : new Date(overDateKey);
+      await handleMoveTaskToDate(activeTask.id, newDate);
+    }
+  };
 
 
   if (loading) {
@@ -134,30 +242,50 @@ export default function HomePage(): JSX.Element {
           )}
 
           {/* Tasks Section */}
-          <div className="space-y-6">
-            {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
-              <div key={dateKey}>
-                <h3 className="text-lg font-semibold mb-3 flex items-center">
-                  <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-                  {formatDate(dateKey)}
-                  <span className="ml-2 text-sm text-muted-foreground">
-                    ({dateTasks.length})
-                  </span>
-                </h3>
-                
-                <div className="space-y-2">
-                  {dateTasks.map((task) => (
-                    <TaskCard
-                      key={task.id}
-                      task={task}
-                      onUpdate={handleTaskUpdate}
-                      onDelete={handleTaskDelete}
-                    />
-                  ))}
+          <DndContext
+            sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+          >
+            <div className="space-y-6">
+              {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
+                <div key={dateKey}>
+                  <h3 className="text-lg font-semibold mb-3 flex items-center">
+                    <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+                    {formatDate(dateKey)}
+                    <span className="ml-2 text-sm text-muted-foreground">
+                      ({dateTasks.length})
+                    </span>
+                  </h3>
+                  
+                  <SortableContext items={dateTasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
+                    <div className="space-y-2">
+                      {dateTasks.map((task) => (
+                        <SortableTaskCard
+                          key={task.id}
+                          task={task}
+                          dateKey={dateKey}
+                          onUpdate={handleTaskUpdate}
+                          onDelete={handleTaskDelete}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+            
+            <DragOverlay>
+              {activeTask ? (
+                <TaskCard
+                  task={activeTask}
+                  onUpdate={handleTaskUpdate}
+                  onDelete={handleTaskDelete}
+                  isDragging={true}
+                />
+              ) : null}
+            </DragOverlay>
+          </DndContext>
 
           {/* Empty State */}
           {tasks.length === 0 && (

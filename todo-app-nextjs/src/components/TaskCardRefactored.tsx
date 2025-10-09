@@ -1,7 +1,7 @@
 // src/components/TaskCardRefactored.tsx - Einzeilige Task Card Component
 'use client';
 
-import { Star, Calendar, Folder, Edit, Save, X, Trash2 } from 'lucide-react';
+import { Star, Calendar, Folder, Edit, Save, X, Trash2, GripVertical } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -14,9 +14,13 @@ interface ITaskCardProps {
   task: Task;
   onUpdate: (taskId: string, updates: Partial<Task>) => void;
   onDelete: (taskId: string) => void;
+  // Drag & Drop props
+  isDragging?: boolean;
+  dragHandleProps?: any;
+  dragRef?: (element: HTMLElement | null) => void;
 }
 
-export function TaskCardRefactored({ task, onUpdate, onDelete }: ITaskCardProps): JSX.Element {
+export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = false, dragHandleProps, dragRef }: ITaskCardProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDueDate, setEditDueDate] = useState(task.dueDate ? task.dueDate.toISOString().split('T')[0] : '');
@@ -47,10 +51,20 @@ export function TaskCardRefactored({ task, onUpdate, onDelete }: ITaskCardProps)
   };
 
   return (
-    <Card className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md`}>
+    <Card 
+      ref={dragRef}
+      className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md ${isDragging ? 'opacity-50 shadow-lg' : ''}`}
+    >
       <CardContent className="px-3 py-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 flex-1 min-w-0">
+            {/* Drag Handle */}
+            <div 
+              {...dragHandleProps}
+              className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <GripVertical className="h-4 w-4" />
+            </div>
             {/* Checkbox */}
             <Checkbox
               checked={task.completed}

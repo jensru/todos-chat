@@ -136,6 +136,85 @@ export class TaskService {
     }
   }
 
+  // Drag & Drop Methods
+  async reorderTasksWithinDate(dateKey: string, taskIds: string[]): Promise<boolean> {
+    try {
+      // Get all tasks for this date
+      const dateTasks = this.tasks.filter(task => {
+        if (task.completed) return false;
+        const taskDate = task.dueDate ? task.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+        return taskDate === dateKey;
+      });
+
+      // Update global positions based on new order
+      taskIds.forEach((taskId, index) => {
+        const task = this.tasks.find(t => t.id === taskId);
+        if (task) {
+          task.globalPosition = Date.now() + index;
+          task.updatedAt = new Date();
+        }
+      });
+
+      await this.saveTasks();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async moveTaskToDate(taskId: string, newDate: Date | null): Promise<boolean> {
+    try {
+      const task = this.tasks.find(t => t.id === taskId);
+      if (!task) return false;
+
+      // Update task date and position
+      task.dueDate = newDate;
+      task.globalPosition = Date.now();
+      task.updatedAt = new Date();
+
+      await this.saveTasks();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async reorderTasksAcrossDates(taskId: string, targetDate: Date | null, targetIndex: number): Promise<boolean> {
+    try {
+      const task = this.tasks.find(t => t.id === taskId);
+      if (!task) return false;
+
+      // Update task date
+      task.dueDate = targetDate;
+      task.updatedAt = new Date();
+
+      // Get all tasks for the target date
+      const targetDateTasks = this.tasks.filter(t => {
+        if (t.completed || t.id === taskId) return false;
+        const taskDate = t.dueDate ? t.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+        const targetDateKey = targetDate ? targetDate.toISOString().split('T')[0] : 'ohne-datum';
+        return taskDate === targetDateKey;
+      });
+
+      // Sort by current global position
+      targetDateTasks.sort((a, b) => a.globalPosition - b.globalPosition);
+
+      // Insert at target position
+      targetDateTasks.splice(targetIndex, 0, task);
+
+      // Update all positions
+      targetDateTasks.forEach((t, index) => {
+        t.globalPosition = Date.now() + index;
+        t.updatedAt = new Date();
+      });
+
+      await this.saveTasks();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   private async saveTasks(): Promise<void> {
     if (typeof window !== 'undefined') {
       const taskData = {
