@@ -41,7 +41,7 @@ function SortableTaskCard({ task, dateKey, onUpdate, onDelete }: {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition: isDragging ? 'none' : (transition || 'transform 200ms ease'),
-    opacity: isDragging ? 0.3 : 1,
+    opacity: isDragging ? 0 : 1,
     zIndex: isDragging ? 1000 : 'auto',
     pointerEvents: isDragging ? 'none' : 'auto',
   };
