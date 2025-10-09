@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { useGoals } from '@/hooks/useGoals';
 import { useMistralChat } from '@/hooks/useMistralChat';
 import { useTaskManagement } from '@/hooks/useTaskManagement';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { JSX } from 'react';
 
 // Speech Recognition types
@@ -161,6 +161,9 @@ export default function HomePage(): JSX.Element {
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
 
+  // Chat scroll ref
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
   const stats = getTaskStats();
 
   // Initialize speech recognition
@@ -207,6 +210,13 @@ export default function HomePage(): JSX.Element {
       recognition.stop();
     }
   };
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   // Drag & Drop state
   const [activeTask, setActiveTask] = useState<any>(null);
@@ -407,8 +417,8 @@ export default function HomePage(): JSX.Element {
   return (
     <div className="flex h-screen bg-background">
       {/* Chat Panel */}
-      <div className="w-full lg:w-1/3 lg:max-w-[500px] border-r border-border bg-muted/30">
-        <div className="p-4 border-b border-border flex justify-between items-center">
+      <div className="w-full lg:w-1/3 lg:max-w-[500px] border-r border-border bg-muted/30 flex flex-col h-screen">
+        <div className="p-4 border-b border-border flex justify-between items-center flex-shrink-0">
           <h2 className="text-lg font-semibold">KI-Assistent</h2>
           <Button
             variant="ghost"
@@ -420,21 +430,22 @@ export default function HomePage(): JSX.Element {
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
-        <div className="p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`p-3 rounded-lg ${
                 message.type === 'user' 
-                  ? 'bg-primary text-primary-foreground ml-8' 
+                  ? 'bg-primary text-primary-foreground ml-8'
                   : 'bg-muted mr-8'
               }`}
             >
               {message.text}
             </div>
           ))}
+          <div ref={chatEndRef} />
         </div>
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-border flex-shrink-0">
           <div className="flex space-x-2">
             <Input
               placeholder="Nachricht eingeben..."
