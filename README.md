@@ -1,163 +1,154 @@
-# 🎯 **Todo-Management System mit Mistral AI**
+# 🎯 Todo-App - Professionelle Next.js + Mistral AI Integration
 
-Ein vollautomatisiertes Todo-Management-System mit Chat-First-Interface und Mistral AI Integration.
+Eine moderne, professionelle Todo-App mit KI-Integration, gebaut mit Next.js 15, Shadcn/ui und Mistral AI.
 
-## 📁 **Ordnerstruktur**
+## ✨ Features
+
+### 🤖 AI-Integration
+- **Mistral-Large Chat** - Intelligente Gespräche mit KI
+- **Task-Vorschläge** - Automatische Aufgaben-Generierung
+- **Aufgaben-Aufschlüsselung** - Komplexe Tasks in Unteraufgaben zerlegen
+- **Kontextuelle Antworten** - KI versteht deine Aufgaben und Ziele
+
+### 📋 Task-Management
+- **Drag & Drop** zwischen Tagen
+- **Priority-System** mit Star-Icons
+- **Kategorie-Management** für bessere Organisation
+- **Unteraufgaben** für detaillierte Planung
+- **Datum-Sortierung** mit intelligenter Gruppierung
+- **Real-time Updates** mit LocalStorage-Sync
+
+### 🎨 UI/UX
+- **Shadcn/ui Komponenten** - Professionelle, konsistente UI
+- **Lucide React Icons** - Moderne, klare Ikonografie
+- **Dark/Light Theme** - Automatische Theme-Erkennung
+- **Mobile-responsive** - Optimiert für alle Geräte
+- **Chat + Canvas Layout** - Getrennte Bereiche für Kommunikation und Aufgaben
+
+## 🚀 Technologie-Stack
+
+- **Next.js 15** - React Framework mit App Router
+- **TypeScript** - Typsichere Entwicklung
+- **Shadcn/ui** - Moderne UI-Komponenten
+- **Tailwind CSS** - Utility-first CSS Framework
+- **Mistral AI** - Large Language Model Integration
+- **Lucide React** - Icon Library
+- **LocalStorage** - Client-side Datenpersistierung
+
+## 📁 Projekt-Struktur
 
 ```
-todos/
-├── 📋 core/                    # Tages-Markdown-Dateien
-│   └── dates/                  # YYYY-MM-DD.md Dateien
-│
-├── 🤖 automation/              # Alle Scripts
-│   ├── commit-and-update.sh     # Haupt-Workflow
-│   ├── mistral-api.sh           # Mistral Integration
-│   ├── mistral-research-update.sh # Research Log Auto
-│   ├── mistral-todo-categorizer.sh # Todo-Kategorisierung
-│   ├── daily-goals-manager.sh   # Tagesziele
-│   ├── task-history-manager.sh  # Task-Historie
-│   ├── update-dates.sh          # Datum-Updates
-│   ├── document-changes.sh      # Änderungs-Dokumentation
-│   └── update-tracking.sh       # Tracking-System
-│
-├── 📊 data/                    # Alle JSON-Dateien
-│   ├── smart-tasks.json        # Single Source of Truth
-│   ├── tasks.json              # Backup-Datenbank
-│   ├── task-history.json
-│   ├── todo-categorization.json
-│   ├── todo-migration-log.json
-│   ├── tracking-data.json
-│   └── triage-decisions.json
-│
-├── 📚 docs/                    # Dokumentation
-│   ├── MISTRAL-INTEGRATION.md
-│   ├── tracking-system.md
-│   └── articles/
-│
-├── 🔬 research/                # Research Log
-│   └── chatfirst-research-log.md
-│
-├── 🌐 web/                     # Moderne Web-App
-│   ├── index.html              # Haupt-Interface (3500+ Zeilen)
-│   ├── index-multi-tab.html    # Multi-Tab-Version
-│   └── database-management.html # Admin-Interface
-│
-├── 🛠️ scripts/                # Backend-Scripts
-│   ├── database-api.js         # Express.js API Server
-│   ├── auto-sync-markdown.js   # Markdown-Synchronisation
-│   ├── smart-task-enhancer.js  # AI-Enhancement
-│   └── date-validator.js       # Datum-Validierung
-│
-└── 🛠️ tools/                  # Setup & Utilities
-    ├── setup-mistral-api.sh
-    ├── mistral-simple-test.sh
-    └── fix-jq-errors.sh
+todo-app-nextjs/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx              # Haupt-App
+│   │   └── globals.css           # Shadcn Styles
+│   ├── components/
+│   │   ├── ui/                   # Shadcn UI Komponenten
+│   │   └── TaskCard.tsx          # Task-Komponente
+│   ├── lib/
+│   │   ├── types.ts              # TypeScript Interfaces
+│   │   └── services/
+│   │       ├── TaskService.ts    # Datenbank-Service
+│   │       └── MistralService.ts # AI-Integration
+│   └── utils.ts                  # Shadcn Utils
+├── public/
+│   └── data/
+│       ├── smart-tasks.json      # Haupt-Datenbank
+│       └── tasks.json            # Backup-Datenbank
+├── components.json               # Shadcn Config
+├── package.json                  # Dependencies
+└── README.md                     # Diese Dokumentation
 ```
 
-## 🚀 **Schnellstart**
+## 🛠️ Installation & Setup
 
-### **1. Web-Interface starten:**
-- **Haupt-Interface:** `http://localhost:3001/index.html`
-- **API-Server:** `node scripts/database-api.js` (Port 3001)
-- **Admin-Interface:** `http://localhost:3001/database-management.html`
-
-### **2. Haupt-Workflow:**
+### 1. Dependencies installieren
 ```bash
-# Server starten
-node scripts/database-api.js
-
-# Web-Interface öffnen
-open http://localhost:3001/index.html
+cd todo-app-nextjs
+npm install
 ```
 
-### **3. Mit Mistral AI:**
+### 2. Mistral API Key konfigurieren
+Erstelle eine `.env.local` Datei:
 ```bash
-# Mistral-Chat im Web-Interface nutzen
-# Rechts im Dashboard verfügbar
+NEXT_PUBLIC_MISTRAL_API_KEY=dein_mistral_api_key_hier
 ```
 
-## 🤖 **Mistral AI Features**
-
-### **Automatische Kategorisierung:**
-- **Geld-Fokus:** Pricing, Revenue, Verkauf, Kunden
-- **Tool-Fokus:** Tool-Entwicklung, Chat-First, Interface
-- **Marketing-Fokus:** Posts, LinkedIn, Workshops, Content
-- **Personal:** Persönliche Aufgaben, Gesundheit, Familie
-
-### **Research Log Updates:**
-- Automatische Analyse von Git-Commits
-- Pattern-Recognition für Chat-First-Features
-- Tool-Requirements-Extraktion
-
-### **Tracking-System:**
-- Rohdaten sammeln für spätere LLM-Analysen
-- Todo-Migrationen tracken
-- Triage-Entscheidungen speichern
-
-## 📊 **Was passiert automatisch:**
-
-### **Bei jedem Commit:**
-1. **Datum aktualisieren** - Automatische Datums-Synchronisation
-2. **Task-Historie synchronisieren** - Erledigte Tasks in strukturierte Historie
-3. **Tagesziele-Fortschritt aktualisieren** - Fokus-Tracking
-4. **Änderungen dokumentieren** - Chat-First Research
-5. **Tracking-System aktualisieren** - Rohdaten sammeln
-6. **Website aktualisieren** - Automatische HTML-Generierung
-
-### **Mit --mistral Flag:**
-7. **Research Log erweitern** - Mistral-Analyse
-8. **Todo-Kategorisierung** - Automatische Kategorien
-
-## 🎯 **Haupt-Features**
-
-### **Chat-First Interface:**
-- Natürliche Sprache für Todo-Erstellung
-- Automatische Kategorisierung
-- Prioritäts-Erkennung
-
-### **Mistral AI Integration:**
-- Automatische Todo-Kategorisierung
-- Research Log Updates
-- Pattern-Recognition
-
-### **Tracking-System:**
-- Rohdaten sammeln
-- Später mit LLMs analysieren
-- Empfehlungssystem lernen
-
-### **Website-Integration:**
-- Automatische HTML-Generierung
-- Interaktive Checkboxes
-- Responsive Design
-
-## 🔧 **Setup**
-
-### **Mistral API einrichten:**
+### 3. Entwicklungsserver starten
 ```bash
-./tools/setup-mistral-api.sh
+npm run dev
 ```
 
-### **Erste Nutzung:**
+Die App ist dann unter `http://localhost:3000` verfügbar.
+
+## 🎯 Verwendung
+
+### Chat mit KI
+- Schreibe Nachrichten im Chat-Panel
+- Drücke Enter oder klicke "Send"
+- Die KI antwortet kontextuell basierend auf deinen Aufgaben
+
+### Aufgaben verwalten
+- **Neue Aufgabe**: Klicke "Neue Aufgabe" oder frage die KI
+- **Priorität setzen**: Klicke auf das Star-Icon
+- **Als erledigt markieren**: Klicke auf das Checkbox-Icon
+- **Bearbeiten**: Klicke auf die Aufgabe zum Bearbeiten
+- **Löschen**: Klicke auf das Trash-Icon
+
+### Drag & Drop
+- Ziehe Aufgaben zwischen verschiedenen Tagen
+- Die Position wird automatisch gespeichert
+
+## 🔧 Entwicklung
+
+### Code-Qualität
+- **TypeScript** für alle Dateien
+- **Modulare Komponenten** mit einer Verantwortung
+- **Error Boundaries** für Fehlerbehandlung
+- **Comprehensive Logging** für Debugging
+
+### Architektur-Prinzipien
+- **Clean Code** - Lesbarer, wartbarer Code
+- **Separation of Concerns** - Klare Trennung der Verantwortlichkeiten
+- **DRY Principle** - Keine Code-Duplikation
+- **SOLID Principles** - Objektorientierte Design-Prinzipien
+
+## 📊 Daten-Management
+
+### JSON-Datenbank
+- **smart-tasks.json** - Haupt-Datenbank mit allen Aufgaben
+- **tasks.json** - Backup-Datenbank
+- **LocalStorage** - Client-side Änderungen werden lokal gespeichert
+
+### Daten-Synchronisation
+- Beim Laden werden JSON-Dateien als Basis verwendet
+- LocalStorage-Änderungen werden darüber gelegt
+- Automatische Merge-Logik für Konflikte
+
+## 🚀 Deployment
+
+### Build für Produktion
 ```bash
-./automation/commit-and-update.sh "Erste Nutzung"
+npm run build
+npm start
 ```
 
-## 📈 **Workflow**
+### Umgebungsvariablen
+Stelle sicher, dass `NEXT_PUBLIC_MISTRAL_API_KEY` in der Produktionsumgebung gesetzt ist.
 
-1. **Server starten** mit `node scripts/database-api.js`
-2. **Web-Interface öffnen** auf `http://localhost:3001/index.html`
-3. **Tasks erstellen** über Modal oder Mistral-Chat
-4. **Tasks bearbeiten** mit Inline-Editing (Hover + Klick)
-5. **Drag & Drop** für Kategorie-Änderungen
-6. **Mistral-Chat** für natürliche Sprache-Interaktion
+## 🤝 Beitragen
 
-## 🎯 **Ziel**
+1. Fork das Repository
+2. Erstelle einen Feature-Branch
+3. Committe deine Änderungen
+4. Push zum Branch
+5. Erstelle einen Pull Request
 
-Ein vollautomatisiertes Todo-Management-System, das:
-- **Chat-First** - Natürliche Sprache
-- **AI-powered** - Mistral Integration
-- **Tracking** - Rohdaten für Analysen
-- **Website** - Automatische Updates
-- **Research** - Pattern-Recognition
+## 📝 Lizenz
 
-**"Track first, analyze later"** - Das ist der Ansatz!
+MIT License - siehe LICENSE Datei für Details.
+
+---
+
+**Entwickelt mit ❤️ für produktive Aufgabenverwaltung mit KI-Unterstützung**
