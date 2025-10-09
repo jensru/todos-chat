@@ -149,6 +149,7 @@ export function useTaskManagement(): {
       return updatedTasks;
     });
     
+    console.log('Calling taskService.reorderTasksWithinDate...');
     const success = await taskService.reorderTasksWithinDate(dateKey, taskIds);
     console.log('reorderTasksWithinDate success:', success);
     
