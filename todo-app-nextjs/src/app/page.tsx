@@ -159,7 +159,14 @@ export default function HomePage(): JSX.Element {
           targetDateTasks: targetDateTasks.map(t => ({ id: t.id, title: t.title }))
         });
         
-        await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
+        // Ensure overIndex is valid (not -1)
+        if (overIndex !== -1) {
+          await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
+        } else {
+          // Fallback: move to end of target date
+          console.log('overIndex is -1, moving to end of target date');
+          await handleMoveTaskToDate(activeId as string, overTask.dueDate);
+        }
       }
     } else if (overDateKey) {
       // Dropped on date header or empty space

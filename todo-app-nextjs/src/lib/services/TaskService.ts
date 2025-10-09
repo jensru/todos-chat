@@ -176,6 +176,8 @@ export class TaskService {
 
   async reorderTasksAcrossDates(taskId: string, targetDate: Date | null, targetIndex: number): Promise<boolean> {
     try {
+      console.log('TaskService.reorderTasksAcrossDates called:', { taskId, targetDate, targetIndex });
+      
       const task = this.tasks.find(t => t.id === taskId);
       if (!task) return false;
 
@@ -183,7 +185,7 @@ export class TaskService {
       task.dueDate = targetDate;
       task.updatedAt = new Date();
 
-      // Get all tasks for the target date
+      // Get all tasks for the target date (excluding the moving task)
       const targetDateTasks = this.tasks.filter(t => {
         if (t.completed || t.id === taskId) return false;
         const taskDate = t.dueDate ? t.dueDate.toISOString().split('T')[0] : 'ohne-datum';
@@ -194,18 +196,26 @@ export class TaskService {
       // Sort by current global position
       targetDateTasks.sort((a, b) => a.globalPosition - b.globalPosition);
 
+      console.log('Target date tasks before insert:', targetDateTasks.map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+
       // Insert at target position
       targetDateTasks.splice(targetIndex, 0, task);
 
-      // Update all positions
+      console.log('Target date tasks after insert:', targetDateTasks.map(t => ({ id: t.id, title: t.title })));
+
+      // Update all positions with consistent base time
+      const baseTime = Date.now();
       targetDateTasks.forEach((t, index) => {
-        t.globalPosition = Date.now() + index;
+        t.globalPosition = baseTime + index;
         t.updatedAt = new Date();
+        console.log(`Updated task ${t.id} position to ${t.globalPosition}`);
       });
 
       await this.saveTasks();
+      console.log('Tasks saved successfully');
       return true;
-    } catch {
+    } catch (error) {
+      console.error('Error in reorderTasksAcrossDates:', error);
       return false;
     }
   }
