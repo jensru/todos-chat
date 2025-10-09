@@ -50,7 +50,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         completed: taskData.completed || false,
         priority: taskData.priority || false,
         dueDate: taskData.dueDate || null,
-        category: taskData.category || 'todo',
+        category: taskData.category || null,
         tags: JSON.stringify(taskData.tags || []),
         subtasks: JSON.stringify(taskData.subtasks || []),
         globalPosition: taskData.globalPosition || Date.now(),

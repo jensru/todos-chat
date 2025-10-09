@@ -82,7 +82,7 @@ export class DatabaseTaskService {
           completed: task.completed || false,
           priority: task.priority || false,
           dueDate: task.dueDate || null,
-          category: task.category || 'todo',
+          category: task.category || null,
           tags: JSON.stringify(task.tags || []),
           subtasks: JSON.stringify(task.subtasks || []),
           globalPosition: task.globalPosition || Date.now(),

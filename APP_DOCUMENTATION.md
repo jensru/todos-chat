@@ -4,6 +4,8 @@
 
 Eine moderne, professionelle Todo-App mit KI-Integration, entwickelt mit Next.js 15, TypeScript, Shadcn/ui und Mistral AI. Die App bietet erweiterte Task-Management-Funktionen mit intelligenter KI-Unterstützung.
 
+> 📖 **Detaillierte Architektur-Dokumentation**: Siehe [ARCHITECTURE.md](ARCHITECTURE.md) für vollständige technische Details, APIs und Best Practices.
+
 ## 🏗️ Technologie-Stack
 
 ### Frontend
@@ -47,53 +49,16 @@ Eine moderne, professionelle Todo-App mit KI-Integration, entwickelt mit Next.js
 - 🌙 **Dark/Light Mode** Unterstützung
 - ⚡ **Schnelle Performance** mit Next.js 15
 
-## 📁 **Enterprise-Architektur (v4.0) - SQLite + Float Position System**
+## 📁 Projektstruktur
 
-```
-todo-app-nextjs/
-├── src/
-│   ├── app/
-│   │   ├── page.tsx                  # ✅ Main App mit Float Position Drag & Drop
-│   │   ├── layout.tsx                # App Layout
-│   │   └── api/
-│   │       ├── mistral/route.ts      # Mistral AI API
-│   │       └── tasks/route.ts        # ✅ Task CRUD API (Prisma)
-│   ├── components/
-│   │   ├── ui/                       # Shadcn/ui Base Components
-│   │   ├── TaskCardRefactored.tsx    # ✅ Task Card mit UI Sync (165 LOC)
-│   │   ├── TaskHeader.tsx            # Header-Komponente (72 LOC)
-│   │   ├── TaskBody.tsx              # Body-Komponente (85 LOC)
-│   │   ├── SubtaskList.tsx           # Subtask-Komponente (36 LOC)
-│   │   └── TaskActions.tsx           # Actions-Komponente (48 LOC)
-│   ├── hooks/                        # Custom Hooks Layer
-│   │   ├── useTaskManagement.ts      # ✅ Task Management mit Optimistic Updates
-│   │   ├── useMistralChat.ts         # KI-Chat Management (77 LOC)
-│   │   └── useGoals.ts               # Goals Management (73 LOC)
-│   └── lib/
-│       ├── types.ts                  # Type Definitions
-│       ├── utils.ts                  # Shadcn Utilities
-│       └── services/
-│           ├── ApiTaskService.ts     # ✅ Prisma-basierter Task Service
-│           └── MistralService.ts     # Mistral AI Service
-├── prisma/
-│   ├── schema.prisma                 # ✅ SQLite Schema mit Float positions
-│   ├── dev.db                        # SQLite Datenbank (73 Tasks)
-│   └── migrations/                   # Prisma Migrations
-├── scripts/
-│   ├── normalize-positions.js        # ✅ Position Normalization Tool
-│   └── migrate-from-json.js          # ✅ JSON → Prisma Migration Tool
-└── public/data/
-    └── smart-tasks-standardized.json # JSON Backup
-```
+Die App folgt einer modularen Enterprise-Architektur mit klarer Trennung von Verantwortlichkeiten:
 
-### **🔄 v4.0 Highlights:**
-- **SQLite Migration**: JSON → Prisma ORM für robuste Datenverwaltung
-- **Float Position System**: O(1) Drag & Drop (state-of-the-art wie Figma/Notion)
-- **Direction-Aware Logic**: Tasks landen genau am Drop-Ziel
-- **UI Synchronization**: useEffect für automatische Props-Updates
-- **Utility Scripts**: Normalisierung + Migration Tools
-- **Type Safety**: 100% TypeScript mit expliziten Return Types
-- **Production Ready**: 73 Tasks erfolgreich migriert und getestet
+- **Frontend**: Next.js 15 + TypeScript + Shadcn/ui
+- **Backend**: Next.js API Routes + Prisma ORM + SQLite
+- **KI-Integration**: Mistral AI für intelligente Chat-Funktionen
+- **Drag & Drop**: Float Position System (O(1) Komplexität)
+
+> 📖 **Detaillierte Architektur**: Siehe [ARCHITECTURE.md](ARCHITECTURE.md) für vollständige Projektstruktur und technische Details.
 
 ## 🚀 Installation & Setup
 
@@ -125,40 +90,15 @@ npm run dev
    NEXT_PUBLIC_MISTRAL_API_KEY=your_api_key_here
    ```
 
-## 📊 Datenbank-Schema
+## 📊 Datenbank
 
-### Prisma Schema (SQLite)
-```prisma
-model Task {
-  id            String   @id
-  title         String
-  description   String   @default("")
-  completed     Boolean  @default(false)
-  priority      Boolean  @default(false)
-  dueDate       DateTime?
-  category      String   @default("todo")
-  tags          String   @default("[]")      // JSON string
-  subtasks      String   @default("[]")      // JSON string
-  globalPosition Float                        // ✅ Float für O(1) Drag & Drop
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+Die App verwendet eine **SQLite-Datenbank** mit **Prisma ORM** für robuste Datenverwaltung:
 
-  @@map("tasks")
-}
-```
+- **73 Tasks** erfolgreich migriert und getestet
+- **Float Position System** für O(1) Drag & Drop Performance
+- **Type-safe** Datenbankzugriff mit Prisma
 
-### Database Commands
-```bash
-# Prisma Migrations
-npx prisma migrate dev          # Development Migration
-npx prisma migrate deploy       # Production Migration
-npx prisma generate             # Regenerate Prisma Client
-
-# Database Management
-npx prisma studio               # Visual Database Editor
-node scripts/normalize-positions.js  # Normalize all positions
-node scripts/migrate-from-json.js    # Migrate from JSON backup
-```
+> 📖 **Datenbank-Details**: Siehe [ARCHITECTURE.md](ARCHITECTURE.md) für Schema, Commands und Migration-Tools.
 
 ## 🔧 Entwicklung
 
@@ -197,17 +137,14 @@ node scripts/migrate-from-json.js    # Migrate from JSON
 
 ## 📈 Performance
 
-### Optimierungen
+Die App ist für hohe Performance optimiert:
+
+- **O(1) Drag & Drop** - Nur ein Task wird pro Drag aktualisiert (73x schneller)
 - **Next.js 15** mit Turbopack für schnelle Entwicklung
-- **Client-side Rendering** für interaktive Features
-- **Lokale JSON-Datenbank** für schnelle Datenzugriffe
+- **Type-safe** Datenbankzugriff mit Prisma ORM
 - **Optimierte Komponenten** mit React Best Practices
 
-### Metriken
-- **73 Tasks** in der Datenbank
-- **52 aktive Tasks** werden angezeigt
-- **21 erledigte Tasks** ausgeblendet
-- **10 Datumsgruppen** für bessere Organisation
+> 📖 **Performance-Details**: Siehe [ARCHITECTURE.md](ARCHITECTURE.md) für detaillierte Metriken und Optimierungen.
 
 ## 🔒 Sicherheit
 
@@ -240,31 +177,17 @@ vercel env add NEXT_PUBLIC_MISTRAL_API_KEY
 - **Railway** - Full-stack Deployment
 - **Docker** - Container-basiert
 
-## 📝 Changelog
+## 📝 Aktueller Status
 
-### Version 4.0 (Aktuell) - SQLite + Float Position System
+**Version 4.0** - Production Ready mit Enterprise-Architektur:
+
 - ✅ **SQLite Migration** - JSON → Prisma ORM + SQLite
 - ✅ **Float Position System** - O(1) Drag & Drop (state-of-the-art)
-- ✅ **Direction-Aware Drag** - Tasks landen genau am Drop-Ziel
-- ✅ **UI Synchronization** - Automatische Props-Updates mit useEffect
-- ✅ **Database Recovery** - .env cleanup + Migration Tools
+- ✅ **Enterprise Refactoring** - Modulare Komponenten + Custom Hooks
 - ✅ **73 Tasks migriert** - Alle Daten erfolgreich übertragen
-- ✅ **Production Ready** - Vollständig getestet und stabil
+- ✅ **0 ESLint Errors** - Production-ready Code-Qualität
 
-### Version 3.0 - Enterprise Refactoring
-- ✅ **Komponenten-Modularisierung** - TaskCard → 4 fokussierte Komponenten
-- ✅ **Custom Hooks** - Business Logic extrahiert
-- ✅ **Performance-Optimierung** - useCallback/useMemo
-
-### Version 2.0 - Stabilisierung
-- ✅ **Task-Sortierung** nach Datum repariert
-- ✅ **Erledigte Tasks** ausgeblendet
-- ✅ **JSON-Standardisierung** implementiert
-
-### Version 1.0 - Initial Release
-- 🎉 **Basic Features** - Task Management + Mistral AI
-- 📱 **Responsive Design**
-- 🎨 **Shadcn/ui Integration**
+> 📖 **Vollständiger Changelog**: Siehe [ARCHITECTURE.md](ARCHITECTURE.md) für detaillierte Versionshistorie.
 
 ## 🤝 Beitragen
 
@@ -298,10 +221,10 @@ MIT License - Siehe LICENSE Datei für Details.
 
 ---
 
-## 📚 Weitere Dokumentation
+## 📚 Dokumentation
 
-- **[DRAG_DROP_SOLUTION.md](DRAG_DROP_SOLUTION.md)** - Vollständige Dokumentation des Float Position Systems
-- **[DRAG_DROP_PROBLEM_ANALYSIS.md](DRAG_DROP_PROBLEM_ANALYSIS.md)** - Archiviert: Original-Problem-Analyse
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Vollständige technische Architektur-Dokumentation
+- **[README.md](README.md)** - Projekt-Übersicht und Quick Start
 
 ---
 

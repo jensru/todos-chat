@@ -1,7 +1,7 @@
 // src/components/TaskCardRefactored.tsx - Einzeilige Task Card Component
 'use client';
 
-import { Star, Calendar, Folder, Edit, Save, X, Trash2, GripVertical } from 'lucide-react';
+import { Star, Calendar, Edit, Save, X, Trash2, GripVertical } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -119,7 +119,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
             {/* Category Badge */}
             {task.category && !isEditing && (
               <span className="text-xs bg-muted px-2 py-1 rounded-full text-muted-foreground">
-                <Folder className="h-3 w-3 inline mr-1" />
                 {task.category}
               </span>
             )}

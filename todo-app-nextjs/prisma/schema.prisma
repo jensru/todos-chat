@@ -17,7 +17,7 @@ model Task {
   completed     Boolean  @default(false)
   priority      Boolean  @default(false)
   dueDate       DateTime?
-  category      String   @default("todo")
+  category      String?
   tags          String   @default("[]") // JSON string
   subtasks      String   @default("[]") // JSON string
   globalPosition Float

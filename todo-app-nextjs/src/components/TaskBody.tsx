@@ -1,7 +1,7 @@
 // src/components/TaskBody.tsx - Task Body Component
 'use client';
 
-import { Calendar, Folder } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -84,7 +84,6 @@ export function TaskBody({
       ) : (
         category && (
           <div className="flex items-center text-xs text-muted-foreground mb-2">
-            <Folder className="h-3 w-3 mr-1" />
             {category}
           </div>
         )
