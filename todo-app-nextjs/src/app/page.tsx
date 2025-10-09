@@ -97,9 +97,12 @@ export default function HomePage(): JSX.Element {
 
   // Drag & Drop handlers
   const handleDragStart = (event: DragStartEvent) => {
+    console.log('=== handleDragStart ===', event);
     const { active } = event;
     setActiveTask(active.data.current?.task);
     setLiveGroupedTasks(groupedTasks); // Initialize live state
+    console.log('Active task set:', active.data.current?.task);
+    console.log('Live grouped tasks initialized:', Object.keys(groupedTasks));
   };
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -155,9 +158,14 @@ export default function HomePage(): JSX.Element {
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
+    console.log('=== handleDragEnd START ===', event);
     const { active, over } = event;
     
+    console.log('Active:', active);
+    console.log('Over:', over);
+    
     if (!over || !active) {
+      console.log('No over or active - returning early');
       setActiveTask(null);
       setLiveGroupedTasks({});
       return;
@@ -168,6 +176,7 @@ export default function HomePage(): JSX.Element {
 
     // If dropped on the same position, do nothing
     if (activeId === overId) {
+      console.log('Same position drop - returning early');
       setActiveTask(null);
       setLiveGroupedTasks({});
       return;
@@ -177,7 +186,10 @@ export default function HomePage(): JSX.Element {
     const overTask = over.data.current?.task;
     const overDateKey = over.data.current?.dateKey;
 
+    console.log('Tasks:', { activeTask, overTask, overDateKey });
+
     if (!activeTask) {
+      console.log('No activeTask - returning early');
       setActiveTask(null);
       setLiveGroupedTasks({});
       return;
