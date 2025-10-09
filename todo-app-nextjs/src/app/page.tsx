@@ -209,6 +209,7 @@ export default function HomePage(): JSX.Element {
           const taskIds = liveDateTasks.map(t => t.id);
           console.log('Same date reorder - using live order:', taskIds);
           await handleReorderWithinDate(activeDateKey, taskIds);
+          console.log('handleReorderWithinDate completed');
         } else {
           // Fallback to original logic if live state is empty
           const dateTasks = groupedTasks[activeDateKey] || [];
@@ -241,6 +242,7 @@ export default function HomePage(): JSX.Element {
         if (liveTargetTasks.length > 0 && overIndex !== -1) {
           // Use live positioned tasks
           await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
+          console.log('handleReorderAcrossDates completed');
         } else {
           // Fallback to original logic if live state is empty
           const targetDateTasks = groupedTasks[overDateKey] || [];
