@@ -163,6 +163,7 @@ export default function HomePage(): JSX.Element {
     
     console.log('Active:', active);
     console.log('Over:', over);
+    console.log('Collisions:', event.collisions);
     
     if (!over || !active) {
       console.log('No over or active - returning early');
@@ -174,12 +175,13 @@ export default function HomePage(): JSX.Element {
     const activeId = active.id;
     const overId = over.id;
 
-    // If dropped on the same position, do nothing
+    // TEMPORARY: Skip same position check to test collision detection
+    console.log('Active ID:', activeId, 'Over ID:', overId);
     if (activeId === overId) {
-      console.log('Same position drop - returning early');
-      setActiveTask(null);
-      setLiveGroupedTasks({});
-      return;
+      console.log('Same position drop - but continuing for testing');
+      // setActiveTask(null);
+      // setLiveGroupedTasks({});
+      // return;
     }
 
     const activeTask = active.data.current?.task;
