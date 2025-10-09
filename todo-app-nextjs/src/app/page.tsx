@@ -2,8 +2,8 @@
 'use client';
 
 import { Plus, Target, MessageCircle, Calendar, CheckCircle2 } from 'lucide-react';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -127,17 +127,23 @@ export default function HomePage(): JSX.Element {
       const overDateKey = overTask.dueDate ? overTask.dueDate.toISOString().split('T')[0] : 'ohne-datum';
       
       if (activeDateKey === overDateKey) {
-        // Same date - reorder within the same date group
+        // Same date - reorder within the same date group using arrayMove
         const dateTasks = groupedTasks[activeDateKey] || [];
         const activeIndex = dateTasks.findIndex(t => t.id === activeId);
         const overIndex = dateTasks.findIndex(t => t.id === overId);
         
+        console.log('Reordering within same date:', {
+          activeId,
+          overId,
+          activeIndex,
+          overIndex,
+          dateTasks: dateTasks.map(t => ({ id: t.id, title: t.title }))
+        });
+        
         if (activeIndex !== -1 && overIndex !== -1) {
-          const newOrder = [...dateTasks];
-          const [movedTask] = newOrder.splice(activeIndex, 1);
-          newOrder.splice(overIndex, 0, movedTask);
-          
+          const newOrder = arrayMove(dateTasks, activeIndex, overIndex);
           const taskIds = newOrder.map(t => t.id);
+          console.log('New order:', taskIds);
           await handleReorderWithinDate(activeDateKey, taskIds);
         }
       } else {
@@ -255,6 +261,7 @@ export default function HomePage(): JSX.Element {
             sensors={sensors}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
+            collisionDetection={closestCenter}
           >
             <div className="space-y-6">
               {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
