@@ -2,7 +2,7 @@
 'use client';
 
 import { Plus, Target, MessageCircle, Calendar, CheckCircle2 } from 'lucide-react';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, DragOverEvent } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, DragOverEvent, MeasuringStrategy, rectIntersection } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, arrayMove, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -404,7 +404,12 @@ export default function HomePage(): JSX.Element {
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
-            collisionDetection={closestCenter}
+            collisionDetection={rectIntersection}
+            measuring={{
+              droppable: {
+                strategy: MeasuringStrategy.Always,
+              },
+            }}
           >
             <div className="space-y-6">
               {Object.entries(activeTask ? liveGroupedTasks : groupedTasks).map(([dateKey, dateTasks]) => (
