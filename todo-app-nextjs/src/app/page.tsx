@@ -204,32 +204,24 @@ export default function HomePage(): JSX.Element {
         // Same date - use the live reordered tasks for final update
         const liveDateTasks = liveGroupedTasks[activeDateKey] || [];
         
+        console.log('Same date debug:', {
+          activeDateKey,
+          liveGroupedTasksKeys: Object.keys(liveGroupedTasks),
+          liveDateTasksLength: liveDateTasks.length,
+          liveDateTasks: liveDateTasks.map(t => ({ id: t.id, title: t.title })),
+          groupedTasksKeys: Object.keys(groupedTasks),
+          groupedTasksLength: groupedTasks[activeDateKey]?.length || 0
+        });
+        
         if (liveDateTasks.length > 0) {
           // Use live reordered tasks
           const taskIds = liveDateTasks.map(t => t.id);
           console.log('Same date reorder - using live order:', taskIds);
-          
-          // TEMPORARY: Skip service call, just update state
-          console.log('TEMPORARY: Skipping service call, updating state directly');
-          setTasks(prevTasks => {
-            const baseTime = Date.now();
-            return prevTasks.map(task => {
-              const index = taskIds.indexOf(task.id);
-              if (index !== -1) {
-                return {
-                  ...task,
-                  globalPosition: baseTime + index,
-                  updatedAt: new Date()
-                };
-              }
-              return task;
-            });
-          });
-          
-          // await handleReorderWithinDate(activeDateKey, taskIds);
+          await handleReorderWithinDate(activeDateKey, taskIds);
           console.log('handleReorderWithinDate completed');
         } else {
           // Fallback to original logic if live state is empty
+          console.log('FALLBACK: Using groupedTasks because liveGroupedTasks is empty');
           const dateTasks = groupedTasks[activeDateKey] || [];
           const activeIndex = dateTasks.findIndex(t => t.id === activeId);
           const overIndex = dateTasks.findIndex(t => t.id === overId);
@@ -245,6 +237,8 @@ export default function HomePage(): JSX.Element {
             const taskIds = newOrder.map(t => t.id);
             console.log('Fallback - calling handleReorderWithinDate with:', taskIds);
             await handleReorderWithinDate(activeDateKey, taskIds);
+          } else {
+            console.log('FALLBACK FAILED: activeIndex or overIndex is -1');
           }
         }
       } else {
