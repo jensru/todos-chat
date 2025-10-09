@@ -47,9 +47,9 @@ export function TaskCardRefactored({ task, onUpdate, onDelete }: ITaskCardProps)
   };
 
   return (
-    <Card className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''}`} style={{ height: 'calc(2 * 1.5em)' }}>
-      <CardContent className="py-1 px-3">
-        <div className="flex items-center justify-between h-full">
+    <Card className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''}`} style={{ minHeight: '20px' }}>
+      <CardContent className="py-0">
+        <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 flex-1 min-w-0">
             {/* Checkbox */}
             <Checkbox
@@ -79,7 +79,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete }: ITaskCardProps)
                 </div>
               </div>
             ) : (
-              <h3 className={`text-base font-normal flex-1 truncate ${task.completed ? 'line-through opacity-60' : ''}`} style={{ fontSize: '16px' }}>
+              <h3 className={`text-base font-normal flex-1 truncate ${task.completed ? 'line-through opacity-60' : ''}`} style={{ fontSize: '16px', lineHeight: '1.5' }}>
                 {task.title}
               </h3>
             )}
