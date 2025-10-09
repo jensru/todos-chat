@@ -147,8 +147,19 @@ export default function HomePage(): JSX.Element {
           await handleReorderWithinDate(activeDateKey, taskIds);
         }
       } else {
-        // Different date - move task to new date
-        await handleMoveTaskToDate(activeId as string, overTask.dueDate);
+        // Different date - move task to new date at specific position
+        const targetDateTasks = groupedTasks[overDateKey] || [];
+        const overIndex = targetDateTasks.findIndex(t => t.id === overId);
+        
+        console.log('Moving to different date:', {
+          activeId,
+          overId,
+          overDateKey,
+          overIndex,
+          targetDateTasks: targetDateTasks.map(t => ({ id: t.id, title: t.title }))
+        });
+        
+        await handleReorderAcrossDates(activeId as string, overTask.dueDate, overIndex);
       }
     } else if (overDateKey) {
       // Dropped on date header or empty space

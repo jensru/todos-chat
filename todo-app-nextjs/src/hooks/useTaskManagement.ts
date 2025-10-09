@@ -163,9 +163,52 @@ export function useTaskManagement(): {
   }, [taskService, loadData]);
 
   const handleReorderAcrossDates = useCallback(async (taskId: string, targetDate: Date | null, targetIndex: number): Promise<void> => {
+    console.log('handleReorderAcrossDates called:', { taskId, targetDate, targetIndex });
+    
+    // Update state immediately for better UX
+    setTasks(prevTasks => {
+      const task = prevTasks.find(t => t.id === taskId);
+      if (!task) return prevTasks;
+      
+      const targetDateKey = targetDate ? targetDate.toISOString().split('T')[0] : 'ohne-datum';
+      
+      // Get all tasks for the target date (excluding the moving task)
+      const targetDateTasks = prevTasks.filter(t => {
+        if (t.completed || t.id === taskId) return false;
+        const taskDateKey = t.dueDate ? t.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+        return taskDateKey === targetDateKey;
+      });
+      
+      // Sort by current global position
+      targetDateTasks.sort((a, b) => a.globalPosition - b.globalPosition);
+      
+      // Insert at target position
+      targetDateTasks.splice(targetIndex, 0, task);
+      
+      // Calculate new positions
+      const baseTime = Date.now();
+      const updatedTasks = prevTasks.map(t => {
+        const index = targetDateTasks.findIndex(tt => tt.id === t.id);
+        if (index !== -1) {
+          return {
+            ...t,
+            dueDate: targetDate,
+            globalPosition: baseTime + index,
+            updatedAt: new Date()
+          };
+        }
+        return t;
+      });
+      
+      return updatedTasks;
+    });
+    
     const success = await taskService.reorderTasksAcrossDates(taskId, targetDate, targetIndex);
-    if (success) {
-      await loadData(); // Reload to get updated data
+    console.log('reorderTasksAcrossDates success:', success);
+    
+    if (!success) {
+      console.log('Service call failed, reloading data...');
+      await loadData();
     }
   }, [taskService, loadData]);
 
