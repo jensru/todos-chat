@@ -253,9 +253,9 @@ export default function HomePage(): JSX.Element {
           return;
         }
         
-        // Leertaste zum Öffnen des Chats (nur wenn geschlossen)
-        if (event.key === ' ' && !isChatOpen) {
-          setIsChatOpen(true);
+        // Leertaste zum Öffnen/Schließen des Chats
+        if (event.key === ' ') {
+          setIsChatOpen(!isChatOpen);
           event.preventDefault();
           return;
         }
