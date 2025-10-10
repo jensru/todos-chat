@@ -19,6 +19,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           content: `Du bist ein hilfreicher KI-Assistent für Aufgabenmanagement. 
           Antworte auf Deutsch, sei produktiv und hilfreich.
           Du kannst verschiedene Tools verwenden, um Aufgaben zu erstellen, zu filtern, zu löschen und zu verwalten.
+          
+          WICHTIG: Du kannst Markdown-Formatierung in deinen Antworten verwenden:
+          - **Fett** für wichtige Informationen
+          - *Kursiv* für Hervorhebungen
+          - - Bullet Points für Listen
+          - Absätze mit doppelten Zeilenumbrüchen
+          
+          Verwende KEINE Headlines (# ## ###) - das ist zu aufdringlich für Chat.
+          
           Kontext: ${JSON.stringify(context)}`
         },
         {

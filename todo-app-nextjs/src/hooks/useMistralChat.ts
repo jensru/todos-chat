@@ -15,31 +15,32 @@ export function useMistralChat(): {
   isServiceReady: boolean;
   clearChat: () => void;
 } {
-  const [messages, setMessages] = useState<Message[]>(() => {
-    // Load messages from localStorage on initialization
+  const [messages, setMessages] = useState<Message[]>([
+    { id: '1', type: 'bot', text: 'Hey, woran willst du heute arbeiten? Ich kann dir helfen, Aufgaben zu erstellen, zu filtern und zu verwalten!', timestamp: new Date() }
+  ]);
+  const [mistralService, setMistralService] = useState<MistralService | null>(null);
+  const [mistralToolsService, setMistralToolsService] = useState<MistralToolsService | null>(null);
+  const [chatInput, setChatInput] = useState('');
+
+  // Load messages from localStorage on mount (client-side only)
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedMessages = localStorage.getItem('mistral-chat-messages');
       if (savedMessages) {
         try {
           const parsed = JSON.parse(savedMessages);
           // Convert timestamp strings back to Date objects
-          return parsed.map((msg: any) => ({
+          const loadedMessages = parsed.map((msg: any) => ({
             ...msg,
             timestamp: new Date(msg.timestamp)
           }));
+          setMessages(loadedMessages);
         } catch (error) {
           console.error('Error parsing saved messages:', error);
         }
       }
     }
-    // Default initial message
-    return [
-      { id: '1', type: 'bot', text: 'Hey, woran willst du heute arbeiten? Ich kann dir helfen, Aufgaben zu erstellen, zu filtern und zu verwalten!', timestamp: new Date() }
-    ];
-  });
-  const [mistralService, setMistralService] = useState<MistralService | null>(null);
-  const [mistralToolsService, setMistralToolsService] = useState<MistralToolsService | null>(null);
-  const [chatInput, setChatInput] = useState('');
+  }, []); // Only run on mount
 
   // Save messages to localStorage whenever messages change
   useEffect(() => {
