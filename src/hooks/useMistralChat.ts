@@ -5,6 +5,8 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { MistralToolsService } from '@/lib/services/MistralToolsService';
 import { Message } from '@/lib/types';
+import { useTranslation } from '@/lib/i18n';
+import { useLocale } from './useLocale';
 
 export function useMistralChat(): {
   messages: Message[];
@@ -14,15 +16,29 @@ export function useMistralChat(): {
   isServiceReady: boolean;
   clearChat: () => void;
 } {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: '1', type: 'bot', text: 'Hey, woran willst du heute arbeiten? Ich kann dir helfen, Aufgaben zu erstellen, zu filtern und zu verwalten!', timestamp: new Date() }
-  ]);
+  const { language, isReady } = useLocale();
+  const { t } = useTranslation(language as any);
+  
+  const [messages, setMessages] = useState<Message[]>([]);
   const [mistralToolsService, setMistralToolsService] = useState<MistralToolsService | null>(null);
   const [chatInput, setChatInput] = useState('');
 
+  // Initialize welcome message when locale is ready
+  useEffect(() => {
+    if (isReady && messages.length === 0) {
+      const welcomeMessage: Message = {
+        id: '1',
+        type: 'bot',
+        text: t('chat.welcomeMessage'),
+        timestamp: new Date()
+      };
+      setMessages([welcomeMessage]);
+    }
+  }, [isReady, t]);
+
   // Load messages from localStorage on mount (client-side only)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && isReady) {
       const savedMessages = localStorage.getItem('mistral-chat-messages');
       if (savedMessages) {
         try {
@@ -38,7 +54,7 @@ export function useMistralChat(): {
         }
       }
     }
-  }, []); // Only run on mount
+  }, [isReady]); // Run when locale is ready
 
   // Save messages to localStorage whenever messages change
   useEffect(() => {
@@ -52,11 +68,11 @@ export function useMistralChat(): {
     const defaultMessage: Message = {
       id: '1',
       type: 'bot',
-      text: 'Hey, woran willst du heute arbeiten? Ich kann dir helfen, Aufgaben zu erstellen, zu filtern und zu verwalten!',
+      text: t('chat.welcomeMessage'),
       timestamp: new Date()
     };
     setMessages([defaultMessage]);
-  }, []);
+  }, [t]);
 
   const handleSendMessage = useCallback(async (taskContext?: { tasks: number; goals: number; taskService?: any }): Promise<void> => {
     if (!chatInput.trim()) return;

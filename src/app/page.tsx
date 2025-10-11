@@ -127,6 +127,9 @@ function SortableDateHeader({ dateKey, formatDate, taskCount }: {
 }
 
 export default function HomePage(): React.JSX.Element {
+  const { language, isReady } = useLocale();
+  const { t } = useTranslation(language as any);
+  
   const taskManagement = useTaskManagement();
   const {
     tasks,
@@ -191,15 +194,15 @@ export default function HomePage(): React.JSX.Element {
     setIsClient(true);
   }, []);
 
-  // Initialize speech recognition
+  // Initialize speech recognition with dynamic language
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window && isReady) {
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognitionInstance = new SpeechRecognition();
       
       recognitionInstance.continuous = false;
       recognitionInstance.interimResults = false;
-      recognitionInstance.lang = 'de-DE';
+      recognitionInstance.lang = speechLanguageMap[language as keyof typeof speechLanguageMap] || 'en-US';
       
       recognitionInstance.onstart = () => {
         setIsListening(true);
@@ -221,8 +224,9 @@ export default function HomePage(): React.JSX.Element {
       };
       
       setRecognition(recognitionInstance);
+      console.log('Speech recognition initialized with language:', recognitionInstance.lang);
     }
-  }, []);
+  }, [language, isReady]);
 
   const startListening = () => {
     if (recognition && !isListening) {
@@ -731,7 +735,7 @@ export default function HomePage(): React.JSX.Element {
             <div className="mt-8 text-center">
               <div className="text-sm text-muted-foreground flex items-center justify-center">
                 <CheckCircle2 className="h-4 w-4 mr-1" />
-                {stats.active} aktiv • {stats.highPriority} High Priority • {stats.completionRate}% erledigt
+                {stats.active} {t('taskStates.active')} • {stats.highPriority} {t('taskStates.highPriority')} • {stats.completionRate}% {t('taskStates.completed')}
               </div>
             </div>
           )}
@@ -741,9 +745,9 @@ export default function HomePage(): React.JSX.Element {
             <Card>
               <CardContent className="text-center py-12">
                 <div className="text-4xl mb-4">⏳</div>
-                <h3 className="text-lg font-semibold mb-2">Lade Aufgaben...</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('emptyState.loading.title')}</h3>
                 <p className="text-muted-foreground">
-                  Deine Aufgaben werden geladen.
+                  {t('emptyState.loading.description')}
                 </p>
               </CardContent>
             </Card>
@@ -754,13 +758,13 @@ export default function HomePage(): React.JSX.Element {
             <Card>
               <CardContent className="text-center py-12">
                 <div className="text-4xl mb-4">📝</div>
-                <h3 className="text-lg font-semibold mb-2">Keine Aufgaben</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('emptyState.noTasks.title')}</h3>
                 <p className="text-muted-foreground mb-4">
-                  Deine Aufgaben & Ziele erscheinen hier. Fang einfach im Chat an.
+                  {t('emptyState.noTasks.description')}
                 </p>
                 <div className="flex justify-center space-x-2">
                   <Button onClick={() => handleAddTask({
-                    title: 'Neue Aufgabe',
+                    title: t('buttons.newTask'),
                     description: '',
                     completed: false,
                     priority: false,
@@ -770,11 +774,11 @@ export default function HomePage(): React.JSX.Element {
                     userId: 'temp-user' // Will be set by API
                   })}>
                     <Plus className="h-4 w-4 mr-1" />
-                    Neue Aufgabe
+                    {t('buttons.newTask')}
                   </Button>
                   <Button variant="outline">
                     <Target className="h-4 w-4 mr-1" />
-                    Neues Ziel
+                    {t('buttons.newGoal')}
                   </Button>
                 </div>
               </CardContent>

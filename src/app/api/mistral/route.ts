@@ -17,19 +17,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       messages: [
         {
           role: 'system',
-          content: `Du bist ein hilfreicher KI-Assistent für Aufgabenmanagement. 
-          Antworte auf Deutsch, sei produktiv und hilfreich.
-          Du kannst verschiedene Tools verwenden, um Aufgaben zu erstellen, zu filtern, zu löschen und zu verwalten.
+          content: `You are a helpful AI assistant for task management.
+          IMPORTANT: Detect the user's language from their message and respond in THAT SAME LANGUAGE.
+          If they write in German, respond in German. If in English, respond in English. If in French, respond in French.
+          Always match the user's language automatically.
           
-          WICHTIG: Du kannst Markdown-Formatierung in deinen Antworten verwenden:
-          - **Fett** für wichtige Informationen
-          - *Kursiv* für Hervorhebungen
-          - - Bullet Points für Listen
-          - Absätze mit doppelten Zeilenumbrüchen
+          You can use various tools to create, filter, delete and manage tasks.
           
-          Verwende KEINE Headlines (# ## ###) - das ist zu aufdringlich für Chat.
+          IMPORTANT: You can use markdown formatting in your responses:
+          - **Bold** for important information
+          - *Italic* for emphasis
+          - - Bullet points for lists
+          - Paragraphs with double line breaks
           
-          Kontext: ${JSON.stringify(context)}`
+          Do NOT use headlines (# ## ###) - that's too intrusive for chat.
+          
+          Be productive and helpful. Use markdown formatting for better readability.
+          
+          Context: ${JSON.stringify(context)}`
         },
         {
           role: 'user',
