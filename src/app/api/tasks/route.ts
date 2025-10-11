@@ -8,11 +8,19 @@ export async function GET(): Promise<NextResponse> {
     console.log('API Debug - Starting GET /api/tasks');
 
     const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-    // Temporär: Gib alle Tasks zurück (ohne Authentication)
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    console.log('API Debug - User authenticated:', user.id);
+
+    // Load only tasks for the authenticated user
     const { data: dbTasks, error } = await supabase
       .from('tasks')
       .select('*')
+      .eq('userId', user.id)
       .order('globalPosition', { ascending: true });
 
     if (error) {
