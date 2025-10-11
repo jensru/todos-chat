@@ -17,6 +17,7 @@ import { useLocale } from '@/hooks/useLocale';
 import { useMistralChat } from '@/hooks/useMistralChat';
 import { useTaskManagement } from '@/hooks/useTaskManagement';
 import { createClient } from '@/lib/supabase/client';
+import { useTranslation, getSpeechLanguage } from '@/lib/i18n';
 import { parseAndSanitizeMarkdown } from '@/lib/utils/markdownParser';
 import { useEffect, useRef, useState } from 'react';
 
