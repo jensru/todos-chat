@@ -251,8 +251,8 @@ export function useTaskManagement(): {
     const optimisticTask: Task = {
       ...taskData,
       id: tempId,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: new Date(now),
+      updatedAt: new Date(now),
     };
     
     // Add to UI immediately
