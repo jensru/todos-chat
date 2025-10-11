@@ -83,6 +83,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       toolCalls: toolCalls
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to generate response', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to generate response', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }
