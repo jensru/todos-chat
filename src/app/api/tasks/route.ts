@@ -8,9 +8,12 @@ const prisma = new PrismaClient();
 // GET /api/tasks - Load all tasks
 export async function GET(): Promise<NextResponse> {
   try {
-    const supabase = await createClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    console.log('API Debug - Starting GET /api/tasks');
     
+    const supabase = await createClient();
+    console.log('API Debug - Supabase client created');
+    
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     console.log('API Debug - User:', user?.email, 'ID:', user?.id);
     console.log('API Debug - Auth Error:', authError);
     
@@ -19,11 +22,12 @@ export async function GET(): Promise<NextResponse> {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    
+    console.log('API Debug - Connecting to database...');
     const dbTasks = await prisma.task.findMany({
       where: { userId: user.id },
       orderBy: { globalPosition: 'asc' }
     });
+    console.log('API Debug - Found', dbTasks.length, 'tasks');
     
     const tasks = dbTasks.map(task => ({
       id: task.id,
@@ -44,7 +48,11 @@ export async function GET(): Promise<NextResponse> {
     
     return NextResponse.json({ tasks });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to load tasks' }, { status: 500 });
+    console.error('API Debug - Error in GET /api/tasks:', error);
+    return NextResponse.json({ 
+      error: 'Failed to load tasks', 
+      details: error instanceof Error ? error.message : 'Unknown error' 
+    }, { status: 500 });
   }
 }
 
