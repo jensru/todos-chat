@@ -64,7 +64,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.error('Sync API - error:', error);
     return NextResponse.json({ 
       error: 'Failed to sync tasks', 
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
