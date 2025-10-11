@@ -154,6 +154,7 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
       }
     }
 
+    const now = new Date().toISOString();
     const taskData = {
       id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       userId: userId,
@@ -167,6 +168,8 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
       tags: JSON.stringify([]),
       subtasks: JSON.stringify([]),
       globalPosition: Date.now(),
+      createdAt: now,
+      updatedAt: now,
     };
 
     console.log('handleCreateTaskServerSide - inserting task:', taskData);
