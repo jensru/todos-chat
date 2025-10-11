@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { createClient } from '@/lib/supabase/client'
+import { useState } from 'react'
 
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -35,7 +35,8 @@ export default function LoginPage() {
           password,
         })
         if (error) throw error
-        // Redirect will be handled by middleware
+        // Redirect manually after successful login
+        window.location.href = '/'
       }
     } catch (error: any) {
       setMessage(error.message)
@@ -50,7 +51,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'https://kickboost-todos.vercel.app/auth/callback',
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       })
       if (error) throw error
