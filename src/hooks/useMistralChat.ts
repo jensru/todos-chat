@@ -107,10 +107,10 @@ export function useMistralChat(): {
         // Auto-refresh tasks if needed (server-side tools were executed)
         if (result.needsRefresh && taskContext?.taskService?.loadData) {
           console.log('useMistralChat - refreshing tasks after tool execution');
-          // Small delay to ensure task is created in database
+          // Use smooth refresh without loading state to avoid white flash
           setTimeout(async () => {
             await taskContext.taskService.loadData();
-          }, 500);
+          }, 100); // Shorter delay for smoother experience
         }
       } catch {
         const errorMessage: Message = {

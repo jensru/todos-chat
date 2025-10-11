@@ -20,8 +20,9 @@ export function useTaskManagement(): {
   handleReorderWithinDate: (dateKey: string, taskIds: string[]) => Promise<void>;
   handleMoveTaskToDate: (taskId: string, newDate: Date | null) => Promise<void>;
   handleReorderAcrossDates: (taskId: string, targetDate: Date | null, targetIndex: number) => Promise<void>;
-  // Optimistic update for smooth drag & drop
+  // Optimistic updates
   handleTaskUpdateOptimistic: (taskId: string, updates: Partial<Task>) => Promise<boolean>;
+  handleAddTaskOptimistic: (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => Promise<string>;
 } {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true); // Start with loading = true
@@ -29,7 +30,7 @@ export function useTaskManagement(): {
 
   const loadData = useCallback(async (): Promise<void> => {
     try {
-      setLoading(true); // Set loading to true when starting to load
+      // Don't set loading to true for refresh operations to avoid white flash
       const loadedTasks = await taskService.loadTasks();
       setTasks(loadedTasks);
     } catch {
@@ -220,6 +221,40 @@ export function useTaskManagement(): {
     }
   }, [taskService, loadData]);
 
+  // Optimistic task creation for smooth UI
+  const handleAddTaskOptimistic = useCallback(async (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> => {
+    const tempId = `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = new Date().toISOString();
+    
+    const optimisticTask: Task = {
+      ...taskData,
+      id: tempId,
+      createdAt: now,
+      updatedAt: now,
+    };
+    
+    // Add to UI immediately
+    setTasks(prev => [...prev, optimisticTask]);
+    
+    try {
+      // Create in service
+      const realTask = await taskService.createTask(taskData);
+      if (realTask) {
+        // Replace optimistic task with real task
+        setTasks(prev => prev.map(task => 
+          task.id === tempId ? realTask : task
+        ));
+        return realTask.id;
+      }
+      return tempId;
+    } catch (error) {
+      console.error('Task creation failed:', error);
+      // Remove optimistic task on failure
+      setTasks(prev => prev.filter(task => task.id !== tempId));
+      throw error;
+    }
+  }, [taskService]);
+
   // Optimistic update for smooth drag & drop animation
   const handleTaskUpdateOptimistic = useCallback(async (taskId: string, updates: Partial<Task>): Promise<boolean> => {
     // Store original task for potential revert
@@ -276,7 +311,8 @@ export function useTaskManagement(): {
     handleReorderWithinDate,
     handleMoveTaskToDate,
     handleReorderAcrossDates,
-    // Optimistic update
-    handleTaskUpdateOptimistic
+    // Optimistic updates
+    handleTaskUpdateOptimistic,
+    handleAddTaskOptimistic
   };
 }
