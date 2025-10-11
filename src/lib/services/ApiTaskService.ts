@@ -15,9 +15,21 @@ export class ApiTaskService {
       console.log('ApiTaskService.loadTasks - raw API response sample:', data.tasks[0]);
       
       const tasks = (data.tasks || []).map((task: any) => {
+        // Parse dueDate as local date, not UTC
+        let dueDate = null;
+        if (task.dueDate) {
+          // If it's a date-only string like "2025-10-13", parse it as local
+          if (typeof task.dueDate === 'string' && task.dueDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            const [year, month, day] = task.dueDate.split('-').map(Number);
+            dueDate = new Date(year, month - 1, day);
+          } else {
+            dueDate = new Date(task.dueDate);
+          }
+        }
+
         const convertedTask = {
           ...task,
-          dueDate: task.dueDate ? new Date(task.dueDate) : null,
+          dueDate,
           createdAt: new Date(task.createdAt),
           updatedAt: new Date(task.updatedAt)
         };
