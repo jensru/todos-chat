@@ -1,6 +1,8 @@
 // src/app/page.tsx - Main App with Professional Architecture
 'use client';
 
+import React from "react";
+
 import { Plus, Target, MessageCircle, Calendar, CheckCircle2, Mic, MicOff, Trash2, X, ChevronUp } from 'lucide-react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, DragOverEvent, MeasuringStrategy, rectIntersection } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable';
@@ -124,7 +126,7 @@ function SortableDateHeader({ dateKey, formatDate, taskCount }: {
   );
 }
 
-export default function HomePage(): JSX.Element {
+export default function HomePage(): React.JSX.Element {
   const taskManagement = useTaskManagement();
   const {
     tasks,
@@ -729,7 +731,8 @@ export default function HomePage(): JSX.Element {
                     priority: false,
                     tags: [],
                     subtasks: [],
-                    globalPosition: Date.now()
+                    globalPosition: Date.now(),
+                    userId: 'temp-user' // Will be set by API
                   })}>
                     <Plus className="h-4 w-4 mr-1" />
                     Neue Aufgabe

@@ -1,13 +1,13 @@
 // src/components/MistralToolsDemo.tsx - Demo für Mistral Tools
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { MistralToolsService } from '@/lib/services/MistralToolsService';
 
-export function MistralToolsDemo(): JSX.Element {
+export function MistralToolsDemo(): React.JSX.Element {
   const [input, setInput] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);

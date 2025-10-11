@@ -1,8 +1,7 @@
-// src/components/TaskCardRefactored.tsx - Einzeilige Task Card Component
-'use client';
+"use client";
 
+import React, { useState, useEffect } from 'react';
 import { Star, Calendar, Edit, Save, X, Trash2, GripVertical, StickyNote } from 'lucide-react';
-import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -33,7 +32,7 @@ interface ITaskCardProps {
   dragRef?: (element: HTMLElement | null) => void;
 }
 
-export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = false, dragHandleProps, dragRef }: ITaskCardProps): JSX.Element {
+export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = false, dragHandleProps, dragRef }: ITaskCardProps): React.JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);

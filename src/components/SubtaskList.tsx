@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+import React from "react";
 // src/components/SubtaskList.tsx - Subtask List Component
 'use client';
 
@@ -9,7 +13,7 @@ interface ISubtaskListProps {
   onToggleSubtask: (subtaskId: string) => void;
 }
 
-export function SubtaskList({ subtasks, onToggleSubtask }: ISubtaskListProps): JSX.Element | null {
+export function SubtaskList({ subtasks, onToggleSubtask }: ISubtaskListProps): React.JSX.Element | null {
   if (!subtasks || subtasks.length === 0) {
     return null;
   }

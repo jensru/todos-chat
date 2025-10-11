@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+import React from "react";
 // src/components/TaskBody.tsx - Task Body Component
 'use client';
 
@@ -38,7 +42,7 @@ export function TaskBody({
   onNewCategoryNameChange,
   onAddNewCategory,
   onCancelNewCategory
-}: ITaskBodyProps): JSX.Element {
+}: ITaskBodyProps): React.JSX.Element {
   return (
     <>
       {/* Description */}

@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+import React from "react";
 // src/components/TaskHeader.tsx - Task Header Component
 'use client';
 
@@ -33,7 +37,7 @@ export function TaskHeader({
   onSaveEdit,
   onCancelEdit,
   onTitleChange
-}: ITaskHeaderProps): JSX.Element {
+}: ITaskHeaderProps): React.JSX.Element {
   return (
     <div className="flex items-start justify-between">
       <div className="flex items-center space-x-2">

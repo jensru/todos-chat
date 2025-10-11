@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+import React from "react";
 // src/components/TaskActions.tsx - Task Actions Component
 'use client';
 
@@ -19,7 +23,7 @@ export function TaskActions({
   onSaveEdit,
   onCancelEdit,
   onDelete
-}: ITaskActionsProps): JSX.Element {
+}: ITaskActionsProps): React.JSX.Element {
   return (
     <div className="flex justify-between items-center mt-4">
       <div className="flex space-x-2">
