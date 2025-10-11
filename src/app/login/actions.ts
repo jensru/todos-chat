@@ -1,9 +1,9 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
-export async function loginAction(formData: FormData): Promise<{ error?: string } | never> {
+export async function loginAction(formData: FormData): Promise<{ error?: string; success?: boolean }> {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
@@ -21,8 +21,10 @@ export async function loginAction(formData: FormData): Promise<{ error?: string 
     return { error: error.message }
   }
 
-  // Redirect after successful login (this happens server-side)
-  redirect('/')
+  // Revalidate to refresh server components with new session
+  revalidatePath('/', 'layout')
+
+  return { success: true }
 }
 
 export async function signUpAction(formData: FormData): Promise<{ error?: string; success?: boolean; message?: string }> {

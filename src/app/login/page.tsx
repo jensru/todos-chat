@@ -26,12 +26,13 @@ export default function LoginPage() {
         ? await signUpAction(formData)
         : await loginAction(formData)
 
-      if (!result) return // loginAction redirects, no result
-
       if (result.error) {
         setMessage(result.error)
       } else if ('message' in result && typeof result.message === 'string') {
         setMessage(result.message)
+      } else if (result.success) {
+        // Login successful, redirect client-side
+        window.location.href = '/'
       }
     })
   }
