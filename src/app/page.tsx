@@ -564,25 +564,6 @@ export default function HomePage(): React.JSX.Element {
                 }
               }}
             />
-            <select
-              value={speechLanguage}
-              onChange={(e) => setSpeechLanguage(e.target.value)}
-              className="ml-2 px-2 py-1 text-sm border rounded bg-white"
-              title="Speech Recognition Language"
-            >
-              <option value="en-US">🇺🇸 EN</option>
-              <option value="de-DE">🇩🇪 DE</option>
-              <option value="fr-FR">🇫🇷 FR</option>
-              <option value="es-ES">🇪🇸 ES</option>
-              <option value="it-IT">🇮🇹 IT</option>
-              <option value="pt-BR">🇧🇷 PT</option>
-              <option value="ru-RU">🇷🇺 RU</option>
-              <option value="ja-JP">🇯🇵 JA</option>
-              <option value="ko-KR">🇰🇷 KO</option>
-              <option value="zh-CN">🇨🇳 ZH</option>
-              <option value="ar-SA">🇸🇦 AR</option>
-              <option value="hi-IN">🇮🇳 HI</option>
-            </select>
             <Button 
               variant={isListening ? "destructive" : "outline"}
               size="icon"
@@ -634,25 +615,6 @@ export default function HomePage(): React.JSX.Element {
               }
             }}
           />
-          <select
-            value={speechLanguage}
-            onChange={(e) => setSpeechLanguage(e.target.value)}
-            className="px-2 py-1 text-xs border rounded bg-white"
-            title="Speech Recognition Language"
-          >
-            <option value="en-US">🇺🇸 EN</option>
-            <option value="de-DE">🇩🇪 DE</option>
-            <option value="fr-FR">🇫🇷 FR</option>
-            <option value="es-ES">🇪🇸 ES</option>
-            <option value="it-IT">🇮🇹 IT</option>
-            <option value="pt-BR">🇧🇷 PT</option>
-            <option value="ru-RU">🇷🇺 RU</option>
-            <option value="ja-JP">🇯🇵 JA</option>
-            <option value="ko-KR">🇰🇷 KO</option>
-            <option value="zh-CN">🇨🇳 ZH</option>
-            <option value="ar-SA">🇸🇦 AR</option>
-            <option value="hi-IN">🇮🇳 HI</option>
-          </select>
           <Button 
             variant={isListening ? "destructive" : "outline"}
             size="icon"
@@ -690,6 +652,29 @@ export default function HomePage(): React.JSX.Element {
       {/* Canvas Panel */}
       <div className="w-full h-screen p-6 pb-20 overflow-y-auto lg:flex-1 lg:pb-6">
         <div className="max-w-4xl mx-auto">
+          
+          {/* Speech Language Selector - Dezent rechts oben */}
+          <div className="flex justify-end mb-4">
+            <select
+              value={speechLanguage}
+              onChange={(e) => setSpeechLanguage(e.target.value)}
+              className="px-2 py-1 text-xs text-muted-foreground border-0 bg-transparent hover:bg-muted rounded cursor-pointer"
+              title="Speech Recognition Language"
+            >
+              <option value="en-US">EN</option>
+              <option value="de-DE">DE</option>
+              <option value="fr-FR">FR</option>
+              <option value="es-ES">ES</option>
+              <option value="it-IT">IT</option>
+              <option value="pt-BR">PT</option>
+              <option value="ru-RU">RU</option>
+              <option value="ja-JP">JA</option>
+              <option value="ko-KR">KO</option>
+              <option value="zh-CN">ZH</option>
+              <option value="ar-SA">AR</option>
+              <option value="hi-IN">HI</option>
+            </select>
+          </div>
 
           {/* Goals Section */}
           {goals.length > 0 && (
