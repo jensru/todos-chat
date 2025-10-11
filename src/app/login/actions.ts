@@ -2,8 +2,9 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
-export async function loginAction(formData: FormData): Promise<{ error?: string; success?: boolean }> {
+export async function loginAction(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
@@ -24,7 +25,8 @@ export async function loginAction(formData: FormData): Promise<{ error?: string;
   // Revalidate to refresh server components with new session
   revalidatePath('/', 'layout')
 
-  return { success: true }
+  // Redirect using server-side redirect which properly handles cookies
+  redirect('/')
 }
 
 export async function signUpAction(formData: FormData): Promise<{ error?: string; success?: boolean; message?: string }> {
