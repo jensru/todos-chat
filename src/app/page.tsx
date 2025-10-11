@@ -167,7 +167,8 @@ export default function HomePage(): React.JSX.Element {
     handleTaskUpdate,
     handleTaskDelete,
     tasks,
-    getTaskStats
+    getTaskStats,
+    loadData: taskManagement.loadData
   };
 
   const { goals } = useGoals();

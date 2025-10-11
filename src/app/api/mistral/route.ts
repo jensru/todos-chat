@@ -1,5 +1,6 @@
 // src/app/api/mistral/route.ts - Mistral API Route
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
@@ -70,12 +71,30 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const aiResponse = aiMessage?.content || '';
     const toolCalls = aiMessage?.tool_calls || null;
     
+    // Execute tool calls server-side if present
+    let toolResults = [];
+    if (toolCalls && toolCalls.length > 0) {
+      for (const toolCall of toolCalls) {
+        try {
+          const toolResult = await executeToolCallServerSide(toolCall, request);
+          toolResults.push(toolResult);
+        } catch (error) {
+          toolResults.push(`❌ Fehler beim Ausführen des Tools: ${error}`);
+        }
+      }
+    }
+    
     // If we have tool calls but no content, provide a helpful message
     let finalResponse = aiResponse;
     if (toolCalls && toolCalls.length > 0 && !aiResponse) {
       finalResponse = 'Ich verstehe! Ich führe deine Anfrage aus...';
     } else if (!aiResponse && !toolCalls) {
       finalResponse = 'Entschuldigung, ich konnte keine Antwort generieren.';
+    }
+    
+    // Add tool results to response
+    if (toolResults.length > 0) {
+      finalResponse += '\n\n' + toolResults.join('\n');
     }
     
     return NextResponse.json({ 
@@ -85,4 +104,70 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   } catch (error) {
     return NextResponse.json({ error: 'Failed to generate response', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
+}
+
+// Server-side tool execution with authentication
+async function executeToolCallServerSide(toolCall: any, request: NextRequest): Promise<string> {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    throw new Error('Unauthorized');
+  }
+
+  const args = JSON.parse(toolCall.function.arguments);
+  
+  switch (toolCall.function.name) {
+    case 'create_task':
+      return await handleCreateTaskServerSide(args, supabase, user.id);
+    default:
+      return `Unbekanntes Tool: ${toolCall.function.name}`;
+  }
+}
+
+async function handleCreateTaskServerSide(args: any, supabase: any, userId: string): Promise<string> {
+  // Parse dueDate intelligently
+  let dueDate = null;
+  if (args.dueDate) {
+    if (args.dueDate === 'heute' || args.dueDate === 'today') {
+      dueDate = new Date();
+      dueDate.setHours(23, 59, 59, 999);
+    } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
+      dueDate = new Date();
+      dueDate.setDate(dueDate.getDate() + 1);
+      dueDate.setHours(23, 59, 59, 999);
+    } else {
+      try {
+        dueDate = new Date(args.dueDate);
+        if (isNaN(dueDate.getTime())) {
+          dueDate = null;
+        }
+      } catch {
+        dueDate = null;
+      }
+    }
+  }
+
+  const { data: newTask, error } = await supabase
+    .from('tasks')
+    .insert({
+      id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      userId: userId,
+      title: args.title,
+      description: args.description || '',
+      notes: args.notes || '',
+      completed: false,
+      priority: args.priority || false,
+      dueDate: dueDate,
+      category: args.category || null,
+      tags: JSON.stringify([]),
+      subtasks: JSON.stringify([]),
+      globalPosition: Date.now(),
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  return `✅ Aufgabe "${args.title}" wurde erfolgreich erstellt.`;
 }

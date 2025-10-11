@@ -338,30 +338,33 @@ export class MistralToolsService {
 
       console.log('handleCreateTask - taskData:', taskData);
 
-      // Use direct API call to Supabase if taskService is not available
-      if (!taskService) {
-        console.log('handleCreateTask - using direct API call to Supabase');
-        const response = await fetch('/api/tasks', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(taskData),
-        });
+      // Use server-side API call for authenticated task creation
+      console.log('handleCreateTask - using server-side API call');
+      const response = await fetch('/api/mistral-tools', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          toolCall: { function: { name: 'create_task' } },
+          taskData: taskData
+        }),
+      });
 
-        if (!response.ok) {
-          throw new Error(`Failed to create task: ${response.status}`);
-        }
-
-        const result = await response.json();
-        console.log('handleCreateTask - task created successfully via API');
-        return `✅ Aufgabe "${args.title}" wurde erfolgreich erstellt.`;
-      } else {
-        // Use taskService if available
-        await taskService.handleAddTask(taskData);
-        console.log('handleCreateTask - task created successfully via taskService');
-        return `✅ Aufgabe "${args.title}" wurde erfolgreich erstellt.`;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to create task: ${errorData.error || response.status}`);
       }
+
+      const result = await response.json();
+      console.log('handleCreateTask - task created successfully via server-side API');
+      
+      // Reload tasks to update UI if taskService is available
+      if (taskService && taskService.loadData) {
+        await taskService.loadData();
+      }
+      
+      return result.message || `✅ Aufgabe "${args.title}" wurde erfolgreich erstellt.`;
     } catch (error) {
       console.error('handleCreateTask - error:', error);
       return `❌ Fehler beim Erstellen der Aufgabe "${args.title}": ${error}`;
@@ -481,6 +484,11 @@ export class MistralToolsService {
         }
       }
       
+      // Reload tasks to update UI
+      if (taskService && taskService.loadData) {
+        await taskService.loadData();
+      }
+      
       return `🗑️ ${deletedCount} Aufgaben erfolgreich gelöscht.`;
     } catch (error) {
       console.error('handleDeleteTasks - error:', error);
@@ -526,6 +534,11 @@ export class MistralToolsService {
         if (updateResponse.ok) {
           updatedCount++;
         }
+      }
+      
+      // Reload tasks to update UI
+      if (taskService && taskService.loadData) {
+        await taskService.loadData();
       }
       
       return `⭐ Priorität von ${updatedCount} Aufgaben auf "${args.priority}" geändert.`;
