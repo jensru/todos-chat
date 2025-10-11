@@ -15,7 +15,6 @@ export async function GET(): Promise<NextResponse> {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log('Tasks API - loading tasks from database for user:', user.id);
     
     const dbTasks = await prisma.task.findMany({
       where: { userId: user.id },
@@ -39,10 +38,8 @@ export async function GET(): Promise<NextResponse> {
       updatedAt: task.updatedAt.toISOString()
     }));
     
-    console.log('Tasks API - loaded', tasks.length, 'tasks');
     return NextResponse.json({ tasks });
   } catch (error) {
-    console.error('Tasks API - error:', error);
     return NextResponse.json({ error: 'Failed to load tasks' }, { status: 500 });
   }
 }
@@ -58,7 +55,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     const taskData = await request.json();
-    console.log('Tasks API - creating new task:', taskData.title);
     
     const newTask = await prisma.task.create({
       data: {
@@ -79,10 +75,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
     });
     
-    console.log('Tasks API - task created with ID:', newTask.id);
     return NextResponse.json({ success: true, task: newTask });
   } catch (error) {
-    console.error('Tasks API - error:', error);
     return NextResponse.json({ error: 'Failed to create task' }, { status: 500 });
   }
 }

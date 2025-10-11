@@ -20,7 +20,6 @@ export async function PUT(
 
     const { id: taskId } = await params;
     const updates = await request.json();
-    console.log('Tasks API - updating task:', taskId, updates);
     
     // Verify task belongs to user
     const existingTask = await prisma.task.findFirst({
@@ -49,10 +48,8 @@ export async function PUT(
       data: updateData
     });
     
-    console.log('Tasks API - task updated successfully');
     return NextResponse.json({ success: true, task: updatedTask });
   } catch (error) {
-    console.error('Tasks API - error:', error);
     return NextResponse.json({ error: 'Failed to update task' }, { status: 500 });
   }
 }
@@ -71,7 +68,6 @@ export async function DELETE(
     }
 
     const { id: taskId } = await params;
-    console.log('Tasks API - deleting task:', taskId);
     
     // Verify task belongs to user
     const existingTask = await prisma.task.findFirst({
@@ -86,10 +82,8 @@ export async function DELETE(
       where: { id: taskId }
     });
     
-    console.log('Tasks API - task deleted successfully');
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Tasks API - error:', error);
     return NextResponse.json({ error: 'Failed to delete task' }, { status: 500 });
   }
 }
