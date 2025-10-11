@@ -4,15 +4,12 @@ import { Task } from '@/lib/types';
 export class ApiTaskService {
   async loadTasks(): Promise<Task[]> {
     try {
-      console.log('ApiTaskService.loadTasks - loading from API...');
-      
       const response = await fetch('/api/tasks');
       if (!response.ok) {
         throw new Error(`Failed to load tasks: ${response.status}`);
       }
       
       const data = await response.json();
-      console.log('ApiTaskService.loadTasks - raw API response sample:', data.tasks[0]);
       
       const tasks = (data.tasks || []).map((task: any) => {
         // Parse dueDate as local date, not UTC
@@ -38,16 +35,11 @@ export class ApiTaskService {
           createdAt: new Date(task.createdAt),
           updatedAt: new Date(task.updatedAt)
         };
-        console.log('ApiTaskService.loadTasks - converted task sample:', {
-          id: convertedTask.id,
-          title: convertedTask.title,
-          dueDate: convertedTask.dueDate,
-          dueDateType: typeof convertedTask.dueDate
-        });
+        // Debug log removed to prevent console spam
         return convertedTask;
       });
       
-      console.log('ApiTaskService.loadTasks - loaded', tasks.length, 'tasks from API');
+      // Loaded tasks from API
       return tasks;
     } catch (error) {
       console.error('ApiTaskService.loadTasks - error:', error);

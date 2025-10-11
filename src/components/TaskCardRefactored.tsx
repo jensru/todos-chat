@@ -48,26 +48,22 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     setEditNotes(task.notes || '');
   }, [task.title, task.dueDate, task.notes]);
 
-  // Check if task is new (created within last 10 seconds OR just loaded)
+  // Simple animation: Check if task was just loaded
   useEffect(() => {
-    const taskCreatedAt = new Date(task.createdAt).getTime();
-    const now = Date.now();
-    const timeDiff = now - taskCreatedAt;
-    const isRecentlyCreated = timeDiff < 10000; // 10 seconds
-    
-    // Check if task was just loaded (has justLoaded flag)
     const isJustLoaded = (task as any).justLoaded === true;
     
-    if (isRecentlyCreated || isJustLoaded) {
+    if (isJustLoaded) {
+      console.log('🎨 Starting animation for:', task.title);
       setIsNew(true);
       // Fade out after 2 seconds
       const timer = setTimeout(() => {
+        console.log('🎨 Fading out animation for:', task.title);
         setIsNew(false);
       }, 2000);
       
       return () => clearTimeout(timer);
     }
-  }, [task.createdAt, task.title, (task as any).justLoaded]);
+  }, [(task as any).justLoaded]);
 
   const handleToggleComplete = (): void => {
     onUpdate(task.id, { completed: !task.completed });

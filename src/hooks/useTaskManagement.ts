@@ -37,6 +37,8 @@ export function useTaskManagement(): {
       const currentTaskIds = new Set(tasks.map(t => t.id));
       const newTasks = loadedTasks.filter(task => !currentTaskIds.has(task.id));
       
+      console.log('🔄 loadData - Current tasks:', tasks.length, 'Loaded tasks:', loadedTasks.length, 'New tasks:', newTasks.length);
+      
       // Mark only NEW tasks as just loaded for animation
       const tasksWithJustLoaded = loadedTasks.map(task => ({
         ...task,
@@ -58,7 +60,7 @@ export function useTaskManagement(): {
     } finally {
       setLoading(false);
     }
-  }, [taskService, tasks]);
+  }, [taskService]);
 
   const handleTaskUpdate = useCallback(async (taskId: string, updates: Partial<Task>): Promise<void> => {
     const success = await taskService.updateTask(taskId, updates);
