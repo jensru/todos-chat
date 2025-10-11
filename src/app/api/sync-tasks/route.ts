@@ -97,7 +97,7 @@ export async function GET(): Promise<NextResponse> {
   } catch (error) {
     return NextResponse.json({ 
       error: 'Failed to read database status', 
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
