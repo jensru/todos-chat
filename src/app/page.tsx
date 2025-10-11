@@ -181,6 +181,7 @@ export default function HomePage(): React.JSX.Element {
   // Audio input state
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [speechLanguage, setSpeechLanguage] = useState<string>('en-US');
 
   // Mobile chat state - Hydration-safe
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -204,7 +205,7 @@ export default function HomePage(): React.JSX.Element {
       
       recognitionInstance.continuous = false;
       recognitionInstance.interimResults = false;
-      recognitionInstance.lang = getSpeechLanguage(navigator.language);
+      recognitionInstance.lang = speechLanguage;
       
       recognitionInstance.onstart = () => {
         setIsListening(true);
@@ -228,7 +229,7 @@ export default function HomePage(): React.JSX.Element {
       setRecognition(recognitionInstance);
       console.log('Speech recognition initialized with language:', recognitionInstance.lang);
     }
-  }, [language, isReady]);
+  }, [speechLanguage, isReady]);
 
   const startListening = () => {
     if (recognition && !isListening) {
@@ -553,7 +554,7 @@ export default function HomePage(): React.JSX.Element {
         <div className="p-4 border-t border-border flex-shrink-0 hidden lg:block">
           <div className="flex space-x-2">
             <Input
-              placeholder="Nachricht eingeben..."
+              placeholder={t('chat.placeholder')}
               className="flex-1"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
@@ -563,6 +564,25 @@ export default function HomePage(): React.JSX.Element {
                 }
               }}
             />
+            <select
+              value={speechLanguage}
+              onChange={(e) => setSpeechLanguage(e.target.value)}
+              className="ml-2 px-2 py-1 text-sm border rounded bg-white"
+              title="Speech Recognition Language"
+            >
+              <option value="en-US">🇺🇸 EN</option>
+              <option value="de-DE">🇩🇪 DE</option>
+              <option value="fr-FR">🇫🇷 FR</option>
+              <option value="es-ES">🇪🇸 ES</option>
+              <option value="it-IT">🇮🇹 IT</option>
+              <option value="pt-BR">🇧🇷 PT</option>
+              <option value="ru-RU">🇷🇺 RU</option>
+              <option value="ja-JP">🇯🇵 JA</option>
+              <option value="ko-KR">🇰🇷 KO</option>
+              <option value="zh-CN">🇨🇳 ZH</option>
+              <option value="ar-SA">🇸🇦 AR</option>
+              <option value="hi-IN">🇮🇳 HI</option>
+            </select>
             <Button 
               variant={isListening ? "destructive" : "outline"}
               size="icon"
@@ -600,7 +620,7 @@ export default function HomePage(): React.JSX.Element {
         <div className="px-4 pb-4">
           <div className="flex space-x-2">
             <Input
-            placeholder="Nachricht eingeben..."
+            placeholder={t('chat.placeholder')}
             className="flex-1"
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
@@ -614,6 +634,25 @@ export default function HomePage(): React.JSX.Element {
               }
             }}
           />
+          <select
+            value={speechLanguage}
+            onChange={(e) => setSpeechLanguage(e.target.value)}
+            className="px-2 py-1 text-xs border rounded bg-white"
+            title="Speech Recognition Language"
+          >
+            <option value="en-US">🇺🇸 EN</option>
+            <option value="de-DE">🇩🇪 DE</option>
+            <option value="fr-FR">🇫🇷 FR</option>
+            <option value="es-ES">🇪🇸 ES</option>
+            <option value="it-IT">🇮🇹 IT</option>
+            <option value="pt-BR">🇧🇷 PT</option>
+            <option value="ru-RU">🇷🇺 RU</option>
+            <option value="ja-JP">🇯🇵 JA</option>
+            <option value="ko-KR">🇰🇷 KO</option>
+            <option value="zh-CN">🇨🇳 ZH</option>
+            <option value="ar-SA">🇸🇦 AR</option>
+            <option value="hi-IN">🇮🇳 HI</option>
+          </select>
           <Button 
             variant={isListening ? "destructive" : "outline"}
             size="icon"
