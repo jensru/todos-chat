@@ -18,10 +18,15 @@ export class ApiTaskService {
         // Parse dueDate as local date, not UTC
         let dueDate = null;
         if (task.dueDate) {
-          // If it's a date-only string like "2025-10-13", parse it as local
-          if (typeof task.dueDate === 'string' && task.dueDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-            const [year, month, day] = task.dueDate.split('-').map(Number);
-            dueDate = new Date(year, month - 1, day);
+          // If it's a datetime string like "2025-10-13T00:00:00" or date "2025-10-13", parse as local
+          if (typeof task.dueDate === 'string') {
+            const dateMatch = task.dueDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+            if (dateMatch) {
+              const [, year, month, day] = dateMatch;
+              dueDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+            } else {
+              dueDate = new Date(task.dueDate);
+            }
           } else {
             dueDate = new Date(task.dueDate);
           }
