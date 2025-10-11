@@ -40,8 +40,17 @@ export default function LoginPage() {
 
       // Handle login success - do client-side redirect
       if (result && 'success' in result && result.success) {
-        // Use window.location.href for full page refresh with cookies
-        window.location.href = '/'
+        // Give cookies time to propagate
+        await new Promise(resolve => setTimeout(resolve, 100))
+
+        // Verify session on client side before redirect
+        const { data } = await supabase.auth.getSession()
+        if (data.session) {
+          // Use window.location.href for full page refresh with cookies
+          window.location.href = '/'
+        } else {
+          setMessage('Session konnte nicht etabliert werden. Bitte noch einmal versuchen.')
+        }
         return
       }
     })

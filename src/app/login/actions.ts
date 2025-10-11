@@ -21,6 +21,13 @@ export async function loginAction(formData: FormData) {
     return { error: error.message }
   }
 
+  // IMPORTANT: Verify session is actually established before returning success
+  // This ensures cookies are properly set
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) {
+    return { error: 'Session could not be established. Please try again.' }
+  }
+
   // Revalidate to refresh server components with new session
   revalidatePath('/', 'layout')
 
