@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function LoginPage() {
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const router = useRouter()
 
   const supabase = createClient()
 
@@ -35,8 +37,11 @@ export default function LoginPage() {
           password,
         })
         if (error) throw error
-        // Redirect manually after successful login
-        window.location.href = '/'
+
+        // Wait a bit for cookies to be set, then refresh and redirect
+        await new Promise(resolve => setTimeout(resolve, 100))
+        router.refresh()
+        router.push('/')
       }
     } catch (error: any) {
       setMessage(error.message)
