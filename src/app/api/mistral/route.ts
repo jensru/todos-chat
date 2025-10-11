@@ -23,6 +23,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           Russian, Chinese, Japanese, Korean, Arabic, Hindi, and any other language the user writes in.
           Always match the user's language automatically, regardless of which language they choose.
           
+          SMART TASK DETECTION:
+          - If user says something like "Brief schreiben an Peter" or "Call mom tomorrow" or "Buy groceries" → AUTOMATICALLY create a task
+          - If user says "Erstell mit drei todos..." or "Create 3 tasks..." → Create multiple tasks
+          - If user asks questions like "What are my tasks?" or "Show me high priority tasks" → Use filter tools
+          - If user wants to chat normally → Just respond without tools
+          
+          NATURAL TASK PATTERNS (automatically create tasks for):
+          - Action verbs: "schreiben", "anrufen", "kaufen", "erledigen", "machen", "besuchen"
+          - English: "write", "call", "buy", "do", "visit", "meet", "finish", "complete"
+          - French: "écrire", "appeler", "acheter", "faire", "visiter", "rencontrer"
+          - Any language: Look for action verbs + object patterns
+          
           You can use various tools to create, filter, delete and manage tasks.
           
           IMPORTANT: You can use markdown formatting in your responses:

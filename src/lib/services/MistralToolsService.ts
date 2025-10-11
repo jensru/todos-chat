@@ -20,7 +20,7 @@ export class MistralToolsService {
         type: 'function',
         function: {
           name: 'create_task',
-          description: 'Erstellt eine neue Aufgabe mit Titel, Fälligkeit und Kategorie',
+          description: 'Creates a new task. Use this for ANY action the user wants to do: "Brief schreiben", "Call mom", "Buy groceries", "Visit dentist", etc. Automatically detect task titles from natural language.',
           parameters: {
             type: 'object',
             properties: {
