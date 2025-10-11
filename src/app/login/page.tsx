@@ -28,7 +28,7 @@ export default function LoginPage() {
 
       if (result?.error) {
         setMessage(result.error)
-      } else if (result?.message) {
+      } else if ('message' in result && result.message) {
         setMessage(result.message)
       }
       // If login succeeds, loginAction will redirect automatically
