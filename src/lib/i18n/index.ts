@@ -30,8 +30,27 @@ export function useTranslation(language: Language = 'en') {
 }
 
 export function getTranslation(language: Language, key: string): string {
-  const { t } = useTranslation(language);
-  return t(key);
+  const keys = key.split('.');
+  let value: any = translations[language];
+  
+  for (const k of keys) {
+    if (value && typeof value === 'object' && k in value) {
+      value = value[k];
+    } else {
+      // Fallback to English if key not found
+      value = translations.en;
+      for (const fallbackKey of keys) {
+        if (value && typeof value === 'object' && fallbackKey in value) {
+          value = value[fallbackKey];
+        } else {
+          return key; // Return key if not found anywhere
+        }
+      }
+      break;
+    }
+  }
+  
+  return typeof value === 'string' ? value : key;
 }
 
 // Speech Recognition Language Mapping - ALL BROWSER SUPPORTED LANGUAGES
