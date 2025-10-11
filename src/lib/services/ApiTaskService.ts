@@ -168,12 +168,13 @@ export class ApiTaskService {
   // Group tasks by date
   getGroupedTasks(tasks: Task[]): Record<string, Task[]> {
     const grouped: Record<string, Task[]> = {};
-    
+
     tasks.forEach(task => {
-      const dateKey = task.dueDate ? 
-        task.dueDate.toISOString().split('T')[0] : 
+      // Use local date instead of UTC to avoid timezone offset issues
+      const dateKey = task.dueDate ?
+        `${task.dueDate.getFullYear()}-${String(task.dueDate.getMonth() + 1).padStart(2, '0')}-${String(task.dueDate.getDate()).padStart(2, '0')}` :
         'ohne-datum';
-      
+
       if (!grouped[dateKey]) {
         grouped[dateKey] = [];
       }

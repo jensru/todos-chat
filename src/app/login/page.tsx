@@ -22,26 +22,27 @@ export default function LoginPage() {
     const formData = new FormData(e.currentTarget)
 
     startTransition(async () => {
-      try {
-        const result = isSignUp
-          ? await signUpAction(formData)
-          : await loginAction(formData)
+      const result = isSignUp
+        ? await signUpAction(formData)
+        : await loginAction(formData)
 
-        // If we get here, there was an error (redirect() throws, so it won't reach here on success)
-        if (result?.error) {
-          setMessage(result.error)
-        } else if (result && 'message' in result && typeof result.message === 'string') {
-          setMessage(result.message)
-        }
-      } catch (error) {
-        // redirect() throws NEXT_REDIRECT which Next.js handles automatically
-        // Any other error should be displayed
-        if (error && typeof error === 'object' && 'digest' in error) {
-          // This is a Next.js redirect, let it propagate
-          throw error
-        }
-        // Other errors
-        setMessage('An unexpected error occurred')
+      // Handle errors
+      if (result?.error) {
+        setMessage(result.error)
+        return
+      }
+
+      // Handle signup success message
+      if (result && 'message' in result && typeof result.message === 'string') {
+        setMessage(result.message)
+        return
+      }
+
+      // Handle login success - do client-side redirect
+      if (result && 'success' in result && result.success) {
+        // Use window.location.href for full page refresh with cookies
+        window.location.href = '/'
+        return
       }
     })
   }
