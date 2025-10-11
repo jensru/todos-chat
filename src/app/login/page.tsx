@@ -28,24 +28,32 @@ export default function LoginPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
+          }
         })
         if (error) throw error
         setMessage('Check your email for the confirmation link!')
+        setLoading(false)
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+        // Use a form submission to the API route instead of client-side auth
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
         })
-        if (error) throw error
 
-        // Wait a bit for cookies to be set, then refresh and redirect
-        await new Promise(resolve => setTimeout(resolve, 100))
-        router.refresh()
-        router.push('/')
+        const result = await response.json()
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Login failed')
+        }
+
+        // Redirect after successful login
+        window.location.href = '/'
       }
     } catch (error: any) {
       setMessage(error.message)
-    } finally {
       setLoading(false)
     }
   }
