@@ -150,7 +150,7 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
     console.log('handleCreateTaskServerSide - args:', args);
     console.log('handleCreateTaskServerSide - userId:', userId);
     
-    // Parse dueDate intelligently
+    // Parse dueDate intelligently - DEFAULT to today if no date specified
     let dueDate = null;
     if (args.dueDate) {
       if (args.dueDate === 'heute' || args.dueDate === 'today') {
@@ -171,6 +171,12 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
         }
       }
     }
+    
+    // DEFAULT: If no dueDate specified, set to today
+    if (!dueDate) {
+      dueDate = new Date();
+      dueDate.setHours(23, 59, 59, 999);
+    }
 
     const now = new Date().toISOString();
     const taskData = {
@@ -188,6 +194,7 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
       globalPosition: Date.now(),
       createdAt: now,
       updatedAt: now,
+      // Note: isNew will be handled client-side for animation
     };
 
     console.log('handleCreateTaskServerSide - inserting task:', taskData);

@@ -72,6 +72,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const taskData = await request.json();
 
+    // DEFAULT: If no dueDate specified, set to today
+    let dueDate = taskData.dueDate;
+    if (!dueDate) {
+      const today = new Date();
+      today.setHours(23, 59, 59, 999);
+      dueDate = today.toISOString();
+    }
+
     const { data: newTask, error } = await supabase
       .from('tasks')
       .insert({
@@ -82,7 +90,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         notes: taskData.notes || '',
         completed: taskData.completed || false,
         priority: taskData.priority || false,
-        dueDate: taskData.dueDate || null,
+        dueDate: dueDate,
         category: taskData.category || null,
         tags: JSON.stringify(taskData.tags || []),
         subtasks: JSON.stringify(taskData.subtasks || []),

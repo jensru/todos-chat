@@ -38,6 +38,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDueDate, setEditDueDate] = useState(safeDateToISO(task.dueDate));
   const [editNotes, setEditNotes] = useState(task.notes || '');
+  const [isNew, setIsNew] = useState(false);
 
   // Sync edit state when task changes (e.g., after drag & drop)
   useEffect(() => {
@@ -45,6 +46,23 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     setEditDueDate(safeDateToISO(task.dueDate));
     setEditNotes(task.notes || '');
   }, [task.title, task.dueDate, task.notes]);
+
+  // Check if task is new (created within last 5 seconds)
+  useEffect(() => {
+    const taskCreatedAt = new Date(task.createdAt).getTime();
+    const now = Date.now();
+    const isRecentlyCreated = (now - taskCreatedAt) < 5000; // 5 seconds
+    
+    if (isRecentlyCreated) {
+      setIsNew(true);
+      // Fade out after 3 seconds
+      const timer = setTimeout(() => {
+        setIsNew(false);
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [task.createdAt]);
 
   const handleToggleComplete = (): void => {
     onUpdate(task.id, { completed: !task.completed });
@@ -75,7 +93,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   return (
     <Card 
       ref={dragRef}
-      className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md ${isDragging ? 'opacity-50 shadow-lg' : ''}`}
+      className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md ${isDragging ? 'opacity-50 shadow-lg' : ''} ${isNew ? 'bg-yellow-50 border-yellow-200 animate-pulse' : ''}`}
     >
       <CardContent className="px-3 py-0">
         <div className="flex items-center justify-between">
