@@ -11,7 +11,11 @@ export async function GET(): Promise<NextResponse> {
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
+    console.log('API Debug - User:', user?.email, 'ID:', user?.id);
+    console.log('API Debug - Auth Error:', authError);
+    
     if (authError || !user) {
+      console.log('API Debug - Returning 401 Unauthorized');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
