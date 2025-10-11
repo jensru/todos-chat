@@ -50,9 +50,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: process.env.NODE_ENV === 'production' 
-            ? 'https://kickboost-todos.vercel.app/auth/callback'
-            : `${window.location.origin}/auth/callback`,
+          redirectTo: 'https://kickboost-todos.vercel.app/auth/callback',
         },
       })
       if (error) throw error
