@@ -16,6 +16,7 @@ import { useGoals } from '@/hooks/useGoals';
 import { useLocale } from '@/hooks/useLocale';
 import { useMistralChat } from '@/hooks/useMistralChat';
 import { useTaskManagement } from '@/hooks/useTaskManagement';
+import { useUserSettings } from '@/hooks/useUserSettings';
 import { useTranslation } from '@/lib/i18n';
 import { createClient } from '@/lib/supabase/client';
 import { parseAndSanitizeMarkdown } from '@/lib/utils/markdownParser';
@@ -131,6 +132,7 @@ function SortableDateHeader({ dateKey, formatDate, taskCount }: {
 export default function HomePage(): React.JSX.Element {
   const { language, isReady } = useLocale();
   const { t } = useTranslation(language as any);
+  const { settings, updateSettings } = useUserSettings();
   
   const taskManagement = useTaskManagement();
   const {
@@ -181,7 +183,6 @@ export default function HomePage(): React.JSX.Element {
   // Audio input state
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
-  const [speechLanguage, setSpeechLanguage] = useState<string>('en-US');
 
   // Mobile chat state - Hydration-safe
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -205,7 +206,7 @@ export default function HomePage(): React.JSX.Element {
       
       recognitionInstance.continuous = false;
       recognitionInstance.interimResults = false;
-      recognitionInstance.lang = speechLanguage;
+      recognitionInstance.lang = settings.speechLanguage;
       
       recognitionInstance.onstart = () => {
         setIsListening(true);
@@ -229,7 +230,7 @@ export default function HomePage(): React.JSX.Element {
       setRecognition(recognitionInstance);
       console.log('Speech recognition initialized with language:', recognitionInstance.lang);
     }
-  }, [speechLanguage, isReady]);
+  }, [settings.speechLanguage, isReady]);
 
   const startListening = () => {
     if (recognition && !isListening) {
@@ -652,8 +653,8 @@ export default function HomePage(): React.JSX.Element {
       {/* Speech Language Selector - Fixed ganz rechts oben */}
       <div className="fixed top-4 right-4 z-50">
         <select
-          value={speechLanguage}
-          onChange={(e) => setSpeechLanguage(e.target.value)}
+          value={settings.speechLanguage}
+          onChange={(e) => updateSettings({ speechLanguage: e.target.value })}
           className="px-2 py-1 text-xs text-muted-foreground border-0 bg-white/80 backdrop-blur-sm hover:bg-white rounded shadow-sm cursor-pointer"
           title="Speech Recognition Language"
         >
