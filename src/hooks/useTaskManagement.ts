@@ -192,7 +192,7 @@ export function useTaskManagement(): {
         if (index !== -1) {
           return {
             ...t,
-            dueDate: targetDate,
+            dueDate: targetDate || undefined,
             globalPosition: baseTime + index,
             updatedAt: new Date()
           };

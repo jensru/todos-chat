@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-import React from "react";
-// src/components/TaskBody.tsx - Task Body Component
-'use client';
 
 import { Calendar } from 'lucide-react';
 

@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-import React from "react";
-// src/components/TaskActions.tsx - Task Actions Component
-'use client';
 
 import { Plus, Save, X, Trash2 } from 'lucide-react';
 

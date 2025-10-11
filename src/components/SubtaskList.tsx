@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-import React from "react";
-// src/components/SubtaskList.tsx - Subtask List Component
-'use client';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Subtask } from '@/lib/types';

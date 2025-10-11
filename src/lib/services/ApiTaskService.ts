@@ -230,7 +230,7 @@ export class ApiTaskService {
     try {
       console.log('ApiTaskService.moveTaskToDate - moving task:', taskId, 'to date:', newDate);
       
-      const success = await this.updateTask(taskId, { dueDate: newDate });
+      const success = await this.updateTask(taskId, { dueDate: newDate || undefined });
       console.log('ApiTaskService.moveTaskToDate - task moved successfully');
       return success;
     } catch (error) {
@@ -250,7 +250,7 @@ export class ApiTaskService {
       const newPosition = parseInt(dateString + positionInDate);
       
       const success = await this.updateTask(taskId, {
-        dueDate: targetDate,
+        dueDate: targetDate || undefined,
         globalPosition: newPosition
       });
       

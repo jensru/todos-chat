@@ -19,13 +19,14 @@ export class DatabaseTaskService {
       
       const tasks = dbTasks.map(task => ({
         id: task.id,
+        userId: task.userId,
         title: task.title,
         description: task.description,
         notes: task.notes,
         completed: task.completed,
         priority: task.priority,
-        dueDate: task.dueDate,
-        category: task.category,
+        dueDate: task.dueDate || undefined,
+        category: task.category || undefined,
         tags: JSON.parse(task.tags),
         subtasks: JSON.parse(task.subtasks),
         globalPosition: task.globalPosition,
@@ -78,6 +79,7 @@ export class DatabaseTaskService {
       const newTask = await this.prisma.task.create({
         data: {
           id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          userId: task.userId,
           title: task.title,
           description: task.description || '',
           notes: task.notes || '',

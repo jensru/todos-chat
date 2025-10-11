@@ -22,7 +22,7 @@ export class TaskService {
             const parsedData = JSON.parse(localData);
             if (parsedData.tasks && parsedData.tasks.length > 0) {
               console.log('TaskService.loadTasks - found localStorage data:', parsedData.tasks.length, 'tasks');
-              console.log('TaskService.loadTasks - localStorage first few tasks:', parsedData.tasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+              console.log('TaskService.loadTasks - localStorage first few tasks:', parsedData.tasks.slice(0, 3).map((t: any) => ({ id: t.id, title: t.title, position: t.globalPosition })));
               // Merge LocalStorage changes with fresh data
               const localTasks = this.parseTasks(parsedData.tasks);
               console.log('TaskService.loadTasks - parsed local tasks:', localTasks.length, 'tasks');
@@ -123,7 +123,7 @@ export class TaskService {
   }
 
   getCategories(): string[] {
-    const categories = [...new Set(this.tasks.map(task => task.category).filter(Boolean))];
+    const categories = [...new Set(this.tasks.map(task => task.category).filter(Boolean))] as string[];
     return categories.sort();
   }
 
@@ -180,7 +180,7 @@ export class TaskService {
       if (!task) return false;
 
       // Update task date and position
-      task.dueDate = newDate;
+      task.dueDate = newDate || undefined;
       task.globalPosition = Date.now();
       task.updatedAt = new Date();
 
@@ -199,7 +199,7 @@ export class TaskService {
       if (!task) return false;
 
       // Update task date
-      task.dueDate = targetDate;
+      task.dueDate = targetDate || undefined;
       task.updatedAt = new Date();
 
       // Get all tasks for the target date (excluding the moving task)
@@ -255,7 +255,7 @@ export class TaskService {
       if (saved) {
         const parsed = JSON.parse(saved);
         console.log('TaskService.saveTasks - verification: saved', parsed.tasks.length, 'tasks');
-        console.log('TaskService.saveTasks - verification: first few tasks:', parsed.tasks.slice(0, 3).map(t => ({ id: t.id, title: t.title, position: t.globalPosition })));
+        console.log('TaskService.saveTasks - verification: first few tasks:', parsed.tasks.slice(0, 3).map((t: any) => ({ id: t.id, title: t.title, position: t.globalPosition })));
       } else {
         console.log('TaskService.saveTasks - ERROR: Failed to save to localStorage');
       }
@@ -269,8 +269,9 @@ export class TaskService {
   }
 
   private parseTasks(rawTasks: unknown[]): Task[] {
-    return rawTasks.map(task => ({
+    return rawTasks.map((task: any) => ({
       id: task.id,
+      userId: task.userId || 'temp-user', // Fallback für alte Daten
       title: task.title,
       description: task.description || '',
       completed: task.completed,
@@ -278,7 +279,7 @@ export class TaskService {
       dueDate: this.parseDate(task.dueDate),
       category: task.category || undefined,
       tags: task.tags || [],
-      subtasks: (task.subtasks || []).map((subtask: unknown) => ({
+      subtasks: (task.subtasks || []).map((subtask: any) => ({
         id: subtask.id,
         title: subtask.title,
         completed: subtask.completed || false

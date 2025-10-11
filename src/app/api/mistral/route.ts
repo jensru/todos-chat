@@ -5,7 +5,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const { message: userMessage, context, tools, toolChoice } = await request.json();
     
-    const apiKey = process.env.NEXT_PUBLIC_MISTRAL_API_KEY || 'nsAs8hgBt7OIuUPhioIvUyVMUzH0MtLz';
+    const apiKey = process.env.NEXT_PUBLIC_MISTRAL_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ error: 'API Key not configured' }, { status: 500 });
     }

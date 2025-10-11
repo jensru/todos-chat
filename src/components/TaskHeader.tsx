@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-import React from "react";
-// src/components/TaskHeader.tsx - Task Header Component
-'use client';
 
 import { Star, Edit, Save, X } from 'lucide-react';
 
