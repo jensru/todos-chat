@@ -24,11 +24,12 @@ export function useTaskManagement(): {
   handleTaskUpdateOptimistic: (taskId: string, updates: Partial<Task>) => Promise<boolean>;
 } {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Start with loading = true
   const [taskService] = useState(() => new ApiTaskService());
 
   const loadData = useCallback(async (): Promise<void> => {
     try {
+      setLoading(true); // Set loading to true when starting to load
       const loadedTasks = await taskService.loadTasks();
       setTasks(loadedTasks);
     } catch {

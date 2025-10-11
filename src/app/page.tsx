@@ -736,8 +736,21 @@ export default function HomePage(): React.JSX.Element {
             </div>
           )}
 
-          {/* Empty State */}
-          {tasks.length === 0 && (
+          {/* Loading State */}
+          {loading && tasks.length === 0 && (
+            <Card>
+              <CardContent className="text-center py-12">
+                <div className="text-4xl mb-4">⏳</div>
+                <h3 className="text-lg font-semibold mb-2">Lade Aufgaben...</h3>
+                <p className="text-muted-foreground">
+                  Deine Aufgaben werden geladen.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Empty State - No tasks after loading */}
+          {!loading && tasks.length === 0 && (
             <Card>
               <CardContent className="text-center py-12">
                 <div className="text-4xl mb-4">📝</div>
