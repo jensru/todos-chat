@@ -5,10 +5,10 @@
  * Migriert alle Tasks aus der lokalen SQLite-DB zu Supabase mit einem User
  */
 
-import { PrismaClient } from '@prisma/client';
-import { createClient } from '@supabase/supabase-js';
-import fs from 'fs';
-import path from 'path';
+const { PrismaClient } = require('@prisma/client');
+const { createClient } = require('@supabase/supabase-js');
+const fs = require('fs');
+const path = require('path');
 
 // Konfiguration
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -176,4 +176,4 @@ if (require.main === module) {
     });
 }
 
-export { migrateTasks };
+module.exports = { migrateTasks };
