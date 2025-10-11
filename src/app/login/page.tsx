@@ -26,12 +26,13 @@ export default function LoginPage() {
         ? await signUpAction(formData)
         : await loginAction(formData)
 
-      if (result?.error) {
+      if (!result) return // loginAction redirects, no result
+
+      if (result.error) {
         setMessage(result.error)
-      } else if ('message' in result && result.message) {
+      } else if ('message' in result && typeof result.message === 'string') {
         setMessage(result.message)
       }
-      // If login succeeds, loginAction will redirect automatically
     })
   }
 
