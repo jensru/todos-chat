@@ -3,7 +3,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-import { MistralService } from '@/lib/services/MistralService';
 import { MistralToolsService } from '@/lib/services/MistralToolsService';
 import { Message } from '@/lib/types';
 
@@ -18,7 +17,6 @@ export function useMistralChat(): {
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', type: 'bot', text: 'Hey, woran willst du heute arbeiten? Ich kann dir helfen, Aufgaben zu erstellen, zu filtern und zu verwalten!', timestamp: new Date() }
   ]);
-  const [mistralService, setMistralService] = useState<MistralService | null>(null);
   const [mistralToolsService, setMistralToolsService] = useState<MistralToolsService | null>(null);
   const [chatInput, setChatInput] = useState('');
 
@@ -90,30 +88,10 @@ export function useMistralChat(): {
         };
         setMessages(prev => [...prev, botMessage]);
 
-        // Handle tool calls if present
-        if (result.toolCalls && result.toolCalls.length > 0) {
-          for (const toolCall of result.toolCalls) {
-            try {
-              // Use the task service from context
-              const toolResult = await mistralToolsService.executeToolCall(toolCall, taskContext?.taskService || null);
-              
-              const toolMessage: Message = {
-                id: (Date.now() + 2).toString(),
-                type: 'bot',
-                text: `🔧 ${toolResult}`,
-                timestamp: new Date()
-              };
-              setMessages(prev => [...prev, toolMessage]);
-            } catch (error) {
-              const errorMessage: Message = {
-                id: (Date.now() + 2).toString(),
-                type: 'bot',
-                text: `❌ Fehler beim Ausführen des Tools: ${error}`,
-                timestamp: new Date()
-              };
-              setMessages(prev => [...prev, errorMessage]);
-            }
-          }
+        // Auto-refresh tasks if needed (server-side tools were executed)
+        if (result.needsRefresh && taskContext?.taskService?.loadData) {
+          console.log('useMistralChat - refreshing tasks after tool execution');
+          await taskContext.taskService.loadData();
         }
       } catch {
         const errorMessage: Message = {
@@ -138,21 +116,11 @@ export function useMistralChat(): {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
-        setMistralService(new MistralService());
-        console.log('MistralService initialized successfully');
-        
-        // Test MistralToolsService initialization
-        try {
-          const toolsService = new MistralToolsService();
-          console.log('MistralToolsService initialized successfully');
-          setMistralToolsService(toolsService);
-        } catch (toolsError) {
-          console.error('MistralToolsService initialization error:', toolsError);
-          setMistralToolsService(null);
-        }
+        const toolsService = new MistralToolsService();
+        console.log('MistralToolsService initialized successfully');
+        setMistralToolsService(toolsService);
       } catch (error) {
         console.error('useMistralChat initialization error:', error);
-        setMistralService(null);
         setMistralToolsService(null);
       }
     }

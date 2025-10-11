@@ -79,7 +79,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           const toolResult = await executeToolCallServerSide(toolCall, request);
           toolResults.push(toolResult);
         } catch (error) {
-          toolResults.push(`❌ Fehler beim Ausführen des Tools: ${error}`);
+          console.error('Tool execution error:', error);
+          const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
+          toolResults.push(`❌ Fehler beim Ausführen des Tools: ${errorMessage}`);
         }
       }
     }
@@ -99,7 +101,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     
     return NextResponse.json({ 
       response: finalResponse,
-      toolCalls: toolCalls
+      needsRefresh: toolCalls && toolCalls.length > 0
     });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to generate response', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
@@ -126,31 +128,33 @@ async function executeToolCallServerSide(toolCall: any, request: NextRequest): P
 }
 
 async function handleCreateTaskServerSide(args: any, supabase: any, userId: string): Promise<string> {
-  // Parse dueDate intelligently
-  let dueDate = null;
-  if (args.dueDate) {
-    if (args.dueDate === 'heute' || args.dueDate === 'today') {
-      dueDate = new Date();
-      dueDate.setHours(23, 59, 59, 999);
-    } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
-      dueDate = new Date();
-      dueDate.setDate(dueDate.getDate() + 1);
-      dueDate.setHours(23, 59, 59, 999);
-    } else {
-      try {
-        dueDate = new Date(args.dueDate);
-        if (isNaN(dueDate.getTime())) {
+  try {
+    console.log('handleCreateTaskServerSide - args:', args);
+    console.log('handleCreateTaskServerSide - userId:', userId);
+    
+    // Parse dueDate intelligently
+    let dueDate = null;
+    if (args.dueDate) {
+      if (args.dueDate === 'heute' || args.dueDate === 'today') {
+        dueDate = new Date();
+        dueDate.setHours(23, 59, 59, 999);
+      } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
+        dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 1);
+        dueDate.setHours(23, 59, 59, 999);
+      } else {
+        try {
+          dueDate = new Date(args.dueDate);
+          if (isNaN(dueDate.getTime())) {
+            dueDate = null;
+          }
+        } catch {
           dueDate = null;
         }
-      } catch {
-        dueDate = null;
       }
     }
-  }
 
-  const { data: newTask, error } = await supabase
-    .from('tasks')
-    .insert({
+    const taskData = {
       id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       userId: userId,
       title: args.title,
@@ -163,11 +167,25 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
       tags: JSON.stringify([]),
       subtasks: JSON.stringify([]),
       globalPosition: Date.now(),
-    })
-    .select()
-    .single();
+    };
 
-  if (error) throw error;
+    console.log('handleCreateTaskServerSide - inserting task:', taskData);
 
-  return `✅ Aufgabe "${args.title}" wurde erfolgreich erstellt.`;
+    const { data: newTask, error } = await supabase
+      .from('tasks')
+      .insert(taskData)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('handleCreateTaskServerSide - Supabase error:', error);
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    console.log('handleCreateTaskServerSide - task created successfully:', newTask);
+    return `✅ Aufgabe "${args.title}" wurde erfolgreich erstellt.`;
+  } catch (error) {
+    console.error('handleCreateTaskServerSide - error:', error);
+    throw error;
+  }
 }
