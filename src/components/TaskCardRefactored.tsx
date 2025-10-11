@@ -40,6 +40,16 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   const [editNotes, setEditNotes] = useState(task.notes || '');
   const [isNew, setIsNew] = useState(false);
 
+  // TEST: Force new animation for testing (remove this later)
+  const testAnimation = () => {
+    console.log('TaskCard - 🧪 Testing animation for:', task.title);
+    setIsNew(true);
+    setTimeout(() => {
+      setIsNew(false);
+      console.log('TaskCard - 🧪 Test animation finished for:', task.title);
+    }, 4000);
+  };
+
   // Sync edit state when task changes (e.g., after drag & drop)
   useEffect(() => {
     setEditTitle(task.title);
@@ -49,20 +59,35 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
 
   // Check if task is new (created within last 10 seconds)
   useEffect(() => {
+    console.log('TaskCard - Checking task:', task.title, 'createdAt:', task.createdAt, 'type:', typeof task.createdAt);
+    
     const taskCreatedAt = new Date(task.createdAt).getTime();
     const now = Date.now();
-    const isRecentlyCreated = (now - taskCreatedAt) < 10000; // 10 seconds
+    const timeDiff = now - taskCreatedAt;
+    const isRecentlyCreated = timeDiff < 10000; // 10 seconds
+    
+    console.log('TaskCard - Time check:', {
+      taskTitle: task.title,
+      createdAt: task.createdAt,
+      taskCreatedAtMs: taskCreatedAt,
+      nowMs: now,
+      timeDiffMs: timeDiff,
+      isRecentlyCreated,
+      isNew: isNew
+    });
     
     if (isRecentlyCreated) {
       setIsNew(true);
-      console.log('TaskCard - New task detected:', task.title, 'created', (now - taskCreatedAt), 'ms ago');
+      console.log('TaskCard - ✅ New task detected:', task.title, 'created', timeDiff, 'ms ago');
       // Fade out after 4 seconds
       const timer = setTimeout(() => {
         setIsNew(false);
-        console.log('TaskCard - Animation finished for:', task.title);
+        console.log('TaskCard - ✅ Animation finished for:', task.title);
       }, 4000);
       
       return () => clearTimeout(timer);
+    } else {
+      console.log('TaskCard - ❌ Task too old:', task.title, 'created', timeDiff, 'ms ago');
     }
   }, [task.createdAt, task.title]);
 
@@ -95,7 +120,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   return (
     <Card 
       ref={dragRef}
-      className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md ${isDragging ? 'opacity-50 shadow-lg' : ''} ${isNew ? 'bg-yellow-50 border-yellow-200 animate-pulse' : ''}`}
+      className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md ${isDragging ? 'opacity-50 shadow-lg' : ''} ${isNew ? 'bg-yellow-100 border-2 border-yellow-300 shadow-lg animate-pulse' : ''}`}
     >
       <CardContent className="px-3 py-0">
         <div className="flex items-center justify-between">
@@ -196,9 +221,15 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                 </Button>
               </>
             ) : (
-              <Button onClick={() => setIsEditing(true)} variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <Edit className="h-3 w-3" />
-              </Button>
+              <>
+                {/* TEST: Animation test button (remove in production) */}
+                <Button onClick={testAnimation} variant="ghost" size="sm" className="h-8 w-8 p-0 text-blue-500" title="Test Animation">
+                  🧪
+                </Button>
+                <Button onClick={() => setIsEditing(true)} variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <Edit className="h-3 w-3" />
+                </Button>
+              </>
             )}
           </div>
         </div>
