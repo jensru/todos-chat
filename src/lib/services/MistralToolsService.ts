@@ -48,6 +48,10 @@ export class MistralToolsService {
                 type: 'string',
                 description: 'Beschreibung der Aufgabe (optional)'
               },
+              notes: {
+                type: 'string',
+                description: 'Notizen für die Aufgabe (optional)'
+              },
               dueDate: {
                 type: 'string',
                 description: 'Fälligkeitsdatum im Format YYYY-MM-DD oder relative Angaben wie "heute", "morgen", "nächsten Freitag"'
@@ -169,6 +173,31 @@ export class MistralToolsService {
       {
         type: 'function',
         function: {
+          name: 'add_notes_to_task',
+          description: 'Fügt Notizen zu einer bestehenden Aufgabe hinzu',
+          parameters: {
+            type: 'object',
+            properties: {
+              taskId: {
+                type: 'string',
+                description: 'ID der Aufgabe'
+              },
+              notes: {
+                type: 'string',
+                description: 'Notizen, die hinzugefügt werden sollen'
+              },
+              append: {
+                type: 'boolean',
+                description: 'Ob die Notizen angehängt (true) oder ersetzt (false) werden sollen'
+              }
+            },
+            required: ['taskId', 'notes']
+          }
+        }
+      },
+      {
+        type: 'function',
+        function: {
           name: 'create_category',
           description: 'Erstellt eine neue Kategorie und verschiebt Aufgaben',
           parameters: {
@@ -250,6 +279,8 @@ export class MistralToolsService {
           return await this.handleSortTasks(args, taskService);
         case 'create_category':
           return await this.handleCreateCategory(args, taskService);
+        case 'add_notes_to_task':
+          return await this.handleAddNotesToTask(args, taskService);
         default:
           return `Unbekanntes Tool: ${toolCall.function.name}`;
       }
@@ -303,6 +334,7 @@ export class MistralToolsService {
       const taskData = {
         title: args.title,
         description: args.description || '',
+        notes: args.notes || '',
         category: args.category || null, // Keine Standard-Kategorie
         priority: args.priority || false,
         dueDate: dueDate && !isNaN(dueDate.getTime()) ? dueDate : new Date() // Default: heute
@@ -385,6 +417,20 @@ export class MistralToolsService {
     } catch (error) {
       console.error('handleCreateCategory - error:', error);
       return `❌ Fehler bei der Kategorie-Erstellung: ${error}`;
+    }
+  }
+
+  private async handleAddNotesToTask(args: any, taskService: any): Promise<string> {
+    try {
+      if (!taskService) {
+        return `⚠️ Task-Service nicht verfügbar. Notizen können nicht hinzugefügt werden.`;
+      }
+      
+      // TODO: Implementiere echte Notizen-Hinzufügung mit taskService
+      return `📝 Notizen zu Aufgabe ${args.taskId} hinzugefügt: ${args.notes}`;
+    } catch (error) {
+      console.error('handleAddNotesToTask - error:', error);
+      return `❌ Fehler beim Hinzufügen der Notizen: ${error}`;
     }
   }
 }

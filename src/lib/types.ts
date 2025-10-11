@@ -1,8 +1,10 @@
 // src/lib/types.ts - TypeScript Types
 export interface ITask {
   id: string;
+  userId: string; // Neue Spalte für Multi-User
   title: string;
   description?: string;
+  notes?: string; // Notizen für das Todo
   completed: boolean;
   priority: boolean; // true = High Priority, false = Normal
   dueDate?: Date;

@@ -6,14 +6,16 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Task {
   id            String   @id
+  userId        String   // Neue Spalte für Multi-User
   title         String
   description   String   @default("")
+  notes         String   @default("") // Notizen für das Todo
   completed     Boolean  @default(false)
   priority      Boolean  @default(false)
   dueDate       DateTime?
@@ -24,5 +26,6 @@ model Task {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  @@index([userId])
   @@map("tasks")
 }

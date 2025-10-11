@@ -1,13 +1,14 @@
 // src/components/TaskCardRefactored.tsx - Einzeilige Task Card Component
 'use client';
 
-import { Star, Calendar, Edit, Save, X, Trash2, GripVertical } from 'lucide-react';
+import { Star, Calendar, Edit, Save, X, Trash2, GripVertical, StickyNote } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Task } from '@/lib/types';
 
 // Helper function to safely convert date to ISO string
@@ -34,14 +35,17 @@ interface ITaskCardProps {
 
 export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = false, dragHandleProps, dragRef }: ITaskCardProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDueDate, setEditDueDate] = useState(safeDateToISO(task.dueDate));
+  const [editNotes, setEditNotes] = useState(task.notes || '');
 
   // Sync edit state when task changes (e.g., after drag & drop)
   useEffect(() => {
     setEditTitle(task.title);
     setEditDueDate(safeDateToISO(task.dueDate));
-  }, [task.title, task.dueDate]);
+    setEditNotes(task.notes || '');
+  }, [task.title, task.dueDate, task.notes]);
 
   const handleToggleComplete = (): void => {
     onUpdate(task.id, { completed: !task.completed });
@@ -52,7 +56,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   };
 
   const handleSaveEdit = (): void => {
-    const updates: Partial<Task> = { title: editTitle };
+    const updates: Partial<Task> = { title: editTitle, notes: editNotes };
     if (editDueDate) {
       updates.dueDate = new Date(editDueDate);
     } else {
@@ -65,6 +69,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   const handleCancelEdit = (): void => {
     setEditTitle(task.title);
     setEditDueDate(safeDateToISO(task.dueDate));
+    setEditNotes(task.notes || '');
     setIsEditing(false);
   };
 
@@ -109,6 +114,15 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                     placeholder="Fälligkeitsdatum"
                   />
                 </div>
+                <div className="flex items-start space-x-2">
+                  <StickyNote className="h-3 w-3 text-muted-foreground mt-1" />
+                  <Textarea
+                    value={editNotes}
+                    onChange={(e) => setEditNotes(e.target.value)}
+                    placeholder="Notizen hinzufügen..."
+                    className="text-xs min-h-[60px] resize-none"
+                  />
+                </div>
               </div>
             ) : (
               <h3 className={`text-base font-normal flex-1 truncate ${task.completed ? 'line-through opacity-60' : ''}`} style={{ fontSize: '16px', lineHeight: '1.5' }}>
@@ -126,6 +140,17 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
           
           {/* Priority Star and Actions */}
           <div className="flex items-center space-x-1 ml-3 flex-shrink-0">
+            {/* Notes Icon */}
+            {task.notes && !isEditing && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowNotes(!showNotes)}
+                className="p-1 h-auto text-blue-500 hover:text-blue-600"
+              >
+                <StickyNote className="h-4 w-4" />
+              </Button>
+            )}
             {/* Priority Star */}
             <Button
               variant="ghost"
@@ -158,6 +183,18 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
             )}
           </div>
         </div>
+        
+        {/* Notes Section */}
+        {showNotes && task.notes && !isEditing && (
+          <div className="mt-3 pt-3 border-t border-muted">
+            <div className="flex items-start space-x-2">
+              <StickyNote className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-muted-foreground whitespace-pre-wrap">
+                {task.notes}
+              </div>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
