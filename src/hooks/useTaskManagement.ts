@@ -33,10 +33,14 @@ export function useTaskManagement(): {
       // Don't set loading to true for refresh operations to avoid white flash
       const loadedTasks = await taskService.loadTasks();
       
-      // Mark tasks as just loaded for animation
+      // Find new tasks (not in current tasks list)
+      const currentTaskIds = new Set(tasks.map(t => t.id));
+      const newTasks = loadedTasks.filter(task => !currentTaskIds.has(task.id));
+      
+      // Mark only NEW tasks as just loaded for animation
       const tasksWithJustLoaded = loadedTasks.map(task => ({
         ...task,
-        justLoaded: true
+        justLoaded: newTasks.some(newTask => newTask.id === task.id)
       }));
       
       setTasks(tasksWithJustLoaded);
@@ -54,7 +58,7 @@ export function useTaskManagement(): {
     } finally {
       setLoading(false);
     }
-  }, [taskService]);
+  }, [taskService, tasks]);
 
   const handleTaskUpdate = useCallback(async (taskId: string, updates: Partial<Task>): Promise<void> => {
     const success = await taskService.updateTask(taskId, updates);
