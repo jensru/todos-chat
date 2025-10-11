@@ -1,9 +1,6 @@
 // src/app/api/tasks/[id]/route.ts - Individual Task API Route
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { createClient } from '@/lib/supabase/server';
-
-const prisma = new PrismaClient();
 
 // PUT /api/tasks/[id] - Update task
 export async function PUT(
@@ -13,28 +10,31 @@ export async function PUT(
   try {
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id: taskId } = await params;
     const updates = await request.json();
-    
+
     // Verify task belongs to user
-    const existingTask = await prisma.task.findFirst({
-      where: { id: taskId, userId: user.id }
-    });
-    
-    if (!existingTask) {
+    const { data: existingTask, error: fetchError } = await supabase
+      .from('tasks')
+      .select('*')
+      .eq('id', taskId)
+      .eq('userId', user.id)
+      .single();
+
+    if (fetchError || !existingTask) {
       return NextResponse.json({ error: 'Task not found or unauthorized' }, { status: 404 });
     }
-    
+
     const updateData: any = {
       ...updates,
-      updatedAt: new Date()
+      updatedAt: new Date().toISOString()
     };
-    
+
     // Handle JSON fields
     if (updates.tags) {
       updateData.tags = JSON.stringify(updates.tags);
@@ -42,15 +42,23 @@ export async function PUT(
     if (updates.subtasks) {
       updateData.subtasks = JSON.stringify(updates.subtasks);
     }
-    
-    const updatedTask = await prisma.task.update({
-      where: { id: taskId },
-      data: updateData
-    });
-    
+
+    const { data: updatedTask, error: updateError } = await supabase
+      .from('tasks')
+      .update(updateData)
+      .eq('id', taskId)
+      .select()
+      .single();
+
+    if (updateError) throw updateError;
+
     return NextResponse.json({ success: true, task: updatedTask });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to update task' }, { status: 500 });
+    console.error('API Debug - Error in PUT /api/tasks/[id]:', error);
+    return NextResponse.json({
+      error: 'Failed to update task',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
 
@@ -62,28 +70,38 @@ export async function DELETE(
   try {
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id: taskId } = await params;
-    
+
     // Verify task belongs to user
-    const existingTask = await prisma.task.findFirst({
-      where: { id: taskId, userId: user.id }
-    });
-    
-    if (!existingTask) {
+    const { data: existingTask, error: fetchError } = await supabase
+      .from('tasks')
+      .select('*')
+      .eq('id', taskId)
+      .eq('userId', user.id)
+      .single();
+
+    if (fetchError || !existingTask) {
       return NextResponse.json({ error: 'Task not found or unauthorized' }, { status: 404 });
     }
-    
-    await prisma.task.delete({
-      where: { id: taskId }
-    });
-    
+
+    const { error: deleteError } = await supabase
+      .from('tasks')
+      .delete()
+      .eq('id', taskId);
+
+    if (deleteError) throw deleteError;
+
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to delete task' }, { status: 500 });
+    console.error('API Debug - Error in DELETE /api/tasks/[id]:', error);
+    return NextResponse.json({
+      error: 'Failed to delete task',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
