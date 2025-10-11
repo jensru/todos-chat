@@ -3,7 +3,7 @@ export class MistralService {
   private apiKey: string;
 
   constructor() {
-    this.apiKey = process.env.NEXT_PUBLIC_MISTRAL_API_KEY || '';
+    this.apiKey = process.env.MISTRAL_API_KEY || process.env.NEXT_PUBLIC_MISTRAL_API_KEY || '';
   }
 
   async generateTaskSuggestions(userInput: string): Promise<string[]> {
