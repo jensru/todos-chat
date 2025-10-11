@@ -19,8 +19,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           role: 'system',
           content: `You are a helpful AI assistant for task management.
           IMPORTANT: Detect the user's language from their message and respond in THAT SAME LANGUAGE.
-          If they write in German, respond in German. If in English, respond in English. If in French, respond in French.
-          Always match the user's language automatically.
+          Support ALL languages automatically - German, English, French, Spanish, Italian, Portuguese, Dutch, 
+          Russian, Chinese, Japanese, Korean, Arabic, Hindi, and any other language the user writes in.
+          Always match the user's language automatically, regardless of which language they choose.
           
           You can use various tools to create, filter, delete and manage tasks.
           

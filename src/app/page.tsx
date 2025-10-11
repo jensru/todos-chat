@@ -202,7 +202,7 @@ export default function HomePage(): React.JSX.Element {
       
       recognitionInstance.continuous = false;
       recognitionInstance.interimResults = false;
-      recognitionInstance.lang = speechLanguageMap[language as keyof typeof speechLanguageMap] || 'en-US';
+      recognitionInstance.lang = getSpeechLanguage(navigator.language);
       
       recognitionInstance.onstart = () => {
         setIsListening(true);
