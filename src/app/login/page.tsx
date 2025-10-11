@@ -5,15 +5,25 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { createClient } from '@/lib/supabase/client'
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { loginAction, signUpAction } from './actions'
 
-export default function LoginPage() {
+function LoginForm() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [message, setMessage] = useState('')
   const [isPending, startTransition] = useTransition()
+  const searchParams = useSearchParams()
 
   const supabase = createClient()
+
+  // Check for error in URL params
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error) {
+      setMessage(error)
+    }
+  }, [searchParams])
 
   const handleEmailAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -22,36 +32,17 @@ export default function LoginPage() {
     const formData = new FormData(e.currentTarget)
 
     startTransition(async () => {
-      const result = isSignUp
-        ? await signUpAction(formData)
-        : await loginAction(formData)
+      if (isSignUp) {
+        const result = await signUpAction(formData)
 
-      // Handle errors
-      if (result?.error) {
-        setMessage(result.error)
-        return
-      }
-
-      // Handle signup success message
-      if (result && 'message' in result && typeof result.message === 'string') {
-        setMessage(result.message)
-        return
-      }
-
-      // Handle login success - do client-side redirect
-      if (result && 'success' in result && result.success) {
-        // Give cookies time to propagate
-        await new Promise(resolve => setTimeout(resolve, 100))
-
-        // Verify session on client side before redirect
-        const { data } = await supabase.auth.getSession()
-        if (data.session) {
-          // Use window.location.href for full page refresh with cookies
-          window.location.href = '/'
-        } else {
-          setMessage('Session konnte nicht etabliert werden. Bitte noch einmal versuchen.')
+        if (result?.error) {
+          setMessage(result.error)
+        } else if (result?.message) {
+          setMessage(result.message)
         }
-        return
+      } else {
+        // For login, just call the action - it will redirect on success
+        await loginAction(formData)
       }
     })
   }
@@ -171,5 +162,13 @@ export default function LoginPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   )
 }
