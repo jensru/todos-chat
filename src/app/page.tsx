@@ -6,7 +6,7 @@ import React from "react";
 import { closestCenter, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, MeasuringStrategy, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { CheckCircle2, ChevronUp, Mic, MicOff, Plus, Target, Trash2, X } from 'lucide-react';
+import { CheckCircle2, ChevronUp, LogOut, Mic, MicOff, Plus, Target, Trash2, X } from 'lucide-react';
 
 import { TaskCardRefactored as TaskCard } from '@/components/TaskCardRefactored';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { useGoals } from '@/hooks/useGoals';
 import { useMistralChat } from '@/hooks/useMistralChat';
 import { useTaskManagement } from '@/hooks/useTaskManagement';
+import { createClient } from '@/lib/supabase/client';
 import { parseAndSanitizeMarkdown } from '@/lib/utils/markdownParser';
 import { useEffect, useRef, useState } from 'react';
 
@@ -138,6 +139,18 @@ export default function HomePage(): React.JSX.Element {
     formatDate,
     handleTaskUpdateOptimistic
   } = taskManagement;
+
+  // Supabase client for logout
+  const supabase = createClient();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
   
 
   const {
@@ -481,6 +494,15 @@ export default function HomePage(): React.JSX.Element {
         <div className="p-4 border-b border-border flex justify-between items-center flex-shrink-0">
           <h2 className="text-lg font-semibold">KI-Assistent</h2>
           <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleLogout}
+              title="Abmelden"
+              className="text-muted-foreground hover:text-destructive"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
             <Button
               variant="ghost"
               size="sm"
