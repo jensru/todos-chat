@@ -1,6 +1,6 @@
 // src/app/api/mistral/route.ts - Mistral API Route
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {

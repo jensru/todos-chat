@@ -1,5 +1,5 @@
 // src/lib/i18n/index.ts - Translation Helper Functions
-import { translations, Language } from './translations';
+import { Language, translations } from './translations';
 
 export function useTranslation(language: Language = 'en') {
   const t = (key: string): string => {
