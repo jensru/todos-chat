@@ -74,8 +74,10 @@ export function useTaskManagement(): {
         if (task.dueDate) {
           try {
             if (!isNaN(task.dueDate.getTime())) {
-              const taskDate = task.dueDate.toISOString().split('T')[0];
-              const today = new Date().toISOString().split('T')[0];
+              // Use local date instead of UTC to avoid timezone offset issues
+              const taskDate = `${task.dueDate.getFullYear()}-${String(task.dueDate.getMonth() + 1).padStart(2, '0')}-${String(task.dueDate.getDate()).padStart(2, '0')}`;
+              const todayObj = new Date();
+              const today = `${todayObj.getFullYear()}-${String(todayObj.getMonth() + 1).padStart(2, '0')}-${String(todayObj.getDate()).padStart(2, '0')}`;
 
               // Always include tasks with dates (even past dates)
               // This fixes the issue where tasks moved to "today" disappear
@@ -114,9 +116,13 @@ export function useTaskManagement(): {
       const today = new Date();
       const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
 
-      if (dateString === today.toISOString().split('T')[0]) {
+      // Use local date formatting instead of UTC
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      const tomorrowStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+
+      if (dateString === todayStr) {
         return `Heute (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})`;
-      } else if (dateString === tomorrow.toISOString().split('T')[0]) {
+      } else if (dateString === tomorrowStr) {
         return `Morgen (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})`;
       } else {
         return date.toLocaleDateString('de-DE', {
@@ -169,13 +175,14 @@ export function useTaskManagement(): {
     setTasks(prevTasks => {
       const task = prevTasks.find(t => t.id === taskId);
       if (!task) return prevTasks;
-      
-      const targetDateKey = targetDate ? targetDate.toISOString().split('T')[0] : 'ohne-datum';
-      
+
+      // Use local date formatting instead of UTC
+      const targetDateKey = targetDate ? `${targetDate.getFullYear()}-${String(targetDate.getMonth() + 1).padStart(2, '0')}-${String(targetDate.getDate()).padStart(2, '0')}` : 'ohne-datum';
+
       // Get all tasks for the target date (excluding the moving task)
       const targetDateTasks = prevTasks.filter(t => {
         if (t.completed || t.id === taskId) return false;
-        const taskDateKey = t.dueDate ? t.dueDate.toISOString().split('T')[0] : 'ohne-datum';
+        const taskDateKey = t.dueDate ? `${t.dueDate.getFullYear()}-${String(t.dueDate.getMonth() + 1).padStart(2, '0')}-${String(t.dueDate.getDate()).padStart(2, '0')}` : 'ohne-datum';
         return taskDateKey === targetDateKey;
       });
       
