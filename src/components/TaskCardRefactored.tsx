@@ -47,22 +47,24 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     setEditNotes(task.notes || '');
   }, [task.title, task.dueDate, task.notes]);
 
-  // Check if task is new (created within last 5 seconds)
+  // Check if task is new (created within last 10 seconds)
   useEffect(() => {
     const taskCreatedAt = new Date(task.createdAt).getTime();
     const now = Date.now();
-    const isRecentlyCreated = (now - taskCreatedAt) < 5000; // 5 seconds
+    const isRecentlyCreated = (now - taskCreatedAt) < 10000; // 10 seconds
     
     if (isRecentlyCreated) {
       setIsNew(true);
-      // Fade out after 3 seconds
+      console.log('TaskCard - New task detected:', task.title, 'created', (now - taskCreatedAt), 'ms ago');
+      // Fade out after 4 seconds
       const timer = setTimeout(() => {
         setIsNew(false);
-      }, 3000);
+        console.log('TaskCard - Animation finished for:', task.title);
+      }, 4000);
       
       return () => clearTimeout(timer);
     }
-  }, [task.createdAt]);
+  }, [task.createdAt, task.title]);
 
   const handleToggleComplete = (): void => {
     onUpdate(task.id, { completed: !task.completed });
