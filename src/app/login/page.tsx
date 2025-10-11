@@ -5,61 +5,38 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
+import { loginAction, signUpAction } from './actions'
 
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
 
   const supabase = createClient()
 
-  const handleEmailAuth = async (e: React.FormEvent) => {
+  const handleEmailAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setLoading(true)
     setMessage('')
 
-    try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
-          }
-        })
-        if (error) throw error
-        setMessage('Check your email for the confirmation link!')
-        setLoading(false)
-      } else {
-        // Use a form submission to the API route instead of client-side auth
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        })
+    const formData = new FormData(e.currentTarget)
 
-        const result = await response.json()
+    startTransition(async () => {
+      const result = isSignUp
+        ? await signUpAction(formData)
+        : await loginAction(formData)
 
-        if (!response.ok) {
-          throw new Error(result.error || 'Login failed')
-        }
-
-        // Redirect after successful login
-        window.location.href = '/'
+      if (result?.error) {
+        setMessage(result.error)
+      } else if (result?.message) {
+        setMessage(result.message)
       }
-    } catch (error: any) {
-      setMessage(error.message)
-      setLoading(false)
-    }
+      // If login succeeds, loginAction will redirect automatically
+    })
   }
 
   const handleGoogleAuth = async () => {
-    setLoading(true)
+    setMessage('')
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -70,7 +47,6 @@ export default function LoginPage() {
       if (error) throw error
     } catch (error: any) {
       setMessage(error.message)
-      setLoading(false)
     }
   }
 
@@ -96,7 +72,7 @@ export default function LoginPage() {
             {/* Google Sign-In */}
             <Button
               onClick={handleGoogleAuth}
-              disabled={loading}
+              disabled={isPending}
               className="w-full"
               variant="outline"
             >
@@ -136,23 +112,21 @@ export default function LoginPage() {
               <div>
                 <Input
                   type="email"
+                  name="email"
                   placeholder="Email-Adresse"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
               <div>
                 <Input
                   type="password"
+                  name="password"
                   placeholder="Passwort"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
-              <Button type="submit" disabled={loading} className="w-full">
-                {loading ? 'Lädt...' : (isSignUp ? 'Registrieren' : 'Anmelden')}
+              <Button type="submit" disabled={isPending} className="w-full">
+                {isPending ? 'Lädt...' : (isSignUp ? 'Registrieren' : 'Anmelden')}
               </Button>
             </form>
 
