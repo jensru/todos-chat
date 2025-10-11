@@ -3,10 +3,10 @@
 
 import React from "react";
 
-import { Plus, Target, MessageCircle, Calendar, CheckCircle2, Mic, MicOff, Trash2, X, ChevronUp } from 'lucide-react';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, DragOverEvent, MeasuringStrategy, rectIntersection } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable';
+import { closestCenter, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, MeasuringStrategy, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { CheckCircle2, ChevronUp, Mic, MicOff, Plus, Target, Trash2, X } from 'lucide-react';
 
 import { TaskCardRefactored as TaskCard } from '@/components/TaskCardRefactored';
 import { Button } from '@/components/ui/button';
@@ -16,8 +16,7 @@ import { useGoals } from '@/hooks/useGoals';
 import { useMistralChat } from '@/hooks/useMistralChat';
 import { useTaskManagement } from '@/hooks/useTaskManagement';
 import { parseAndSanitizeMarkdown } from '@/lib/utils/markdownParser';
-import { useState, useEffect, useRef } from 'react';
-import type { JSX } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Speech Recognition types
 declare global {

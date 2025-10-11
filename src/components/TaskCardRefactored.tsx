@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { Star, Calendar, Edit, Save, X, Trash2, GripVertical, StickyNote } from 'lucide-react';
+import { Calendar, Edit, GripVertical, Save, Star, StickyNote, Trash2, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
