@@ -1,11 +1,11 @@
 // src/hooks/useMistralChat.ts - Custom Hook for Mistral AI Chat
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import { useTranslation } from '@/lib/i18n';
 import { MistralToolsService } from '@/lib/services/MistralToolsService';
 import { Message } from '@/lib/types';
-import { useTranslation } from '@/lib/i18n';
 import { useLocale } from './useLocale';
 
 export function useMistralChat(): {

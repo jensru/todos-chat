@@ -1,7 +1,7 @@
 // src/hooks/useTaskManagement.ts - Custom Hook for Task Management
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ApiTaskService } from '@/lib/services/ApiTaskService';
 import { ITask as Task } from '@/lib/types';
@@ -32,7 +32,23 @@ export function useTaskManagement(): {
     try {
       // Don't set loading to true for refresh operations to avoid white flash
       const loadedTasks = await taskService.loadTasks();
-      setTasks(loadedTasks);
+      
+      // Mark tasks as just loaded for animation
+      const tasksWithJustLoaded = loadedTasks.map(task => ({
+        ...task,
+        justLoaded: true
+      }));
+      
+      setTasks(tasksWithJustLoaded);
+      
+      // Remove justLoaded flag after animation
+      setTimeout(() => {
+        setTasks(prev => prev.map(task => ({
+          ...task,
+          justLoaded: false
+        })));
+      }, 3000);
+      
     } catch {
       setTasks([]);
     } finally {
