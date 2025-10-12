@@ -316,11 +316,6 @@ export default function HomePage(): React.JSX.Element {
     setActiveTask(active.data.current?.task);
   };
 
-  const _handleDragOver = (_event: DragOverEvent) => {
-    // Simple drag over - no complex live feedback for now
-  };
-
-
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     setActiveTask(null);
