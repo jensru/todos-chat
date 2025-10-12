@@ -70,7 +70,7 @@ export function useTaskManagement(): {
     // Check if this is a date change (moving task)
     const currentTask = tasks.find(t => t.id === taskId);
     if (currentTask && updates.dueDate && currentTask.dueDate !== updates.dueDate) {
-      const currentDate = new Date(currentTask.dueDate);
+      const currentDate = new Date(currentTask.dueDate || 0);
       const newDate = new Date(updates.dueDate);
       
       // Determine animation direction
@@ -253,7 +253,7 @@ export function useTaskManagement(): {
         if (index !== -1) {
           return {
             ...t,
-            dueDate: targetDate || undefined,
+            ...(targetDate && { dueDate: targetDate }),
             globalPosition: baseTime + index,
             updatedAt: new Date()
           };

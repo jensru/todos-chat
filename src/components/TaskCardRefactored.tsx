@@ -124,12 +124,12 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   }, [task.title, task.dueDate, task.notes, isEditing]);
 
   // Prevent date picker from closing by stabilizing the input
-  const handleDateInputFocus = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
+  const handleDateInputFocus = useCallback((_e: React.FocusEvent<HTMLInputElement>) => {
     // Prevent any state updates that might interfere with date picker
     console.log('Date input focused');
   }, []);
 
-  const handleDateInputClick = useCallback((e: React.MouseEvent<HTMLInputElement>) => {
+  const handleDateInputClick = useCallback((_e: React.MouseEvent<HTMLInputElement>) => {
     // Prevent any state updates that might interfere with date picker
     console.log('Date input clicked');
   }, []);
@@ -156,6 +156,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
       
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [isNewTask, task.title]);
 
   // Slide animation for task reordering
@@ -171,6 +172,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
       
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [isMovingUp, isMovingDown, task.title]);
 
   const handleToggleComplete = (): void => {
