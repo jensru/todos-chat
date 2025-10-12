@@ -115,6 +115,32 @@ npx husky install
 4. **Keep dependencies updated** for better type support
 5. **Review CI/CD results** after pushing
 
+## 🎯 Development Checklist
+
+### Before Every Code Change:
+- [ ] **Unused Parameters**: Prefix with `_` (e.g., `_request: NextRequest`)
+- [ ] **Optional Boolean Props**: Use nullish coalescing (`prop ?? false`)
+- [ ] **Function Return Types**: Always specify explicit return types
+- [ ] **Interface Definitions**: Use `I` prefix for interfaces
+
+### Common Patterns:
+```typescript
+// Unused parameters
+function handler(_request: NextRequest) { ... }
+
+// Optional boolean props
+isNewTask={isNewTask ?? false}
+
+// Proper function signatures
+function updateTask(id: string, updates: Partial<Task>): Promise<void> { ... }
+```
+
+### Strict Rules:
+- `noUnusedParameters: true` - Prefix unused params with `_`
+- `exactOptionalPropertyTypes: true` - Optional props cannot be `undefined`
+- `noImplicitReturns: true` - All code paths must return
+- `noUnusedLocals: true` - No unused variables
+
 ---
 
 **These policies ensure our codebase maintains high quality and prevents production build failures!** 🎯✨
