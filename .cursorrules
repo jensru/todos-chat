@@ -7,6 +7,11 @@
 - NEVER leave unused parameters without underscore prefix
 - Use proper TypeScript types, avoid `any` when possible
 
+### Function & Variable Handling
+- ALWAYS prefix unused functions with underscore: `_handleDragOver`
+- ALWAYS prefix unused variables with underscore: `_attributes`, `_listeners`
+- Use destructuring with underscore: `{ attributes: _attributes, listeners: _listeners }`
+
 ### Optional Properties
 - For optional boolean props, use nullish coalescing: `isNewTask={isNewTask ?? false}`
 - Optional properties cannot be `undefined` with `exactOptionalPropertyTypes: true`
@@ -33,6 +38,12 @@
 // ✅ Correct - Unused parameters
 function handler(_request: NextRequest): Promise<NextResponse> { ... }
 
+// ✅ Correct - Unused functions
+const _handleDragOver = (_event: DragOverEvent) => { ... }
+
+// ✅ Correct - Unused variables in destructuring
+const { attributes: _attributes, listeners: _listeners } = useSortable();
+
 // ✅ Correct - Optional boolean props
 isNewTask={isNewTask ?? false}
 
@@ -48,15 +59,18 @@ interface ITaskCardProps {
 
 ## Strict TypeScript Rules
 - `noUnusedParameters: true` - Prefix unused params with `_`
+- `noUnusedLocals: true` - Prefix unused variables/functions with `_`
 - `exactOptionalPropertyTypes: true` - Optional props cannot be `undefined`
 - `noImplicitReturns: true` - All code paths must return
-- `noUnusedLocals: true` - No unused variables
+- `noFallthroughCasesInSwitch: true` - No fallthrough in switch cases
 
 ## Before Every Code Change
 1. Check for unused parameters → prefix with `_`
-2. Check optional boolean props → use `?? false`
-3. Check function return types → make explicit
-4. Check interface definitions → use `I` prefix
+2. Check for unused functions/variables → prefix with `_`
+3. Check destructuring assignments → prefix unused with `_`
+4. Check optional boolean props → use `?? false`
+5. Check function return types → make explicit
+6. Check interface definitions → use `I` prefix
 
 ## Project Context
 - Next.js 15 with App Router
