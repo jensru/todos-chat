@@ -43,11 +43,14 @@ interface SpeechRecognition {
 }
 
 // Sortable Task Card Component
-function SortableTaskCard({ task, onUpdate, onDelete, activeTask }: {
+function SortableTaskCard({ task, onUpdate, onDelete, activeTask, isNewTask, isMovingUp, isMovingDown }: {
   task: any;
   onUpdate: (taskId: string, updates: Partial<any>) => Promise<void>;
   onDelete: (taskId: string) => Promise<void>;
   activeTask?: any;
+  isNewTask?: boolean;
+  isMovingUp?: boolean;
+  isMovingDown?: boolean;
 }) {
   const {
     attributes,
@@ -78,6 +81,9 @@ function SortableTaskCard({ task, onUpdate, onDelete, activeTask }: {
         task={task}
         onUpdate={onUpdate}
         onDelete={onDelete}
+        isNewTask={isNewTask}
+        isMovingUp={isMovingUp}
+        isMovingDown={isMovingDown}
         isDragging={isDragging}
         dragHandleProps={{ ...attributes, ...listeners }}
         dragRef={setNodeRef}
@@ -144,7 +150,10 @@ export default function HomePage(): React.JSX.Element {
     getTaskStats,
     groupedTasks,
     formatDate,
-    handleTaskUpdateOptimistic
+    handleTaskUpdateOptimistic,
+    newTaskIds,
+    movingUpTaskIds,
+    movingDownTaskIds
   } = taskManagement;
 
   // Supabase client for logout
@@ -735,6 +744,9 @@ export default function HomePage(): React.JSX.Element {
                         task={item.task}
                         onUpdate={handleTaskUpdate}
                         onDelete={handleTaskDelete}
+                        isNewTask={newTaskIds.has(item.task.id)}
+                        isMovingUp={movingUpTaskIds.has(item.task.id)}
+                        isMovingDown={movingDownTaskIds.has(item.task.id)}
                         activeTask={activeTask}
                       />
                     )}
@@ -750,6 +762,9 @@ export default function HomePage(): React.JSX.Element {
                     task={activeTask}
                     onUpdate={handleTaskUpdate}
                     onDelete={handleTaskDelete}
+                    isNewTask={newTaskIds.has(activeTask.id)}
+                    isMovingUp={movingUpTaskIds.has(activeTask.id)}
+                    isMovingDown={movingDownTaskIds.has(activeTask.id)}
                     isDragging={true}
                   />
                 </div>

@@ -23,11 +23,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           Russian, Chinese, Japanese, Korean, Arabic, Hindi, and any other language the user writes in.
           Always match the user's language automatically, regardless of which language they choose.
           
+          TODAY'S DATE: ${new Date().toISOString().split('T')[0]} (YYYY-MM-DD format)
+          Use this as reference for "today", "tomorrow", "yesterday" calculations.
+          
           SMART TASK DETECTION:
           - If user says something like "Brief schreiben an Peter" or "Call mom tomorrow" or "Buy groceries" → AUTOMATICALLY create a task
           - If user says "Erstell mit drei todos..." or "Create 3 tasks..." → Create multiple tasks
-          - If user asks questions like "What are my tasks?" or "Show me high priority tasks" → Use filter tools
+          - If user says "Verschiebe Task X nach morgen" or "Move task Y to tomorrow" → Use update_task directly
+          - If user says "Lösche Task Z" or "Delete task W" → Use delete_task directly
+          - If user says "Markiere Task als erledigt" or "Mark task as completed" → Use update_task directly
+          - If user asks "What are my tasks?" or "Show me my tasks" → Use list_tasks tool
           - If user wants to chat normally → Just respond without tools
+          
+          IMPORTANT: For task operations, use these parameters:
+          - taskDate: "today", "tomorrow", "yesterday" 
+          - taskPosition: "first", "last", "only task from today"
+          - taskTitle: partial match like "Brief" for "Brief schreiben an Peter"
+          - dueDate: Use ISO format YYYY-MM-DD (e.g., "2024-10-12" for today)
+          
+          ALWAYS use the appropriate tool directly - no need to list tasks first.
           
           NATURAL TASK PATTERNS (automatically create tasks for):
           - Action verbs: "schreiben", "anrufen", "kaufen", "erledigen", "machen", "besuchen"
@@ -140,6 +154,12 @@ async function executeToolCallServerSide(toolCall: any, request: NextRequest): P
   switch (toolCall.function.name) {
     case 'create_task':
       return await handleCreateTaskServerSide(args, supabase, user.id);
+    case 'update_task':
+      return await handleUpdateTaskServerSide(args, supabase, user.id);
+    case 'delete_task':
+      return await handleDeleteTaskServerSide(args, supabase, user.id);
+    case 'list_tasks':
+      return await handleListTasksServerSide(supabase, user.id);
     default:
       return `Unbekanntes Tool: ${toolCall.function.name}`;
   }
@@ -154,28 +174,20 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
     let dueDate = null;
     if (args.dueDate) {
       if (args.dueDate === 'heute' || args.dueDate === 'today') {
-        dueDate = new Date();
-        dueDate.setHours(23, 59, 59, 999);
+        dueDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
       } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
-        dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() + 1);
-        dueDate.setHours(23, 59, 59, 999);
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dueDate = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD format
       } else {
-        try {
-          dueDate = new Date(args.dueDate);
-          if (isNaN(dueDate.getTime())) {
-            dueDate = null;
-          }
-        } catch {
-          dueDate = null;
-        }
+        // Assume it's already in YYYY-MM-DD format
+        dueDate = args.dueDate;
       }
     }
     
     // DEFAULT: If no dueDate specified, set to today
     if (!dueDate) {
-      dueDate = new Date();
-      dueDate.setHours(23, 59, 59, 999);
+      dueDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
     }
 
     const now = new Date().toISOString();
@@ -214,6 +226,221 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
     return `✅ Aufgabe "${args.title}" wurde erfolgreich erstellt.`;
   } catch (error) {
     console.error('handleCreateTaskServerSide - error:', error);
+    throw error;
+  }
+}
+
+async function handleUpdateTaskServerSide(args: any, supabase: any, userId: string): Promise<string> {
+  try {
+    console.log('🔄 handleUpdateTaskServerSide - args:', JSON.stringify(args, null, 2));
+    
+    // Find task by ID, title, position, or date
+    let taskId = args.taskId;
+    if (!taskId) {
+      let query = supabase
+        .from('tasks')
+        .select('id, title, dueDate')
+        .eq('userId', userId);
+      
+      // Filter by date if specified
+      if (args.taskDate) {
+        if (args.taskDate === 'today') {
+          const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+          query = query.gte('dueDate', today).lt('dueDate', today + 'T23:59:59.999Z');
+        } else if (args.taskDate === 'tomorrow') {
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          const tomorrowStr = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD
+          query = query.gte('dueDate', tomorrowStr).lt('dueDate', tomorrowStr + 'T23:59:59.999Z');
+        }
+      }
+      
+      // Filter by title if specified
+      if (args.taskTitle) {
+        query = query.ilike('title', `%${args.taskTitle}%`);
+      }
+      
+      query = query.order('globalPosition', { ascending: true });
+      
+      // Handle position if specified
+      if (args.taskPosition) {
+        if (args.taskPosition === 'first') {
+          query = query.limit(1);
+        } else if (args.taskPosition === 'last') {
+          query = query.order('globalPosition', { ascending: false }).limit(1);
+        } else if (args.taskPosition.includes('only')) {
+          // For "only task from today" - just get the first one
+          query = query.limit(1);
+        }
+      } else {
+        query = query.limit(1);
+      }
+      
+      const { data: tasks, error: findError } = await query;
+      
+      if (findError) {
+        throw new Error(`Error finding task: ${findError.message}`);
+      }
+      
+      if (!tasks || tasks.length === 0) {
+        return `❌ Aufgabe nicht gefunden.`;
+      }
+      
+      taskId = tasks[0].id;
+      console.log('handleUpdateTaskServerSide - found task:', taskId, tasks[0].title);
+    }
+    
+    if (!taskId) {
+      return `❌ Keine Task-ID oder Titel angegeben.`;
+    }
+    
+    // Parse dueDate if provided
+    let dueDate = args.dueDate;
+    if (args.dueDate) {
+      if (args.dueDate === 'heute' || args.dueDate === 'today') {
+        dueDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+      } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dueDate = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD format
+      } else if (typeof args.dueDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(args.dueDate)) {
+        // Already in YYYY-MM-DD format
+        dueDate = args.dueDate;
+      } else {
+        // Try to parse as date and convert to YYYY-MM-DD
+        try {
+          const parsedDate = new Date(args.dueDate);
+          if (!isNaN(parsedDate.getTime())) {
+            dueDate = parsedDate.toISOString().split('T')[0];
+          } else {
+            console.warn('Invalid date format:', args.dueDate);
+            dueDate = undefined;
+          }
+        } catch (error) {
+          console.warn('Date parsing error:', error, 'date:', args.dueDate);
+          dueDate = undefined;
+        }
+      }
+    }
+
+    const updateData: any = {
+      updatedAt: new Date().toISOString()
+    };
+
+    // Only include fields that are provided
+    if (args.title !== undefined) updateData.title = args.title;
+    if (args.description !== undefined) updateData.description = args.description;
+    if (args.notes !== undefined) updateData.notes = args.notes;
+    if (dueDate !== undefined) updateData.dueDate = dueDate;
+    if (args.category !== undefined) updateData.category = args.category;
+    if (args.priority !== undefined) updateData.priority = args.priority;
+    if (args.completed !== undefined) updateData.completed = args.completed;
+
+    const { data: updatedTask, error } = await supabase
+      .from('tasks')
+      .update(updateData)
+      .eq('id', taskId)
+      .eq('userId', userId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('handleUpdateTaskServerSide - Supabase error:', error);
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    console.log('✅ handleUpdateTaskServerSide - task updated successfully:', {
+      id: updatedTask.id,
+      title: updatedTask.title,
+      dueDate: updatedTask.dueDate,
+      updatedAt: updatedTask.updatedAt
+    });
+    return `✅ Aufgabe wurde erfolgreich aktualisiert.`;
+  } catch (error) {
+    console.error('handleUpdateTaskServerSide - error:', error);
+    throw error;
+  }
+}
+
+async function handleDeleteTaskServerSide(args: any, supabase: any, userId: string): Promise<string> {
+  try {
+    console.log('handleDeleteTaskServerSide - args:', args);
+    
+    // Find task by ID or title
+    let taskId = args.taskId;
+    if (!taskId && args.taskTitle) {
+      const { data: tasks, error: findError } = await supabase
+        .from('tasks')
+        .select('id, title')
+        .eq('userId', userId)
+        .ilike('title', `%${args.taskTitle}%`)
+        .limit(1);
+      
+      if (findError) {
+        throw new Error(`Error finding task: ${findError.message}`);
+      }
+      
+      if (!tasks || tasks.length === 0) {
+        return `❌ Aufgabe "${args.taskTitle}" nicht gefunden.`;
+      }
+      
+      taskId = tasks[0].id;
+      console.log('handleDeleteTaskServerSide - found task by title:', taskId);
+    }
+    
+    if (!taskId) {
+      return `❌ Keine Task-ID oder Titel angegeben.`;
+    }
+    
+    const { error } = await supabase
+      .from('tasks')
+      .delete()
+      .eq('id', taskId)
+      .eq('userId', userId);
+
+    if (error) {
+      console.error('handleDeleteTaskServerSide - Supabase error:', error);
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    console.log('handleDeleteTaskServerSide - task deleted successfully');
+    return `✅ Aufgabe wurde erfolgreich gelöscht.`;
+  } catch (error) {
+    console.error('handleDeleteTaskServerSide - error:', error);
+    throw error;
+  }
+}
+
+async function handleListTasksServerSide(supabase: any, userId: string): Promise<string> {
+  try {
+    console.log('handleListTasksServerSide - listing tasks for user:', userId);
+    
+    const { data: tasks, error } = await supabase
+      .from('tasks')
+      .select('id, title, completed, dueDate, priority')
+      .eq('userId', userId)
+      .order('globalPosition', { ascending: true });
+
+    if (error) {
+      console.error('handleListTasksServerSide - Supabase error:', error);
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    if (!tasks || tasks.length === 0) {
+      return `📝 Du hast noch keine Aufgaben.`;
+    }
+
+    const taskList = tasks.map((task: any, index: number) => {
+      const status = task.completed ? '✅' : '⏳';
+      const priority = task.priority ? '🔥' : '';
+      const dueDate = task.dueDate ? ` (${new Date(task.dueDate).toLocaleDateString()})` : '';
+      return `${index + 1}. ${status} ${task.title}${dueDate} ${priority}`;
+    }).join('\n');
+
+    console.log('handleListTasksServerSide - found', tasks.length, 'tasks');
+    return `📝 Deine Aufgaben:\n\n${taskList}`;
+  } catch (error) {
+    console.error('handleListTasksServerSide - error:', error);
     throw error;
   }
 }

@@ -52,6 +52,96 @@ export class MistralToolsService {
             required: ['title']
           }
         }
+      },
+      {
+        type: 'function',
+        function: {
+          name: 'update_task',
+          description: 'Updates an existing task. Use this for: "Verschiebe Task nach morgen", "Markiere als erledigt", "Ändere Priorität". Identify by taskDate, taskPosition, or taskTitle.',
+          parameters: {
+            type: 'object',
+            properties: {
+              taskTitle: {
+                type: 'string',
+                description: 'Title of the task to update (use partial match, e.g., "Brief" for "Brief schreiben an Peter")'
+              },
+              taskPosition: {
+                type: 'string',
+                description: 'Position of the task (e.g., "first", "last", "only task from today")'
+              },
+              taskDate: {
+                type: 'string',
+                description: 'Date of the task (e.g., "today", "tomorrow", "2024-01-01")'
+              },
+              taskId: {
+                type: 'string',
+                description: 'ID der zu aktualisierenden Aufgabe (if known)'
+              },
+              title: {
+                type: 'string',
+                description: 'Neuer Titel (optional)'
+              },
+              description: {
+                type: 'string',
+                description: 'Neue Beschreibung (optional)'
+              },
+              notes: {
+                type: 'string',
+                description: 'Neue Notizen (optional)'
+              },
+              dueDate: {
+                type: 'string',
+                description: 'Neues Fälligkeitsdatum (optional)'
+              },
+              category: {
+                type: 'string',
+                description: 'Neue Kategorie (optional)'
+              },
+              priority: {
+                type: 'boolean',
+                description: 'Neue Priorität (optional)'
+              },
+              completed: {
+                type: 'boolean',
+                description: 'Erledigt-Status (optional)'
+              }
+            },
+            required: ['taskId']
+          }
+        }
+      },
+      {
+        type: 'function',
+        function: {
+          name: 'delete_task',
+          description: 'Deletes a task. Use this when user wants to remove a task: "Lösche Task X", "Entferne Aufgabe Y".',
+          parameters: {
+            type: 'object',
+            properties: {
+              taskTitle: {
+                type: 'string',
+                description: 'Title of the task to delete (use this to identify the task)'
+              },
+              taskId: {
+                type: 'string',
+                description: 'ID der zu löschenden Aufgabe (if known)'
+              }
+            },
+            required: ['taskTitle']
+          }
+        }
+      },
+      {
+        type: 'function',
+        function: {
+          name: 'list_tasks',
+          description: 'Lists all current tasks. Use this when user asks "What are my tasks?" or "Show me my tasks" or when you need to see available tasks for operations.',
+          parameters: {
+            type: 'object',
+            properties: {},
+            required: []
+          }
+        }
       }
     ];
   }

@@ -22,53 +22,84 @@ export function useTaskManagement(): {
   handleReorderAcrossDates: (taskId: string, targetDate: Date | null, targetIndex: number) => Promise<void>;
   // Optimistic updates
   handleTaskUpdateOptimistic: (taskId: string, updates: Partial<Task>) => Promise<boolean>;
+  // Animation
+  newTaskIds: Set<string>;
+  movingUpTaskIds: Set<string>;
+  movingDownTaskIds: Set<string>;
 } {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true); // Start with loading = true
   const [taskService] = useState(() => new ApiTaskService());
+  const [newTaskIds, setNewTaskIds] = useState<Set<string>>(new Set());
+  const [movingUpTaskIds, setMovingUpTaskIds] = useState<Set<string>>(new Set());
+  const [movingDownTaskIds, setMovingDownTaskIds] = useState<Set<string>>(new Set());
 
   const loadData = useCallback(async (): Promise<void> => {
     try {
       // Don't set loading to true for refresh operations to avoid white flash
       const loadedTasks = await taskService.loadTasks();
       
-      // Find new tasks (not in current tasks list)
-      const currentTaskIds = new Set(tasks.map(t => t.id));
-      const newTasks = loadedTasks.filter(task => !currentTaskIds.has(task.id));
-      
-      console.log('🔄 loadData - Current tasks:', tasks.length, 'Loaded tasks:', loadedTasks.length, 'New tasks:', newTasks.length);
-      
-      // Mark only NEW tasks as just loaded for animation
-      const tasksWithJustLoaded = loadedTasks.map(task => ({
-        ...task,
-        justLoaded: newTasks.some(newTask => newTask.id === task.id)
-      }));
-      
-      setTasks(tasksWithJustLoaded);
-      
-      // Remove justLoaded flag after animation
-      setTimeout(() => {
-        setTasks(prev => prev.map(task => ({
-          ...task,
-          justLoaded: false
-        })));
-      }, 3000);
+      // Diff-based sync: Find new tasks
+      if (tasks.length > 0) {
+        const currentTaskIds = new Set(tasks.map(t => t.id));
+        const newTasks = loadedTasks.filter(task => !currentTaskIds.has(task.id));
+        const newTaskIdsSet = new Set(newTasks.map(t => t.id));
+        
+        console.log('🔄 Sync - New tasks found:', newTaskIdsSet.size);
+        
+        setTasks(loadedTasks);
+        setNewTaskIds(newTaskIdsSet);
+        
+        // Clear animation flags after animation
+        setTimeout(() => {
+          setNewTaskIds(new Set());
+        }, 1000);
+      } else {
+        // Initial load - no animation
+        setTasks(loadedTasks);
+      }
       
     } catch {
       setTasks([]);
     } finally {
       setLoading(false);
     }
-  }, [taskService]);
+  }, [taskService, tasks]);
 
   const handleTaskUpdate = useCallback(async (taskId: string, updates: Partial<Task>): Promise<void> => {
+    // Check if this is a date change (moving task)
+    const currentTask = tasks.find(t => t.id === taskId);
+    if (currentTask && updates.dueDate && currentTask.dueDate !== updates.dueDate) {
+      const currentDate = new Date(currentTask.dueDate);
+      const newDate = new Date(updates.dueDate);
+      
+      // Determine animation direction
+      if (newDate < currentDate) {
+        // Moving to earlier date = moving up
+        setMovingUpTaskIds(prev => new Set([...prev, taskId]));
+        setTimeout(() => setMovingUpTaskIds(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(taskId);
+          return newSet;
+        }), 400);
+      } else if (newDate > currentDate) {
+        // Moving to later date = moving down
+        setMovingDownTaskIds(prev => new Set([...prev, taskId]));
+        setTimeout(() => setMovingDownTaskIds(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(taskId);
+          return newSet;
+        }), 400);
+      }
+    }
+    
     const success = await taskService.updateTask(taskId, updates);
     if (success) {
       setTasks(prev => prev.map(task =>
         task.id === taskId ? { ...task, ...updates } : task
       ));
     }
-  }, [taskService]);
+  }, [taskService, tasks]);
 
   const handleTaskDelete = useCallback(async (taskId: string): Promise<void> => {
     const success = await taskService.deleteTask(taskId);
@@ -300,6 +331,10 @@ export function useTaskManagement(): {
     handleMoveTaskToDate,
     handleReorderAcrossDates,
     // Optimistic updates
-    handleTaskUpdateOptimistic
+    handleTaskUpdateOptimistic,
+    // Animation
+    newTaskIds,
+    movingUpTaskIds,
+    movingDownTaskIds
   };
 }
