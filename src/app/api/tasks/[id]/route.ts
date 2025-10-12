@@ -64,7 +64,7 @@ export async function PUT(
 
 // DELETE /api/tasks/[id] - Delete task
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   try {
