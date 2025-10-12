@@ -82,7 +82,11 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
       
       if (editTitle !== task.title) updates.title = editTitle;
       if (editDueDate !== safeDateToISO(task.dueDate)) {
-        updates.dueDate = editDueDate ? new Date(editDueDate) : null;
+        if (editDueDate) {
+          updates.dueDate = new Date(editDueDate);
+        } else {
+          updates.dueDate = undefined;
+        }
       }
       if (editNotes !== (task.notes || '')) updates.notes = editNotes;
       
