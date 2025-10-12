@@ -141,7 +141,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 }
 
 // Server-side tool execution with authentication
-async function executeToolCallServerSide(toolCall: any, request: NextRequest): Promise<string> {
+async function executeToolCallServerSide(toolCall: any, _request: NextRequest): Promise<string> {
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
