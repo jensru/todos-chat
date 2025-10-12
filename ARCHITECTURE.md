@@ -1,17 +1,19 @@
 # 🏗️ Todo-App - Enterprise Architecture Documentation
 
-**Version**: 5.0.0 | **Status**: ✅ Production Ready | **Datum**: 11.10.2025
+**Version**: 6.0.0 | **Status**: ✅ Production Ready | **Datum**: 12.10.2025
 
 ---
 
 ## 📋 Projektübersicht
 
-Eine moderne, professionelle Todo-App mit KI-Integration und Multi-User-Authentifizierung, entwickelt mit Next.js 15, TypeScript, Supabase und Mistral AI. Die App bietet erweiterte Task-Management-Funktionen mit intelligenter KI-Unterstützung und sicherer Authentifizierung.
+Eine moderne, professionelle Todo-App mit KI-Integration und Multi-User-Authentifizierung, entwickelt mit Next.js 15, TypeScript, Supabase und Mistral AI. Die App bietet erweiterte Task-Management-Funktionen mit intelligenter KI-Unterstützung, Auto-Save und sicherer Authentifizierung.
 
 ### 🎯 Hauptfunktionen
 - 🔐 **Supabase Auth** - Email/Password + Google OAuth
 - ✅ **Task-Management** mit Drag & Drop (Date-based Position System)
-- 🤖 **Mistral AI Integration** für intelligente Chat-Funktionen
+- 🤖 **Mistral AI Integration** für intelligente Chat-Funktionen und Task-Manipulation
+- 💾 **Auto-Save System** - Automatisches Speichern mit Visual Feedback
+- 🌍 **Multi-Language Support** - UI, Mistral Responses, Speech Recognition (60+ Sprachen)
 - 📅 **Timezone-korrekte Datumsanzeige** (Local Date Formatting)
 - ⭐ **Prioritäts-System** mit visuellen Indikatoren
 - 📁 **Kategorie-Management** mit benutzerdefinierten Kategorien
@@ -23,10 +25,11 @@ Eine moderne, professionelle Todo-App mit KI-Integration und Multi-User-Authenti
 
 ### Frontend
 - **Next.js 15** - React Framework mit App Router
-- **TypeScript** - Typsichere Entwicklung (100% Coverage)
+- **TypeScript** - Typsichere Entwicklung (100% Coverage, Strict Rules)
 - **Tailwind CSS** - Utility-first CSS Framework
 - **Shadcn/ui** - Moderne UI-Komponenten
 - **Lucide React** - Icon-Bibliothek
+- **@dnd-kit** - Drag & Drop System
 
 ### Backend & Database
 - **Supabase** - Backend-as-a-Service (PostgreSQL + Auth + Storage)
@@ -35,17 +38,19 @@ Eine moderne, professionelle Todo-App mit KI-Integration und Multi-User-Authenti
 - **PostgreSQL** - Relationale Cloud-Datenbank
 
 ### KI & Services
-- **Mistral AI** - KI-Integration für intelligente Antworten
+- **Mistral AI** - KI-Integration für intelligente Antworten und Task-Manipulation
 - **Supabase Auth** - OAuth + Email/Password Authentication
+- **Web Speech API** - Browser-basierte Spracherkennung
 
 ### Entwicklung & Deployment
 - **ESLint** - Code-Qualität und Konsistenz (0 Errors)
+- **Husky** - Pre-commit Hooks
 - **Vercel** - Production Deployment
 - **Git** - Version Control
 
 ---
 
-## 📁 Enterprise-Architektur (v5.0)
+## 📁 Enterprise-Architektur (v6.0)
 
 ```
 todo-app-nextjs/
@@ -59,13 +64,13 @@ todo-app-nextjs/
 │   │   ├── auth/
 │   │   │   └── callback/route.ts        # OAuth Callback Handler
 │   │   └── api/
-│   │       ├── mistral/route.ts         # Mistral AI API
-│   │       ├── tasks/
-│   │       │   ├── route.ts             # Task CRUD API (Supabase)
-│   │       │   └── [id]/route.ts        # Task Update/Delete API
+│   │       ├── mistral/route.ts         # Mistral AI API mit Tool Execution
+│   │       └── tasks/
+│   │           ├── route.ts             # Task CRUD API (Supabase)
+│   │           └── [id]/route.ts        # Task Update/Delete API
 │   ├── components/
 │   │   ├── ui/                          # Shadcn/ui Base Components
-│   │   ├── TaskCardRefactored.tsx       # Task Card mit UI Sync
+│   │   ├── TaskCardRefactored.tsx       # Task Card mit Auto-Save
 │   │   ├── TaskHeader.tsx               # Header-Komponente
 │   │   ├── TaskBody.tsx                 # Body-Komponente
 │   │   ├── SubtaskList.tsx              # Subtask-Komponente
@@ -73,17 +78,22 @@ todo-app-nextjs/
 │   ├── hooks/                           # Custom Hooks Layer
 │   │   ├── useTaskManagement.ts         # Task Management mit Local Date Logic
 │   │   ├── useMistralChat.ts            # KI-Chat Management
-│   │   └── useGoals.ts                  # Goals Management
+│   │   ├── useGoals.ts                  # Goals Management
+│   │   ├── useLocale.ts                 # Browser Locale Detection
+│   │   └── useUserSettings.ts           # Persistent User Settings
 │   ├── lib/
 │   │   ├── types.ts                     # Type Definitions
 │   │   ├── utils.ts                     # Shadcn Utilities
+│   │   ├── i18n/                        # Internationalization
+│   │   │   ├── index.ts                 # Translation Helpers
+│   │   │   └── translations.ts          # Translation Strings
 │   │   ├── supabase/
 │   │   │   ├── client.ts                # Supabase Client für Browser
 │   │   │   ├── server.ts                # Supabase Client für Server Components
 │   │   │   └── middleware.ts            # updateSession Utility
 │   │   └── services/
 │   │       ├── ApiTaskService.ts        # Task Service (API Calls)
-│   │       └── MistralService.ts        # Mistral AI Service
+│   │       └── MistralToolsService.ts   # Mistral AI Tools Service
 │   └── middleware.ts                    # Auth Middleware (Supabase SSR)
 └── .env.local
     ├── NEXT_PUBLIC_SUPABASE_URL
@@ -92,13 +102,13 @@ todo-app-nextjs/
     └── MISTRAL_API_KEY
 ```
 
-### 🎯 v5.0 Highlights:
-- **Supabase Migration** - Prisma SQLite → Supabase PostgreSQL
-- **Authentication** - Email/Password + Google OAuth mit SSR
-- **Middleware Pattern** - Supabase Standard updateSession
-- **Timezone Fixes** - Local Date Formatting statt UTC
-- **Production Ready** - Deployed auf Vercel mit Multi-User Support
-- **Type Safety** - 100% TypeScript mit expliziten Return Types
+### 🎯 v6.0 Highlights:
+- **Auto-Save System** - Modern UX mit Visual Feedback
+- **Mistral Tool Integration** - Server-side Tool Execution für Task-Manipulation
+- **Multi-Language Support** - 60+ Sprachen für Speech Recognition
+- **Persistent Settings** - User Preferences in localStorage
+- **Strict TypeScript** - Enhanced Code Quality mit Pre-commit Hooks
+- **Robust Date Handling** - Konsistente Datum-Formate überall
 
 ---
 
@@ -145,6 +155,108 @@ export async function middleware(request: NextRequest) {
 
 ---
 
+## 💾 Auto-Save System
+
+### Modern UX Pattern
+**File:** `src/components/TaskCardRefactored.tsx`
+
+### Features:
+- **Debounced Auto-Save** - 1.5s Verzögerung nach Eingabe
+- **Visual Feedback** - "Speichere..." / "Gespeichert" Indikatoren
+- **Conflict Prevention** - 3s Pause nach externen Updates (Mistral)
+- **Intuitive Exit** - Check = behalten, X = verwerfen
+- **Keyboard Shortcuts** - Enter = speichern, Escape = verwerfen
+
+### Implementation:
+```typescript
+// Auto-save with debouncing
+const scheduleAutoSave = useCallback((delay: number = 1500) => {
+  if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
+  const timeout = setTimeout(() => autoSave(), delay);
+  setAutoSaveTimeout(timeout);
+}, [autoSave, autoSaveTimeout]);
+
+// Conflict prevention
+const taskLastUpdated = new Date(task.updatedAt || task.createdAt);
+const timeSinceUpdate = now.getTime() - taskLastUpdated.getTime();
+if (timeSinceUpdate < 3000) return; // Skip auto-save
+```
+
+---
+
+## 🤖 Mistral AI Integration
+
+### Server-Side Tool Execution
+**File:** `src/app/api/mistral/route.ts`
+
+### Available Tools:
+- **create_task** - Erstelle neue Tasks
+- **update_task** - Aktualisiere bestehende Tasks (mit intelligenter Suche)
+- **delete_task** - Lösche Tasks
+- **list_tasks** - Zeige alle Tasks
+
+### Smart Task Detection:
+```typescript
+// Natural language patterns
+"Brief schreiben an Peter" → create_task
+"Verschiebe Task nach morgen" → update_task (mit taskDate: "today", dueDate: "tomorrow")
+"Lösche Task X" → delete_task
+"Was sind meine Tasks?" → list_tasks
+```
+
+### Tool Execution Flow:
+```typescript
+1. User sends message to Mistral
+2. Mistral detects intent and calls appropriate tool
+3. Server-side tool execution with Supabase auth
+4. Database update with proper user filtering
+5. UI refresh with needsRefresh flag
+6. Visual feedback to user
+```
+
+### Date Handling:
+- **Today Context** - Mistral receives current date in system prompt
+- **Robust Parsing** - Handles "today", "tomorrow", YYYY-MM-DD formats
+- **Timezone Safe** - Consistent date formatting across all functions
+
+---
+
+## 🌍 Multi-Language Support
+
+### Internationalization System
+**Files:** `src/lib/i18n/`, `src/hooks/useLocale.ts`, `src/hooks/useUserSettings.ts`
+
+### Features:
+- **UI Languages** - English (default), German, French
+- **Mistral Responses** - Automatic language detection and response
+- **Speech Recognition** - 60+ languages supported
+- **Persistent Settings** - User preferences stored in localStorage
+
+### Speech Language Map:
+```typescript
+export const speechLanguageMap: Record<string, string> = {
+  en: 'en-US', de: 'de-DE', fr: 'fr-FR', es: 'es-ES',
+  it: 'it-IT', pt: 'pt-BR', ru: 'ru-RU', ja: 'ja-JP',
+  ko: 'ko-KR', zh: 'zh-CN', ar: 'ar-SA', hi: 'hi-IN',
+  // ... 50+ more languages
+};
+```
+
+### Implementation:
+```typescript
+// Browser locale detection
+const detectedLanguage = getBrowserLanguage();
+const supportedLanguages = ['en', 'de', 'fr'];
+const finalLanguage = supportedLanguages.includes(detectedLanguage) 
+  ? detectedLanguage : 'en';
+
+// Persistent user settings
+const { settings, updateSettings } = useUserSettings();
+// settings.speechLanguage, settings.uiLanguage
+```
+
+---
+
 ## 📅 Date & Timezone Handling
 
 ### Problem: UTC Timezone Offset
@@ -161,10 +273,10 @@ const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2,
 **File:** `src/hooks/useTaskManagement.ts`
 
 **Fixed Locations:**
-1. **Line 78:** Date grouping in `groupedTasks`
-2. **Line 80:** Today comparison in `groupedTasks`
-3. **Line 120-121:** `formatDate` today/tomorrow comparison
-4. **Line 180, 185:** Drag & drop date key calculations
+1. **Date grouping** in `groupedTasks`
+2. **Today comparison** in `groupedTasks`
+3. **formatDate** today/tomorrow comparison
+4. **Drag & drop** date key calculations
 
 ### API to Display Flow:
 ```
@@ -260,6 +372,10 @@ export function useTaskManagement(): {
   handleMoveTaskToDate: (taskId: string, newDate: Date | null) => Promise<void>;
   handleReorderAcrossDates: (taskId: string, targetDate: Date | null, targetIndex: number) => Promise<void>;
   handleTaskUpdateOptimistic: (taskId: string, updates: Partial<Task>) => Promise<boolean>;
+  // Animation
+  newTaskIds: Set<string>;
+  movingUpTaskIds: Set<string>;
+  movingDownTaskIds: Set<string>;
 }
 ```
 
@@ -269,8 +385,24 @@ export function useMistralChat(): {
   messages: Message[];
   chatInput: string;
   setChatInput: (input: string) => void;
-  handleSendMessage: (taskContext?: { tasks: number; goals: number }) => Promise<void>;
+  handleSendMessage: (taskContext?: { tasks: number; goals: number; taskService?: any }) => Promise<void>;
   isServiceReady: boolean;
+  clearChat: () => void;
+}
+```
+
+### useUserSettings - Persistent Settings
+```typescript
+export function useUserSettings(): {
+  settings: UserSettings;
+  updateSettings: (updates: Partial<UserSettings>) => void;
+  isReady: boolean;
+}
+
+interface UserSettings {
+  speechLanguage: string;
+  uiLanguage: string; // 'en', 'de', 'fr', 'auto'
+  theme: 'light' | 'dark' | 'system';
 }
 ```
 
@@ -321,7 +453,7 @@ cd todo-app-nextjs
 npm install
 
 # Environment Variables konfigurieren
-cp .env.example .env.local
+cp env.template .env.local
 # Füge hinzu:
 # - NEXT_PUBLIC_SUPABASE_URL
 # - NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -379,6 +511,7 @@ http://localhost:3000/auth/callback
 ### Code-Qualität:
 - **ESLint Errors**: `0` ✅ **100% Clean**
 - **Type Safety**: `100%` ✅ TypeScript Coverage
+- **Strict TypeScript**: Enhanced rules with pre-commit hooks
 - **Authentication**: Multi-user with RLS
 - **Database**: Cloud PostgreSQL (Supabase)
 - **Deployment**: Production on Vercel
@@ -388,8 +521,10 @@ http://localhost:3000/auth/callback
 - ✅ **Multi-User** - Row Level Security (RLS)
 - ✅ **Task Management** - CRUD Operations
 - ✅ **Drag & Drop** - Date-based positioning
+- ✅ **Auto-Save** - Modern UX with visual feedback
 - ✅ **Timezone Handling** - Local date formatting
-- ✅ **KI Integration** - Mistral AI Chat
+- ✅ **KI Integration** - Mistral AI with Tool Execution
+- ✅ **Multi-Language** - 60+ languages supported
 - ✅ **Production Ready** - Deployed on Vercel
 
 ---
@@ -398,20 +533,32 @@ http://localhost:3000/auth/callback
 
 ### Mistral AI Features
 - **Chat-Funktionalität** für Unterhaltungen
-- **Task-Vorschläge** basierend auf Eingaben
-- **Aufgaben-Zerlegung** in Unteraufgaben
-- **Kontextbewusste Antworten** mit Task-Informationen
+- **Task-Manipulation** - Create, Update, Delete, List
+- **Natural Language Processing** - "Verschiebe Task nach morgen"
+- **Smart Task Detection** - Automatische Task-Erkennung
+- **Multi-Language Support** - Antworten in User-Sprache
+- **Server-Side Tool Execution** - Sichere, authentifizierte Operationen
 
 ### API-Endpunkte
-- `POST /api/mistral` - Mistral AI Chat
+- `POST /api/mistral` - Mistral AI Chat mit Tool Execution
 - Rate Limit Handling für 429-Fehler
 - Fehlerbehandlung mit benutzerfreundlichen Nachrichten
+- `needsRefresh` Flag für UI-Updates
 
 ---
 
 ## 📝 Changelog
 
-### Version 5.0 (Aktuell) - Supabase + Authentication
+### Version 6.0 (Aktuell) - Auto-Save + Multi-Language
+- ✅ **Auto-Save System** - Modern UX mit Visual Feedback
+- ✅ **Mistral Tool Integration** - Server-side Tool Execution
+- ✅ **Multi-Language Support** - 60+ Sprachen für Speech Recognition
+- ✅ **Persistent Settings** - User Preferences in localStorage
+- ✅ **Strict TypeScript** - Enhanced Code Quality
+- ✅ **Robust Date Handling** - Konsistente Formate überall
+- ✅ **Smart Task Detection** - Natural Language Processing
+
+### Version 5.0 - Supabase + Authentication
 - ✅ **Supabase Migration** - Prisma SQLite → Supabase PostgreSQL
 - ✅ **Authentication** - Email/Password + Google OAuth
 - ✅ **Multi-User Support** - Row Level Security (RLS)
@@ -453,8 +600,14 @@ http://localhost:3000/auth/callback
 3. **Explicit Returns**: Alle Funktionen haben Return Types
 4. **Supabase Types**: Use generated types from Supabase CLI
 
+### Auto-Save
+1. **Debouncing**: Use 1.5s delay for text inputs
+2. **Conflict Prevention**: Check for recent external updates
+3. **Visual Feedback**: Always show save status to user
+4. **Graceful Exit**: Provide clear save/discard options
+
 ---
 
 **Entwickelt mit ❤️ und modernen Web-Technologien**
 
-*Architecture Documentation aktualisiert am 11.10.2025 - Version 5.0.0*
+*Architecture Documentation aktualisiert am 12.10.2025 - Version 6.0.0*

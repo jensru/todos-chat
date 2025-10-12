@@ -1,8 +1,8 @@
-# 🎯 Todo-App - Multi-User Todo-App mit KI & Authentication
+# 🎯 Todo-App - Multi-User Todo-App mit KI & Auto-Save
 
-Eine moderne, Cloud-basierte Todo-App mit Supabase-Backend, Multi-User-Support und KI-Integration, gebaut mit Next.js 15, TypeScript und Mistral AI.
+Eine moderne, Cloud-basierte Todo-App mit Supabase-Backend, Multi-User-Support, KI-Integration und Auto-Save, gebaut mit Next.js 15, TypeScript und Mistral AI.
 
-**Version**: 5.0.0 | **Status**: ✅ Production Ready | **Deployment**: Vercel
+**Version**: 6.0.0 | **Status**: ✅ Production Ready | **Deployment**: Vercel
 
 ## ✨ Features
 
@@ -14,6 +14,7 @@ Eine moderne, Cloud-basierte Todo-App mit Supabase-Backend, Multi-User-Support u
 
 ### 📋 Task-Management
 - **CRUD Operations** - Erstellen, Lesen, Aktualisieren, Löschen
+- **Auto-Save System** - Automatisches Speichern mit Visual Feedback
 - **Drag & Drop** - Tasks zwischen Tagen verschieben
 - **Priority-System** - Wichtige Tasks markieren
 - **Kategorie-Management** - Tasks organisieren
@@ -23,22 +24,33 @@ Eine moderne, Cloud-basierte Todo-App mit Supabase-Backend, Multi-User-Support u
 
 ### 🤖 AI-Integration
 - **Mistral-Large Chat** - Intelligente Gespräche mit KI
-- **Task-Vorschläge** - Automatische Aufgaben-Generierung
-- **Kontextuelle Antworten** - KI versteht deine Aufgaben
+- **Task-Manipulation** - KI kann Tasks erstellen, verschieben, löschen
+- **Natural Language Processing** - "Verschiebe Task nach morgen"
+- **Smart Task Detection** - Automatische Aufgaben-Generierung
+- **Multi-Language Support** - KI antwortet in User-Sprache
+
+### 🌍 Multi-Language Support
+- **UI Languages** - English (default), German, French
+- **Speech Recognition** - 60+ Sprachen unterstützt
+- **Persistent Settings** - User-Präferenzen gespeichert
+- **Browser Locale Detection** - Automatische Spracherkennung
 
 ### 🎨 UI/UX
 - **Shadcn/ui Komponenten** - Professionelle UI
 - **Lucide React Icons** - Moderne Ikonografie
 - **Mobile-responsive** - Funktioniert auf allen Geräten
-- **German Locale** - Vollständig auf Deutsch
+- **Auto-Save Feedback** - "Speichere..." / "Gespeichert" Indikatoren
+- **Intuitive Exit** - Check = behalten, X = verwerfen
+- **Keyboard Shortcuts** - Enter = speichern, Escape = verwerfen
 
 ## 🚀 Technologie-Stack
 
 ### Frontend
 - **Next.js 15** - React Framework mit App Router
-- **TypeScript** - 100% Type Safety
+- **TypeScript** - 100% Type Safety mit Strict Rules
 - **Shadcn/ui** - UI Component Library
 - **Tailwind CSS** - Utility-first CSS
+- **@dnd-kit** - Drag & Drop System
 
 ### Backend & Database
 - **Supabase** - Backend-as-a-Service
@@ -47,8 +59,14 @@ Eine moderne, Cloud-basierte Todo-App mit Supabase-Backend, Multi-User-Support u
 - **@supabase/ssr** - Server-Side Rendering Support
 
 ### KI & APIs
-- **Mistral AI** - Large Language Model
+- **Mistral AI** - Large Language Model mit Tool Execution
 - **Next.js API Routes** - Serverless Functions
+- **Web Speech API** - Browser-basierte Spracherkennung
+
+### Development & Quality
+- **ESLint** - Code Quality (0 Errors)
+- **Husky** - Pre-commit Hooks
+- **Strict TypeScript** - Enhanced Type Safety
 
 ### Deployment
 - **Vercel** - Production Hosting
@@ -156,11 +174,20 @@ App läuft auf: `http://localhost:3000`
 
 ### Tasks verwalten
 - **Neue Task:** Klicke "Neue Aufgabe" Button
+- **Bearbeiten:** Klicke auf Task-Text → Auto-Save nach 1.5s
 - **Priorität setzen:** Klicke Star-Icon
 - **Als erledigt markieren:** Klicke Checkbox
-- **Bearbeiten:** Klicke auf Task-Text
 - **Löschen:** Klicke Trash-Icon
 - **Datum ändern:** Drag & Drop zu anderem Tag
+
+### Auto-Save System
+- **Automatisches Speichern** nach 1.5s Verzögerung
+- **Visual Feedback** - "Speichere..." / "Gespeichert" Indikatoren
+- **Exit-Optionen:**
+  - ✅ **Check-Button** = Änderungen behalten
+  - ❌ **X-Button** = Änderungen verwerfen
+  - **Enter** = Speichern
+  - **Escape** = Verwerfen
 
 ### Drag & Drop
 - Ziehe Tasks zwischen verschiedenen Tagen
@@ -172,8 +199,18 @@ App läuft auf: `http://localhost:3000`
 
 ### Chat mit KI (optional)
 - Wenn Mistral API Key konfiguriert ist
-- Schreibe Nachrichten im Chat-Panel
-- KI kann Task-Vorschläge machen
+- **Natural Language Commands:**
+  - "Erstelle einen Task für heute"
+  - "Verschiebe den Task nach morgen"
+  - "Lösche den Task X"
+  - "Was sind meine Tasks?"
+- KI antwortet in deiner Sprache
+- Server-side Tool Execution für sichere Operationen
+
+### Multi-Language Features
+- **Speech Recognition:** Wähle Sprache im Dropdown (rechts oben)
+- **UI Language:** Automatische Erkennung oder manuelle Auswahl
+- **Mistral Responses:** Automatische Spracherkennung
 
 ## 📁 Projektstruktur
 
@@ -181,26 +218,31 @@ App läuft auf: `http://localhost:3000`
 todo-app-nextjs/
 ├── src/
 │   ├── app/
-│   │   ├── page.tsx                    # Main App
+│   │   ├── page.tsx                    # Main App mit Drag & Drop
 │   │   ├── login/
 │   │   │   ├── page.tsx                # Login/SignUp UI
 │   │   │   └── actions.ts              # Auth Server Actions
 │   │   ├── auth/callback/route.ts      # OAuth Callback
 │   │   └── api/
 │   │       ├── tasks/route.ts          # Task CRUD API
-│   │       └── mistral/route.ts        # Mistral AI API
+│   │       └── mistral/route.ts        # Mistral AI API mit Tools
 │   ├── components/
 │   │   ├── ui/                         # Shadcn Components
-│   │   └── TaskCard*.tsx               # Task Components
+│   │   └── TaskCardRefactored.tsx      # Task Card mit Auto-Save
 │   ├── hooks/
-│   │   └── useTaskManagement.ts        # Task Logic
+│   │   ├── useTaskManagement.ts        # Task Logic
+│   │   ├── useMistralChat.ts           # KI Chat Logic
+│   │   ├── useLocale.ts                # Browser Locale
+│   │   └── useUserSettings.ts          # Persistent Settings
 │   ├── lib/
+│   │   ├── i18n/                       # Internationalization
 │   │   ├── supabase/
 │   │   │   ├── client.ts               # Browser Client
 │   │   │   ├── server.ts               # Server Client
 │   │   │   └── middleware.ts           # Auth Middleware
 │   │   └── services/
-│   │       └── ApiTaskService.ts       # Task Service
+│   │       ├── ApiTaskService.ts       # Task Service
+│   │       └── MistralToolsService.ts  # Mistral Tools
 │   └── middleware.ts                   # Route Protection
 └── .env.local                          # Environment Variables
 ```
@@ -265,6 +307,7 @@ https://your-project.supabase.co/auth/v1/callback
 - Immer `anon/public key` für Client-Side Code
 - RLS Policies prüfen alle Datenbankzugriffe
 - Middleware schützt alle Routes außer `/login`
+- Server-side Tool Execution für Mistral AI
 
 ## 🐛 Troubleshooting
 
@@ -280,8 +323,20 @@ https://your-project.supabase.co/auth/v1/callback
 3. Prüfe Supabase RLS Policies
 4. Prüfe Browser Network Tab
 
+### Auto-Save funktioniert nicht
+1. Prüfe Browser Console auf Fehler
+2. Prüfe ob Task im Edit-Modus ist
+3. Prüfe Network Tab für API Calls
+4. Warte 1.5s nach Eingabe
+
+### Mistral AI funktioniert nicht
+1. Prüfe ob `MISTRAL_API_KEY` gesetzt ist
+2. Prüfe API Route: `/api/mistral`
+3. Prüfe Browser Console auf Fehler
+4. Prüfe Rate Limits
+
 ### Datum-Anzeige falsch
-- Problem gelöst in v5.0! Local date formatting verwendet
+- Problem gelöst in v6.0! Local date formatting verwendet
 - Wenn Probleme: Browser Timezone prüfen
 
 ## 📊 Features Status
@@ -289,15 +344,26 @@ https://your-project.supabase.co/auth/v1/callback
 - ✅ **Authentication** - Email/Password + Google OAuth
 - ✅ **Multi-User** - Row Level Security
 - ✅ **Task CRUD** - Erstellen, Lesen, Aktualisieren, Löschen
+- ✅ **Auto-Save** - Modern UX mit Visual Feedback
 - ✅ **Drag & Drop** - Date-based Repositioning
 - ✅ **Timezone Fix** - Local Date Formatting
+- ✅ **KI Integration** - Mistral AI mit Tool Execution
+- ✅ **Multi-Language** - 60+ Sprachen unterstützt
 - ✅ **Production Ready** - Deployed on Vercel
-- ✅ **Type Safe** - 100% TypeScript
-- ⚠️ **Mistral AI** - Optional (API Key required)
+- ✅ **Type Safe** - 100% TypeScript mit Strict Rules
 
 ## 📝 Changelog
 
-### Version 5.0.0 (Current)
+### Version 6.0.0 (Current)
+- ✅ **Auto-Save System** - Modern UX mit Visual Feedback
+- ✅ **Mistral Tool Integration** - Server-side Tool Execution
+- ✅ **Multi-Language Support** - 60+ Sprachen für Speech Recognition
+- ✅ **Persistent Settings** - User Preferences in localStorage
+- ✅ **Strict TypeScript** - Enhanced Code Quality
+- ✅ **Smart Task Detection** - Natural Language Processing
+- ✅ **Robust Date Handling** - Konsistente Formate überall
+
+### Version 5.0.0
 - ✅ Supabase PostgreSQL statt Prisma SQLite
 - ✅ Multi-User Authentication (Email + Google OAuth)
 - ✅ Row Level Security für Datensicherheit
