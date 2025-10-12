@@ -100,7 +100,7 @@ function SortableDateHeader({ dateKey, formatDate, taskCount }: {
 }) {
   const {
     attributes: _attributes,
-    listeners,
+    listeners: _listeners,
     setNodeRef,
     transform,
     transition,
