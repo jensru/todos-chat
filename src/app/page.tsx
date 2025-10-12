@@ -43,7 +43,7 @@ interface SpeechRecognition {
 }
 
 // Sortable Task Card Component
-function SortableTaskCard({ task, onUpdate, onDelete, activeTask, isNewTask, isMovingUp, isMovingDown }: {
+function SortableTaskCard({ task, onUpdate, onDelete, activeTask: _activeTask, isNewTask, isMovingUp, isMovingDown }: {
   task: any;
   onUpdate: (taskId: string, updates: Partial<any>) => Promise<void>;
   onDelete: (taskId: string) => Promise<void>;
