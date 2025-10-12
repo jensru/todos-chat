@@ -426,22 +426,6 @@ export default function HomePage(): React.JSX.Element {
     });
   };
 
-  // Rebalance positions if they get too close together
-  const _rebalancePositions = async () => {
-    console.log('🔧 Rebalancing all task positions...');
-
-    const flatList = getFlatList().filter(item => item.type === 'task');
-
-    // Update each task with evenly spaced positions (100, 200, 300...)
-    for (let i = 0; i < flatList.length; i++) {
-      const newPosition = (i + 1) * 100;
-      await handleTaskUpdateOptimistic(flatList[i].task.id, {
-        globalPosition: newPosition
-      });
-    }
-
-    console.log('✅ Rebalancing complete');
-  };
 
   // Helper function to create flat list of all items
   const getFlatList = () => {
