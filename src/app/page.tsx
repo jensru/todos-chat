@@ -81,9 +81,9 @@ function SortableTaskCard({ task, onUpdate, onDelete, activeTask: _activeTask, i
         task={task}
         onUpdate={onUpdate}
         onDelete={onDelete}
-        isNewTask={isNewTask}
-        isMovingUp={isMovingUp}
-        isMovingDown={isMovingDown}
+        isNewTask={isNewTask ?? false}
+        isMovingUp={isMovingUp ?? false}
+        isMovingDown={isMovingDown ?? false}
         isDragging={isDragging}
         dragHandleProps={{ ...attributes, ...listeners }}
         dragRef={setNodeRef}
