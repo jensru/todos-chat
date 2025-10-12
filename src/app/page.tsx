@@ -427,7 +427,7 @@ export default function HomePage(): React.JSX.Element {
   };
 
   // Rebalance positions if they get too close together
-  const rebalancePositions = async () => {
+  const _rebalancePositions = async () => {
     console.log('🔧 Rebalancing all task positions...');
 
     const flatList = getFlatList().filter(item => item.type === 'task');
