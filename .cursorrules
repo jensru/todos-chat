@@ -1,0 +1,75 @@
+# Cursor AI Development Rules
+
+## TypeScript Strict Rules (Vercel Build Requirements)
+
+### Parameter Handling
+- ALWAYS prefix unused parameters with underscore: `_request: NextRequest`
+- NEVER leave unused parameters without underscore prefix
+- Use proper TypeScript types, avoid `any` when possible
+
+### Optional Properties
+- For optional boolean props, use nullish coalescing: `isNewTask={isNewTask ?? false}`
+- Optional properties cannot be `undefined` with `exactOptionalPropertyTypes: true`
+- Always handle optional props explicitly
+
+### Function Signatures
+- ALWAYS specify explicit return types: `Promise<void>`, `NextResponse`, etc.
+- Use proper parameter types: `Partial<Task>`, not `any`
+- Mark optional parameters with `?`: `param?: Type`
+
+### Component Props
+- Use `I` prefix for interfaces: `ITaskCardProps`
+- Handle optional props properly with nullish coalescing
+- Ensure boolean props are always `boolean`, never `boolean | undefined`
+
+### API Routes
+- Prefix unused request parameters: `_request: NextRequest`
+- Use proper response types: `NextResponse`
+- Handle errors with proper TypeScript types
+
+## Common Patterns to Follow
+
+```typescript
+// ✅ Correct - Unused parameters
+function handler(_request: NextRequest): Promise<NextResponse> { ... }
+
+// ✅ Correct - Optional boolean props
+isNewTask={isNewTask ?? false}
+
+// ✅ Correct - Function signatures
+function updateTask(id: string, updates: Partial<Task>): Promise<void> { ... }
+
+// ✅ Correct - Interface definitions
+interface ITaskCardProps {
+  task: Task;
+  isNewTask?: boolean;
+}
+```
+
+## Strict TypeScript Rules
+- `noUnusedParameters: true` - Prefix unused params with `_`
+- `exactOptionalPropertyTypes: true` - Optional props cannot be `undefined`
+- `noImplicitReturns: true` - All code paths must return
+- `noUnusedLocals: true` - No unused variables
+
+## Before Every Code Change
+1. Check for unused parameters → prefix with `_`
+2. Check optional boolean props → use `?? false`
+3. Check function return types → make explicit
+4. Check interface definitions → use `I` prefix
+
+## Project Context
+- Next.js 15 with App Router
+- Supabase for backend and auth
+- Mistral AI for intelligent task management
+- Auto-save system with visual feedback
+- Multi-language support (60+ languages)
+- Strict TypeScript configuration for Vercel builds
+
+## Code Quality
+- Follow these rules to prevent Vercel build failures
+- Maintain high code quality standards
+- Use proper TypeScript patterns consistently
+- Avoid common pitfalls that cause build errors
+
+Remember: Vercel uses the same strict TypeScript rules, so following these patterns locally prevents production build failures.
