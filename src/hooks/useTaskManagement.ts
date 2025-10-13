@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ApiTaskService } from '@/lib/services/ApiTaskService';
 import { ITask as Task } from '@/lib/types';
+import { formatDateForDisplay, formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 
 export function useTaskManagement(): {
   tasks: Task[];
@@ -38,6 +39,8 @@ export function useTaskManagement(): {
     try {
       // Don't set loading to true for refresh operations to avoid white flash
       const loadedTasks = await taskService.loadTasks();
+      
+      // Debug log removed to prevent console spam
       
       // Diff-based sync: Find new tasks
       if (tasks.length > 0) {
@@ -128,19 +131,8 @@ export function useTaskManagement(): {
         if (task.dueDate) {
           try {
             if (!isNaN(task.dueDate.getTime())) {
-              // Use local date instead of UTC to avoid timezone offset issues
-              const taskDate = `${task.dueDate.getFullYear()}-${String(task.dueDate.getMonth() + 1).padStart(2, '0')}-${String(task.dueDate.getDate()).padStart(2, '0')}`;
-              const todayObj = new Date();
-              const today = `${todayObj.getFullYear()}-${String(todayObj.getMonth() + 1).padStart(2, '0')}-${String(todayObj.getDate()).padStart(2, '0')}`;
-
-              // Always include tasks with dates (even past dates)
-              // This fixes the issue where tasks moved to "today" disappear
-              if (taskDate >= today) {
-                dateKey = taskDate;
-              } else {
-                // For past dates, still include them but mark as "overdue"
-                dateKey = taskDate;
-              }
+              const taskDate = formatDateToYYYYMMDD(task.dueDate);
+              dateKey = taskDate;
             }
           } catch {
             dateKey = 'ohne-datum';
@@ -163,31 +155,7 @@ export function useTaskManagement(): {
   }, [tasks]);
 
   const formatDate = useCallback((dateString: string): string => {
-    if (dateString === 'ohne-datum') return 'Ohne Datum';
-
-    try {
-      const date = new Date(dateString);
-      const today = new Date();
-      const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-
-      // Use local date formatting instead of UTC
-      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-      const tomorrowStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
-
-      if (dateString === todayStr) {
-        return `Heute (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})`;
-      } else if (dateString === tomorrowStr) {
-        return `Morgen (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })})`;
-      } else {
-        return date.toLocaleDateString('de-DE', {
-          weekday: 'long',
-          day: 'numeric',
-          month: 'long'
-        });
-      }
-    } catch {
-      return 'Ungültiges Datum';
-    }
+    return formatDateForDisplay(dateString);
   }, []);
 
   // Drag & Drop methods
@@ -231,12 +199,12 @@ export function useTaskManagement(): {
       if (!task) return prevTasks;
 
       // Use local date formatting instead of UTC
-      const targetDateKey = targetDate ? `${targetDate.getFullYear()}-${String(targetDate.getMonth() + 1).padStart(2, '0')}-${String(targetDate.getDate()).padStart(2, '0')}` : 'ohne-datum';
+      const targetDateKey = targetDate ? formatDateToYYYYMMDD(targetDate) : 'ohne-datum';
 
       // Get all tasks for the target date (excluding the moving task)
       const targetDateTasks = prevTasks.filter(t => {
         if (t.completed || t.id === taskId) return false;
-        const taskDateKey = t.dueDate ? `${t.dueDate.getFullYear()}-${String(t.dueDate.getMonth() + 1).padStart(2, '0')}-${String(t.dueDate.getDate()).padStart(2, '0')}` : 'ohne-datum';
+        const taskDateKey = t.dueDate ? formatDateToYYYYMMDD(t.dueDate) : 'ohne-datum';
         return taskDateKey === targetDateKey;
       });
       

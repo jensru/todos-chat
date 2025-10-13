@@ -1,6 +1,7 @@
 // src/app/api/tasks/[id]/route.ts - Individual Task API Route
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
+import { NextRequest, NextResponse } from 'next/server';
 
 // PUT /api/tasks/[id] - Update task
 export async function PUT(
@@ -30,10 +31,21 @@ export async function PUT(
       return NextResponse.json({ error: 'Task not found or unauthorized' }, { status: 404 });
     }
 
-    const updateData: any = {
+    const updateData: Record<string, any> = {
       ...updates,
       updatedAt: new Date().toISOString()
     };
+
+    // Handle dueDate - now expecting YYYY-MM-DD format from frontend
+    if (updates.dueDate) {
+      if (updates.dueDate instanceof Date) {
+        // Convert Date object to YYYY-MM-DD format
+        updateData.dueDate = formatDateToYYYYMMDD(updates.dueDate);
+      } else {
+        // Assume it's already in YYYY-MM-DD format
+        updateData.dueDate = updates.dueDate;
+      }
+    }
 
     // Handle JSON fields
     if (updates.tags) {

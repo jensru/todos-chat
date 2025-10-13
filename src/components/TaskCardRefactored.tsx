@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Task } from '@/lib/types';
+import { formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 
 // Helper function to safely convert date to ISO string (local timezone)
 const safeDateToISO = (date: any): string => {
@@ -22,11 +23,7 @@ const safeDateToISO = (date: any): string => {
     const dateObj = date instanceof Date ? date : new Date(date);
     if (isNaN(dateObj.getTime())) return '';
     
-    // Use local timezone to avoid day shift
-    const year = dateObj.getFullYear();
-    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const day = String(dateObj.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return formatDateToYYYYMMDD(dateObj);
   } catch (error) {
     console.warn('safeDateToISO error:', error, 'date:', date);
     return '';
@@ -215,10 +212,11 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
       <CardContent className="px-3 py-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 flex-1 min-w-0">
-            {/* Drag Handle */}
+            {/* Drag Handle - Kompakter aber trotzdem touch-freundlich */}
             <div 
               {...dragHandleProps}
-              className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors"
+              className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors p-0.5 -m-0.5 rounded-sm hover:bg-muted/30 touch-manipulation"
+              style={{ minWidth: '24px', minHeight: '24px' }}
             >
               <GripVertical className="h-4 w-4" />
             </div>

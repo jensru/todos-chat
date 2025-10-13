@@ -1,5 +1,6 @@
 // src/app/api/mistral/route.ts - Mistral API Route
 import { createClient } from '@/lib/supabase/server';
+import { formatDateToYYYYMMDD, getTodayAsYYYYMMDD, getTomorrowAsYYYYMMDD } from '@/lib/utils/dateUtils';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -174,11 +175,9 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
     let dueDate = null;
     if (args.dueDate) {
       if (args.dueDate === 'heute' || args.dueDate === 'today') {
-        dueDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+        dueDate = getTodayAsYYYYMMDD();
       } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        dueDate = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD format
+        dueDate = getTomorrowAsYYYYMMDD();
       } else {
         // Assume it's already in YYYY-MM-DD format
         dueDate = args.dueDate;
@@ -187,7 +186,7 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
     
     // DEFAULT: If no dueDate specified, set to today
     if (!dueDate) {
-      dueDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+      dueDate = getTodayAsYYYYMMDD();
     }
 
     const now = new Date().toISOString();
@@ -298,11 +297,9 @@ async function handleUpdateTaskServerSide(args: any, supabase: any, userId: stri
     let dueDate = args.dueDate;
     if (args.dueDate) {
       if (args.dueDate === 'heute' || args.dueDate === 'today') {
-        dueDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+        dueDate = getTodayAsYYYYMMDD();
       } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        dueDate = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD format
+        dueDate = getTomorrowAsYYYYMMDD();
       } else if (typeof args.dueDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(args.dueDate)) {
         // Already in YYYY-MM-DD format
         dueDate = args.dueDate;
@@ -311,7 +308,7 @@ async function handleUpdateTaskServerSide(args: any, supabase: any, userId: stri
         try {
           const parsedDate = new Date(args.dueDate);
           if (!isNaN(parsedDate.getTime())) {
-            dueDate = parsedDate.toISOString().split('T')[0];
+            dueDate = formatDateToYYYYMMDD(parsedDate);
           } else {
             console.warn('Invalid date format:', args.dueDate);
             dueDate = undefined;

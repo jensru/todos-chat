@@ -1,5 +1,6 @@
 // src/lib/services/ApiTaskService.ts - API-based Task Service
 import { Task } from '@/lib/types';
+import { convertDateForAPI, parseDatabaseDate } from '@/lib/utils/dateUtils';
 
 export class ApiTaskService {
   async loadTasks(): Promise<Task[]> {
@@ -12,30 +13,13 @@ export class ApiTaskService {
       const data = await response.json();
       
       const tasks = (data.tasks || []).map((task: any) => {
-        // Parse dueDate as local date, not UTC
-        let dueDate = null;
-        if (task.dueDate) {
-          // If it's a datetime string like "2025-10-13T00:00:00" or date "2025-10-13", parse as local
-          if (typeof task.dueDate === 'string') {
-            const dateMatch = task.dueDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
-            if (dateMatch) {
-              const [, year, month, day] = dateMatch;
-              dueDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-            } else {
-              dueDate = new Date(task.dueDate);
-            }
-          } else {
-            dueDate = new Date(task.dueDate);
-          }
-        }
-
         const convertedTask = {
           ...task,
-          dueDate,
+          dueDate: parseDatabaseDate(task.dueDate),
           createdAt: new Date(task.createdAt),
           updatedAt: new Date(task.updatedAt)
         };
-        // Debug log removed to prevent console spam
+        
         return convertedTask;
       });
       
@@ -51,12 +35,18 @@ export class ApiTaskService {
     try {
       console.log('ApiTaskService.updateTask - updating task:', taskId, updates);
       
+      // Convert Date objects to YYYY-MM-DD format for API
+      const apiUpdates: Partial<Task> = { ...updates };
+      if (apiUpdates.dueDate instanceof Date) {
+        apiUpdates.dueDate = convertDateForAPI(apiUpdates.dueDate) as any;
+      }
+      
       const response = await fetch(`/api/tasks/${taskId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updates),
+        body: JSON.stringify(apiUpdates),
       });
 
       if (!response.ok) {
@@ -76,14 +66,15 @@ export class ApiTaskService {
     try {
       console.log('ApiTaskService.addTask - adding new task:', task.title);
       
-      // Calculate date-based position for new task
+      // Calculate date-based position for new task using LOCAL date formatting
       let dateKey = 'ohne-datum';
       if (task.dueDate) {
         try {
           // Ensure dueDate is a valid Date object
           const dueDate = task.dueDate instanceof Date ? task.dueDate : new Date(task.dueDate);
           if (!isNaN(dueDate.getTime())) {
-            dateKey = dueDate.toISOString().split('T')[0];
+            // Use local date formatting instead of toISOString() to avoid timezone issues
+            dateKey = `${dueDate.getFullYear()}-${String(dueDate.getMonth() + 1).padStart(2, '0')}-${String(dueDate.getDate()).padStart(2, '0')}`;
           }
         } catch (error) {
           console.warn('Invalid dueDate in addTask:', task.dueDate, error);
@@ -181,32 +172,6 @@ export class ApiTaskService {
     return grouped;
   }
 
-  // Format date for display
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
-    if (dateString === 'ohne-datum') {
-      return 'Ohne Datum';
-    }
-    
-    if (date.toDateString() === today.toDateString()) {
-      return 'Heute';
-    }
-    
-    if (date.toDateString() === tomorrow.toDateString()) {
-      return 'Morgen';
-    }
-    
-    return date.toLocaleDateString('de-DE', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }
 
   // Drag & Drop methods
   async reorderTasksWithinDate(dateKey: string, taskIds: string[]): Promise<boolean> {
@@ -253,8 +218,12 @@ export class ApiTaskService {
     try {
       console.log('ApiTaskService.reorderTasksAcrossDates - moving task:', taskId, 'to date:', targetDate, 'at index:', targetIndex);
       
-      // Calculate date-based position
-      const dateKey = targetDate ? targetDate.toISOString().split('T')[0] : 'ohne-datum';
+      // Calculate date-based position using LOCAL date formatting (not UTC)
+      let dateKey = 'ohne-datum';
+      if (targetDate) {
+        // Use local date formatting instead of toISOString() to avoid timezone issues
+        dateKey = `${targetDate.getFullYear()}-${String(targetDate.getMonth() + 1).padStart(2, '0')}-${String(targetDate.getDate()).padStart(2, '0')}`;
+      }
       const dateString = dateKey === 'ohne-datum' ? '999999' : dateKey.replace(/-/g, '');
       const positionInDate = String(targetIndex + 1).padStart(2, '0');
       const newPosition = parseInt(dateString + positionInDate);

@@ -3,7 +3,7 @@
 
 import React from "react";
 
-import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, MeasuringStrategy, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, MeasuringStrategy, PointerSensor, TouchSensor, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { CheckCircle2, ChevronUp, LogOut, Mic, MicOff, Plus, Target, Trash2, X } from 'lucide-react';
@@ -92,39 +92,36 @@ function SortableTaskCard({ task, onUpdate, onDelete, activeTask: _activeTask, i
   );
 }
 
-// Sortable Date Header Component
-function SortableDateHeader({ dateKey, formatDate, taskCount }: {
+// Drop Zone Date Header Component (nicht sortierbar, nur Drop-Zone)
+function DropZoneDateHeader({ dateKey, formatDate, taskCount }: {
   dateKey: string;
   formatDate: (dateString: string) => string;
   taskCount: number;
 }) {
+  // Parse dateKey correctly as local date (not UTC)
+  const parseDateKey = (key: string): Date | null => {
+    if (key === 'ohne-datum') return null;
+    const [year, month, day] = key.split('-').map(Number);
+    return new Date(year, month - 1, day); // Local date, not UTC
+  };
+
   const {
-    attributes: _attributes,
-    listeners: _listeners,
     setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ 
+    isOver,
+  } = useDroppable({ 
     id: `header-${dateKey}`,
     data: {
       type: 'date-header',
       dateKey,
-      date: dateKey === 'ohne-datum' ? null : new Date(dateKey)
+      date: parseDateKey(dateKey)
     }
   });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition: isDragging ? 'none' : (transition || 'transform 200ms ease'),
-    opacity: isDragging ? 0.3 : 1,
-    zIndex: isDragging ? 1000 : 'auto',
-    pointerEvents: isDragging ? 'none' as const : 'auto' as const,
-  };
-
   return (
-    <div ref={setNodeRef} style={style} className="my-2">
-      <h3 className="text-lg font-semibold px-3 py-2 bg-muted/20 rounded-md flex items-center">
+    <div ref={setNodeRef} className="my-2">
+      <h3 className={`text-lg font-semibold px-3 py-2 rounded-md flex items-center transition-colors ${
+        isOver ? 'bg-primary/20 border-2 border-primary/30' : 'bg-muted/20'
+      }`}>
         <span className="flex-1"></span>
         <span className="text-center">{formatDate(dateKey)}</span>
         <span className="flex-1 text-right text-sm text-muted-foreground font-normal">
@@ -307,6 +304,12 @@ export default function HomePage(): React.JSX.Element {
       activationConstraint: {
         distance: 8,
       },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 8,
+      },
     })
   );
 
@@ -446,7 +449,10 @@ export default function HomePage(): React.JSX.Element {
         id: `header-${dateKey}`,
         type: 'date-header',
         dateKey,
-        date: dateKey === 'ohne-datum' ? null : new Date(dateKey)
+        date: dateKey === 'ohne-datum' ? null : (() => {
+          const [year, month, day] = dateKey.split('-').map(Number);
+          return new Date(year, month - 1, day); // Local date, not UTC
+        })()
       });
       
       // Add tasks for this date (sorted by globalPosition to maintain DB order)
@@ -706,14 +712,14 @@ export default function HomePage(): React.JSX.Element {
             }}
           >
             <SortableContext 
-              items={getFlatList().map(item => item.id)} 
+              items={getFlatList().filter(item => item.type === 'task').map(item => item.id)} 
               strategy={verticalListSortingStrategy}
             >
               <div className="space-y-2">
                 {getFlatList().map((item) => (
                   <div key={item.id}>
                     {item.type === 'date-header' ? (
-                      <SortableDateHeader
+                      <DropZoneDateHeader
                         dateKey={item.dateKey!}
                         formatDate={formatDate}
                         taskCount={groupedTasks[item.dateKey!]?.length || 0}

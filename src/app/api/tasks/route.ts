@@ -1,5 +1,6 @@
 // src/app/api/tasks/route.ts - Tasks API Route
 import { createClient } from '@/lib/supabase/server';
+import { formatDateToYYYYMMDD, getTodayAsYYYYMMDD } from '@/lib/utils/dateUtils';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/tasks - Load all tasks
@@ -70,14 +71,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const taskData = await request.json();
+    const taskData: Record<string, any> = await request.json();
 
-    // DEFAULT: If no dueDate specified, set to today
+    // Handle dueDate - now expecting YYYY-MM-DD format from frontend
     let dueDate = taskData.dueDate;
     if (!dueDate) {
-      const today = new Date();
-      today.setHours(23, 59, 59, 999);
-      dueDate = today.toISOString();
+      // DEFAULT: If no dueDate specified, set to today
+      dueDate = getTodayAsYYYYMMDD();
+    } else if (taskData.dueDate instanceof Date) {
+      // Convert Date object to YYYY-MM-DD format
+      dueDate = formatDateToYYYYMMDD(taskData.dueDate);
     }
 
     const { data: newTask, error } = await supabase
