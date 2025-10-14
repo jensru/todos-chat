@@ -19,6 +19,41 @@
 - Keine neuen Gesten lernen müssen – „oben/unter den Ziel-Task“ genügt.
 6. **Reihenfolge innerhalb eines Tages anpassen:** Beim Drag & Drop innerhalb derselben Tagesgruppe wird die Liste im Ziel-Tag sofort visuell neu angeordnet und die neue Reihenfolge persistiert.
 
+## 🎯 Zielbild Drag & Drop (konkret)
+
+- Einheitlicher Drag-State: identisch innerhalb eines Tages und über Tagesgrenzen; keine Rotation, dezente Skalierung (scale-105).
+- Nur Task-zu-Task: Header sind nicht droppable. Überfahren eines Tasks zeigt die exakte Drop-Position (vor/hinter diesen Task).
+- „Mitbewegende“ Headlines (visueller Eindruck): Während des Drags wirkt es so, als liefen Headlines mit – technisch entsteht dies durch temporäre Vorschau-Einordnung des aktiven Tasks in der Zielgruppe; Header bleiben passiv.
+- Persistenz erst beim Drop: Während der Vorschau keine API-Calls.
+
+## 🧭 Minimal-Ansatz (Keep it simple)
+
+1) Flache Rendering-Hierarchie: Tages-Header und Tasks werden als flache Sequenz je Tag gerendert.
+2) Vorschau strikt im UI-State: Während des Drags wird eine „effektive Gruppierung“ berechnet, die den aktiven Task temporär vor/hinter den overTask einordnet. Keine Persistenz im Move.
+3) Drop minimal persistieren:
+   - Gleiches Datum → handleReorderWithinDate(dateKey, taskIds)
+   - Anderes Datum → handleReorderAcrossDates(taskId, newDate, insertIndex)
+4) Kein Over-Engineering: Richtung über delta.y bestimmen, Sortierung über globalPosition; keine zusätzliche komplexe Kollisionserkennung im UI.
+
+## ⚠️ Technische Hürden (High-Level)
+
+- Datum/Zeitzone: Lokale Datumslogik (YYYY-MM-DD) strikt nutzen (kein UTC-Versatz).
+- Over-State-Flattern: Zu viele State-Updates im onDragMove verursachen Sprünge. Lösung: nur überItem und delta.y im State halten und die Liste aus genau einer getEffectiveGroupedTasks()-Funktion speisen.
+- Endlos-Reloads vermeiden: Keine tasks-Dependencies in useCallback; tasksRef verwenden. Keine Reloads in Fehlerpfaden von Optimistic-Updates.
+- Header-Interaktion: Header bleiben nicht droppable; der „Mitbewegungs“-Effekt entsteht ausschließlich durch die Vorschau-Reihenfolge.
+
+## ✅ Testfälle (manuell)
+
+- Innerhalb eines Tages:
+  - Nach oben ziehen → landet vor Ziel-Task
+  - Nach unten ziehen → landet hinter Ziel-Task
+- Über Tagesgrenzen:
+  - In späteren Tag ziehen, über Task hovern → Drop; Task landet korrekt und übernimmt Datum
+  - In früheren Tag ziehen → entsprechend korrekt
+- Edge Cases:
+  - Drag-Start/Ende ohne Flackern/Flattern
+  - Keine Persistenz bis zum Drop; danach genau ein Persist-Vorgang
+
 ## 🚨 **Aktuelle Probleme:**
 
 ### **1. Unendliche API-Calls (KRITISCH)**
