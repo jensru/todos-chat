@@ -3,7 +3,7 @@
 
 import React from "react";
 
-import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, MeasuringStrategy, PointerSensor, TouchSensor, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
+import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, MeasuringStrategy, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { CheckCircle2, ChevronUp, LogOut, Mic, MicOff, Plus, Target, Trash2, X } from 'lucide-react';
@@ -100,35 +100,14 @@ function DropZoneDateHeader({ dateKey, formatDate, taskCount, tasks }: {
   taskCount: number;
   tasks: any[];
 }) {
-  // Parse dateKey correctly as local date (not UTC)
-  const parseDateKey = (key: string): Date | null => {
-    if (key === 'ohne-datum') return null;
-    const [year, month, day] = key.split('-').map(Number);
-    return new Date(year, month - 1, day); // Local date, not UTC
-  };
-
-  const {
-    setNodeRef,
-    isOver,
-  } = useDroppable({ 
-    id: `header-${dateKey}`,
-    data: {
-      type: 'date-header',
-      dateKey,
-      date: parseDateKey(dateKey)
-    }
-  });
-
   // Zähle überfällige Tasks
   const overdueCount = tasks.filter(task => task.isOverdue).length;
   const today = new Date().toISOString().split('T')[0];
   const isToday = dateKey === today;
 
   return (
-    <div ref={setNodeRef} className="my-2">
-      <h3 className={`text-lg font-semibold px-3 py-2 rounded-md flex items-center transition-colors ${
-        isOver ? 'bg-primary/20 border-2 border-primary/30' : 'bg-muted/20'
-      }`}>
+    <div className="my-2">
+      <h3 className={`text-lg font-semibold px-3 py-2 rounded-md flex items-center transition-colors bg-muted/20`}>
         <span className="flex-1"></span>
         <span className="text-center">
           {formatDate(dateKey)}
@@ -355,14 +334,8 @@ export default function HomePage(): React.JSX.Element {
       overType: overElement.type
     });
 
-    // Handle date header drops
-    if (overElement.type === 'date-header') {
-      const newDate = overElement.date;
-      const targetDateKey = overElement.dateKey;
-      const targetDateTasks = (groupedTasks[targetDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
-      const insertIndex = targetDateTasks.length; // ans Ende der Zielgruppe
-
-      await handleReorderAcrossDates(activeTask.id, newDate, insertIndex);
+    // Nur Task-zu-Task Drops erlauben
+    if (overElement.type !== 'task') {
       return;
     }
 

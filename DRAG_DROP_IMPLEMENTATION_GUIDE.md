@@ -3,15 +3,15 @@
 ## 🎯 Was wir erreichen wollen (UX-Anforderungen – ohne Technik)
 
 1) Einfaches Reorder-Erlebnis
-- Nur Task-zu-Task Drops. Header sind nie droppable.
+- Nur Task-zu-Task Drops. Header sind nicht droppable (explizit deaktiviert).
 - Innerhalb eines Tages: Drag über einen Task
   - Drop „nach oben“ ⇒ der gezogene Task steht direkt über dem Ziel-Task
   - Drop „nach unten“ ⇒ der gezogene Task steht direkt unter dem Ziel-Task
   - Drop auf den letzten Task „nach unten“ ⇒ der gezogene Task steht am Ende des Tages
 
 2) Tageswechsel per Drag
-- Beim Ziehen über Tagesgrenzen sieht man in der Liste, wo der Task landen würde (Vorschau). Header bewegen sich visuell korrekt mit.
-- Nach dem Drop landet der Task genau an der in der Vorschau gezeigten Stelle und übernimmt das Datum der Zielgruppe.
+- Tageswechsel erfolgt ausschließlich durch Drop auf einen anderen Task der Zielgruppe (vor/hinter diesen Task). Drop auf Gruppen-Header ist deaktiviert.
+- Beim Ziehen über Tagesgrenzen zeigt die Liste weiterhin die Ziel-Position anhand der Task-zu-Task-Hover-Position (kein Header-Drop mehr).
 
 3) Reaktionsschnell und stabil
 - Keine unendlichen Ladevorgänge oder Flackern.
@@ -47,7 +47,7 @@ if (movingDown) {
 **Status:** ❓ UNGETESTET - Wegen Problem #1
 
 ### **3. Header-Drops deaktiviert**
-**Status:** ✅ KORREKT - Header sind nicht droppable (Komponenten-Registrierung entfernt)
+**Status:** ✅ KORREKT - Header sind nicht droppable (Droppable-Registrierung entfernt, Drops auf Header werden ignoriert)
 
 ## 🔧 **Technische Implementierung:**
 
@@ -65,7 +65,7 @@ const handleDragEnd = async (event: DragEndEvent) => {
 
   // Nur Task-zu-Task Drops erlauben
   if (overElement.type !== 'task') {
-    console.log('🚫 Drop auf Header nicht erlaubt - ignoriert');
+    // Drop auf Header ist deaktiviert/ignoriert
     return;
   }
 
