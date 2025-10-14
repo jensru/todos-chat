@@ -13,6 +13,8 @@
 - Tageswechsel erfolgt ausschließlich durch Drop auf einen anderen Task der Zielgruppe (vor/hinter diesen Task). Drop auf Gruppen-Header ist deaktiviert.
 - Beim Ziehen über Tagesgrenzen zeigt die Liste weiterhin die Ziel-Position anhand der Task-zu-Task-Hover-Position (kein Header-Drop mehr).
 
+Hinweis: Beim „Platz machen“ darf der aktive Task während des Dragging nicht bereits das Datum wechseln. Stattdessen entsteht der Eindruck, als würde sich die Headline mitbewegen, indem am Gruppenanfang optisch ein Einfügeabstand angezeigt wird. Das Datum wird erst beim Drop übernommen.
+
 3) Reaktionsschnell und stabil
 - Keine unendlichen Ladevorgänge oder Flackern.
 - Animationen sind dezent und stören nicht.
@@ -23,13 +25,13 @@
 
 - Einheitlicher Drag-State: identisch innerhalb eines Tages und über Tagesgrenzen; keine Rotation, dezente Skalierung (scale-105).
 - Nur Task-zu-Task: Header sind nicht droppable. Überfahren eines Tasks zeigt die exakte Drop-Position (vor/hinter diesen Task).
-- „Mitbewegende“ Headlines (visueller Eindruck): Während des Drags wirkt es so, als liefen Headlines mit – technisch entsteht dies durch temporäre Vorschau-Einordnung des aktiven Tasks in der Zielgruppe; Header bleiben passiv.
+- Flache Liste ohne Sonderzonen: Header und Tasks sind ein gemeinsamer linearer Stream; Header sind Sortable-Items (disabled), bewegen sich aber visuell mit. Keine Ghosts/Gaps.
 - Persistenz erst beim Drop: Während der Vorschau keine API-Calls.
 
 ## 🧭 Minimal-Ansatz (Keep it simple)
 
 1) Flache Rendering-Hierarchie: Tages-Header und Tasks werden als flache Sequenz je Tag gerendert.
-2) Vorschau strikt im UI-State: Während des Drags wird eine „effektive Gruppierung“ berechnet, die den aktiven Task temporär vor/hinter den overTask einordnet. Keine Persistenz im Move.
+2) Vorschau ohne Live-Umsortierung: Während des Drags wird keine Datenliste umgebaut. Keine Gaps/Ghosts/Sonderdroppables – die natürliche Kollapsierung der Liste sorgt für den Effekt.
 3) Drop minimal persistieren:
    - Gleiches Datum → handleReorderWithinDate(dateKey, taskIds)
    - Anderes Datum → handleReorderAcrossDates(taskId, newDate, insertIndex)
@@ -38,9 +40,9 @@
 ## ⚠️ Technische Hürden (High-Level)
 
 - Datum/Zeitzone: Lokale Datumslogik (YYYY-MM-DD) strikt nutzen (kein UTC-Versatz).
-- Over-State-Flattern: Zu viele State-Updates im onDragMove verursachen Sprünge. Lösung: nur überItem und delta.y im State halten und die Liste aus genau einer getEffectiveGroupedTasks()-Funktion speisen.
+- Over-State-Flattern: Zu viele State-Updates im onDragMove verursachen Sprünge. Lösung: kein Live-Reorder, minimale States, Rendering nur aus dem Store/Hook.
 - Endlos-Reloads vermeiden: Keine tasks-Dependencies in useCallback; tasksRef verwenden. Keine Reloads in Fehlerpfaden von Optimistic-Updates.
-- Header-Interaktion: Header bleiben nicht droppable; der „Mitbewegungs“-Effekt entsteht ausschließlich durch die Vorschau-Reihenfolge.
+- Header-Interaktion: Header sind Sortable-Items (disabled) und Teil der flachen Liste. Kein Droppable am Header, kein Sonderverhalten.
 
 ## ✅ Testfälle (manuell)
 
@@ -48,7 +50,7 @@
   - Nach oben ziehen → landet vor Ziel-Task
   - Nach unten ziehen → landet hinter Ziel-Task
 - Über Tagesgrenzen:
-  - In späteren Tag ziehen, über Task hovern → Drop; Task landet korrekt und übernimmt Datum
+  - Über den Header des Ziel-Tags hinwegziehen → Liste darüber collapst, Header rutscht hoch. Drop an erster Position des Ziel-Tags; Datum wird übernommen.
   - In früheren Tag ziehen → entsprechend korrekt
 - Edge Cases:
   - Drag-Start/Ende ohne Flackern/Flattern

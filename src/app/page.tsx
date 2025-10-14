@@ -93,8 +93,8 @@ function SortableTaskCard({ task, onUpdate, onDelete, activeTask: _activeTask, i
   );
 }
 
-// Drop Zone Date Header Component (nicht sortierbar, nur Drop-Zone)
-function DropZoneDateHeader({ dateKey, formatDate, taskCount, tasks }: {
+// Sortable Date Header (nicht draggable, aber verschiebt sich visuell mit)
+function SortableDateHeader({ dateKey, formatDate, taskCount, tasks }: {
   dateKey: string;
   formatDate: (dateString: string) => string;
   taskCount: number;
@@ -105,8 +105,19 @@ function DropZoneDateHeader({ dateKey, formatDate, taskCount, tasks }: {
   const today = new Date().toISOString().split('T')[0];
   const isToday = dateKey === today;
 
+  const { setNodeRef, transform, transition } = useSortable({
+    id: `header-${dateKey}`,
+    data: { type: 'date-header', dateKey },
+    disabled: true
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: transition || 'transform 200ms ease',
+  } as React.CSSProperties;
+
   return (
-    <div className="my-2">
+    <div ref={setNodeRef} className="my-2" style={style}>
       <h3 className={`text-lg font-semibold px-3 py-2 rounded-md flex items-center transition-colors bg-muted/20`}>
         <span className="flex-1"></span>
         <span className="text-center">
@@ -293,6 +304,7 @@ export default function HomePage(): React.JSX.Element {
 
   // Drag & Drop state
   const [activeTask, setActiveTask] = useState<any>(null);
+  // Kein Over-/Delta-State nötig bei flacher Sortierliste
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -313,6 +325,8 @@ export default function HomePage(): React.JSX.Element {
     setActiveTask(active.data.current?.task);
   };
 
+  const handleDragMove = (_event: any): void => {};
+
   const handleDragEnd = async (event: DragEndEvent): Promise<void> => {
     const { active, over } = event;
     setActiveTask(null);
@@ -329,10 +343,32 @@ export default function HomePage(): React.JSX.Element {
       return;
     }
 
-    console.log('🎯 Drag end:', {
-      task: activeTask.title,
-      overType: overElement.type
-    });
+    console.log('🎯 Drag end:', { task: activeTask.title, overType: overElement.type });
+
+    // Header-Drop: Einfügen an Index 0 der entsprechenden Tagesliste
+    if (overElement.type === 'date-header') {
+      const targetDateKey = overElement.dateKey as string;
+      const parseDateKey = (key: string): Date | null => {
+        if (!key || key === 'ohne-datum') return null;
+        const [year, month, day] = key.split('-').map(Number);
+        return new Date(year, month - 1, day);
+      };
+
+      const sourceDateKey = activeTask.dueDate ? formatDateToYYYYMMDD(activeTask.dueDate) : 'ohne-datum';
+      const targetDate = parseDateKey(targetDateKey);
+
+      if (sourceDateKey === targetDateKey) {
+        // Innerhalb desselben Tages: an erste Position
+        const dateTasks = (groupedTasks[sourceDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
+        const ids = dateTasks.map(t => t.id).filter(id => id !== activeTask.id);
+        ids.splice(0, 0, activeTask.id);
+        await handleReorderWithinDate(sourceDateKey, ids);
+      } else {
+        // In anderen Tag: an erste Position (Index 0)
+        await handleReorderAcrossDates(activeTask.id, targetDate, 0);
+      }
+      return;
+    }
 
     // Nur Task-zu-Task Drops erlauben
     if (overElement.type !== 'task') {
@@ -346,35 +382,36 @@ export default function HomePage(): React.JSX.Element {
     const sourceDateKey = activeTask.dueDate ? formatDateToYYYYMMDD(activeTask.dueDate) : 'ohne-datum';
     const targetDateKey = overTask.dueDate ? formatDateToYYYYMMDD(overTask.dueDate) : 'ohne-datum';
 
-    // Richtung anhand der tatsächlichen Zeigerbewegung bestimmen
-    const insertAfter = (event.delta?.y ?? 0) > 0;
+    // Richtung anhand der tatsächlichen Zeigerbewegung bestimmen (bei Cross-Date unten anhängen handled unten)
 
     // Ziel-Liste (ohne den aktiven Task) vorbereiten
-    const targetListOriginal = (groupedTasks[targetDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
-    const targetList = targetListOriginal.filter(t => t.id !== activeTask.id);
-
-    // Index des Over-Tasks in der bereinigten Ziel-Liste
+    const targetList = (groupedTasks[targetDateKey] || [])
+      .slice()
+      .sort((a, b) => a.globalPosition - b.globalPosition)
+      .filter(t => t.id !== activeTask.id);
     const overIndexInTarget = targetList.findIndex(t => t.id === overTask.id);
     const baseInsertIndex = overIndexInTarget === -1 ? targetList.length : overIndexInTarget;
-    const insertIndex = Math.max(0, Math.min(targetList.length, baseInsertIndex + (insertAfter ? 1 : 0)));
+    const isCrossDate = sourceDateKey !== targetDateKey;
+    const isOverLast = overIndexInTarget === targetList.length - 1;
+    // Erlaube bei Tageswechsel das Anhängen ans Ende auch bei Aufwärtsbewegung
+    const willInsertAfter = (event.delta?.y ?? 0) > 0 || (isCrossDate && isOverLast);
+    const insertIndex = Math.max(0, Math.min(targetList.length, baseInsertIndex + (willInsertAfter ? 1 : 0)));
 
     if (sourceDateKey === targetDateKey) {
-      // Innerhalb derselben Gruppe: neue Id-Reihenfolge bilden und zentralen Reorder-Helfer nutzen
-      const withoutActive = targetList;
-      const activeIdxInOriginal = targetListOriginal.findIndex(t => t.id === activeTask.id);
-      const reordered = withoutActive.slice();
-      // Aktiven Task-Id an berechneter Position einfügen
-      reordered.splice(insertIndex, 0, targetListOriginal[activeIdxInOriginal] || activeTask);
-      const newIds = reordered.map(t => t.id);
-      await handleReorderWithinDate(sourceDateKey, newIds);
+      // Innerhalb derselben Gruppe: Id-Liste neu bilden und zentralen Reorder-Helfer nutzen
+      const dateTasks = (groupedTasks[sourceDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
+      const ids = dateTasks.map(t => t.id).filter(id => id !== activeTask.id);
+      ids.splice(insertIndex, 0, activeTask.id);
+      await handleReorderWithinDate(sourceDateKey, ids);
     } else {
       // Über Gruppen hinweg: zentralen Cross-Date-Reorder nutzen
       await handleReorderAcrossDates(activeTask.id, overTask.dueDate ?? null, insertIndex);
     }
   };
 
+  // Kein Header-Hover nötig
 
-  // Helper function to create flat list of all items
+  // Helper function to create flat list of all items aus aktueller Gruppierung
   const getFlatList = () => {
     const flatList: Array<{id: string, type: string, task?: any, dateKey?: string, date?: Date | null}> = [];
     
@@ -387,17 +424,9 @@ export default function HomePage(): React.JSX.Element {
     
     sortedDateKeys.forEach(dateKey => {
       const dateTasks = groupedTasks[dateKey];
-      
-      // Add date header
-      flatList.push({
-        id: `header-${dateKey}`,
-        type: 'date-header',
-        dateKey,
-        date: dateKey === 'ohne-datum' ? null : (() => {
-          const [year, month, day] = dateKey.split('-').map(Number);
-          return new Date(year, month - 1, day); // Local date, not UTC
-        })()
-      });
+
+      // Add date header as flat list item
+      flatList.push({ id: `header-${dateKey}`, type: 'date-header', dateKey });
       
       // Add tasks for this date (sorted by globalPosition to maintain DB order)
       const sortedTasks = [...dateTasks].sort((a, b) => a.globalPosition - b.globalPosition);
@@ -647,6 +676,7 @@ export default function HomePage(): React.JSX.Element {
           <DndContext
             sensors={sensors}
             onDragStart={handleDragStart}
+            onDragMove={handleDragMove}
             onDragEnd={handleDragEnd}
             collisionDetection={closestCenter}
             measuring={{
@@ -656,19 +686,21 @@ export default function HomePage(): React.JSX.Element {
             }}
           >
             <SortableContext 
-              items={getFlatList().filter(item => item.type === 'task').map(item => item.id)} 
+              items={getFlatList().map(item => item.id)} 
               strategy={verticalListSortingStrategy}
             >
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 {getFlatList().map((item) => (
                   <div key={item.id}>
                     {item.type === 'date-header' ? (
-                      <DropZoneDateHeader
-                        dateKey={item.dateKey!}
-                        formatDate={formatDate}
-                        taskCount={groupedTasks[item.dateKey!]?.length || 0}
-                        tasks={groupedTasks[item.dateKey!] || []}
-                      />
+                      <>
+                        <SortableDateHeader
+                          dateKey={item.dateKey!}
+                          formatDate={formatDate}
+                          taskCount={groupedTasks[item.dateKey!]?.length || 0}
+                          tasks={groupedTasks[item.dateKey!] || []}
+                        />
+                      </>
                     ) : (
                       <SortableTaskCard
                         task={item.task}
