@@ -233,6 +233,10 @@ Nach Fix der API-Calls die Drag & Drop Positionierung testen und ggf. anpassen.
 - [ ] Smooth Animationen
 - [ ] Keine Memory Leaks
 
+### **UI/Overlay-Details:**
+- Drag-Overlay ist gerade (keine Rotation), für klare visuelle Rückmeldung.
+- Leichte Skalierung erlaubt (`scale-105`), aber keine Schrägstellung.
+
 ## 🚀 **Nächste Schritte:**
 
 1. **KRITISCH:** Unendliche API-Calls stoppen

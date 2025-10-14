@@ -687,7 +687,7 @@ export default function HomePage(): React.JSX.Element {
             
             <DragOverlay>
               {activeTask ? (
-                <div className="opacity-90 rotate-3 scale-105 shadow-2xl">
+                <div className="opacity-90 scale-105 shadow-2xl">
                   <TaskCard
                     task={activeTask}
                     onUpdate={handleTaskUpdate}
