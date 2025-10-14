@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Check, Edit, GripVertical, Star, StickyNote, Trash2, X } from 'lucide-react';
+import { Calendar, Check, Clock, Edit, GripVertical, Star, StickyNote, Trash2, X } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -8,8 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Task } from '@/lib/types';
-import { formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
+import { Task, TaskWithOverdue } from '@/lib/types';
+import { formatDateForDisplay, formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 
 // Helper function to safely convert date to ISO string (local timezone)
 const safeDateToISO = (date: any): string => {
@@ -31,7 +31,7 @@ const safeDateToISO = (date: any): string => {
 };
 
 interface ITaskCardProps {
-  task: Task;
+  task: TaskWithOverdue;
   onUpdate: (taskId: string, updates: Partial<Task>) => void;
   onDelete: (taskId: string) => void;
   // Drag & Drop props
@@ -207,7 +207,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   return (
     <Card 
       ref={dragRef}
-      className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md ${isDragging ? 'opacity-50 shadow-lg' : ''} ${isNew ? 'animate-slide-in' : ''} ${isAnimating ? (isMovingUp ? 'animate-slide-up' : 'animate-slide-down') : ''}`}
+      className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md ${isDragging ? 'opacity-50 shadow-lg' : ''} ${isNew ? 'animate-slide-in' : ''} ${isAnimating ? (isMovingUp ? 'animate-slide-up' : 'animate-slide-down') : ''} ${task.isOverdue && !task.completed ? 'border-l-4 border-l-red-500 bg-red-50/30' : ''}`}
     >
       <CardContent className="px-3 py-0">
         <div className="flex items-center justify-between">
@@ -289,9 +289,20 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                 </div>
               </div>
             ) : (
-              <h3 className={`text-base font-normal flex-1 truncate ${task.completed ? 'line-through opacity-60' : ''}`} style={{ fontSize: '16px', lineHeight: '1.5' }}>
-                {task.title}
-              </h3>
+              <div className="flex-1 min-w-0">
+                <h3 className={`text-base font-normal truncate ${task.completed ? 'line-through opacity-60' : ''}`} style={{ fontSize: '16px', lineHeight: '1.5' }}>
+                  {task.title}
+                </h3>
+                {/* Overdue Label */}
+                {task.isOverdue && !task.completed && (
+                  <div className="flex items-center gap-1 mt-1">
+                    <Clock className="h-3 w-3 text-red-500" />
+                    <span className="text-xs text-red-600 font-medium">
+                      Überfällig seit {task.originalDueDate ? formatDateForDisplay(task.originalDueDate) : 'unbekannt'}
+                    </span>
+                  </div>
+                )}
+              </div>
             )}
             
             {/* Category Badge */}

@@ -16,6 +16,14 @@ export interface ITask {
   globalPosition: number;
 }
 
+// Erweiterte Task-Interface für überfällige Tasks
+export interface ITaskWithOverdue extends ITask {
+  isOverdue: boolean;           // Wird dynamisch berechnet
+  originalDueDate: string | undefined;    // YYYY-MM-DD für überfällige Tasks
+  displayDate: string;         // "heute" für überfällige Tasks
+  overdueSince: Date | undefined;         // Wann wurde der Task überfällig
+}
+
 export interface ISubtask {
   id: string;
   title: string;
@@ -41,6 +49,7 @@ export interface IMessage {
 
 // Type aliases for easier usage
 export type Task = ITask;
+export type TaskWithOverdue = ITaskWithOverdue;
 export type Subtask = ISubtask;
 export type Goal = IGoal;
 export type Message = IMessage;

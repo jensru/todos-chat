@@ -1,6 +1,6 @@
 // src/lib/services/ApiTaskService.ts - API-based Task Service
-import { Task } from '@/lib/types';
-import { convertDateForAPI, parseDatabaseDate } from '@/lib/utils/dateUtils';
+import { Task, TaskWithOverdue } from '@/lib/types';
+import { convertDateForAPI, formatDateToYYYYMMDD, getTodayAsYYYYMMDD, parseDatabaseDate } from '@/lib/utils/dateUtils';
 
 export class ApiTaskService {
   async loadTasks(): Promise<Task[]> {
@@ -29,6 +29,28 @@ export class ApiTaskService {
       console.error('ApiTaskService.loadTasks - error:', error);
       return [];
     }
+  }
+
+  // Neue Methode: Tasks mit Overdue-Status laden
+  async loadTasksWithOverdue(): Promise<TaskWithOverdue[]> {
+    const tasks = await this.loadTasks();
+    return tasks.map(this.calculateOverdueStatus);
+  }
+
+  // Overdue-Status berechnen
+  private calculateOverdueStatus(task: Task): TaskWithOverdue {
+    const today = getTodayAsYYYYMMDD();
+    const taskDate = task.dueDate ? formatDateToYYYYMMDD(task.dueDate) : 'ohne-datum';
+    
+    const isOverdue = taskDate !== 'ohne-datum' && taskDate < today;
+    
+    return {
+      ...task,
+      isOverdue,
+      originalDueDate: taskDate !== 'ohne-datum' ? taskDate : undefined,
+      displayDate: isOverdue ? today : taskDate,
+      overdueSince: isOverdue ? task.dueDate : undefined
+    };
   }
 
   async updateTask(taskId: string, updates: Partial<Task>): Promise<boolean> {

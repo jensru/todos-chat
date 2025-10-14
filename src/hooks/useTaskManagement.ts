@@ -4,17 +4,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ApiTaskService } from '@/lib/services/ApiTaskService';
-import { ITask as Task } from '@/lib/types';
-import { formatDateForDisplay, formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
+import { ITask as Task, TaskWithOverdue } from '@/lib/types';
+import { formatDateForDisplay, formatDateToYYYYMMDD, getTodayAsYYYYMMDD } from '@/lib/utils/dateUtils';
 
 export function useTaskManagement(): {
   tasks: Task[];
+  tasksWithOverdue: TaskWithOverdue[];
   loading: boolean;
   handleTaskUpdate: (taskId: string, updates: Partial<Task>) => Promise<void>;
   handleTaskDelete: (taskId: string) => Promise<void>;
   handleAddTask: (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
   getTaskStats: () => { total: number; completed: number; active: number; highPriority: number; completionRate: number };
-  groupedTasks: Record<string, Task[]>;
+  groupedTasks: Record<string, TaskWithOverdue[]>;
   formatDate: (dateString: string) => string;
   loadData: () => Promise<void>;
   // Drag & Drop methods
@@ -122,17 +123,28 @@ export function useTaskManagement(): {
     return taskService.getTaskStats(tasks);
   }, [taskService, tasks]);
 
+  // Neue groupedTasks-Logik mit Overdue-Support
   const groupedTasks = useMemo(() => {
+    const today = getTodayAsYYYYMMDD();
+    
     const grouped = tasks
       .filter(task => !task.completed)
       .reduce((acc, task) => {
         let dateKey = 'ohne-datum';
+        let isOverdue = false;
 
         if (task.dueDate) {
           try {
             if (!isNaN(task.dueDate.getTime())) {
               const taskDate = formatDateToYYYYMMDD(task.dueDate);
-              dateKey = taskDate;
+              
+              // Prüfe ob Task überfällig ist
+              if (taskDate < today) {
+                isOverdue = true;
+                dateKey = today; // Überfällige Tasks in "Heute"-Gruppe
+              } else {
+                dateKey = taskDate;
+              }
             }
           } catch {
             dateKey = 'ohne-datum';
@@ -142,16 +154,50 @@ export function useTaskManagement(): {
         if (!acc[dateKey]) {
           acc[dateKey] = [];
         }
-        acc[dateKey].push(task);
+        
+        // Erstelle TaskWithOverdue
+        const taskWithOverdue: TaskWithOverdue = {
+          ...task,
+          isOverdue,
+          originalDueDate: task.dueDate ? formatDateToYYYYMMDD(task.dueDate) : undefined,
+          displayDate: isOverdue ? today : (task.dueDate ? formatDateToYYYYMMDD(task.dueDate) : 'ohne-datum'),
+          overdueSince: isOverdue ? task.dueDate : undefined
+        };
+        
+        acc[dateKey].push(taskWithOverdue);
         return acc;
-      }, {} as Record<string, Task[]>);
+      }, {} as Record<string, TaskWithOverdue[]>);
 
-    // Sort each group by globalPosition
-    Object.keys(grouped).forEach(dateKey => {
-      grouped[dateKey].sort((a, b) => a.globalPosition - b.globalPosition);
+    // Sortiere: Heute (mit überfälligen) immer oben
+    const sortedEntries = Object.entries(grouped).sort(([a], [b]) => {
+      if (a === today) return -1; // Heute immer oben
+      if (b === today) return 1;
+      return a.localeCompare(b);
     });
 
-    return grouped;
+    // Sortiere Tasks innerhalb jeder Gruppe nach globalPosition
+    sortedEntries.forEach(([, tasks]) => {
+      tasks.sort((a, b) => a.globalPosition - b.globalPosition);
+    });
+
+    return Object.fromEntries(sortedEntries);
+  }, [tasks]);
+
+  // Tasks mit Overdue-Status für Kompatibilität
+  const tasksWithOverdue = useMemo(() => {
+    return tasks.map(task => {
+      const today = getTodayAsYYYYMMDD();
+      const taskDate = task.dueDate ? formatDateToYYYYMMDD(task.dueDate) : 'ohne-datum';
+      const isOverdue = taskDate !== 'ohne-datum' && taskDate < today;
+      
+      return {
+        ...task,
+        isOverdue,
+        originalDueDate: taskDate !== 'ohne-datum' ? taskDate : undefined,
+        displayDate: isOverdue ? today : taskDate,
+        overdueSince: isOverdue ? task.dueDate : undefined
+      };
+    });
   }, [tasks]);
 
   const formatDate = useCallback((dateString: string): string => {
@@ -286,6 +332,7 @@ export function useTaskManagement(): {
 
   return {
     tasks,
+    tasksWithOverdue,
     loading,
     handleTaskUpdate,
     handleTaskDelete,

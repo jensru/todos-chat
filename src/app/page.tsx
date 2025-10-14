@@ -93,10 +93,11 @@ function SortableTaskCard({ task, onUpdate, onDelete, activeTask: _activeTask, i
 }
 
 // Drop Zone Date Header Component (nicht sortierbar, nur Drop-Zone)
-function DropZoneDateHeader({ dateKey, formatDate, taskCount }: {
+function DropZoneDateHeader({ dateKey, formatDate, taskCount, tasks }: {
   dateKey: string;
   formatDate: (dateString: string) => string;
   taskCount: number;
+  tasks: any[];
 }) {
   // Parse dateKey correctly as local date (not UTC)
   const parseDateKey = (key: string): Date | null => {
@@ -117,13 +118,25 @@ function DropZoneDateHeader({ dateKey, formatDate, taskCount }: {
     }
   });
 
+  // Zähle überfällige Tasks
+  const overdueCount = tasks.filter(task => task.isOverdue).length;
+  const today = new Date().toISOString().split('T')[0];
+  const isToday = dateKey === today;
+
   return (
     <div ref={setNodeRef} className="my-2">
       <h3 className={`text-lg font-semibold px-3 py-2 rounded-md flex items-center transition-colors ${
         isOver ? 'bg-primary/20 border-2 border-primary/30' : 'bg-muted/20'
       }`}>
         <span className="flex-1"></span>
-        <span className="text-center">{formatDate(dateKey)}</span>
+        <span className="text-center">
+          {formatDate(dateKey)}
+          {isToday && overdueCount > 0 && (
+            <span className="ml-2 text-sm text-red-600 font-normal">
+              ({overdueCount} überfällig)
+            </span>
+          )}
+        </span>
         <span className="flex-1 text-right text-sm text-muted-foreground font-normal">
           {taskCount} Tasks
         </span>
@@ -723,6 +736,7 @@ export default function HomePage(): React.JSX.Element {
                         dateKey={item.dateKey!}
                         formatDate={formatDate}
                         taskCount={groupedTasks[item.dateKey!]?.length || 0}
+                        tasks={groupedTasks[item.dateKey!] || []}
                       />
                     ) : (
                       <SortableTaskCard
