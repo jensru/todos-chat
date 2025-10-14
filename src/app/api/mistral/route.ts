@@ -41,6 +41,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           - taskPosition: "first", "last", "only task from today"
           - taskTitle: partial match like "Brief" for "Brief schreiben an Peter"
           - dueDate: Use ISO format YYYY-MM-DD (e.g., "2024-10-12" for today)
+          - If the user does not specify any date, DEFAULT the dueDate to TODAY'S DATE (YYYY-MM-DD)
           
           ALWAYS use the appropriate tool directly - no need to list tasks first.
           
@@ -171,20 +172,37 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
     console.log('handleCreateTaskServerSide - args:', args);
     console.log('handleCreateTaskServerSide - userId:', userId);
     
-    // Parse dueDate intelligently - DEFAULT to today if no date specified
-    let dueDate = null;
-    if (args.dueDate) {
-      if (args.dueDate === 'heute' || args.dueDate === 'today') {
+    // Parse dueDate intelligently - DEFAULT to today if no valid date specified
+    let dueDate = null as string | null;
+    const rawDueInput = typeof args.dueDate === 'string' ? args.dueDate.trim() : args.dueDate;
+
+    if (rawDueInput !== undefined && rawDueInput !== null && rawDueInput !== '') {
+      const normalized = typeof rawDueInput === 'string' ? rawDueInput.toLowerCase() : rawDueInput;
+
+      // Treat common "no date" synonyms as missing → default to today below
+      const noDateSynonyms = ['none', 'no date', 'kein datum', 'ohne datum', 'ohne-datum', 'keine', 'null', 'ohne'];
+      if (typeof normalized === 'string' && noDateSynonyms.includes(normalized)) {
+        dueDate = null;
+      } else if (normalized === 'heute' || normalized === 'today') {
         dueDate = getTodayAsYYYYMMDD();
-      } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
+      } else if (normalized === 'morgen' || normalized === 'tomorrow') {
         dueDate = getTomorrowAsYYYYMMDD();
-      } else {
-        // Assume it's already in YYYY-MM-DD format
-        dueDate = args.dueDate;
+      } else if (typeof normalized === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
+        // Already in YYYY-MM-DD
+        dueDate = normalized;
+      } else if (typeof normalized === 'string') {
+        // Try to parse arbitrary date strings and normalize
+        const parsed = new Date(normalized);
+        if (!isNaN(parsed.getTime())) {
+          dueDate = formatDateToYYYYMMDD(parsed);
+        } else {
+          // Fallback to today if unparseable
+          dueDate = null;
+        }
       }
     }
-    
-    // DEFAULT: If no dueDate specified, set to today
+
+    // DEFAULT: If no (valid) dueDate specified, set to today
     if (!dueDate) {
       dueDate = getTodayAsYYYYMMDD();
     }
@@ -293,28 +311,27 @@ async function handleUpdateTaskServerSide(args: any, supabase: any, userId: stri
       return `❌ Keine Task-ID oder Titel angegeben.`;
     }
     
-    // Parse dueDate if provided
-    let dueDate = args.dueDate;
-    if (args.dueDate) {
-      if (args.dueDate === 'heute' || args.dueDate === 'today') {
+    // Parse dueDate if provided (normalize synonyms and free-form input)
+    let dueDate = args.dueDate as string | undefined;
+    if (args.dueDate !== undefined && args.dueDate !== null && args.dueDate !== '') {
+      const raw = String(args.dueDate).trim().toLowerCase();
+      const noDateSynonyms = ['none', 'no date', 'kein datum', 'ohne datum', 'ohne-datum', 'keine', 'null', 'ohne'];
+      if (noDateSynonyms.includes(raw)) {
+        dueDate = undefined;
+      } else if (raw === 'heute' || raw === 'today') {
         dueDate = getTodayAsYYYYMMDD();
-      } else if (args.dueDate === 'morgen' || args.dueDate === 'tomorrow') {
+      } else if (raw === 'morgen' || raw === 'tomorrow') {
         dueDate = getTomorrowAsYYYYMMDD();
-      } else if (typeof args.dueDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(args.dueDate)) {
-        // Already in YYYY-MM-DD format
-        dueDate = args.dueDate;
+      } else if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+        // Already YYYY-MM-DD
+        dueDate = raw;
       } else {
-        // Try to parse as date and convert to YYYY-MM-DD
-        try {
-          const parsedDate = new Date(args.dueDate);
-          if (!isNaN(parsedDate.getTime())) {
-            dueDate = formatDateToYYYYMMDD(parsedDate);
-          } else {
-            console.warn('Invalid date format:', args.dueDate);
-            dueDate = undefined;
-          }
-        } catch (error) {
-          console.warn('Date parsing error:', error, 'date:', args.dueDate);
+        // Try to parse other strings
+        const parsed = new Date(raw);
+        if (!isNaN(parsed.getTime())) {
+          dueDate = formatDateToYYYYMMDD(parsed);
+        } else {
+          console.warn('Invalid date format:', args.dueDate);
           dueDate = undefined;
         }
       }
