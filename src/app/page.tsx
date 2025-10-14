@@ -19,9 +19,16 @@ import { useTaskManagement } from '@/hooks/useTaskManagement';
 import { useUserSettings } from '@/hooks/useUserSettings';
 import { useTranslation } from '@/lib/i18n';
 import { createClient } from '@/lib/supabase/client';
+import { ITask as Task, TaskWithOverdue } from '@/lib/types';
 import { formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 import { parseAndSanitizeMarkdown } from '@/lib/utils/markdownParser';
 import { useEffect, useRef, useState } from 'react';
+
+type FlatListTaskItem = { id: string; type: 'task'; task: TaskWithOverdue };
+type FlatListHeaderItem = { id: string; type: 'date-header'; dateKey: string };
+type FlatListItem = FlatListTaskItem | FlatListHeaderItem;
+
+const ENABLE_DEBUG_LOGS = false;
 
 // Speech Recognition types
 declare global {
@@ -45,14 +52,14 @@ interface SpeechRecognition {
 
 // Sortable Task Card Component
 function SortableTaskCard({ task, onUpdate, onDelete, activeTask: _activeTask, isNewTask, isMovingUp, isMovingDown }: {
-  task: any;
-  onUpdate: (taskId: string, updates: Partial<any>) => Promise<void>;
+  task: TaskWithOverdue;
+  onUpdate: (taskId: string, updates: Partial<Task>) => Promise<void>;
   onDelete: (taskId: string) => Promise<void>;
-  activeTask?: any;
+  activeTask?: TaskWithOverdue;
   isNewTask?: boolean;
   isMovingUp?: boolean;
   isMovingDown?: boolean;
-}) {
+}): React.JSX.Element {
   const {
     attributes,
     listeners,
@@ -98,8 +105,8 @@ function SortableDateHeader({ dateKey, formatDate, taskCount, tasks }: {
   dateKey: string;
   formatDate: (dateString: string) => string;
   taskCount: number;
-  tasks: any[];
-}) {
+  tasks: TaskWithOverdue[];
+}): React.JSX.Element {
   // Zähle überfällige Tasks
   const overdueCount = tasks.filter(task => task.isOverdue).length;
   const today = new Date().toISOString().split('T')[0];
@@ -161,7 +168,7 @@ export default function HomePage(): React.JSX.Element {
   // Supabase client for logout
   const supabase = createClient();
 
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     try {
       await supabase.auth.signOut();
       window.location.href = '/login';
@@ -239,17 +246,20 @@ export default function HomePage(): React.JSX.Element {
       };
       
       setRecognition(recognitionInstance);
-      console.log('Speech recognition initialized with language:', recognitionInstance.lang);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('Speech recognition initialized with language:', recognitionInstance.lang);
+      }
     }
   }, [settings.speechLanguage, isReady]);
 
-  const startListening = () => {
+  const startListening = (): void => {
     if (recognition && !isListening) {
       recognition.start();
     }
   };
 
-  const stopListening = () => {
+  const stopListening = (): void => {
     if (recognition && isListening) {
       recognition.stop();
     }
@@ -303,7 +313,9 @@ export default function HomePage(): React.JSX.Element {
   }, [isChatOpen]);
 
   // Drag & Drop state
-  const [activeTask, setActiveTask] = useState<any>(null);
+  const [activeTask, setActiveTask] = useState<TaskWithOverdue | null>(null);
+  // Merker: zuletzt überfahrene Task-Gruppe (DateKey) während des Drag
+  const lastOverTaskDateKeyRef = useRef<string | null>(null);
   // Kein Over-/Delta-State nötig bei flacher Sortierliste
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -322,10 +334,24 @@ export default function HomePage(): React.JSX.Element {
   // Drag & Drop handlers
   const handleDragStart = (event: DragStartEvent): void => {
     const { active } = event;
-    setActiveTask(active.data.current?.task);
+    const taskFromData = active.data.current?.task as TaskWithOverdue | undefined;
+    setActiveTask(taskFromData ?? null);
+    if (taskFromData) {
+      const key = (taskFromData as any).displayDate || (taskFromData.dueDate ? formatDateToYYYYMMDD(taskFromData.dueDate) : 'ohne-datum');
+      lastOverTaskDateKeyRef.current = key;
+    } else {
+      lastOverTaskDateKeyRef.current = null;
+    }
   };
 
-  const handleDragMove = (_event: any): void => {};
+  const handleDragMove = (event: any): void => {
+    const { over } = event;
+    const overElement = over?.data?.current as { type?: string; task?: TaskWithOverdue } | undefined;
+    if (overElement && overElement.type === 'task' && overElement.task) {
+      const key = (overElement.task as any).displayDate || (overElement.task.dueDate ? formatDateToYYYYMMDD(overElement.task.dueDate) : 'ohne-datum');
+      lastOverTaskDateKeyRef.current = key;
+    }
+  };
 
   const handleDragEnd = async (event: DragEndEvent): Promise<void> => {
     const { active, over } = event;
@@ -339,37 +365,59 @@ export default function HomePage(): React.JSX.Element {
     const overElement = over.data.current;
 
     if (!overElement) {
-      console.log('🎯 Drag end: No over element');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('🎯 Drag end: No over element');
+      }
       return;
     }
 
-    console.log('🎯 Drag end:', { task: activeTask.title, overType: overElement.type });
+    if (ENABLE_DEBUG_LOGS) {
+      // eslint-disable-next-line no-console
+      console.log('🎯 Drag end:', { task: activeTask.title, overType: overElement.type });
+    }
 
-    // Header-Drop: Einfügen am Anfang oder Ende der entsprechenden Tagesliste (abhängig von Bewegungsrichtung)
+    // Header-Drop: Entscheidung über visuelle Reihenfolge (Flat-List Indexvergleich)
     if (overElement.type === 'date-header') {
-      const targetDateKey = overElement.dateKey as string;
       const parseDateKey = (key: string): Date | null => {
         if (!key || key === 'ohne-datum') return null;
         const [year, month, day] = key.split('-').map(Number);
         return new Date(year, month - 1, day);
       };
 
-      const sourceDateKey = activeTask.dueDate ? formatDateToYYYYMMDD(activeTask.dueDate) : 'ohne-datum';
-      const targetDate = parseDateKey(targetDateKey);
-      const movingUp = (event.delta?.y ?? 0) < 0;
+      const flat = getFlatList();
+      const headerIdx = flat.findIndex(i => i.id === over.id);
+      const activeIdxInFlat = flat.findIndex(i => i.id === active.id);
+      const movingDownVisually = activeIdxInFlat < headerIdx;
 
-      if (sourceDateKey === targetDateKey) {
-        // Innerhalb desselben Tages: an erste oder letzte Position
-        const dateTasks = (groupedTasks[sourceDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
-        const ids = dateTasks.map(t => t.id).filter(id => id !== activeTask.id);
-        const insertIndex = movingUp ? ids.length : 0;
-        ids.splice(insertIndex, 0, activeTask.id);
-        await handleReorderWithinDate(sourceDateKey, ids);
+      const targetDateKey = overElement.dateKey as string;
+
+      if (movingDownVisually) {
+        // Nach unten über Header → ANFANG des Ziel-Tags
+        const targetDate = parseDateKey(targetDateKey);
+        await handleReorderAcrossDates(activeTask.id, targetDate, 0);
+        return;
+      }
+
+      // Nach oben über Header → ENDE des vorherigen Tags
+      let previousDateKey: string | null = null;
+      for (let i = headerIdx - 1; i >= 0; i--) {
+        const item = flat[i];
+        if (item.type === 'date-header' && item.dateKey) {
+          previousDateKey = item.dateKey;
+          break;
+        }
+      }
+
+      if (previousDateKey) {
+        const previousList = (groupedTasks[previousDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
+        const endIndex = previousList.length;
+        const previousDate = parseDateKey(previousDateKey);
+        await handleReorderAcrossDates(activeTask.id, previousDate, endIndex);
       } else {
-        // In anderen Tag: an erste oder letzte Position (bei Aufwärtsbewegung ans Ende)
-        const targetList = (groupedTasks[targetDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
-        const insertIndex = movingUp ? targetList.length : 0;
-        await handleReorderAcrossDates(activeTask.id, targetDate, insertIndex);
+        // Fallback: kein vorheriger Header → ANFANG des Ziel-Tags
+        const targetDate = parseDateKey(targetDateKey);
+        await handleReorderAcrossDates(activeTask.id, targetDate, 0);
       }
       return;
     }
@@ -384,9 +432,9 @@ export default function HomePage(): React.JSX.Element {
 
     // Quelle- und Ziel-Gruppenschlüssel bestimmen (lokales Datum berücksichtigen)
     const sourceDateKey = activeTask.dueDate ? formatDateToYYYYMMDD(activeTask.dueDate) : 'ohne-datum';
-    const targetDateKey = overTask.dueDate ? formatDateToYYYYMMDD(overTask.dueDate) : 'ohne-datum';
+    let targetDateKey = overTask.dueDate ? formatDateToYYYYMMDD(overTask.dueDate) : 'ohne-datum';
 
-    // Richtung anhand der tatsächlichen Zeigerbewegung bestimmen (bei Cross-Date unten anhängen handled unten)
+    // Richtung ausschließlich anhand der visuellen Reihenfolge bestimmen
 
     // Ziel-Liste (ohne den aktiven Task) vorbereiten
     const targetList = (groupedTasks[targetDateKey] || [])
@@ -395,11 +443,14 @@ export default function HomePage(): React.JSX.Element {
       .filter(t => t.id !== activeTask.id);
     const overIndexInTarget = targetList.findIndex(t => t.id === overTask.id);
     const baseInsertIndex = overIndexInTarget === -1 ? targetList.length : overIndexInTarget;
-    const isCrossDate = sourceDateKey !== targetDateKey;
-    const isOverLast = overIndexInTarget === targetList.length - 1;
-    // Erlaube bei Tageswechsel das Anhängen ans Ende auch bei Aufwärtsbewegung
-    const willInsertAfter = (event.delta?.y ?? 0) > 0 || (isCrossDate && isOverLast);
-    const insertIndex = Math.max(0, Math.min(targetList.length, baseInsertIndex + (willInsertAfter ? 1 : 0)));
+
+    // Richtung ausschließlich über die visuelle Reihenfolge (Flat-List) bestimmen
+    const flat = getFlatList();
+    const activeIdxInFlat = flat.findIndex(i => i.id === active.id);
+    const overIdxInFlat = flat.findIndex(i => i.id === over.id);
+    const shouldInsertAfter = activeIdxInFlat < overIdxInFlat;
+
+    const insertIndex = Math.max(0, Math.min(targetList.length, baseInsertIndex + (shouldInsertAfter ? 1 : 0)));
 
     if (sourceDateKey === targetDateKey) {
       // Innerhalb derselben Gruppe: Id-Liste neu bilden und zentralen Reorder-Helfer nutzen
@@ -409,15 +460,21 @@ export default function HomePage(): React.JSX.Element {
       await handleReorderWithinDate(sourceDateKey, ids);
     } else {
       // Über Gruppen hinweg: zentralen Cross-Date-Reorder nutzen
-      await handleReorderAcrossDates(activeTask.id, overTask.dueDate ?? null, insertIndex);
+      const parseDateKey = (key: string): Date | null => {
+        if (!key || key === 'ohne-datum') return null;
+        const [year, month, day] = key.split('-').map(Number);
+        return new Date(year, month - 1, day);
+      };
+      const targetDateObj = parseDateKey(targetDateKey);
+      await handleReorderAcrossDates(activeTask.id, targetDateObj, insertIndex);
     }
   };
 
   // Kein Header-Hover nötig
 
   // Helper function to create flat list of all items aus aktueller Gruppierung
-  const getFlatList = () => {
-    const flatList: Array<{id: string, type: string, task?: any, dateKey?: string, date?: Date | null}> = [];
+  const getFlatList = (): FlatListItem[] => {
+    const flatList: FlatListItem[] = [];
     
     // Sort date keys chronologically
     const sortedDateKeys = Object.keys(groupedTasks).sort((a, b) => {
@@ -435,11 +492,7 @@ export default function HomePage(): React.JSX.Element {
       // Add tasks for this date (sorted by globalPosition to maintain DB order)
       const sortedTasks = [...dateTasks].sort((a, b) => a.globalPosition - b.globalPosition);
       sortedTasks.forEach(task => {
-        flatList.push({
-          id: task.id,
-          type: 'task',
-          task
-        });
+        flatList.push({ id: task.id, type: 'task', task });
       });
     });
     
@@ -713,7 +766,6 @@ export default function HomePage(): React.JSX.Element {
                         isNewTask={newTaskIds.has(item.task.id)}
                         isMovingUp={movingUpTaskIds.has(item.task.id)}
                         isMovingDown={movingDownTaskIds.has(item.task.id)}
-                        activeTask={activeTask}
                       />
                     )}
                   </div>

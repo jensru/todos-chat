@@ -2,6 +2,8 @@
 import { Task, TaskWithOverdue } from '@/lib/types';
 import { convertDateForAPI, formatDateToYYYYMMDD, getTodayAsYYYYMMDD, parseDatabaseDate } from '@/lib/utils/dateUtils';
 
+const ENABLE_DEBUG_LOGS = false;
+
 export class ApiTaskService {
   async loadTasks(): Promise<Task[]> {
     try {
@@ -26,7 +28,10 @@ export class ApiTaskService {
       // Loaded tasks from API
       return tasks;
     } catch (error) {
-      console.error('ApiTaskService.loadTasks - error:', error);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.error('ApiTaskService.loadTasks - error:', error);
+      }
       return [];
     }
   }
@@ -55,7 +60,10 @@ export class ApiTaskService {
 
   async updateTask(taskId: string, updates: Partial<Task>): Promise<boolean> {
     try {
-      console.log('ApiTaskService.updateTask - updating task:', taskId, updates);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.updateTask - updating task:', taskId, updates);
+      }
       
       // Convert Date objects to YYYY-MM-DD format for API
       const apiUpdates: Partial<Task> = { ...updates };
@@ -76,17 +84,26 @@ export class ApiTaskService {
       }
 
       const result = await response.json();
-      console.log('ApiTaskService.updateTask - task updated successfully');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.updateTask - task updated successfully');
+      }
       return result.success;
     } catch (error) {
-      console.error('ApiTaskService.updateTask - error:', error);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.error('ApiTaskService.updateTask - error:', error);
+      }
       return false;
     }
   }
 
   async addTask(task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>): Promise<boolean> {
     try {
-      console.log('ApiTaskService.addTask - adding new task:', task.title);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.addTask - adding new task:', task.title);
+      }
       
       // Calculate date-based position for new task using LOCAL date formatting
       let dateKey = 'ohne-datum';
@@ -99,7 +116,10 @@ export class ApiTaskService {
             dateKey = `${dueDate.getFullYear()}-${String(dueDate.getMonth() + 1).padStart(2, '0')}-${String(dueDate.getDate()).padStart(2, '0')}`;
           }
         } catch (error) {
-          console.warn('Invalid dueDate in addTask:', task.dueDate, error);
+          if (ENABLE_DEBUG_LOGS) {
+            // eslint-disable-next-line no-console
+            console.warn('Invalid dueDate in addTask:', task.dueDate, error);
+          }
         }
       }
       const dateString = dateKey === 'ohne-datum' ? '999999' : dateKey.replace(/-/g, '');
@@ -124,17 +144,26 @@ export class ApiTaskService {
       }
 
       const result = await response.json();
-      console.log('ApiTaskService.addTask - task created successfully');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.addTask - task created successfully');
+      }
       return result.success;
     } catch (error) {
-      console.error('ApiTaskService.addTask - error:', error);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.error('ApiTaskService.addTask - error:', error);
+      }
       return false;
     }
   }
 
   async deleteTask(taskId: string): Promise<boolean> {
     try {
-      console.log('ApiTaskService.deleteTask - deleting task:', taskId);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.deleteTask - deleting task:', taskId);
+      }
       
       const response = await fetch(`/api/tasks/${taskId}`, {
         method: 'DELETE',
@@ -145,10 +174,16 @@ export class ApiTaskService {
       }
 
       const result = await response.json();
-      console.log('ApiTaskService.deleteTask - task deleted successfully');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.deleteTask - task deleted successfully');
+      }
       return result.success;
     } catch (error) {
-      console.error('ApiTaskService.deleteTask - error:', error);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.error('ApiTaskService.deleteTask - error:', error);
+      }
       return false;
     }
   }
@@ -198,7 +233,10 @@ export class ApiTaskService {
   // Drag & Drop methods
   async reorderTasksWithinDate(dateKey: string, taskIds: string[]): Promise<boolean> {
     try {
-      console.log('ApiTaskService.reorderTasksWithinDate - reordering tasks within date:', dateKey);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.reorderTasksWithinDate - reordering tasks within date:', dateKey);
+      }
       
       // Calculate date-based position
       const dateString = dateKey === 'ohne-datum' ? '999999' : dateKey.replace(/-/g, '');
@@ -215,30 +253,48 @@ export class ApiTaskService {
         }
       }
       
-      console.log('ApiTaskService.reorderTasksWithinDate - reordering completed');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.reorderTasksWithinDate - reordering completed');
+      }
       return true;
     } catch (error) {
-      console.error('ApiTaskService.reorderTasksWithinDate - error:', error);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.error('ApiTaskService.reorderTasksWithinDate - error:', error);
+      }
       return false;
     }
   }
 
   async moveTaskToDate(taskId: string, newDate: Date | null): Promise<boolean> {
     try {
-      console.log('ApiTaskService.moveTaskToDate - moving task:', taskId, 'to date:', newDate);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.moveTaskToDate - moving task:', taskId, 'to date:', newDate);
+      }
       
       const success = await this.updateTask(taskId, newDate ? { dueDate: newDate } : {});
-      console.log('ApiTaskService.moveTaskToDate - task moved successfully');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.moveTaskToDate - task moved successfully');
+      }
       return success;
     } catch (error) {
-      console.error('ApiTaskService.moveTaskToDate - error:', error);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.error('ApiTaskService.moveTaskToDate - error:', error);
+      }
       return false;
     }
   }
 
   async reorderTasksAcrossDates(taskId: string, targetDate: Date | null, targetIndex: number): Promise<boolean> {
     try {
-      console.log('ApiTaskService.reorderTasksAcrossDates - moving task:', taskId, 'to date:', targetDate, 'at index:', targetIndex);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.reorderTasksAcrossDates - moving task:', taskId, 'to date:', targetDate, 'at index:', targetIndex);
+      }
       
       // Calculate date-based position using LOCAL date formatting (not UTC)
       let dateKey = 'ohne-datum';
@@ -255,10 +311,16 @@ export class ApiTaskService {
         globalPosition: newPosition
       });
       
-      console.log('ApiTaskService.reorderTasksAcrossDates - task moved successfully');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('ApiTaskService.reorderTasksAcrossDates - task moved successfully');
+      }
       return success;
     } catch (error) {
-      console.error('ApiTaskService.reorderTasksAcrossDates - error:', error);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.error('ApiTaskService.reorderTasksAcrossDates - error:', error);
+      }
       return false;
     }
   }

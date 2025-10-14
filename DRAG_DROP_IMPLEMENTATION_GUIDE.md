@@ -56,39 +56,27 @@ Hinweis: Beim „Platz machen“ darf der aktive Task während des Dragging nich
   - Drag-Start/Ende ohne Flackern/Flattern
   - Keine Persistenz bis zum Drop; danach genau ein Persist-Vorgang
 
-## 🚨 **Aktuelle Probleme:**
+## 🔧 **Technische Implementierung (final):**
 
-### **1. Unendliche API-Calls (KRITISCH)**
-```
-API Debug - Starting GET /api/tasks
-API Debug - User authenticated: 22b4d68f-0f2f-4055-a920-5faa87179721
-API Debug - Found 89 tasks
-GET /api/tasks 200 in 96ms
-```
-**Problem:** `useTaskManagement.ts` hat `tasks` in den Dependencies von `useCallback` Hooks
-**Auswirkung:** Jeder Task-Update triggert `loadData()` → unendliche Schleife
-**Status:** ❌ NICHT BEHOBEN - Änderungen haben nicht funktioniert
+### **Kernprinzipien (final):**
+1) Einfüge-Entscheidung basiert ausschließlich auf der visuellen Reihenfolge der Flat-List:
+   - Vergleiche Index von `active.id` und `over.id` in der Flat-List.
+   - `activeIdx < overIdx` ⇒ Einfügen NACH `over` (Insert-Index = overIndex + 1)
+   - sonst Einfügen VOR `over` (Insert-Index = overIndex)
+2) Header-Handling ohne Sonderpersistenz:
+   - Header bleiben Sortable (disabled) für visuelle Bewegung, sind aber kein Persistenzziel.
+   - Drop über Header (visuelle Richtung, Flat-List-Indexvergleich):
+     - Nach unten über Header → ANFANG des Ziel-Tags (Index 0)
+     - Nach oben über Header → ENDE des vorherigen Tags
+3) Persistenz ausschließlich beim Drop, keine API-Calls während Drag.
+4) Keine delta.y-Heuristik mehr, keine Live-Reorder der Datenliste.
 
-### **2. Falsche Drag & Drop Positionierung**
-**Problem:** Tasks landen nicht an der korrekten Position
-**Aktuelle Logik:**
-```typescript
-const movingDown = activeTask.globalPosition < overTask.globalPosition;
-let newPosition: number;
-if (movingDown) {
-  newPosition = overTask.globalPosition + 1000; // Nach unten
-} else {
-  newPosition = overTask.globalPosition - 1000; // Nach oben
-}
-```
-**Status:** ❓ UNGETESTET - Wegen Problem #1
+### **Invarianten**
+- Einfügen richtet sich immer nach der aktuell sichtbaren Reihenfolge (Flat-List), nicht nach `delta.y`.
+- Header sind nie Persistenzziele; sie dienen nur der visuellen Orientierung.
+- Overdue-Normalisierung: Gruppenberechnung nutzt `displayDate` (überfällige Tasks gehören visuell zu „Heute“).
 
-### **3. Header-Drops deaktiviert**
-**Status:** ✅ KORREKT - Header sind nicht droppable (Droppable-Registrierung entfernt, Drops auf Header werden ignoriert)
-
-## 🔧 **Technische Implementierung:**
-
-### **Aktuelle Architektur:**
+### **Relevanter Handler-Ausschnitt:**
 ```typescript
 // page.tsx - handleDragEnd
 const handleDragEnd = async (event: DragEndEvent) => {
@@ -100,9 +88,26 @@ const handleDragEnd = async (event: DragEndEvent) => {
   const activeTask = active.data.current.task;
   const overElement = over.data.current;
 
-  // Nur Task-zu-Task Drops erlauben
-  if (overElement.type !== 'task') {
-    // Drop auf Header ist deaktiviert/ignoriert
+  // Header-Drop → Mapping auf Tasks (Anfang/Ende), keine direkte Persistenz am Header
+  if (overElement.type === 'date-header') {
+    const flat = getFlatList();
+    const headerIdx = flat.findIndex(i => i.id === over.id);
+    const activeIdxInFlat = flat.findIndex(i => i.id === active.id);
+    const movingDownVisually = activeIdxInFlat < headerIdx;
+    let targetDateKey = overElement.dateKey as string;
+    if (!movingDownVisually) {
+      // Ende des vorherigen Tages
+      for (let i = headerIdx - 1; i >= 0; i--) {
+        const item = flat[i];
+        if (item.type === 'date-header' && item.dateKey) {
+          targetDateKey = item.dateKey;
+          break;
+        }
+      }
+    }
+    const targetList = (groupedTasks[targetDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
+    const targetIndex = movingDownVisually ? 0 : targetList.length;
+    await handleReorderAcrossDates(activeTask.id, parseDateKey(targetDateKey), targetIndex);
     return;
   }
 
@@ -125,53 +130,23 @@ const handleDragEnd = async (event: DragEndEvent) => {
     return;
   }
 
-  // Über Tagesgrenzen verschieben, Position exakt bestimmen
+  // Über Tagesgrenzen verschieben, Position exakt bestimmen (visuelle Reihenfolge)
   const targetList = (groupedTasks[targetDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
   const overIndex = targetList.findIndex(t => t.id === overTask.id);
-  const movingDown = activeTask.globalPosition < overTask.globalPosition;
-  const targetIndex = Math.max(0, (overIndex === -1 ? targetList.length : overIndex) + (movingDown ? 1 : 0));
+  const flat = getFlatList();
+  const activeIdxInFlat = flat.findIndex(i => i.id === active.id);
+  const overIdxInFlat = flat.findIndex(i => i.id === over.id);
+  const shouldInsertAfter = activeIdxInFlat < overIdxInFlat;
+  const targetIndex = Math.max(0, (overIndex === -1 ? targetList.length : overIndex) + (shouldInsertAfter ? 1 : 0));
   await handleReorderAcrossDates(activeTask.id, overTask.dueDate ?? null, targetIndex);
 };
 ```
 
-### **Problem-Quellen:**
-
-#### **1. useTaskManagement.ts Dependencies:**
-```typescript
-// PROBLEM: tasks in Dependencies
-const loadData = useCallback(async (): Promise<void> => {
-  // ... load logic
-}, [taskService, tasks]); // ❌ tasks verursacht unendliche Schleife
-
-const handleTaskUpdate = useCallback(async (taskId: string, updates: Partial<Task>): Promise<void> => {
-  // ... update logic
-}, [taskService, tasks]); // ❌ tasks verursacht unendliche Schleife
-```
-
-#### **2. Optimistic Updates:**
-```typescript
-const handleTaskUpdateOptimistic = useCallback(async (taskId: string, updates: Partial<Task>): Promise<boolean> => {
-  // Update state immediately for smooth animation
-  setTasks(prevTasks =>
-    prevTasks.map(task =>
-      task.id === taskId ? { ...task, ...updates } : task
-    )
-  );
-
-  // Try to update in the service
-  try {
-    const success = await taskService.updateTask(taskId, updates);
-    if (!success) {
-      await loadData(); // ❌ Triggert unendliche Schleife
-      return false;
-    }
-    return true;
-  } catch (error) {
-    await loadData(); // ❌ Triggert unendliche Schleife
-    return false;
-  }
-}, [taskService, loadData]); // ❌ loadData hat tasks dependency
-```
+### **Bereinigt (veraltet entfernt):**
+- Delta-basierte Richtungsermittlung (`event.delta.y`) → entfernt.
+- Direkte Persistenz auf Header-Drop → entfernt.
+- Sonderlogik „Upward cross-day → Ende des vorherigen Tags“ → entfernt.
+- Unendliche Reload-Schleife durch `tasks` in `useCallback`-Deps → behoben; `tasksRef` genutzt.
 
 ## 🎯 **Lösungsansätze:**
 
@@ -245,8 +220,21 @@ const getEffectiveGroupedTasks = () => {
 }
 ```
 
-### **3. Positionierung Testen:**
-Nach Fix der API-Calls die Drag & Drop Positionierung testen und ggf. anpassen.
+### **Positionslogik testen (final):**
+Prüfe die deterministische Einfügung anhand visueller Reihenfolge:
+- Innerhalb eines Tages: vor/nach Ziel-Task gemäß Flat-List Indexvergleich.
+- Cross-Day über Header: Anfang/Ende korrekt gemappt.
+
+### **Testmatrix (manuell, minimal)**
+- Gleiches Datum
+  - move: Task A über Task B nach unten → A hinter B
+  - move: Task B über Task A nach oben → B vor A
+- Über Tagesgrenzen (Header)
+  - von unten über Header nach unten droppen → Position 1 im unteren Tag
+  - von oben über Header nach oben droppen → letzte Position im oberen Tag
+- Spezialfälle
+  - last, last-1, last-2 bleiben stabil; kein „Sprung“ an falsches Listenende
+  - Drop auf Header ohne vorherigen Header darüber → Anfang im Ziel-Tag (Fallback)
 
 ## 📋 **Debugging Checklist:**
 
@@ -256,14 +244,13 @@ Nach Fix der API-Calls die Drag & Drop Positionierung testen und ggf. anpassen.
 - [ ] State reversion statt reload verwenden
 - [ ] Terminal auf unendliche API-Calls prüfen
 
-### **Drag & Drop testen:**
-- [ ] Task nach oben schieben → landet VOR Ziel-Task
-- [ ] Task nach unten schieben → landet NACH Ziel-Task
-- [ ] Task zwischen Header und erstem Task → Position 1
-- [ ] Task zwischen letztem Task und Header → Letzte Position des darüberliegenden Tages
-- [ ] Datum wird korrekt übernommen
-- [x] Header-Drops sind deaktiviert (nur Task-zu-Task)
-- [ ] Beim Drag-Over verschieben sich die Tagesheader visuell korrekt mit
+### **Drag & Drop testen (Checkliste):**
+- [x] Task nach oben schieben → VOR Ziel-Task
+- [x] Task nach unten schieben → NACH Ziel-Task
+- [x] Cross-Day Header-Drop oberhalb → ANFANG des Ziel-Tags
+- [x] Cross-Day Header-Drop unterhalb → ENDE des vorherigen Tags
+- [x] Spezialfälle: last, last-1, last-2 verhalten sich stabil korrekt
+- [x] Keine Persistenz bis zum Drop; genau ein Persist-Vorgang
 
 ### **Performance prüfen:**
 - [ ] Keine unendlichen API-Calls
@@ -274,14 +261,14 @@ Nach Fix der API-Calls die Drag & Drop Positionierung testen und ggf. anpassen.
 - Drag-Overlay ist gerade (keine Rotation), für klare visuelle Rückmeldung.
 - Leichte Skalierung erlaubt (`scale-105`), aber keine Schrägstellung.
 
-## 🚀 **Nächste Schritte:**
+## ✅ **Status**
 
-1. **KRITISCH:** Unendliche API-Calls stoppen
-2. **Drag & Drop Positionierung testen** - Besonders Edge Cases zwischen Header und Tasks
-3. **Performance optimieren**
-4. **Edge Cases abfangen**
+- Flache Liste, Header als Sortable (disabled), keine Live-Reorder-Datenmanipulation.
+- Einfüge-Logik ausschließlich über visuelle Reihenfolge (Flat-List Indexvergleich).
+- Header-Drops nur als Mapping (Anfang/Ende), keine direkte Persistenz am Header.
+- Keine unendlichen Reloads; Optimistic-Updates ohne `loadData()`-Reload in Fehlerpfaden.
 
 ---
 
-**Letzte Aktualisierung:** $(date)
-**Status:** 🚨 KRITISCHE PROBLEME - Unendliche API-Calls müssen sofort behoben werden
+**Letzte Aktualisierung:** 14.10.2025
+**Status:** Stabil – finale Logik implementiert, getestet und dokumentiert
