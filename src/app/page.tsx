@@ -345,7 +345,7 @@ export default function HomePage(): React.JSX.Element {
 
     console.log('🎯 Drag end:', { task: activeTask.title, overType: overElement.type });
 
-    // Header-Drop: Einfügen an Index 0 der entsprechenden Tagesliste
+    // Header-Drop: Einfügen am Anfang oder Ende der entsprechenden Tagesliste (abhängig von Bewegungsrichtung)
     if (overElement.type === 'date-header') {
       const targetDateKey = overElement.dateKey as string;
       const parseDateKey = (key: string): Date | null => {
@@ -356,16 +356,20 @@ export default function HomePage(): React.JSX.Element {
 
       const sourceDateKey = activeTask.dueDate ? formatDateToYYYYMMDD(activeTask.dueDate) : 'ohne-datum';
       const targetDate = parseDateKey(targetDateKey);
+      const movingUp = (event.delta?.y ?? 0) < 0;
 
       if (sourceDateKey === targetDateKey) {
-        // Innerhalb desselben Tages: an erste Position
+        // Innerhalb desselben Tages: an erste oder letzte Position
         const dateTasks = (groupedTasks[sourceDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
         const ids = dateTasks.map(t => t.id).filter(id => id !== activeTask.id);
-        ids.splice(0, 0, activeTask.id);
+        const insertIndex = movingUp ? ids.length : 0;
+        ids.splice(insertIndex, 0, activeTask.id);
         await handleReorderWithinDate(sourceDateKey, ids);
       } else {
-        // In anderen Tag: an erste Position (Index 0)
-        await handleReorderAcrossDates(activeTask.id, targetDate, 0);
+        // In anderen Tag: an erste oder letzte Position (bei Aufwärtsbewegung ans Ende)
+        const targetList = (groupedTasks[targetDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
+        const insertIndex = movingUp ? targetList.length : 0;
+        await handleReorderAcrossDates(activeTask.id, targetDate, insertIndex);
       }
       return;
     }
