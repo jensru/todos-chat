@@ -11,6 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Task, TaskWithOverdue } from '@/lib/types';
 import { formatDateForDisplay, formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 
+const ENABLE_DEBUG_LOGS = false;
+
 // Helper function to safely convert date to ISO string (local timezone)
 const safeDateToISO = (date: any): string => {
   if (!date) return '';
@@ -25,7 +27,10 @@ const safeDateToISO = (date: any): string => {
     
     return formatDateToYYYYMMDD(dateObj);
   } catch (error) {
-    console.warn('safeDateToISO error:', error, 'date:', date);
+    if (ENABLE_DEBUG_LOGS) {
+      // eslint-disable-next-line no-console
+      console.warn('safeDateToISO error:', error, 'date:', date);
+    }
     return '';
   }
 };
@@ -69,7 +74,10 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     
     // If task was updated in the last 3 seconds, skip auto-save to avoid conflicts
     if (timeSinceUpdate < 3000) {
-      console.log('Skipping auto-save - task recently updated by external source');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('Skipping auto-save - task recently updated by external source');
+      }
       return;
     }
     
@@ -92,7 +100,10 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
         setTimeout(() => setIsSaved(false), 2000); // Show saved indicator for 2s
       }
     } catch (error) {
-      console.error('Auto-save failed:', error);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.error('Auto-save failed:', error);
+      }
     } finally {
       setIsSaving(false);
     }
@@ -123,12 +134,18 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   // Prevent date picker from closing by stabilizing the input
   const handleDateInputFocus = useCallback((_e: React.FocusEvent<HTMLInputElement>) => {
     // Prevent any state updates that might interfere with date picker
-    console.log('Date input focused');
+    if (ENABLE_DEBUG_LOGS) {
+      // eslint-disable-next-line no-console
+      console.log('Date input focused');
+    }
   }, []);
 
   const handleDateInputClick = useCallback((_e: React.MouseEvent<HTMLInputElement>) => {
     // Prevent any state updates that might interfere with date picker
-    console.log('Date input clicked');
+    if (ENABLE_DEBUG_LOGS) {
+      // eslint-disable-next-line no-console
+      console.log('Date input clicked');
+    }
   }, []);
 
   // Cleanup timeout on unmount
@@ -143,11 +160,17 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   // Slide-in animation for new tasks
   useEffect(() => {
     if (isNewTask) {
-      console.log('🎨 Starting slide-in animation for:', task.title);
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('🎨 Starting slide-in animation for:', task.title);
+      }
       setIsNew(true);
       // Remove animation class after animation completes
       const timer = setTimeout(() => {
-        console.log('🎨 Animation finished for:', task.title);
+        if (ENABLE_DEBUG_LOGS) {
+          // eslint-disable-next-line no-console
+          console.log('🎨 Animation finished for:', task.title);
+        }
         setIsNew(false);
       }, 600);
       
@@ -159,11 +182,17 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   // Slide animation for task reordering
   useEffect(() => {
     if (isMovingUp || isMovingDown) {
-      console.log('🎨 Starting slide animation for:', task.title, isMovingUp ? 'UP' : 'DOWN');
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('🎨 Starting slide animation for:', task.title, isMovingUp ? 'UP' : 'DOWN');
+      }
       setIsAnimating(true);
       
       const timer = setTimeout(() => {
-        console.log('🎨 Slide animation finished for:', task.title);
+        if (ENABLE_DEBUG_LOGS) {
+          // eslint-disable-next-line no-console
+          console.log('🎨 Slide animation finished for:', task.title);
+        }
         setIsAnimating(false);
       }, 400); // Match CSS animation duration
       
@@ -254,7 +283,10 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                     type="date"
                     value={editDueDate}
                     onChange={(e) => {
-                      console.log('Date input changed:', e.target.value);
+                      if (ENABLE_DEBUG_LOGS) {
+                        // eslint-disable-next-line no-console
+                        console.log('Date input changed:', e.target.value);
+                      }
                       setEditDueDate(e.target.value);
                       // Don't trigger auto-save immediately for date changes
                       // Let user finish selecting the date first
@@ -262,7 +294,10 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                     onInput={(e) => {
                       // Handle direct input changes (keyboard typing)
                       const target = e.target as HTMLInputElement;
-                      console.log('Date input direct:', target.value);
+                      if (ENABLE_DEBUG_LOGS) {
+                        // eslint-disable-next-line no-console
+                        console.log('Date input direct:', target.value);
+                      }
                       setEditDueDate(target.value);
                     }}
                     onFocus={handleDateInputFocus}
