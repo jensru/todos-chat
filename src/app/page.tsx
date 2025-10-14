@@ -19,6 +19,7 @@ import { useTaskManagement } from '@/hooks/useTaskManagement';
 import { useUserSettings } from '@/hooks/useUserSettings';
 import { useTranslation } from '@/lib/i18n';
 import { createClient } from '@/lib/supabase/client';
+import { formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 import { parseAndSanitizeMarkdown } from '@/lib/utils/markdownParser';
 import { useEffect, useRef, useState } from 'react';
 
@@ -160,7 +161,8 @@ export default function HomePage(): React.JSX.Element {
     getTaskStats,
     groupedTasks,
     formatDate,
-    handleTaskUpdateOptimistic,
+    handleReorderWithinDate,
+    handleReorderAcrossDates,
     newTaskIds,
     movingUpTaskIds,
     movingDownTaskIds
@@ -327,12 +329,12 @@ export default function HomePage(): React.JSX.Element {
   );
 
   // Drag & Drop handlers
-  const handleDragStart = (event: DragStartEvent) => {
+  const handleDragStart = (event: DragStartEvent): void => {
     const { active } = event;
     setActiveTask(active.data.current?.task);
   };
 
-  const handleDragEnd = async (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent): Promise<void> => {
     const { active, over } = event;
     setActiveTask(null);
 
@@ -353,93 +355,49 @@ export default function HomePage(): React.JSX.Element {
       overType: overElement.type
     });
 
-    // Get the current flat list order (only tasks, not headers)
-    const currentFlatList = getFlatList().filter(item => item.type === 'task');
-    const overIndex = currentFlatList.findIndex(item => item.id === over.id);
-
     // Handle date header drops
     if (overElement.type === 'date-header') {
       const newDate = overElement.date;
       const targetDateKey = overElement.dateKey;
-      const targetDateTasks = groupedTasks[targetDateKey] || [];
+      const targetDateTasks = (groupedTasks[targetDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
+      const insertIndex = targetDateTasks.length; // ans Ende der Zielgruppe
 
-      // Calculate position at end of date group
-      const maxPosition = targetDateTasks.length > 0
-        ? Math.max(...targetDateTasks.map(t => t.globalPosition))
-        : 0;
-      const newPosition = maxPosition + 100; // Add 100 for spacing
-
-      console.log('📅 Date header drop:', {
-        newDate,
-        newPosition
-      });
-
-      await handleTaskUpdateOptimistic(activeTask.id, {
-        dueDate: newDate,
-        globalPosition: newPosition,
-        updatedAt: new Date()
-      });
+      await handleReorderAcrossDates(activeTask.id, newDate, insertIndex);
       return;
     }
 
-    // Handle task-to-task drops: Calculate position BETWEEN neighbors
+    // Handle task-to-task drops: gruppenbewusstes Einfügen vor/nach dem Ziel
     const overTask = overElement.task;
-    const overTaskDate = overTask.dueDate;
 
-    // Find the index of the active (dragged) task
-    const activeIndex = currentFlatList.findIndex(item => item.id === active.id);
+    // Quelle- und Ziel-Gruppenschlüssel bestimmen (lokales Datum berücksichtigen)
+    const sourceDateKey = activeTask.dueDate ? formatDateToYYYYMMDD(activeTask.dueDate) : 'ohne-datum';
+    const targetDateKey = overTask.dueDate ? formatDateToYYYYMMDD(overTask.dueDate) : 'ohne-datum';
 
-    // Determine if we're moving down or up
-    const movingDown = activeIndex < overIndex;
+    // Richtung anhand der tatsächlichen Zeigerbewegung bestimmen
+    const insertAfter = (event.delta?.y ?? 0) > 0;
 
-    let newPosition: number;
+    // Ziel-Liste (ohne den aktiven Task) vorbereiten
+    const targetListOriginal = (groupedTasks[targetDateKey] || []).slice().sort((a, b) => a.globalPosition - b.globalPosition);
+    const targetList = targetListOriginal.filter(t => t.id !== activeTask.id);
 
-    if (overIndex === 0) {
-      // Dropped at the beginning
-      const nextTask = currentFlatList[0].task;
-      newPosition = nextTask.globalPosition - 100;
-    } else if (overIndex >= currentFlatList.length - 1) {
-      // Dropped at the end
-      const prevTask = currentFlatList[currentFlatList.length - 1].task;
-      newPosition = prevTask.globalPosition + 100;
+    // Index des Over-Tasks in der bereinigten Ziel-Liste
+    const overIndexInTarget = targetList.findIndex(t => t.id === overTask.id);
+    const baseInsertIndex = overIndexInTarget === -1 ? targetList.length : overIndexInTarget;
+    const insertIndex = Math.max(0, Math.min(targetList.length, baseInsertIndex + (insertAfter ? 1 : 0)));
+
+    if (sourceDateKey === targetDateKey) {
+      // Innerhalb derselben Gruppe: neue Id-Reihenfolge bilden und zentralen Reorder-Helfer nutzen
+      const withoutActive = targetList;
+      const activeIdxInOriginal = targetListOriginal.findIndex(t => t.id === activeTask.id);
+      const reordered = withoutActive.slice();
+      // Aktiven Task-Id an berechneter Position einfügen
+      reordered.splice(insertIndex, 0, targetListOriginal[activeIdxInOriginal] || activeTask);
+      const newIds = reordered.map(t => t.id);
+      await handleReorderWithinDate(sourceDateKey, newIds);
     } else {
-      // Dropped between two tasks - calculate midpoint
-      // When moving down, we want to be AFTER the target
-      // When moving up, we want to be BEFORE the target
-      if (movingDown) {
-        // Moving down: position between overTask and next task
-        const nextTask = currentFlatList[overIndex + 1]?.task;
-        if (nextTask) {
-          newPosition = (overTask.globalPosition + nextTask.globalPosition) / 2;
-        } else {
-          // No next task, place after overTask
-          newPosition = overTask.globalPosition + 100;
-        }
-      } else {
-        // Moving up: position between previous task and overTask
-        const prevTask = currentFlatList[overIndex - 1]?.task;
-        if (prevTask) {
-          newPosition = (prevTask.globalPosition + overTask.globalPosition) / 2;
-        } else {
-          // No previous task, place before overTask
-          newPosition = overTask.globalPosition - 100;
-        }
-      }
+      // Über Gruppen hinweg: zentralen Cross-Date-Reorder nutzen
+      await handleReorderAcrossDates(activeTask.id, overTask.dueDate ?? null, insertIndex);
     }
-
-    console.log('🔄 Task-to-task drop:', {
-      newPosition,
-      newDate: overTaskDate,
-      overTask: overTask.title
-    });
-
-    // Update ONLY the moved task - O(1) operation!
-    // Also update the date to match the target task's date
-    await handleTaskUpdateOptimistic(activeTask.id, {
-      globalPosition: newPosition,
-      dueDate: overTaskDate, // ← FIX: Übernehme das Datum des Ziel-Tasks!
-      updatedAt: new Date()
-    });
   };
 
 

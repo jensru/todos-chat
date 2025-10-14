@@ -1,7 +1,7 @@
 // src/hooks/useTaskManagement.ts - Custom Hook for Task Management
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ApiTaskService } from '@/lib/services/ApiTaskService';
 import { ITask as Task, TaskWithOverdue } from '@/lib/types';
@@ -36,6 +36,12 @@ export function useTaskManagement(): {
   const [movingUpTaskIds, setMovingUpTaskIds] = useState<Set<string>>(new Set());
   const [movingDownTaskIds, setMovingDownTaskIds] = useState<Set<string>>(new Set());
 
+  // Ref hält den aktuellen Tasks-Zustand, um Abhängigkeiten von `tasks` in Callbacks zu vermeiden
+  const tasksRef = useRef<Task[]>(tasks);
+  useEffect(() => {
+    tasksRef.current = tasks;
+  }, [tasks]);
+
   const loadData = useCallback(async (): Promise<void> => {
     try {
       // Don't set loading to true for refresh operations to avoid white flash
@@ -44,8 +50,8 @@ export function useTaskManagement(): {
       // Debug log removed to prevent console spam
       
       // Diff-based sync: Find new tasks
-      if (tasks.length > 0) {
-        const currentTaskIds = new Set(tasks.map(t => t.id));
+      if (tasksRef.current.length > 0) {
+        const currentTaskIds = new Set(tasksRef.current.map(t => t.id));
         const newTasks = loadedTasks.filter(task => !currentTaskIds.has(task.id));
         const newTaskIdsSet = new Set(newTasks.map(t => t.id));
         
@@ -68,11 +74,11 @@ export function useTaskManagement(): {
     } finally {
       setLoading(false);
     }
-  }, [taskService, tasks]);
+  }, [taskService]);
 
   const handleTaskUpdate = useCallback(async (taskId: string, updates: Partial<Task>): Promise<void> => {
     // Check if this is a date change (moving task)
-    const currentTask = tasks.find(t => t.id === taskId);
+    const currentTask = tasksRef.current.find(t => t.id === taskId);
     if (currentTask && updates.dueDate && currentTask.dueDate !== updates.dueDate) {
       const currentDate = new Date(currentTask.dueDate || 0);
       const newDate = new Date(updates.dueDate);
@@ -103,7 +109,7 @@ export function useTaskManagement(): {
         task.id === taskId ? { ...task, ...updates } : task
       ));
     }
-  }, [taskService, tasks]);
+  }, [taskService]);
 
   const handleTaskDelete = useCallback(async (taskId: string): Promise<void> => {
     const success = await taskService.deleteTask(taskId);
@@ -291,7 +297,7 @@ export function useTaskManagement(): {
   // Optimistic update for smooth drag & drop animation
   const handleTaskUpdateOptimistic = useCallback(async (taskId: string, updates: Partial<Task>): Promise<boolean> => {
     // Store original task for potential revert
-    const originalTask = tasks.find(t => t.id === taskId);
+    const originalTask = tasksRef.current.find(t => t.id === taskId);
     if (!originalTask) return false;
 
     // Update state immediately for smooth animation
@@ -324,7 +330,7 @@ export function useTaskManagement(): {
       );
       return false;
     }
-  }, [taskService, tasks]);
+  }, [taskService]);
 
   useEffect(() => {
     loadData();
