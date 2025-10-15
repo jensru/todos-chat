@@ -49,6 +49,10 @@ function LoginForm() {
 
   const handleGoogleAuth = async () => {
     setMessage('')
+    console.log('🔍 Google Auth gestartet...')
+    console.log('🔍 Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('🔍 Redirect URL:', `${window.location.origin}/auth/callback`)
+    
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -56,8 +60,10 @@ function LoginForm() {
           redirectTo: `${window.location.origin}/auth/callback`,
         },
       })
+      console.log('🔍 OAuth Response:', { error })
       if (error) throw error
     } catch (error: any) {
+      console.error('❌ Google Auth Fehler:', error)
       setMessage(error.message)
     }
   }
