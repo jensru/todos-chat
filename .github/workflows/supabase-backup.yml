@@ -35,16 +35,21 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         
-        # Füge nur Backup-Dateien hinzu
-        git add backups/
-        
-        # Prüfe ob es Änderungen gibt
-        if git diff --staged --quiet; then
-          echo "Keine neuen Backups zu committen"
+        # Prüfe ob backups/ Ordner existiert und Dateien enthält
+        if [ -d "backups" ] && [ "$(ls -A backups 2>/dev/null)" ]; then
+          # Füge nur Backup-Dateien hinzu
+          git add backups/
+          
+          # Prüfe ob es Änderungen gibt
+          if git diff --staged --quiet; then
+            echo "Keine neuen Backups zu committen"
+          else
+            git commit -m "backup: Daily Supabase backup $(date +'%Y-%m-%d')"
+            git push
+            echo "Backup erfolgreich committed und gepusht"
+          fi
         else
-          git commit -m "backup: Daily Supabase backup $(date +'%Y-%m-%d')"
-          git push
-          echo "Backup erfolgreich committed und gepusht"
+          echo "Kein backups/ Ordner oder keine Dateien gefunden"
         fi
         
     - name: Notify on Failure
