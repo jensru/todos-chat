@@ -1,0 +1,54 @@
+name: Supabase Daily Backup
+
+on:
+  schedule:
+    # Täglich um 2:00 UTC (3:00 CET / 4:00 CEST)
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Manueller Trigger möglich
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install Dependencies
+      run: npm ci
+      
+    - name: Create Backup
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      run: |
+        node scripts/backup-supabase.js
+        
+    - name: Commit Backup Files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # Füge nur Backup-Dateien hinzu
+        git add backups/
+        
+        # Prüfe ob es Änderungen gibt
+        if git diff --staged --quiet; then
+          echo "Keine neuen Backups zu committen"
+        else
+          git commit -m "backup: Daily Supabase backup $(date +'%Y-%m-%d')"
+          git push
+          echo "Backup erfolgreich committed und gepusht"
+        fi
+        
+    - name: Notify on Failure
+      if: failure()
+      run: |
+        echo "❌ Backup fehlgeschlagen!"
+        echo "Bitte überprüfen Sie die Supabase-Verbindung und Secrets"
