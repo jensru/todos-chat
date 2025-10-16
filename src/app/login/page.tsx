@@ -49,10 +49,6 @@ function LoginForm() {
 
   const handleGoogleAuth = async () => {
     setMessage('')
-    console.log('🔍 Google Auth gestartet...')
-    console.log('🔍 Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-    console.log('🔍 Redirect URL:', `${window.location.origin}/auth/callback`)
-    
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -60,19 +56,17 @@ function LoginForm() {
           redirectTo: `${window.location.origin}/auth/callback`,
         },
       })
-      console.log('🔍 OAuth Response:', { error })
       if (error) throw error
     } catch (error: any) {
-      console.error('❌ Google Auth Fehler:', error)
       setMessage(error.message)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-4 px-4 sm:py-12 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-6 sm:space-y-8">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-4 sm:mt-6 text-2xl sm:text-3xl font-extrabold text-gray-900">
             {isSignUp ? 'Willkommen!' : 'Willkommen zurück!'}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
@@ -91,7 +85,7 @@ function LoginForm() {
             <Button
               onClick={handleGoogleAuth}
               disabled={isPending}
-              className="w-full"
+              className="w-full h-12 text-base"
               variant="outline"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -132,6 +126,7 @@ function LoginForm() {
                   type="email"
                   name="email"
                   placeholder="Email-Adresse"
+                  className="h-12 text-base"
                   required
                 />
               </div>
@@ -140,10 +135,11 @@ function LoginForm() {
                   type="password"
                   name="password"
                   placeholder="Passwort"
+                  className="h-12 text-base"
                   required
                 />
               </div>
-              <Button type="submit" disabled={isPending} className="w-full">
+              <Button type="submit" disabled={isPending} className="w-full h-12 text-base">
                 {isPending ? 'Lädt...' : (isSignUp ? 'Registrieren' : 'Anmelden')}
               </Button>
             </form>
