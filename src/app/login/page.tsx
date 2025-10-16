@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { createClient } from '@/lib/supabase/client'
-import { useState, useTransition, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState, useTransition } from 'react'
 import { loginAction, signUpAction } from './actions'
 
 function LoginForm() {
