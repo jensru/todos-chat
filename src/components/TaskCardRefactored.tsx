@@ -474,17 +474,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
           
           {/* Priority Star and Actions */}
           <div className="flex items-center space-x-1 ml-3 flex-shrink-0">
-            {/* Notes Icon */}
-            {task.notes && !isEditing && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowNotes(!showNotes)}
-                className="p-1 h-auto text-blue-500 hover:text-blue-600"
-              >
-                <StickyNote className="h-4 w-4" />
-              </Button>
-            )}
             {isEditing ? (
               <>
                 {/* Auto-save status indicator */}
@@ -512,7 +501,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
             ) : (
               <div className="flex items-center space-x-1">
                 {/* Notes Icon */}
-                {task.notes && !isEditing && (
+                {task.notes && (
                   <Button
                     variant="ghost"
                     size="sm"
