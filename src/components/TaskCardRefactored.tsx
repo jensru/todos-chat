@@ -506,7 +506,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowNotes(!showNotes)}
-                    className="p-1 h-auto text-blue-500 hover:text-blue-600"
+                    className="p-1 h-auto text-muted-foreground hover:text-foreground"
                   >
                     <StickyNote className="h-4 w-4" />
                   </Button>
@@ -532,7 +532,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
         {showNotes && task.notes && !isEditing && (
           <div className="mt-3 pt-3 border-t border-muted">
             <div className="flex items-start space-x-2">
-              <StickyNote className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+              <StickyNote className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
               <div className="text-sm text-muted-foreground whitespace-pre-wrap">
                 {task.notes}
               </div>
