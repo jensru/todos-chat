@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Task, TaskWithOverdue } from '@/lib/types';
 import { formatDateForDisplay, formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 
-const ENABLE_DEBUG_LOGS = false;
+const ENABLE_DEBUG_LOGS = true;
 
 // Helper function to safely convert date to ISO string (local timezone)
 const safeDateToISO = (date: any): string => {
@@ -51,17 +51,58 @@ interface ITaskCardProps {
 
 export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = false, dragHandleProps, dragRef, isNewTask = false, isMovingUp = false, isMovingDown = false }: ITaskCardProps): React.JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDueDate, setEditDueDate] = useState(safeDateToISO(task.dueDate));
   const [editNotes, setEditNotes] = useState(task.notes || '');
+  const [editCategory, setEditCategory] = useState(task.category || '');
   const [isNew, setIsNew] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [autoSaveTimeout, setAutoSaveTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [titleAutoSaveTimeout, setTitleAutoSaveTimeout] = useState<NodeJS.Timeout | null>(null);
 
 
+
+  // Auto-save function for title editing
+  const autoSaveTitle = useCallback(async () => {
+    if (!isEditingTitle) return;
+    
+    if (editTitle !== task.title) {
+      if (ENABLE_DEBUG_LOGS) {
+        // eslint-disable-next-line no-console
+        console.log('📝 Auto-save title: Changed from', task.title, 'to', editTitle);
+      }
+      
+      try {
+        await onUpdate(task.id, { title: editTitle });
+        if (ENABLE_DEBUG_LOGS) {
+          // eslint-disable-next-line no-console
+          console.log('✅ Title successfully saved');
+        }
+      } catch (error) {
+        if (ENABLE_DEBUG_LOGS) {
+          // eslint-disable-next-line no-console
+          console.error('Title auto-save failed:', error);
+        }
+      }
+    }
+  }, [isEditingTitle, editTitle, task.title, task.id, onUpdate]);
+
+  // Debounced auto-save for title
+  const scheduleTitleAutoSave = useCallback((delay: number = 1000) => {
+    if (titleAutoSaveTimeout) {
+      clearTimeout(titleAutoSaveTimeout);
+    }
+    
+    const timeout = setTimeout(() => {
+      autoSaveTitle();
+    }, delay);
+    
+    setTitleAutoSaveTimeout(timeout);
+  }, [autoSaveTitle, titleAutoSaveTimeout]);
 
   // Auto-save function with debouncing
   const autoSave = useCallback(async () => {
@@ -92,9 +133,26 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
         }
         // Don't set dueDate if empty - let it remain as is
       }
-      if (editNotes !== (task.notes || '')) updates.notes = editNotes;
+      if (editNotes !== (task.notes || '')) {
+        updates.notes = editNotes;
+        if (ENABLE_DEBUG_LOGS) {
+          // eslint-disable-next-line no-console
+          console.log('📝 Auto-save: Notes changed from', task.notes, 'to', editNotes);
+        }
+      }
+      if (editCategory !== (task.category || '')) {
+        updates.category = editCategory || null;
+        if (ENABLE_DEBUG_LOGS) {
+          // eslint-disable-next-line no-console
+          console.log('📂 Auto-save: Category changed from', task.category, 'to', editCategory);
+        }
+      }
       
       if (Object.keys(updates).length > 0) {
+        if (ENABLE_DEBUG_LOGS) {
+          // eslint-disable-next-line no-console
+          console.log('💾 Auto-save: Sending updates:', updates);
+        }
         await onUpdate(task.id, updates);
         setIsSaved(true);
         setTimeout(() => setIsSaved(false), 2000); // Show saved indicator for 2s
@@ -107,7 +165,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     } finally {
       setIsSaving(false);
     }
-  }, [isEditing, editTitle, editDueDate, editNotes, task, onUpdate]);
+  }, [isEditing, editTitle, editDueDate, editNotes, editCategory, task, onUpdate]);
 
   // Debounced auto-save
   const scheduleAutoSave = useCallback((delay: number = 1500) => {
@@ -128,8 +186,12 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
       setEditTitle(task.title);
       setEditDueDate(safeDateToISO(task.dueDate));
       setEditNotes(task.notes || '');
+      setEditCategory(task.category || '');
     }
-  }, [task.title, task.dueDate, task.notes, isEditing]);
+    if (!isEditingTitle) {
+      setEditTitle(task.title);
+    }
+  }, [task.title, task.dueDate, task.notes, task.category, isEditing, isEditingTitle]);
 
   // Prevent date picker from closing by stabilizing the input
   const handleDateInputFocus = useCallback((_e: React.FocusEvent<HTMLInputElement>) => {
@@ -148,14 +210,17 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     }
   }, []);
 
-  // Cleanup timeout on unmount
+  // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       if (autoSaveTimeout) {
         clearTimeout(autoSaveTimeout);
       }
+      if (titleAutoSaveTimeout) {
+        clearTimeout(titleAutoSaveTimeout);
+      }
     };
-  }, [autoSaveTimeout]);
+  }, [autoSaveTimeout, titleAutoSaveTimeout]);
 
   // Slide-in animation for new tasks
   useEffect(() => {
@@ -209,18 +274,46 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     onUpdate(task.id, { priority: !task.priority });
   };
 
+  const handleTitleClick = (): void => {
+    setIsEditingTitle(true);
+  };
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      setIsEditingTitle(false);
+      autoSaveTitle();
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      setEditTitle(task.title);
+      setIsEditingTitle(false);
+    }
+  };
+
+  const handleTitleBlur = (): void => {
+    setIsEditingTitle(false);
+    autoSaveTitle();
+  };
+
   const handleCancelEdit = (): void => {
     // Cancel auto-save timeout
     if (autoSaveTimeout) {
       clearTimeout(autoSaveTimeout);
       setAutoSaveTimeout(null);
     }
+    if (titleAutoSaveTimeout) {
+      clearTimeout(titleAutoSaveTimeout);
+      setTitleAutoSaveTimeout(null);
+    }
     
     // Reset to original values
     setEditTitle(task.title);
     setEditDueDate(safeDateToISO(task.dueDate));
     setEditNotes(task.notes || '');
+    setEditCategory(task.category || '');
     setIsEditing(false);
+    setIsEditingTitle(false);
     setIsSaving(false);
     setIsSaved(false);
   };
@@ -310,6 +403,18 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                     placeholder="Fälligkeitsdatum"
                   />
                 </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-muted-foreground">📂</span>
+                  <Input
+                    value={editCategory}
+                    onChange={(e) => {
+                      setEditCategory(e.target.value);
+                      scheduleAutoSave();
+                    }}
+                    placeholder="Kategorie (z.B. Arbeit, Privat, Einkauf...)"
+                    className="text-xs"
+                  />
+                </div>
                 <div className="flex items-start space-x-2">
                   <StickyNote className="h-3 w-3 text-muted-foreground mt-1" />
                   <Textarea
@@ -325,9 +430,29 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
               </div>
             ) : (
               <div className="flex-1 min-w-0">
-                <h3 className={`text-base font-normal truncate ${task.completed ? 'line-through opacity-60' : ''}`} style={{ fontSize: '16px', lineHeight: '1.5' }}>
-                  {task.title}
-                </h3>
+                {isEditingTitle ? (
+                  <Input
+                    value={editTitle}
+                    onChange={(e) => {
+                      setEditTitle(e.target.value);
+                      scheduleTitleAutoSave();
+                    }}
+                    onKeyDown={handleTitleKeyDown}
+                    onBlur={handleTitleBlur}
+                    className={`text-base font-normal ${task.completed ? 'line-through opacity-60' : ''}`}
+                    style={{ fontSize: '16px', lineHeight: '1.5' }}
+                    autoFocus
+                  />
+                ) : (
+                  <h3 
+                    className={`text-base font-normal truncate cursor-pointer hover:bg-muted/30 px-1 py-0.5 rounded transition-colors ${task.completed ? 'line-through opacity-60' : ''}`} 
+                    style={{ fontSize: '16px', lineHeight: '1.5' }}
+                    onClick={handleTitleClick}
+                    title="Klicken zum Bearbeiten"
+                  >
+                    {task.title}
+                  </h3>
+                )}
                 {/* Overdue Label */}
                 {task.isOverdue && !task.completed && (
                   <div className="flex items-center gap-1 mt-1">

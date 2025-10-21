@@ -103,13 +103,18 @@ export function useTaskManagement(): {
       }
     }
     
+    // Optimistic update: Update local state immediately for better UX
+    setTasks(prev => prev.map(task =>
+      task.id === taskId ? { ...task, ...updates } : task
+    ));
+    
+    // Then try to update in the service
     const success = await taskService.updateTask(taskId, updates);
-    if (success) {
-      setTasks(prev => prev.map(task =>
-        task.id === taskId ? { ...task, ...updates } : task
-      ));
+    if (!success) {
+      // If service call failed, reload data to get the correct state
+      await loadData();
     }
-  }, [taskService]);
+  }, [taskService, loadData]);
 
   const handleTaskDelete = useCallback(async (taskId: string): Promise<void> => {
     const success = await taskService.deleteTask(taskId);

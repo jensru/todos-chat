@@ -2,7 +2,7 @@
 import { Task, TaskWithOverdue } from '@/lib/types';
 import { convertDateForAPI, formatDateToYYYYMMDD, getTodayAsYYYYMMDD, parseDatabaseDate } from '@/lib/utils/dateUtils';
 
-const ENABLE_DEBUG_LOGS = false;
+const ENABLE_DEBUG_LOGS = true;
 
 export class ApiTaskService {
   async loadTasks(): Promise<Task[]> {
@@ -63,6 +63,10 @@ export class ApiTaskService {
       if (ENABLE_DEBUG_LOGS) {
         // eslint-disable-next-line no-console
         console.log('ApiTaskService.updateTask - updating task:', taskId, updates);
+        if (updates.notes !== undefined) {
+          // eslint-disable-next-line no-console
+          console.log('📝 Notes update detected:', updates.notes);
+        }
       }
       
       // Convert Date objects to YYYY-MM-DD format for API
@@ -86,7 +90,11 @@ export class ApiTaskService {
       const result = await response.json();
       if (ENABLE_DEBUG_LOGS) {
         // eslint-disable-next-line no-console
-        console.log('ApiTaskService.updateTask - task updated successfully');
+        console.log('ApiTaskService.updateTask - task updated successfully:', result);
+        if (updates.notes !== undefined) {
+          // eslint-disable-next-line no-console
+          console.log('✅ Notes successfully saved to database');
+        }
       }
       return result.success;
     } catch (error) {
