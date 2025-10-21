@@ -323,8 +323,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     <Card 
       ref={dragRef}
       onDoubleClick={handleCardDoubleClick}
-      onTouchStart={(e) => {
-        const touch = e.touches[0];
+      onTouchStart={(_e) => {
         const startTime = Date.now();
         
         const handleTouchEnd = () => {
