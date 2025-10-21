@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Check, Clock, Edit, GripVertical, Star, StickyNote, Trash2, X } from 'lucide-react';
+import { Calendar, Check, GripVertical, Star, StickyNote, Trash2, X } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Task, TaskWithOverdue } from '@/lib/types';
-import { formatDateForDisplay, formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
+import { formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 
 const ENABLE_DEBUG_LOGS = true;
 
@@ -296,6 +296,14 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     autoSaveTitle();
   };
 
+  const handleCardDoubleClick = (): void => {
+    setIsEditing(true);
+  };
+
+  const handleCardLongPress = (): void => {
+    setIsEditing(true);
+  };
+
   const handleCancelEdit = (): void => {
     // Cancel auto-save timeout
     if (autoSaveTimeout) {
@@ -329,6 +337,24 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   return (
     <Card 
       ref={dragRef}
+      onDoubleClick={handleCardDoubleClick}
+      onTouchStart={(e) => {
+        const touch = e.touches[0];
+        const startTime = Date.now();
+        
+        const handleTouchEnd = () => {
+          const endTime = Date.now();
+          const duration = endTime - startTime;
+          
+          if (duration >= 500) { // 500ms = Longpress
+            handleCardLongPress();
+          }
+          
+          document.removeEventListener('touchend', handleTouchEnd);
+        };
+        
+        document.addEventListener('touchend', handleTouchEnd);
+      }}
       className={`transition-all duration-200 hover:shadow-sm ${task.completed ? 'opacity-60' : ''} py-2 gap-0 rounded-md ${isDragging ? 'opacity-50 shadow-lg' : ''} ${isNew ? 'animate-slide-in' : ''} ${isAnimating ? (isMovingUp ? 'animate-slide-up' : 'animate-slide-down') : ''} ${task.isOverdue && !task.completed ? 'border-l-4 border-l-red-500 bg-red-50/30' : ''}`}
     >
       <CardContent className="px-3 py-0">
@@ -429,7 +455,7 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                 </div>
               </div>
             ) : (
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 flex items-center">
                 {isEditingTitle ? (
                   <Input
                     value={editTitle}
@@ -445,22 +471,13 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                   />
                 ) : (
                   <h3 
-                    className={`text-base font-normal truncate cursor-pointer hover:bg-muted/30 px-1 py-0.5 rounded transition-colors ${task.completed ? 'line-through opacity-60' : ''}`} 
+                    className={`text-base font-normal cursor-text hover:bg-muted/20 px-1 py-0.5 rounded transition-colors truncate ${task.completed ? 'line-through opacity-60' : ''}`} 
                     style={{ fontSize: '16px', lineHeight: '1.5' }}
                     onClick={handleTitleClick}
                     title="Klicken zum Bearbeiten"
                   >
                     {task.title}
                   </h3>
-                )}
-                {/* Overdue Label */}
-                {task.isOverdue && !task.completed && (
-                  <div className="flex items-center gap-1 mt-1">
-                    <Clock className="h-3 w-3 text-red-500" />
-                    <span className="text-xs text-red-600 font-medium">
-                      Überfällig seit {task.originalDueDate ? formatDateForDisplay(task.originalDueDate) : 'unbekannt'}
-                    </span>
-                  </div>
                 )}
               </div>
             )}
@@ -486,19 +503,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                 <StickyNote className="h-4 w-4" />
               </Button>
             )}
-            {/* Priority Star */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handlePriorityToggle}
-              className={`p-1 h-auto ${
-                task.priority 
-                  ? 'text-yellow-500 hover:text-yellow-600' 
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <Star className={`h-4 w-4 ${task.priority ? 'fill-current' : ''}`} />
-            </Button>
             {isEditing ? (
               <>
                 {/* Auto-save status indicator */}
@@ -513,20 +517,42 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                     Gespeichert
                   </div>
                 )}
-                <Button onClick={handleExitEdit} variant="ghost" size="sm" className="h-8 w-8 p-0" title="Fertig">
+                <Button onClick={handleExitEdit} variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground" title="Fertig">
                   <Check className="h-3 w-3" />
                 </Button>
-                <Button onClick={handleCancelEdit} variant="ghost" size="sm" className="h-8 w-8 p-0 text-destructive" title="Verwerfen">
+                <Button onClick={handleCancelEdit} variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground" title="Verwerfen">
                   <X className="h-3 w-3" />
                 </Button>
-                <Button onClick={() => onDelete(task.id)} variant="ghost" size="sm" className="h-8 w-8 p-0 text-destructive hover:text-destructive">
+                <Button onClick={() => onDelete(task.id)} variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground">
                   <Trash2 className="h-3 w-3" />
                 </Button>
               </>
             ) : (
-              <Button onClick={() => setIsEditing(true)} variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <Edit className="h-3 w-3" />
-              </Button>
+              <div className="flex items-center space-x-1">
+                {/* Notes Icon */}
+                {task.notes && !isEditing && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowNotes(!showNotes)}
+                    className="p-1 h-auto text-blue-500 hover:text-blue-600"
+                  >
+                    <StickyNote className="h-4 w-4" />
+                  </Button>
+                )}
+                {/* Priority Star */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handlePriorityToggle}
+                  className="p-1 h-auto text-muted-foreground hover:text-foreground"
+                >
+                  <Star className={`h-4 w-4 ${task.priority ? 'fill-current' : ''}`} />
+                </Button>
+                <Button onClick={() => onDelete(task.id)} variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground">
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              </div>
             )}
           </div>
         </div>
