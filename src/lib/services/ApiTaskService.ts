@@ -29,7 +29,6 @@ export class ApiTaskService {
       return tasks;
     } catch (error) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.error('ApiTaskService.loadTasks - error:', error);
       }
       return [];
@@ -61,10 +60,8 @@ export class ApiTaskService {
   async updateTask(taskId: string, updates: Partial<Task>): Promise<boolean> {
     try {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.updateTask - updating task:', taskId, updates);
         if (updates.notes !== undefined) {
-          // eslint-disable-next-line no-console
           console.log('📝 Notes update detected:', updates.notes);
         }
       }
@@ -89,17 +86,14 @@ export class ApiTaskService {
 
       const result = await response.json();
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.updateTask - task updated successfully:', result);
         if (updates.notes !== undefined) {
-          // eslint-disable-next-line no-console
           console.log('✅ Notes successfully saved to database');
         }
       }
       return result.success;
     } catch (error) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.error('ApiTaskService.updateTask - error:', error);
       }
       return false;
@@ -109,7 +103,6 @@ export class ApiTaskService {
   async addTask(task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>): Promise<boolean> {
     try {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.addTask - adding new task:', task.title);
       }
       
@@ -125,7 +118,6 @@ export class ApiTaskService {
           }
         } catch (error) {
           if (ENABLE_DEBUG_LOGS) {
-            // eslint-disable-next-line no-console
             console.warn('Invalid dueDate in addTask:', task.dueDate, error);
           }
         }
@@ -153,13 +145,11 @@ export class ApiTaskService {
 
       const result = await response.json();
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.addTask - task created successfully');
       }
       return result.success;
     } catch (error) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.error('ApiTaskService.addTask - error:', error);
       }
       return false;
@@ -169,7 +159,6 @@ export class ApiTaskService {
   async deleteTask(taskId: string): Promise<boolean> {
     try {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.deleteTask - deleting task:', taskId);
       }
       
@@ -183,13 +172,11 @@ export class ApiTaskService {
 
       const result = await response.json();
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.deleteTask - task deleted successfully');
       }
       return result.success;
     } catch (error) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.error('ApiTaskService.deleteTask - error:', error);
       }
       return false;
@@ -242,7 +229,6 @@ export class ApiTaskService {
   async reorderTasksWithinDate(dateKey: string, taskIds: string[]): Promise<boolean> {
     try {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.reorderTasksWithinDate - reordering tasks within date:', dateKey);
       }
       
@@ -262,13 +248,11 @@ export class ApiTaskService {
       }
       
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.reorderTasksWithinDate - reordering completed');
       }
       return true;
     } catch (error) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.error('ApiTaskService.reorderTasksWithinDate - error:', error);
       }
       return false;
@@ -278,19 +262,16 @@ export class ApiTaskService {
   async moveTaskToDate(taskId: string, newDate: Date | null): Promise<boolean> {
     try {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.moveTaskToDate - moving task:', taskId, 'to date:', newDate);
       }
       
       const success = await this.updateTask(taskId, newDate ? { dueDate: newDate } : {});
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.moveTaskToDate - task moved successfully');
       }
       return success;
     } catch (error) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.error('ApiTaskService.moveTaskToDate - error:', error);
       }
       return false;
@@ -300,7 +281,6 @@ export class ApiTaskService {
   async reorderTasksAcrossDates(taskId: string, targetDate: Date | null, targetIndex: number): Promise<boolean> {
     try {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.reorderTasksAcrossDates - moving task:', taskId, 'to date:', targetDate, 'at index:', targetIndex);
       }
       
@@ -320,13 +300,11 @@ export class ApiTaskService {
       });
       
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('ApiTaskService.reorderTasksAcrossDates - task moved successfully');
       }
       return success;
     } catch (error) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.error('ApiTaskService.reorderTasksAcrossDates - error:', error);
       }
       return false;

@@ -247,7 +247,6 @@ export default function HomePage(): React.JSX.Element {
       
       setRecognition(recognitionInstance);
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('Speech recognition initialized with language:', recognitionInstance.lang);
       }
     }
@@ -366,14 +365,12 @@ export default function HomePage(): React.JSX.Element {
 
     if (!overElement) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('🎯 Drag end: No over element');
       }
       return;
     }
 
     if (ENABLE_DEBUG_LOGS) {
-      // eslint-disable-next-line no-console
       console.log('🎯 Drag end:', { task: activeTask.title, overType: overElement.type });
     }
 

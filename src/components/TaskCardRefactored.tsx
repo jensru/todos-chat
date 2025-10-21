@@ -28,7 +28,6 @@ const safeDateToISO = (date: any): string => {
     return formatDateToYYYYMMDD(dateObj);
   } catch (error) {
     if (ENABLE_DEBUG_LOGS) {
-      // eslint-disable-next-line no-console
       console.warn('safeDateToISO error:', error, 'date:', date);
     }
     return '';
@@ -72,19 +71,16 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     
     if (editTitle !== task.title) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('📝 Auto-save title: Changed from', task.title, 'to', editTitle);
       }
       
       try {
         await onUpdate(task.id, { title: editTitle });
         if (ENABLE_DEBUG_LOGS) {
-          // eslint-disable-next-line no-console
           console.log('✅ Title successfully saved');
         }
       } catch (error) {
         if (ENABLE_DEBUG_LOGS) {
-          // eslint-disable-next-line no-console
           console.error('Title auto-save failed:', error);
         }
       }
@@ -116,7 +112,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
     // If task was updated in the last 3 seconds, skip auto-save to avoid conflicts
     if (timeSinceUpdate < 3000) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('Skipping auto-save - task recently updated by external source');
       }
       return;
@@ -136,21 +131,18 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
       if (editNotes !== (task.notes || '')) {
         updates.notes = editNotes;
         if (ENABLE_DEBUG_LOGS) {
-          // eslint-disable-next-line no-console
           console.log('📝 Auto-save: Notes changed from', task.notes, 'to', editNotes);
         }
       }
       if (editCategory !== (task.category || '')) {
-        updates.category = editCategory || null;
+        updates.category = editCategory || '';
         if (ENABLE_DEBUG_LOGS) {
-          // eslint-disable-next-line no-console
           console.log('📂 Auto-save: Category changed from', task.category, 'to', editCategory);
         }
       }
       
       if (Object.keys(updates).length > 0) {
         if (ENABLE_DEBUG_LOGS) {
-          // eslint-disable-next-line no-console
           console.log('💾 Auto-save: Sending updates:', updates);
         }
         await onUpdate(task.id, updates);
@@ -159,7 +151,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
       }
     } catch (error) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.error('Auto-save failed:', error);
       }
     } finally {
@@ -197,7 +188,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   const handleDateInputFocus = useCallback((_e: React.FocusEvent<HTMLInputElement>) => {
     // Prevent any state updates that might interfere with date picker
     if (ENABLE_DEBUG_LOGS) {
-      // eslint-disable-next-line no-console
       console.log('Date input focused');
     }
   }, []);
@@ -205,7 +195,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   const handleDateInputClick = useCallback((_e: React.MouseEvent<HTMLInputElement>) => {
     // Prevent any state updates that might interfere with date picker
     if (ENABLE_DEBUG_LOGS) {
-      // eslint-disable-next-line no-console
       console.log('Date input clicked');
     }
   }, []);
@@ -226,14 +215,12 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   useEffect(() => {
     if (isNewTask) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('🎨 Starting slide-in animation for:', task.title);
       }
       setIsNew(true);
       // Remove animation class after animation completes
       const timer = setTimeout(() => {
         if (ENABLE_DEBUG_LOGS) {
-          // eslint-disable-next-line no-console
           console.log('🎨 Animation finished for:', task.title);
         }
         setIsNew(false);
@@ -248,14 +235,12 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
   useEffect(() => {
     if (isMovingUp || isMovingDown) {
       if (ENABLE_DEBUG_LOGS) {
-        // eslint-disable-next-line no-console
         console.log('🎨 Starting slide animation for:', task.title, isMovingUp ? 'UP' : 'DOWN');
       }
       setIsAnimating(true);
       
       const timer = setTimeout(() => {
         if (ENABLE_DEBUG_LOGS) {
-          // eslint-disable-next-line no-console
           console.log('🎨 Slide animation finished for:', task.title);
         }
         setIsAnimating(false);
@@ -403,7 +388,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                     value={editDueDate}
                     onChange={(e) => {
                       if (ENABLE_DEBUG_LOGS) {
-                        // eslint-disable-next-line no-console
                         console.log('Date input changed:', e.target.value);
                       }
                       setEditDueDate(e.target.value);
@@ -414,7 +398,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                       // Handle direct input changes (keyboard typing)
                       const target = e.target as HTMLInputElement;
                       if (ENABLE_DEBUG_LOGS) {
-                        // eslint-disable-next-line no-console
                         console.log('Date input direct:', target.value);
                       }
                       setEditDueDate(target.value);
