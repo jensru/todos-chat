@@ -91,13 +91,28 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Mistral API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorText: errorText
+      });
+      
       if (response.status === 429) {
         return NextResponse.json({ 
           error: 'Rate limit exceeded', 
           errorMessage: 'Bitte warte einen Moment, bevor du eine weitere Anfrage stellst.' 
         }, { status: 429 });
       }
-      throw new Error(`Mistral API error: ${response.status}`);
+      
+      if (response.status === 401) {
+        return NextResponse.json({ 
+          error: 'Authentication failed', 
+          errorMessage: 'API-Key ungültig. Bitte überprüfe die Konfiguration.' 
+        }, { status: 401 });
+      }
+      
+      throw new Error(`Mistral API error: ${response.status} - ${errorText.substring(0, 200)}`);
     }
 
     const data = await response.json();
