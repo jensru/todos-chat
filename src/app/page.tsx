@@ -183,7 +183,8 @@ export default function HomePage(): React.JSX.Element {
     chatInput,
     setChatInput,
     handleSendMessage,
-    clearChat
+    clearChat,
+    isSending: isMistralSending
   } = useMistralChat();
 
   // Create task service object for Mistral tools
@@ -580,8 +581,9 @@ export default function HomePage(): React.JSX.Element {
               className="flex-1"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
+              disabled={isMistralSending}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && !isMistralSending) {
                   handleSendMessage({ tasks: tasks.length, goals: goals.length, taskService });
                 }
               }}
@@ -590,12 +592,17 @@ export default function HomePage(): React.JSX.Element {
               variant={isListening ? "destructive" : "outline"}
               size="icon"
               onClick={isListening ? stopListening : startListening}
-              disabled={!recognition}
+              disabled={!recognition || isMistralSending}
               title={isListening ? "Aufnahme stoppen" : "Spracheingabe starten"}
             >
               {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
             </Button>
-            <Button onClick={() => handleSendMessage({ tasks: tasks.length, goals: goals.length, taskService })}>Send</Button>
+            <Button 
+              onClick={() => handleSendMessage({ tasks: tasks.length, goals: goals.length, taskService })}
+              disabled={isMistralSending}
+            >
+              {isMistralSending ? '⏳' : 'Send'}
+            </Button>
           </div>
         </div>
       </div>
@@ -627,8 +634,9 @@ export default function HomePage(): React.JSX.Element {
             className="flex-1"
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
+            disabled={isMistralSending}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === 'Enter' && !isMistralSending) {
                 handleSendMessage({ tasks: tasks.length, goals: goals.length, taskService });
                 // Chat auf Mobile öffnen nach dem Senden
                 if (window.innerWidth < 1024) {
@@ -647,18 +655,23 @@ export default function HomePage(): React.JSX.Element {
                 startListening();
               }
             }}
-            disabled={!recognition}
+            disabled={!recognition || isMistralSending}
             title={isListening ? "Aufnahme stoppen" : "Spracheingabe starten"}
           >
             {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
           </Button>
-          <Button onClick={() => {
-            handleSendMessage({ tasks: tasks.length, goals: goals.length, taskService });
-            // Chat auf Mobile öffnen nach dem Senden
-            if (window.innerWidth < 1024) {
-              setIsChatOpen(true);
-            }
-          }}>Send</Button>
+          <Button 
+            onClick={() => {
+              handleSendMessage({ tasks: tasks.length, goals: goals.length, taskService });
+              // Chat auf Mobile öffnen nach dem Senden
+              if (window.innerWidth < 1024) {
+                setIsChatOpen(true);
+              }
+            }}
+            disabled={isMistralSending}
+          >
+            {isMistralSending ? '⏳' : 'Send'}
+          </Button>
           </div>
         </div>
       </div>

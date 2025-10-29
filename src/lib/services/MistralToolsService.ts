@@ -168,23 +168,40 @@ export class MistralToolsService {
       });
 
       if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        
         if (response.status === 429) {
+          const retryAfter = errorData.retryAfter || 60;
+          const errorMessage = errorData.errorMessage || `Rate Limit erreicht. Bitte warte ${retryAfter} Sekunden, bevor du eine weitere Anfrage stellst.`;
+          
+          // The server-side already handles retries, but we still show the error
           return {
-            response: 'Rate Limit erreicht. Bitte warte einen Moment, bevor du eine weitere Anfrage stellst.'
+            response: errorMessage
           };
         }
-        throw new Error(`API request failed: ${response.status}`);
+        
+        const errorMsg = errorData.errorMessage || errorData.error || `API request failed: ${response.status}`;
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();
+      
+      // Check for errors in response
+      if (data.error) {
+        return {
+          response: data.errorMessage || data.error || 'Es gab einen Fehler bei der Anfrage.'
+        };
+      }
+      
       return {
         response: data.response || 'Entschuldigung, ich konnte keine Antwort generieren.',
         needsRefresh: data.needsRefresh
       };
     } catch (error) {
       console.error('MistralToolsService error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unbekannter Fehler';
       return {
-        response: 'Entschuldigung, es gab einen Fehler bei der KI-Antwort.'
+        response: `Entschuldigung, es gab einen Fehler: ${errorMessage}`
       };
     }
   }

@@ -80,39 +80,71 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       requestBody.tool_choice = toolChoice || 'auto';
     }
 
-    // Use direct HTTP request to Mistral API
-    const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(requestBody),
-    });
+    // Use direct HTTP request to Mistral API with retry logic for rate limits
+    let response: Response;
+    let retries = 0;
+    const maxRetries = 3;
+    const baseDelay = 1000; // Start with 1 second
 
-    if (!response.ok) {
+    while (retries <= maxRetries) {
+      response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.ok) {
+        break; // Success, exit retry loop
+      }
+
       const errorText = await response.text();
-      console.error('Mistral API error:', {
+      console.error(`Mistral API error (attempt ${retries + 1}/${maxRetries + 1}):`, {
         status: response.status,
         statusText: response.statusText,
-        errorText: errorText
+        errorText: errorText.substring(0, 200)
       });
-      
-      if (response.status === 429) {
-        return NextResponse.json({ 
-          error: 'Rate limit exceeded', 
-          errorMessage: 'Bitte warte einen Moment, bevor du eine weitere Anfrage stellst.' 
-        }, { status: 429 });
+
+      // Handle rate limit with retry
+      if (response.status === 429 && retries < maxRetries) {
+        // Check for Retry-After header
+        const retryAfter = response.headers.get('Retry-After');
+        const delay = retryAfter 
+          ? parseInt(retryAfter, 10) * 1000 
+          : baseDelay * Math.pow(2, retries); // Exponential backoff
+        
+        console.log(`Rate limit hit, retrying after ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        retries++;
+        continue;
       }
-      
+
+      // Handle other errors
       if (response.status === 401) {
         return NextResponse.json({ 
           error: 'Authentication failed', 
           errorMessage: 'API-Key ungültig. Bitte überprüfe die Konfiguration.' 
         }, { status: 401 });
       }
-      
+
+      // Rate limit exceeded after max retries
+      if (response.status === 429) {
+        const retryAfter = response.headers.get('Retry-After');
+        const waitTime = retryAfter ? parseInt(retryAfter, 10) : 60;
+        return NextResponse.json({ 
+          error: 'Rate limit exceeded', 
+          errorMessage: `Rate Limit erreicht. Bitte warte ${waitTime} Sekunden, bevor du eine weitere Anfrage stellst.`,
+          retryAfter: waitTime
+        }, { status: 429 });
+      }
+
       throw new Error(`Mistral API error: ${response.status} - ${errorText.substring(0, 200)}`);
+    }
+
+    if (!response.ok) {
+      throw new Error(`Mistral API error after retries: ${response.status}`);
     }
 
     const data = await response.json();

@@ -14,6 +14,7 @@ export function useMistralChat(): {
   setChatInput: (input: string) => void;
   handleSendMessage: (taskContext?: { tasks: number; goals: number; taskService?: any }) => Promise<void>;
   isServiceReady: boolean;
+  isSending: boolean;
   clearChat: () => void;
 } {
   const { language, isReady } = useLocale();
@@ -22,6 +23,8 @@ export function useMistralChat(): {
   const [messages, setMessages] = useState<Message[]>([]);
   const [mistralToolsService, setMistralToolsService] = useState<MistralToolsService | null>(null);
   const [chatInput, setChatInput] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [lastRequestTime, setLastRequestTime] = useState(0);
 
   // Initialize welcome message when locale is ready
   useEffect(() => {
@@ -75,7 +78,27 @@ export function useMistralChat(): {
   }, [t]);
 
   const handleSendMessage = useCallback(async (taskContext?: { tasks: number; goals: number; taskService?: any }): Promise<void> => {
-    if (!chatInput.trim()) return;
+    if (!chatInput.trim() || isSending) return;
+
+    // Throttle requests - minimum 2 seconds between requests
+    const now = Date.now();
+    const timeSinceLastRequest = now - lastRequestTime;
+    const minDelay = 2000; // 2 seconds minimum between requests
+    
+    if (timeSinceLastRequest < minDelay && lastRequestTime > 0) {
+      const waitTime = Math.ceil((minDelay - timeSinceLastRequest) / 1000);
+      const throttledMessage: Message = {
+        id: Date.now().toString(),
+        type: 'bot',
+        text: `Bitte warte ${waitTime} Sekunde${waitTime > 1 ? 'n' : ''}, bevor du eine weitere Anfrage stellst.`,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, throttledMessage]);
+      return;
+    }
+
+    setIsSending(true);
+    setLastRequestTime(now);
 
     const userMessage = chatInput.trim();
     setChatInput('');
@@ -88,6 +111,16 @@ export function useMistralChat(): {
     };
     setMessages(prev => [...prev, newUserMessage]);
 
+    // Add loading message
+    const loadingMessageId = (Date.now() + 1).toString();
+    const loadingMessage: Message = {
+      id: loadingMessageId,
+      type: 'bot',
+      text: '⏳ Verarbeite deine Anfrage...',
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, loadingMessage]);
+
     if (mistralToolsService) {
       try {
         // Use tools service for enhanced functionality
@@ -96,13 +129,17 @@ export function useMistralChat(): {
           goals: 0
         });
 
-        const botMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'bot',
-          text: result.response,
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, botMessage]);
+        // Remove loading message and add response
+        setMessages(prev => {
+          const filtered = prev.filter(msg => msg.id !== loadingMessageId);
+          const botMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            type: 'bot',
+            text: result.response,
+            timestamp: new Date()
+          };
+          return [...filtered, botMessage];
+        });
 
         // Auto-refresh tasks if needed (server-side tools were executed)
         if (result.needsRefresh && taskContext?.taskService?.loadData) {
@@ -112,25 +149,36 @@ export function useMistralChat(): {
             await taskContext.taskService.loadData();
           }, 100); // Shorter delay for smoother experience
         }
-      } catch {
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'bot',
-          text: 'Entschuldigung, ich konnte keine Antwort generieren. Bitte versuche es später erneut.',
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, errorMessage]);
+      } catch (error) {
+        // Remove loading message
+        setMessages(prev => {
+          const filtered = prev.filter(msg => msg.id !== loadingMessageId);
+          const errorMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            type: 'bot',
+            text: 'Entschuldigung, ich konnte keine Antwort generieren. Bitte versuche es später erneut.',
+            timestamp: new Date()
+          };
+          return [...filtered, errorMessage];
+        });
+      } finally {
+        setIsSending(false);
       }
     } else {
-      const fallbackMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'bot',
-        text: 'KI-Service wird noch initialisiert... Bitte warte einen Moment.',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, fallbackMessage]);
+      // Remove loading message
+      setMessages(prev => {
+        const filtered = prev.filter(msg => msg.id !== loadingMessageId);
+        const fallbackMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'bot',
+          text: 'KI-Service wird noch initialisiert... Bitte warte einen Moment.',
+          timestamp: new Date()
+        };
+        return [...filtered, fallbackMessage];
+      });
+      setIsSending(false);
     }
-  }, [mistralToolsService, chatInput]);
+  }, [mistralToolsService, chatInput, isSending, lastRequestTime]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -151,6 +199,7 @@ export function useMistralChat(): {
     setChatInput,
     handleSendMessage,
     isServiceReady: mistralToolsService !== null,
+    isSending,
     clearChat
   };
 }
