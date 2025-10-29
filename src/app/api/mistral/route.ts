@@ -81,7 +81,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     // Use direct HTTP request to Mistral API with retry logic for rate limits
-    let response: Response;
+    let response: Response | null = null;
     let retries = 0;
     const maxRetries = 3;
     const baseDelay = 1000; // Start with 1 second
@@ -143,8 +143,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       throw new Error(`Mistral API error: ${response.status} - ${errorText.substring(0, 200)}`);
     }
 
-    if (!response.ok) {
-      throw new Error(`Mistral API error after retries: ${response.status}`);
+    // TypeScript guard: ensure response is assigned
+    if (!response || !response.ok) {
+      throw new Error(`Mistral API error after retries: ${response?.status || 'unknown'}`);
     }
 
     const data = await response.json();
