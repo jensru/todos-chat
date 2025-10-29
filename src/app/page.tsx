@@ -280,30 +280,6 @@ export default function HomePage(): React.JSX.Element {
         setIsChatOpen(false);
         return;
       }
-      
-      // Nur wenn kein Input-Feld fokussiert ist
-      const activeElement = document.activeElement;
-      const isInputFocused = activeElement && (
-        activeElement.tagName === 'INPUT' || 
-        activeElement.tagName === 'TEXTAREA' ||
-        (activeElement as HTMLElement).contentEditable === 'true'
-      );
-      
-      if (!isInputFocused) {
-        // C-Taste zum Öffnen/Schließen des Chats
-        if (event.key === 'c' || event.key === 'C') {
-          setIsChatOpen(!isChatOpen);
-          event.preventDefault();
-          return;
-        }
-        
-        // Leertaste zum Öffnen/Schließen des Chats
-        if (event.key === ' ') {
-          setIsChatOpen(!isChatOpen);
-          event.preventDefault();
-          return;
-        }
-      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
