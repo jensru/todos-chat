@@ -77,10 +77,13 @@ export function useTaskManagement(): {
   }, [taskService]);
 
   const handleTaskUpdate = useCallback(async (taskId: string, updates: Partial<Task>): Promise<void> => {
+    // Store original task for potential revert
+    const originalTask = tasksRef.current.find(t => t.id === taskId);
+    if (!originalTask) return;
+
     // Check if this is a date change (moving task)
-    const currentTask = tasksRef.current.find(t => t.id === taskId);
-    if (currentTask && updates.dueDate && currentTask.dueDate !== updates.dueDate) {
-      const currentDate = new Date(currentTask.dueDate || 0);
+    if (originalTask.dueDate && updates.dueDate && originalTask.dueDate !== updates.dueDate) {
+      const currentDate = new Date(originalTask.dueDate);
       const newDate = new Date(updates.dueDate);
       
       // Determine animation direction
@@ -105,28 +108,81 @@ export function useTaskManagement(): {
     
     // Optimistic update: Update local state immediately for better UX
     setTasks(prev => prev.map(task =>
-      task.id === taskId ? { ...task, ...updates } : task
+      task.id === taskId ? { ...task, ...updates, updatedAt: new Date() } : task
     ));
     
     // Then try to update in the service
     const success = await taskService.updateTask(taskId, updates);
     if (!success) {
-      // If service call failed, reload data to get the correct state
-      await loadData();
+      // Revert optimistic update if service call failed
+      setTasks(prev => prev.map(task =>
+        task.id === taskId ? originalTask : task
+      ));
+    }
+    // Note: No reload on success - optimistic update is sufficient
+    // Only reload if date changed significantly to sync grouping
+    if (updates.dueDate && originalTask.dueDate && updates.dueDate !== originalTask.dueDate) {
+      // Small delay to allow animation, then sync data
+      setTimeout(async () => {
+        await loadData();
+      }, 500);
     }
   }, [taskService, loadData]);
 
   const handleTaskDelete = useCallback(async (taskId: string): Promise<void> => {
+    // Store original task for potential revert
+    const originalTask = tasksRef.current.find(t => t.id === taskId);
+    if (!originalTask) return;
+
+    // Optimistic update: Remove from UI immediately
+    setTasks(prev => prev.filter(task => task.id !== taskId));
+    
+    // Then delete on server
     const success = await taskService.deleteTask(taskId);
-    if (success) {
-      setTasks(prev => prev.filter(task => task.id !== taskId));
+    if (!success) {
+      // Revert optimistic update if deletion failed
+      setTasks(prev => {
+        const taskExists = prev.some(t => t.id === taskId);
+        if (!taskExists) {
+          return [...prev, originalTask];
+        }
+        return prev;
+      });
     }
   }, [taskService]);
 
   const handleAddTask = useCallback(async (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>): Promise<void> => {
+    // Generate temporary ID for optimistic update
+    const tempId = `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = new Date().toISOString();
+    
+    // Create optimistic task
+    const optimisticTask: Task = {
+      ...taskData,
+      id: tempId,
+      createdAt: new Date(now),
+      updatedAt: new Date(now),
+      globalPosition: Date.now()
+    };
+
+    // Optimistic update: Add to UI immediately
+    setTasks(prev => [...prev, optimisticTask]);
+    setNewTaskIds(prev => new Set([...prev, tempId]));
+    
+    // Then save to server
     const success = await taskService.addTask(taskData);
     if (success) {
+      // Reload to get the real task with correct ID from server
+      // This is necessary because we need the real ID
       await loadData();
+    } else {
+      // Revert optimistic update if save failed
+      setTasks(prev => prev.filter(task => task.id !== tempId));
+      setNewTaskIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(tempId);
+        return newSet;
+      });
     }
   }, [taskService, loadData]);
 
@@ -243,9 +299,49 @@ export function useTaskManagement(): {
   }, [taskService, loadData]);
 
   const handleMoveTaskToDate = useCallback(async (taskId: string, newDate: Date | null): Promise<void> => {
+    // Store original task for potential revert
+    const originalTask = tasksRef.current.find(t => t.id === taskId);
+    if (!originalTask) return;
+
+    // Optimistic update: Update date immediately
+    setTasks(prev => prev.map(task =>
+      task.id === taskId 
+        ? { ...task, dueDate: newDate, updatedAt: new Date() }
+        : task
+    ));
+
+    // Determine animation direction if date changed
+    if (originalTask.dueDate && newDate) {
+      const currentDate = new Date(originalTask.dueDate);
+      const targetDate = new Date(newDate);
+      
+      if (targetDate < currentDate) {
+        setMovingUpTaskIds(prev => new Set([...prev, taskId]));
+        setTimeout(() => setMovingUpTaskIds(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(taskId);
+          return newSet;
+        }), 400);
+      } else if (targetDate > currentDate) {
+        setMovingDownTaskIds(prev => new Set([...prev, taskId]));
+        setTimeout(() => setMovingDownTaskIds(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(taskId);
+          return newSet;
+        }), 400);
+      }
+    }
+    
+    // Then save to server
     const success = await taskService.moveTaskToDate(taskId, newDate);
-    if (success) {
-      await loadData(); // Reload to get updated data
+    if (!success) {
+      // Revert optimistic update if save failed
+      setTasks(prev => prev.map(task =>
+        task.id === taskId ? originalTask : task
+      ));
+    } else {
+      // Reload to sync positions and ensure consistency
+      await loadData();
     }
   }, [taskService, loadData]);
 
