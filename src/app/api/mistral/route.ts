@@ -397,7 +397,7 @@ ${groupedTasksText}`
         const userMessageLower = userMessage.toLowerCase();
         const userWords = userMessageLower.split(/\s+/);
         const hasHeute = userMessageLower.includes('heute') || userMessageLower.includes('today') || 
-                         userWords.some(w => w === 'heute' || w === 'today' || w === 'steht');
+                         userWords.some((w: string) => w === 'heute' || w === 'today' || w === 'steht');
         const hasMorgen = userMessageLower.includes('morgen') || userMessageLower.includes('tomorrow');
         const hasUeberfaellig = userMessageLower.includes('überfällig') || userMessageLower.includes('overdue');
         
