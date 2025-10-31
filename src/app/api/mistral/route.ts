@@ -450,14 +450,11 @@ ${groupedTasksText}`
       } catch (error) {
         clearTimeout(secondTimeoutId);
         if (error instanceof Error && error.name === 'AbortError') {
-          // Timeout fallback: Return tool results directly
+          // Timeout fallback: Gib eine freundliche Nachricht ohne technische Details zurück
           if (process.env.NODE_ENV === 'development') {
             console.log(`Second API call timeout - returning tool results directly as fallback`);
           }
-          let fallbackResponse = aiResponse || 'Ich verstehe! Ich führe deine Anfrage aus...';
-          if (toolResults.length > 0) {
-            fallbackResponse += '\n\n' + toolResults.map(r => r.content).join('\n');
-          }
+          const fallbackResponse = 'Kurz einen Moment Geduld – ich antworte dir gleich. Bitte frage danach einfach nochmal.';
           return NextResponse.json({ 
             response: fallbackResponse,
             needsRefresh: true
@@ -481,25 +478,19 @@ ${groupedTasksText}`
           if (process.env.NODE_ENV === 'development') {
             console.log(`Rate limit hit (second call) - returning tool results directly as fallback`);
           }
-          // Fallback: Return tool results directly instead of failing
-          let fallbackResponse = aiResponse || 'Ich verstehe! Ich führe deine Anfrage aus...';
-          if (toolResults.length > 0) {
-            fallbackResponse += '\n\n' + toolResults.map(r => r.content).join('\n');
-          }
+          // Fallback: Keine technischen Details ausgeben
+          const fallbackResponse = 'Gerade sind viele Anfragen. Warte kurz und frage dann bitte erneut.';
           return NextResponse.json({ 
             response: fallbackResponse,
             needsRefresh: true
           });
         }
 
-        // Für alle anderen Fehler: ebenfalls Fallback mit Tool-Results zurückgeben
+        // Für alle anderen Fehler: ebenfalls freundliche Nachricht ohne technische Details zurückgeben
         if (process.env.NODE_ENV === 'development') {
           console.log(`Second call non-ok (${secondResponse.status}) - returning tool results as fallback`);
         }
-        let genericFallback = aiResponse || 'Ich verstehe! Ich führe deine Anfrage aus...';
-        if (toolResults.length > 0) {
-          genericFallback += '\n\n' + toolResults.map(r => r.content).join('\n');
-        }
+        const genericFallback = 'Ein kurzer Hänger – bitte frage gleich nochmal, dann antworte ich dir normal.';
         return NextResponse.json({
           response: genericFallback,
           needsRefresh: true
