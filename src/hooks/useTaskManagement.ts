@@ -304,11 +304,18 @@ export function useTaskManagement(): {
     if (!originalTask) return;
 
     // Optimistic update: Update date immediately
-    setTasks(prev => prev.map(task =>
-      task.id === taskId 
-        ? { ...task, dueDate: newDate, updatedAt: new Date() }
-        : task
-    ));
+    setTasks(prev => prev.map(task => {
+      if (task.id === taskId) {
+        const updatedTask = { ...task, updatedAt: new Date() };
+        if (newDate) {
+          updatedTask.dueDate = newDate;
+        } else {
+          delete updatedTask.dueDate;
+        }
+        return updatedTask;
+      }
+      return task;
+    }));
 
     // Determine animation direction if date changed
     if (originalTask.dueDate && newDate) {

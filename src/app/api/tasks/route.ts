@@ -6,16 +6,12 @@ import { NextRequest, NextResponse } from 'next/server';
 // GET /api/tasks - Load all tasks
 export async function GET(): Promise<NextResponse> {
   try {
-    console.log('API Debug - Starting GET /api/tasks');
-
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    console.log('API Debug - User authenticated:', user.id);
 
     // Load only tasks for the authenticated user
     const { data: dbTasks, error } = await supabase
@@ -29,7 +25,6 @@ export async function GET(): Promise<NextResponse> {
       throw error;
     }
 
-    console.log('API Debug - Found', dbTasks?.length || 0, 'tasks');
 
     const tasks = (dbTasks || []).map(task => ({
       id: task.id,

@@ -1,7 +1,7 @@
 // src/hooks/useMistralChat.ts - Custom Hook for Mistral AI Chat
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from '@/lib/i18n';
 import { MistralToolsService } from '@/lib/services/MistralToolsService';
@@ -25,6 +25,8 @@ export function useMistralChat(): {
   const [chatInput, setChatInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [lastRequestTime, setLastRequestTime] = useState(0);
+  const isSendingRef = useRef<boolean>(false);
+  const cooldownUntilRef = useRef<number>(0);
 
   // Initialize welcome message when locale is ready
   useEffect(() => {
@@ -78,12 +80,29 @@ export function useMistralChat(): {
   }, [t]);
 
   const handleSendMessage = useCallback(async (taskContext?: { tasks: number; goals: number; taskService?: any }): Promise<void> => {
-    if (!chatInput.trim() || isSending) return;
+    if (!chatInput.trim()) return;
+    // Single-flight Guard (block Doppel-Trigger durch KeyDown/Click im selben Tick)
+    if (isSendingRef.current) return;
 
-    // Throttle requests - minimum 2 seconds between requests
+    // Aktiven Cooldown respektieren (Retry-After vom Server)
+    const nowPre = Date.now();
+    if (nowPre < cooldownUntilRef.current) {
+      const waitMs = cooldownUntilRef.current - nowPre;
+      const waitSec = Math.ceil(waitMs / 1000);
+      const cooldownMessage: Message = {
+        id: Date.now().toString(),
+        type: 'bot',
+        text: `Bitte warte ${waitSec} Sekunde${waitSec > 1 ? 'n' : ''}, bevor du eine weitere Anfrage stellst.`,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, cooldownMessage]);
+      return;
+    }
+
+    // Throttle requests - minimum delay between requests
     const now = Date.now();
     const timeSinceLastRequest = now - lastRequestTime;
-    const minDelay = 2000; // 2 seconds minimum between requests
+    const minDelay = 5000; // 5 seconds minimum between requests
     
     if (timeSinceLastRequest < minDelay && lastRequestTime > 0) {
       const waitTime = Math.ceil((minDelay - timeSinceLastRequest) / 1000);
@@ -97,6 +116,7 @@ export function useMistralChat(): {
       return;
     }
 
+    isSendingRef.current = true;
     setIsSending(true);
     setLastRequestTime(now);
 
@@ -146,6 +166,11 @@ export function useMistralChat(): {
           historyForApi
         );
 
+        // Falls der Server ein Retry-After kommuniziert hat, Cooldown setzen
+        if (typeof result.cooldownMs === 'number' && result.cooldownMs > 0) {
+          cooldownUntilRef.current = Date.now() + result.cooldownMs;
+        }
+
         // Remove loading message and add response
         setMessages(prev => {
           const filtered = prev.filter(msg => msg.id !== loadingMessageId);
@@ -180,6 +205,7 @@ export function useMistralChat(): {
         });
       } finally {
         setIsSending(false);
+        isSendingRef.current = false;
       }
     } else {
       // Remove loading message
@@ -194,8 +220,9 @@ export function useMistralChat(): {
         return [...filtered, fallbackMessage];
       });
       setIsSending(false);
+      isSendingRef.current = false;
     }
-  }, [mistralToolsService, chatInput, isSending, lastRequestTime]);
+  }, [mistralToolsService, chatInput, lastRequestTime]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
