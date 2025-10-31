@@ -175,24 +175,20 @@ Mistral AI unterstützt Function Calling (Tools) für die Integration externer F
 ```
 
 ### 4. list_tasks
-**Beschreibung:** Zeigt alle aktuellen Aufgaben an, gruppiert nach Datum. Mistral filtert die Antwort basierend auf der User-Frage (z.B. "heute" → nur HEUTE-Tasks).
+**Beschreibung:** Zeigt alle aktuellen Aufgaben an, gruppiert nach Datum. Tool gibt eine JSON-Struktur zurück (nur intern für das Modell). Mistral filtert die Antwort basierend auf der User-Frage (z.B. "heute" → nur HEUTE-Tasks) und gibt im Chat niemals JSON/Code aus.
 **Parameter:** Keine
 
-**Rückgabe-Format:**
-```
-📝 Deine Aufgaben:
-
-⚠️ ÜBERFÄLLIG (vor 2025-10-31):
-1. ⏳ Task Title (2025-10-30) 🔥
-
-📅 HEUTE (2025-10-31):
-1. ⏳ Task Title 🔥
-
-📅 MORGEN (2025-11-01):
-1. ⏳ Task Title
-
-📅 SPÄTER:
-1. ⏳ Task Title (2025-11-08)
+**Rückgabe-Format (intern):**
+```json
+{
+  "grouped": {
+    "overdue": { "label": "⚠️ ÜBERFÄLLIG (vor YYYY-MM-DD)", "items": [{ "title": "...", "completed": false, "priority": true, "date": "YYYY-MM-DD" }] },
+    "today":   { "label": "📅 HEUTE (YYYY-MM-DD)",             "items": [{ "title": "...", "completed": false, "priority": true }] },
+    "tomorrow":{ "label": "📅 MORGEN (YYYY-MM-DD)",            "items": [{ "title": "...", "completed": false, "priority": false }] },
+    "later":   { "label": "📅 SPÄTER",                         "items": [{ "title": "...", "completed": false, "priority": false, "date": "YYYY-MM-DD" }] },
+    "noDate":  { "label": "📝 OHNE DATUM",                     "items": [{ "title": "...", "completed": false, "priority": false }] }
+  }
+}
 ```
 
 **Beispiel:**
@@ -235,12 +231,7 @@ Mistral AI unterstützt Function Calling (Tools) für die Integration externer F
 
 **Tool Execution:**
 - Server executes tool with Supabase auth
-- For `list_tasks`: Returns tasks grouped by date with ISO format
-- Tool results formatted with clear categories:
-  - `📅 HEUTE (2025-10-31):`
-  - `📅 MORGEN (2025-11-01):`
-  - `⚠️ ÜBERFÄLLIG (vor 2025-10-31):`
-  - `📅 SPÄTER:`
+- For `list_tasks`: Returns JSON structure with grouped sections (siehe Rückgabe-Format)
 
 **Second API Call:**
 - Assistant message with `tool_calls` added to conversation
@@ -297,14 +288,12 @@ Mistral kann automatisch Tasks aus natürlicher Sprache erkennen:
 
 ## Rate Limits & Quotas
 
-- **Standard:** 100 Requests/Minute
-- **With Tools:** Reduzierte Limits aufgrund höherer Token-Nutzung
-- **429 Status Code:** Bei Überschreitung
-- **Error Handling:** 
-  - Automatic retries with exponential backoff (5 retries, 2s-64s delays)
-  - Respects `Retry-After` header from Mistral API
-  - Fallback to tool results if all retries fail
-- **Note:** 2 API calls per user message (1 for tool call, 1 for result processing)
+- **Standard:** 100 Requests/Minute (planabhängig)
+- **Mit Tools:** 2 API-Calls/Nachricht möglich → höhere Last
+- **429 Handling:**
+  - Server: keine Retries, liefert `retryAfter`
+  - Client: kein Auto‑Retry, setzt Cooldown gemäß `Retry-After` und blockt weitere Sendungen
+  - Optionaler Single‑Call‑Modus (`MISTRAL_SINGLE_CALL=1`) halbiert Requests
 
 ## Fehlerbehandlung
 

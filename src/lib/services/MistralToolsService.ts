@@ -135,7 +135,9 @@ export class MistralToolsService {
         type: 'function',
         function: {
           name: 'list_tasks',
-          description: 'Lists all current tasks grouped by date (HEUTE, MORGEN, SPÄTER, ÜBERFÄLLIG). Use this when user asks "What are my tasks?" or "Show me my tasks" or when you need to see available tasks. IMPORTANT: When the tool returns grouped tasks, you MUST filter your response based on what the user asked - if they ask for "today", only show the HEUTE category in your response, not the full list.',
+          description: 'Lists all current tasks grouped by date (HEUTE, MORGEN, SPÄTER, ÜBERFÄLLIG) and returns a JSON object: { grouped: { overdue: { label, items }, today: { label, items }, tomorrow: { label, items }, later: { label, items }, noDate: { label, items } } }. IMPORTANT: You MUST filter your response based on what the user asked - e.g., for "today" only show the HEUTE section, not the full list.',
+          // Hinweis an das Modell: Die Antwort an den Nutzer darf nie technisch sein.
+          // Der Assistent soll niemals JSON oder Code an den Nutzer zurückgeben.
           parameters: {
             type: 'object',
             properties: {},
@@ -154,34 +156,53 @@ export class MistralToolsService {
   ): Promise<{
     response: string;
     needsRefresh?: boolean;
+    cooldownMs?: number;
   }> {
     try {
       const tools = this.getAvailableTools();
       
-      const response = await fetch('/api/mistral', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: userMessage,
-          messageHistory: messageHistory,
-          context: context,
-          tools: tools,
-          toolChoice: 'auto'
-        }),
-      });
+      // Add timeout to client-side fetch (50 seconds, slightly less than server timeout)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+      
+      let response: Response;
+      try {
+        response = await fetch('/api/mistral', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: userMessage,
+            messageHistory: messageHistory,
+            context: context,
+            tools: tools,
+            toolChoice: 'auto'
+          }),
+          signal: controller.signal,
+        });
+      } catch (error) {
+        clearTimeout(timeoutId);
+        if (error instanceof Error && error.name === 'AbortError') {
+          return {
+            response: 'Die Anfrage dauerte zu lange. Bitte versuche es erneut.'
+          };
+        }
+        throw error;
+      } finally {
+        clearTimeout(timeoutId);
+      }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         
         if (response.status === 429) {
-          const retryAfter = errorData.retryAfter || 60;
+          const retryAfter = Number(errorData.retryAfter) || 60;
           const errorMessage = errorData.errorMessage || `Rate Limit erreicht. Bitte warte ${retryAfter} Sekunden, bevor du eine weitere Anfrage stellst.`;
-          
-          // The server-side already handles retries, but we still show the error
+          // Kein Auto-Retry: gib Cooldown zurück, UI sperrt Sendungen für die Dauer
           return {
-            response: errorMessage
+            response: errorMessage,
+            cooldownMs: Math.max(0, retryAfter) * 1000
           };
         }
         

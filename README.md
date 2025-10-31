@@ -30,7 +30,7 @@ Eine moderne, Cloud-basierte Todo-App mit Supabase-Backend, Multi-User-Support, 
 - **Smart Task Detection** - Automatische Aufgaben-Generierung
 - **Intelligent Filtering** - KI filtert Antworten basierend auf Fragen (z.B. "heute" → nur HEUTE-Tasks)
 - **Multi-Language Support** - KI antwortet in User-Sprache
-- **Rate-Limit Handling** - Automatische Retries mit exponential backoff
+- **Rate-Limit Handling** - Server ohne Retries (liefert Retry-After), Client-Cooldown statt Auto-Retry
 
 ### 🌍 Multi-Language Support
 - **UI Languages** - English (default), German, French
@@ -152,6 +152,9 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 # Mistral AI (optional)
 MISTRAL_API_KEY=your_mistral_api_key
+# Optionales Modell & Flow
+# MISTRAL_MODEL=mistral-small-latest
+# MISTRAL_SINGLE_CALL=0
 ```
 
 **API Keys finden:**
@@ -213,7 +216,7 @@ App läuft auf: `http://localhost:3000`
 - KI antwortet in deiner Sprache
 - **Intelligent Filtering:** Bei "heute" zeigt KI nur HEUTE-Tasks, nicht die komplette Liste
 - Server-side Tool Execution für sichere Operationen
-- Rate-Limits werden automatisch behandelt (Retries mit Wartezeiten)
+- Rate-Limits: Client respektiert Retry-After als Cooldown (keine Auto-Retries)
 
 ### Multi-Language Features
 - **Speech Recognition:** Wähle Sprache im Dropdown (rechts oben)

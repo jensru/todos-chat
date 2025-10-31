@@ -193,7 +193,7 @@ if (timeSinceUpdate < 3000) return; // Skip auto-save
 - **create_task** - Erstelle neue Tasks
 - **update_task** - Aktualisiere bestehende Tasks (mit intelligenter Suche)
 - **delete_task** - Lösche Tasks
-- **list_tasks** - Zeige alle Tasks (gruppiert nach Datum, ISO-Format)
+- **list_tasks** - Zeige alle Tasks (gruppiert nach Datum) – Tool liefert intern JSON-Struktur für deterministische Filterung; der Assistent gibt im Chat niemals JSON aus
 
 ### Chat-History System:
 - **Message History** wird mit jeder Anfrage übergeben
@@ -215,7 +215,7 @@ if (timeSinceUpdate < 3000) return; // Skip auto-save
 1. First API Call: User message + message history sent to Mistral
 2. Mistral detects intent and calls appropriate tool
 3. Server-side tool execution with Supabase auth
-4. Tool results formatted (list_tasks: grouped by date, ISO format)
+4. Tool results: JSON-Struktur (grouped Sections) zur zuverlässigen Filterung
 5. Second API Call: Tool results sent back with role: 'tool'
 6. Mistral processes tool results and filters response
 7. Database update with proper user filtering
@@ -231,10 +231,9 @@ if (timeSinceUpdate < 3000) return; // Skip auto-save
 - **Grouped Output** - Tasks grouped as: HEUTE, MORGEN, SPÄTER, ÜBERFÄLLIG
 
 ### Rate-Limit Handling:
-- **Automatic Retries** - 5 retries with exponential backoff (2s-64s)
-- **Retry-After Header** - Respects Mistral's suggested wait time
-- **Error Handling** - Graceful degradation if all retries fail
-- **2 Calls per Message** - Tool call + result processing (may hit rate limits faster)
+- **Server**: keine Retries; liefert `retryAfter` bei 429
+- **Client**: respektiert `Retry-After` als Cooldown, blockt weitere Sendungen; kein Auto‑Retry
+- **Optional**: Single‑Call‑Modus (ENV) halbiert Anzahl Requests
 
 ---
 
