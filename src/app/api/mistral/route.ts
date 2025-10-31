@@ -13,7 +13,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     // Build messages array with history
-    const messagesArray: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+    // Type allows tool_calls for assistant messages and tool_call_id for tool messages
+    const messagesArray: Array<{
+      role: 'system' | 'user' | 'assistant' | 'tool';
+      content: string | null;
+      tool_calls?: Array<{
+        id: string;
+        type: string;
+        function: {
+          name: string;
+          arguments: string;
+        };
+      }>;
+      tool_call_id?: string;
+    }> = [
       {
         role: 'system',
         content: `You are a helpful AI assistant for task management.
@@ -32,7 +45,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           - If user says "Lösche Task Z" or "Delete task W" → Use delete_task directly
           - If user says "Markiere Task als erledigt" or "Mark task as completed" → Use update_task directly
           - If user asks "What are my tasks?" or "Show me my tasks" → Use list_tasks tool
+          - If user asks specifically about "today", "tomorrow", or a specific date → Use list_tasks tool BUT only mention the relevant date category in your response
           - If user wants to chat normally → Just respond without tools
+          
+          CRITICAL: When list_tasks returns grouped tasks (HEUTE, MORGEN, SPÄTER, etc.), you MUST filter your response based on what the user asked:
+          - User asks "heute" or "today" → ONLY show and mention the "📅 HEUTE" category, ignore all others
+          - User asks "morgen" or "tomorrow" → ONLY show and mention the "📅 MORGEN" category, ignore all others
+          - User asks "überfällig" or "overdue" → ONLY show and mention the "⚠️ ÜBERFÄLLIG" category, ignore all others
+          - User asks "all tasks" or "alle tasks" → Show all categories
+          - User doesn't specify a date → Show only HEUTE (today) and ÜBERFÄLLIG (overdue) categories by default
+          NEVER show the full list if the user asks for a specific date - always filter and show only the relevant section!
           
           IMPORTANT: For task operations, use these parameters:
           - taskDate: "today", "tomorrow", "yesterday" 
@@ -100,8 +122,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Use direct HTTP request to Mistral API with retry logic for rate limits
     let response: Response | null = null;
     let retries = 0;
-    const maxRetries = 3;
-    const baseDelay = 1000; // Start with 1 second
+    const maxRetries = 5; // More retries for rate limits
+    const baseDelay = 2000; // Start with 2 seconds
 
     while (retries <= maxRetries) {
       response = await fetch('https://api.mistral.ai/v1/chat/completions', {
@@ -132,7 +154,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           ? parseInt(retryAfter, 10) * 1000 
           : baseDelay * Math.pow(2, retries); // Exponential backoff
         
-        console.log(`Rate limit hit, retrying after ${delay}ms...`);
+        console.log(`Rate limit hit (first call), waiting ${delay}ms before retry ${retries + 1}/${maxRetries}...`);
         await new Promise(resolve => setTimeout(resolve, delay));
         retries++;
         continue;
@@ -171,18 +193,132 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const toolCalls = aiMessage?.tool_calls || null;
     
     // Execute tool calls server-side if present
-    let toolResults = [];
+    let toolResults: Array<{ tool_call_id: string; content: string }> = [];
     if (toolCalls && toolCalls.length > 0) {
       for (const toolCall of toolCalls) {
         try {
           const toolResult = await executeToolCallServerSide(toolCall, request);
-          toolResults.push(toolResult);
+          toolResults.push({
+            tool_call_id: toolCall.id,
+            content: toolResult
+          });
         } catch (error) {
           console.error('Tool execution error:', error);
           const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
-          toolResults.push(`❌ Fehler beim Ausführen des Tools: ${errorMessage}`);
+          toolResults.push({
+            tool_call_id: toolCall.id,
+            content: `❌ Fehler beim Ausführen des Tools: ${errorMessage}`
+          });
         }
       }
+    }
+    
+    // If we have tool calls, send tool results back to Mistral in a second API call
+    // This is the correct Tool-Calling flow: Mistral processes tool results and generates filtered response
+    if (toolCalls && toolCalls.length > 0 && toolResults.length > 0) {
+      // Add assistant message with tool calls to conversation
+      messagesArray.push({
+        role: 'assistant',
+        content: aiResponse || null,
+        tool_calls: toolCalls.map((tc: any) => ({
+          id: tc.id,
+          type: tc.type,
+          function: {
+            name: tc.function.name,
+            arguments: tc.function.arguments
+          }
+        }))
+      });
+      
+      // Add tool response messages (role: 'tool')
+      toolResults.forEach(result => {
+        messagesArray.push({
+          role: 'tool',
+          content: result.content,
+          tool_call_id: result.tool_call_id
+        });
+      });
+      
+      // Second API call: Let Mistral process tool results and generate filtered response
+      const secondRequestBody: any = {
+        model: 'mistral-large-latest',
+        messages: messagesArray,
+        temperature: 0.8,
+        max_tokens: 500
+      };
+      
+      // Tools might not be needed in second call, but include them for consistency
+      if (tools && tools.length > 0) {
+        secondRequestBody.tools = tools;
+      }
+      
+      // Make second API call with improved rate limit handling
+      let secondResponse: Response | null = null;
+      let secondRetries = 0;
+      const secondMaxRetries = 5; // More retries for rate limits
+      const secondBaseDelay = 2000; // Longer initial delay
+      
+      while (secondRetries <= secondMaxRetries) {
+        secondResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(secondRequestBody)
+        });
+        
+        if (secondResponse.ok) {
+          break;
+        }
+        
+        const errorText = await secondResponse.text();
+        console.error(`Mistral API error (second call, attempt ${secondRetries + 1}):`, {
+          status: secondResponse.status,
+          statusText: secondResponse.statusText,
+          errorText: errorText.substring(0, 500)
+        });
+        
+        // Handle rate limits with exponential backoff
+        if (secondResponse.status === 429 && secondRetries < secondMaxRetries) {
+          const retryAfter = secondResponse.headers.get('Retry-After');
+          // Use Retry-After header if available, otherwise exponential backoff
+          const delay = retryAfter 
+            ? parseInt(retryAfter, 10) * 1000 
+            : secondBaseDelay * Math.pow(2, secondRetries);
+          console.log(`Rate limit hit (second call), waiting ${delay}ms before retry ${secondRetries + 1}/${secondMaxRetries}`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          secondRetries++;
+          continue;
+        }
+        
+        // For other errors, fail fast
+        return NextResponse.json({ 
+          error: 'Failed to generate response (second call)',
+          details: `Status: ${secondResponse.status}, Error: ${errorText.substring(0, 500)}`
+        }, { status: 500 });
+      }
+      
+      if (!secondResponse || !secondResponse.ok) {
+        // If all retries failed, return tool results directly (fallback)
+        console.warn('Second API call failed after all retries, returning tool results directly');
+        let fallbackResponse = aiResponse || 'Ich verstehe! Ich führe deine Anfrage aus...';
+        if (toolResults.length > 0) {
+          fallbackResponse += '\n\n' + toolResults.map(r => r.content).join('\n');
+        }
+        return NextResponse.json({ 
+          response: fallbackResponse,
+          needsRefresh: true
+        });
+      }
+      
+      const secondData = await secondResponse.json();
+      const finalAiResponse = secondData.choices[0]?.message?.content || 'Entschuldigung, ich konnte keine Antwort generieren.';
+      
+      return NextResponse.json({ 
+        response: finalAiResponse,
+        needsRefresh: true
+      });
     }
     
     // If we have tool calls but no content, provide a helpful message
@@ -191,11 +327,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       finalResponse = 'Ich verstehe! Ich führe deine Anfrage aus...';
     } else if (!aiResponse && !toolCalls) {
       finalResponse = 'Entschuldigung, ich konnte keine Antwort generieren.';
-    }
-    
-    // Add tool results to response
-    if (toolResults.length > 0) {
-      finalResponse += '\n\n' + toolResults.join('\n');
     }
     
     return NextResponse.json({ 
@@ -498,6 +629,7 @@ async function handleListTasksServerSide(supabase: any, userId: string): Promise
       .from('tasks')
       .select('id, title, completed, dueDate, priority')
       .eq('userId', userId)
+      .eq('completed', false) // Nur aktive Tasks anzeigen
       .order('globalPosition', { ascending: true });
 
     if (error) {
@@ -509,15 +641,92 @@ async function handleListTasksServerSide(supabase: any, userId: string): Promise
       return `📝 Du hast noch keine Aufgaben.`;
     }
 
-    const taskList = tasks.map((task: any, index: number) => {
-      const status = task.completed ? '✅' : '⏳';
-      const priority = task.priority ? '🔥' : '';
-      const dueDate = task.dueDate ? ` (${new Date(task.dueDate).toLocaleDateString()})` : '';
-      return `${index + 1}. ${status} ${task.title}${dueDate} ${priority}`;
-    }).join('\n');
+    // Import date utilities
+    const { formatDateToYYYYMMDD, getTodayAsYYYYMMDD, getTomorrowAsYYYYMMDD } = await import('@/lib/utils/dateUtils');
+    
+    const today = getTodayAsYYYYMMDD();
+    const tomorrow = getTomorrowAsYYYYMMDD();
+    
+    // Group tasks by date
+    const todayTasks: any[] = [];
+    const tomorrowTasks: any[] = [];
+    const overdueTasks: any[] = [];
+    const futureTasks: any[] = [];
+    const noDateTasks: any[] = [];
+
+    tasks.forEach((task: any) => {
+      if (!task.dueDate) {
+        noDateTasks.push(task);
+        return;
+      }
+
+      const taskDateStr = formatDateToYYYYMMDD(new Date(task.dueDate));
+      
+      if (taskDateStr < today) {
+        overdueTasks.push({ ...task, dateStr: taskDateStr });
+      } else if (taskDateStr === today) {
+        todayTasks.push({ ...task, dateStr: taskDateStr });
+      } else if (taskDateStr === tomorrow) {
+        tomorrowTasks.push({ ...task, dateStr: taskDateStr });
+      } else {
+        futureTasks.push({ ...task, dateStr: taskDateStr });
+      }
+    });
+
+    // Build formatted task list - Mistral will filter based on user's question
+    const parts: string[] = [];
+    
+    if (overdueTasks.length > 0) {
+      parts.push(`⚠️ ÜBERFÄLLIG (vor ${today}):`);
+      overdueTasks.forEach((task, index) => {
+        const status = task.completed ? '✅' : '⏳';
+        const priority = task.priority ? '🔥' : '';
+        parts.push(`${index + 1}. ${status} ${task.title} (${task.dateStr}) ${priority}`);
+      });
+      parts.push('');
+    }
+
+    if (todayTasks.length > 0) {
+      parts.push(`📅 HEUTE (${today}):`);
+      todayTasks.forEach((task, index) => {
+        const status = task.completed ? '✅' : '⏳';
+        const priority = task.priority ? '🔥' : '';
+        parts.push(`${index + 1}. ${status} ${task.title} ${priority}`);
+      });
+      parts.push('');
+    }
+
+    if (tomorrowTasks.length > 0) {
+      parts.push(`📅 MORGEN (${tomorrow}):`);
+      tomorrowTasks.forEach((task, index) => {
+        const status = task.completed ? '✅' : '⏳';
+        const priority = task.priority ? '🔥' : '';
+        parts.push(`${index + 1}. ${status} ${task.title} ${priority}`);
+      });
+      parts.push('');
+    }
+
+    if (futureTasks.length > 0) {
+      parts.push(`📅 SPÄTER:`);
+      futureTasks.forEach((task, index) => {
+        const status = task.completed ? '✅' : '⏳';
+        const priority = task.priority ? '🔥' : '';
+        parts.push(`${index + 1}. ${status} ${task.title} (${task.dateStr}) ${priority}`);
+      });
+      parts.push('');
+    }
+
+    if (noDateTasks.length > 0) {
+      parts.push(`📝 OHNE DATUM:`);
+      noDateTasks.forEach((task, index) => {
+        const status = task.completed ? '✅' : '⏳';
+        const priority = task.priority ? '🔥' : '';
+        parts.push(`${index + 1}. ${status} ${task.title} ${priority}`);
+      });
+    }
 
     console.log('handleListTasksServerSide - found', tasks.length, 'tasks');
-    return `📝 Deine Aufgaben:\n\n${taskList}`;
+    return `📝 Deine Aufgaben:\n\n${parts.join('\n')}`;
   } catch (error) {
     console.error('handleListTasksServerSide - error:', error);
     throw error;

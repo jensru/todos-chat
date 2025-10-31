@@ -24,10 +24,13 @@ Eine moderne, Cloud-basierte Todo-App mit Supabase-Backend, Multi-User-Support, 
 
 ### 🤖 AI-Integration
 - **Mistral-Large Chat** - Intelligente Gespräche mit KI
-- **Task-Manipulation** - KI kann Tasks erstellen, verschieben, löschen
-- **Natural Language Processing** - "Verschiebe Task nach morgen"
+- **Chat-History** - Persistenter Kontext über mehrere Nachrichten
+- **Tool-Calling** - KI kann Tasks erstellen, verschieben, löschen (2 API Calls pro Anfrage)
+- **Natural Language Processing** - "Verschiebe Task nach morgen", "Leg das todo an, man!"
 - **Smart Task Detection** - Automatische Aufgaben-Generierung
+- **Intelligent Filtering** - KI filtert Antworten basierend auf Fragen (z.B. "heute" → nur HEUTE-Tasks)
 - **Multi-Language Support** - KI antwortet in User-Sprache
+- **Rate-Limit Handling** - Automatische Retries mit exponential backoff
 
 ### 🌍 Multi-Language Support
 - **UI Languages** - English (default), German, French
@@ -204,8 +207,13 @@ App läuft auf: `http://localhost:3000`
   - "Verschiebe den Task nach morgen"
   - "Lösche den Task X"
   - "Was sind meine Tasks?"
+  - "Welche Aufgaben stehen heute an?"
+  - "Leg das todo an, man!" (mit Kontext aus vorherigen Nachrichten)
+- **Chat-History:** KI erinnert sich an vorherige Nachrichten
 - KI antwortet in deiner Sprache
+- **Intelligent Filtering:** Bei "heute" zeigt KI nur HEUTE-Tasks, nicht die komplette Liste
 - Server-side Tool Execution für sichere Operationen
+- Rate-Limits werden automatisch behandelt (Retries mit Wartezeiten)
 
 ### Multi-Language Features
 - **Speech Recognition:** Wähle Sprache im Dropdown (rechts oben)

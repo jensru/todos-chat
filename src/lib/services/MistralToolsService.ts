@@ -135,7 +135,7 @@ export class MistralToolsService {
         type: 'function',
         function: {
           name: 'list_tasks',
-          description: 'Lists all current tasks. Use this when user asks "What are my tasks?" or "Show me my tasks" or when you need to see available tasks for operations.',
+          description: 'Lists all current tasks grouped by date (HEUTE, MORGEN, SPÄTER, ÜBERFÄLLIG). Use this when user asks "What are my tasks?" or "Show me my tasks" or when you need to see available tasks. IMPORTANT: When the tool returns grouped tasks, you MUST filter your response based on what the user asked - if they ask for "today", only show the HEUTE category in your response, not the full list.',
           parameters: {
             type: 'object',
             properties: {},

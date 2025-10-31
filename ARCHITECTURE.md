@@ -186,14 +186,20 @@ if (timeSinceUpdate < 3000) return; // Skip auto-save
 
 ## 🤖 Mistral AI Integration
 
-### Server-Side Tool Execution
+### Server-Side Tool Execution mit Chat-History
 **File:** `src/app/api/mistral/route.ts`
 
 ### Available Tools:
 - **create_task** - Erstelle neue Tasks
 - **update_task** - Aktualisiere bestehende Tasks (mit intelligenter Suche)
 - **delete_task** - Lösche Tasks
-- **list_tasks** - Zeige alle Tasks
+- **list_tasks** - Zeige alle Tasks (gruppiert nach Datum, ISO-Format)
+
+### Chat-History System:
+- **Message History** wird mit jeder Anfrage übergeben
+- **localStorage** speichert Chat-Verlauf client-side
+- **Kontext-Erhaltung:** Mistral versteht Referenzen wie "Leg das todo an, man!"
+- **Automatische Filterung:** Nur relevante Messages werden übertragen (keine Loading/Welcome Messages)
 
 ### Smart Task Detection:
 ```typescript
@@ -204,20 +210,31 @@ if (timeSinceUpdate < 3000) return; // Skip auto-save
 "Was sind meine Tasks?" → list_tasks
 ```
 
-### Tool Execution Flow:
+### Tool-Calling Flow (2 API Calls):
 ```typescript
-1. User sends message to Mistral
+1. First API Call: User message + message history sent to Mistral
 2. Mistral detects intent and calls appropriate tool
 3. Server-side tool execution with Supabase auth
-4. Database update with proper user filtering
-5. UI refresh with needsRefresh flag
-6. Visual feedback to user
+4. Tool results formatted (list_tasks: grouped by date, ISO format)
+5. Second API Call: Tool results sent back with role: 'tool'
+6. Mistral processes tool results and filters response
+7. Database update with proper user filtering
+8. UI refresh with needsRefresh flag
+9. Visual feedback to user
 ```
 
 ### Date Handling:
-- **Today Context** - Mistral receives current date in system prompt
+- **Today Context** - Mistral receives current date in ISO format (YYYY-MM-DD) in system prompt
+- **Tool Results** - Tasks returned with ISO dates for consistent comparison
 - **Robust Parsing** - Handles "today", "tomorrow", YYYY-MM-DD formats
 - **Timezone Safe** - Consistent date formatting across all functions
+- **Grouped Output** - Tasks grouped as: HEUTE, MORGEN, SPÄTER, ÜBERFÄLLIG
+
+### Rate-Limit Handling:
+- **Automatic Retries** - 5 retries with exponential backoff (2s-64s)
+- **Retry-After Header** - Respects Mistral's suggested wait time
+- **Error Handling** - Graceful degradation if all retries fail
+- **2 Calls per Message** - Tool call + result processing (may hit rate limits faster)
 
 ---
 
