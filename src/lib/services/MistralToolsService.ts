@@ -147,7 +147,11 @@ export class MistralToolsService {
   }
 
   // Call Mistral API with tools (server-side execution)
-  async callMistralWithTools(userMessage: string, context?: any): Promise<{
+  async callMistralWithTools(
+    userMessage: string, 
+    context?: any,
+    messageHistory?: Array<{ type: 'user' | 'bot'; text: string; timestamp: Date }>
+  ): Promise<{
     response: string;
     needsRefresh?: boolean;
   }> {
@@ -161,6 +165,7 @@ export class MistralToolsService {
         },
         body: JSON.stringify({
           message: userMessage,
+          messageHistory: messageHistory,
           context: context,
           tools: tools,
           toolChoice: 'auto'

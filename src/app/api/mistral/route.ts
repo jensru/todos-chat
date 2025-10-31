@@ -5,20 +5,18 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const { message: userMessage, context, tools, toolChoice } = await request.json();
+    const { message: userMessage, messageHistory, context, tools, toolChoice } = await request.json();
     
     const apiKey = process.env.MISTRAL_API_KEY || process.env.NEXT_PUBLIC_MISTRAL_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ error: 'API Key not configured' }, { status: 500 });
     }
 
-    // Prepare request body
-    const requestBody: any = {
-      model: 'mistral-large-latest',
-      messages: [
-        {
-          role: 'system',
-          content: `You are a helpful AI assistant for task management.
+    // Build messages array with history
+    const messagesArray: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+      {
+        role: 'system',
+        content: `You are a helpful AI assistant for task management.
           IMPORTANT: Detect the user's language from their message and respond in THAT SAME LANGUAGE.
           Support ALL languages automatically - German, English, French, Spanish, Italian, Portuguese, Dutch, 
           Russian, Chinese, Japanese, Korean, Arabic, Hindi, and any other language the user writes in.
@@ -64,12 +62,31 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           Be productive and helpful. Use markdown formatting for better readability.
           
           Context: ${JSON.stringify(context)}`
-        },
-        {
-          role: 'user',
-          content: userMessage
-        }
-      ],
+      }
+    ];
+
+    // Add message history if provided (convert from frontend format to Mistral format)
+    if (messageHistory && Array.isArray(messageHistory)) {
+      messageHistory.forEach((msg: { type: 'user' | 'bot'; text: string }) => {
+        // Convert 'bot' to 'assistant' for Mistral API
+        const role = msg.type === 'bot' ? 'assistant' : 'user';
+        messagesArray.push({
+          role: role,
+          content: msg.text
+        });
+      });
+    }
+
+    // Add the current user message
+    messagesArray.push({
+      role: 'user',
+      content: userMessage
+    });
+
+    // Prepare request body
+    const requestBody: any = {
+      model: 'mistral-large-latest',
+      messages: messagesArray,
       temperature: 0.8,
       max_tokens: 500
     };

@@ -103,6 +103,18 @@ export function useMistralChat(): {
     const userMessage = chatInput.trim();
     setChatInput('');
 
+    // Prepare message history BEFORE adding the new message
+    // This ensures we only send previous messages, not the current one
+    const historyForApi = messages
+      .filter(msg => msg.type === 'user' || msg.type === 'bot')
+      .filter(msg => !msg.text.includes('⏳')) // Exclude loading messages
+      .filter(msg => msg.id !== '1') // Exclude initial welcome message
+      .map(msg => ({
+        type: msg.type,
+        text: msg.text,
+        timestamp: msg.timestamp
+      }));
+
     const newUserMessage: Message = {
       id: Date.now().toString(),
       type: 'user',
@@ -123,11 +135,16 @@ export function useMistralChat(): {
 
     if (mistralToolsService) {
       try {
-        // Use tools service for enhanced functionality
-        const result = await mistralToolsService.callMistralWithTools(userMessage, taskContext || {
-          tasks: 0,
-          goals: 0
-        });
+
+        // Use tools service for enhanced functionality with message history
+        const result = await mistralToolsService.callMistralWithTools(
+          userMessage, 
+          taskContext || {
+            tasks: 0,
+            goals: 0
+          },
+          historyForApi
+        );
 
         // Remove loading message and add response
         setMessages(prev => {
