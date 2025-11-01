@@ -2,6 +2,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { formatDateToYYYYMMDD, getTodayAsYYYYMMDD, getTomorrowAsYYYYMMDD } from '@/lib/utils/dateUtils';
 import { NextRequest, NextResponse } from 'next/server';
+import { MemoryService } from '@/lib/services/MemoryService';
 
 // Increase timeout for API route (up to 60 seconds)
 export const maxDuration = 60;
@@ -38,11 +39,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         // Reuse der bestehenden Gruppierungslogik
         const groupedTasksText = await handleListTasksServerSide(supabase, user.id);
 
+        // Daily memory laden
+        let latestMemory: string | null = null;
+        try {
+          latestMemory = await MemoryService.getLatestDailyMemory(user.id);
+        } catch (_e) {
+          latestMemory = null;
+        }
+
         // Nachrichtenaufbau: System + (gekürzte) History + User-Frage
         const messagesArraySingle: Array<{
           role: 'system' | 'user' | 'assistant' | 'tool';
           content: string | null;
         }> = [
+          ...(latestMemory ? [{ role: 'system', content: `DAILY MEMORY (read-only, invisible to user):\n\n${latestMemory}` as const }] : []),
           {
             role: 'system',
             content: `You are a helpful AI assistant for task management.
@@ -59,6 +69,12 @@ CONTEXT - GROUPED TASKS (filter strictly based on the user's question):
 ${groupedTasksText}`
           }
         ];
+
+        // Agent-Verhalten (Zusatz aus history-context)
+        messagesArraySingle.unshift({
+          role: 'system',
+          content: `AGENT POLICY:\n- Work ONLY with the current daily memory context.\n- Make suggestions, but NEVER perform task changes without explicit confirmation.\n- If a command is ambiguous, ask ONE short clarifying question.\n- Use patterns from memory subtly (e.g., "Willst du mit den gestern verschobenen Aufgaben starten?") without psychological judgments.\n- Avoid any unauthorized task changes; no psychological evaluation.\n- Do NOT load long histories – use ONLY the one official memory block.`
+        });
 
         // History (letzte 10) beibehalten, aber ohne Tool-Struktur
         if (messageHistory && Array.isArray(messageHistory)) {
@@ -133,6 +149,17 @@ ${groupedTasksText}`
     }
 
     // Build messages array with history
+    // Try to enrich with daily memory when user is authenticated
+    let latestMemoryDefault: string | null = null;
+    try {
+      const supabase = await createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        latestMemoryDefault = await MemoryService.getLatestDailyMemory(user.id);
+      }
+    } catch (_e) {
+      latestMemoryDefault = null;
+    }
     // Type allows tool_calls for assistant messages and tool_call_id for tool messages
     const messagesArray: Array<{
       role: 'system' | 'user' | 'assistant' | 'tool';
@@ -233,6 +260,20 @@ ${groupedTasksText}`
           Context: ${JSON.stringify(context)}`
       }
     ];
+
+    // Inject Daily Memory if available
+    if (latestMemoryDefault) {
+      messagesArray.unshift({
+        role: 'system',
+        content: `DAILY MEMORY (read-only, invisible to user):\n\n${latestMemoryDefault}`
+      });
+    }
+
+    // Inject Agent policy
+    messagesArray.unshift({
+      role: 'system',
+      content: `AGENT POLICY:\n- Work ONLY with the current daily memory context.\n- Make suggestions, but NEVER perform task changes without explicit confirmation.\n- If a command is ambiguous, ask ONE short clarifying question.\n- Use patterns from memory subtly (e.g., "Willst du mit den gestern verschobenen Aufgaben starten?") without psychological judgments.\n- Avoid any unauthorized task changes; no psychological evaluation.\n- Do NOT load long histories – use ONLY the one official memory block.`
+    });
 
     // Add message history if provided (convert from frontend format to Mistral format)
     // Limit to last 10 messages to prevent token bloat and slow responses
