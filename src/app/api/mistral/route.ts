@@ -52,7 +52,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           role: 'system' | 'user' | 'assistant' | 'tool';
           content: string | null;
         }> = [
-          ...(latestMemory ? [{ role: 'system', content: `DAILY MEMORY (read-only, invisible to user):\n\n${latestMemory}` as const }] : []),
           {
             role: 'system',
             content: `You are a helpful AI assistant for task management.
@@ -69,6 +68,11 @@ CONTEXT - GROUPED TASKS (filter strictly based on the user's question):
 ${groupedTasksText}`
           }
         ];
+
+        // Inject Daily Memory (if present) at the beginning as a dedicated system block
+        if (latestMemory) {
+          messagesArraySingle.unshift({ role: 'system', content: `DAILY MEMORY (read-only, invisible to user):\n\n${latestMemory}` });
+        }
 
         // Agent-Verhalten (Zusatz aus history-context)
         messagesArraySingle.unshift({
