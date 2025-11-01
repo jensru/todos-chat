@@ -6,7 +6,7 @@ import React from "react";
 import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, MeasuringStrategy, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { CheckCircle2, ChevronUp, LogOut, Mic, MicOff, Plus, Target, Trash2, X } from 'lucide-react';
+import { CheckCircle2, ChevronUp, LogOut, Mic, MicOff, Plus, Target, X } from 'lucide-react';
 
 import { TaskCardRefactored as TaskCard } from '@/components/TaskCardRefactored';
 import { Button } from '@/components/ui/button';
