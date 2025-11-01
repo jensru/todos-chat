@@ -2,10 +2,7 @@
   "crons": [
     {
       "path": "/api/memory/cron",
-      "schedule": "0 3 * * *",
-      "headers": {
-        "x-cron-secret": "${CRON_SECRET}"
-      }
+      "schedule": "0 3 * * *"
     }
   ]
 }
