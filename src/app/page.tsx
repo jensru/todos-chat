@@ -510,15 +510,7 @@ export default function HomePage(): React.JSX.Element {
             >
               <LogOut className="h-4 w-4" />
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={clearChat}
-              title="Chat-Verlauf löschen"
-              className="text-muted-foreground hover:text-destructive"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            {/* Entfernt: Chat-Verlauf löschen Button, da Chat tageweise via Memory geführt wird */}
             <Button
               variant="ghost"
               size="sm"

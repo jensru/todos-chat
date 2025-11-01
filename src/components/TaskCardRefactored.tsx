@@ -520,9 +520,6 @@ export function TaskCardRefactored({ task, onUpdate, onDelete, isDragging = fals
                 >
                   <Star className={`h-4 w-4 ${task.priority ? 'fill-current' : ''}`} />
                 </Button>
-                <Button onClick={() => onDelete(task.id)} variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground">
-                  <Trash2 className="h-3 w-3" />
-                </Button>
               </div>
             )}
           </div>
