@@ -183,7 +183,6 @@ export default function HomePage(): React.JSX.Element {
     chatInput,
     setChatInput,
     handleSendMessage,
-    clearChat,
     isSending: isMistralSending
   } = useMistralChat();
 
