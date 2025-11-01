@@ -2,6 +2,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { formatDateToYYYYMMDD } from '@/lib/utils/dateUtils';
 import { NextRequest, NextResponse } from 'next/server';
+import { logTaskEvent } from '@/lib/services/TaskEventService';
 
 // PUT /api/tasks/[id] - Update task
 export async function PUT(
@@ -64,6 +65,9 @@ export async function PUT(
 
     if (updateError) throw updateError;
 
+    // Event: update
+    await logTaskEvent(supabase, user.id, String(taskId), 'update', { fields: Object.keys(updates || {}) });
+
     return NextResponse.json({ success: true, task: updatedTask });
   } catch (error) {
     console.error('API Debug - Error in PUT /api/tasks/[id]:', error);
@@ -107,6 +111,9 @@ export async function DELETE(
       .eq('id', taskId);
 
     if (deleteError) throw deleteError;
+
+    // Event: delete
+    await logTaskEvent(supabase, user.id, String(taskId), 'delete');
 
     return NextResponse.json({ success: true });
   } catch (error) {

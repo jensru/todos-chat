@@ -2,6 +2,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { formatDateToYYYYMMDD, getTodayAsYYYYMMDD } from '@/lib/utils/dateUtils';
 import { NextRequest, NextResponse } from 'next/server';
+import { logTaskEvent } from '@/lib/services/TaskEventService';
 
 // GET /api/tasks - Load all tasks
 export async function GET(): Promise<NextResponse> {
@@ -98,6 +99,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       .single();
 
     if (error) throw error;
+
+    // Event: create
+    await logTaskEvent(supabase, user.id, String(newTask.id), 'create', { title: newTask.title, dueDate: newTask.dueDate });
 
     return NextResponse.json({ success: true, task: newTask });
   } catch (error) {

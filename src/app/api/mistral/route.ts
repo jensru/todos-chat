@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { formatDateToYYYYMMDD, getTodayAsYYYYMMDD, getTomorrowAsYYYYMMDD } from '@/lib/utils/dateUtils';
 import { NextRequest, NextResponse } from 'next/server';
 import { MemoryService } from '@/lib/services/MemoryService';
+import { logTaskEvent } from '@/lib/services/TaskEventService';
 
 // Increase timeout for API route (up to 60 seconds)
 export const maxDuration = 60;
@@ -671,6 +672,8 @@ async function handleCreateTaskServerSide(args: any, supabase: any, userId: stri
     if (process.env.NODE_ENV === 'development') {
       console.log('handleCreateTaskServerSide - task created successfully:', newTask);
     }
+    // Event: create
+    await logTaskEvent(supabase, userId, String(newTask.id), 'create', { title: newTask.title, dueDate: newTask.dueDate });
     return `✅ Aufgabe "${args.title}" wurde erfolgreich erstellt.`;
   } catch (error) {
     console.error('handleCreateTaskServerSide - error:', error);
@@ -808,6 +811,8 @@ async function handleUpdateTaskServerSide(args: any, supabase: any, userId: stri
         updatedAt: updatedTask.updatedAt
       });
     }
+    // Event: update
+    await logTaskEvent(supabase, userId, String(taskId), 'update', { fields: Object.keys(args || {}) });
     return `✅ Aufgabe wurde erfolgreich aktualisiert.`;
   } catch (error) {
     console.error('handleUpdateTaskServerSide - error:', error);
@@ -863,6 +868,8 @@ async function handleDeleteTaskServerSide(args: any, supabase: any, userId: stri
     if (process.env.NODE_ENV === 'development') {
       console.log('handleDeleteTaskServerSide - task deleted successfully');
     }
+    // Event: delete
+    await logTaskEvent(supabase, userId, String(taskId), 'delete');
     return `✅ Aufgabe wurde erfolgreich gelöscht.`;
   } catch (error) {
     console.error('handleDeleteTaskServerSide - error:', error);
