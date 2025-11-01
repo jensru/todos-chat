@@ -7,6 +7,7 @@ import { useTranslation } from '@/lib/i18n';
 import { MistralToolsService } from '@/lib/services/MistralToolsService';
 import { Message } from '@/lib/types';
 import { useLocale } from './useLocale';
+import { getTodayAsYYYYMMDD } from '@/lib/utils/dateUtils';
 
 export function useMistralChat(): {
   messages: Message[];
@@ -41,32 +42,44 @@ export function useMistralChat(): {
     }
   }, [isReady, t]);
 
-  // Load messages from localStorage on mount (client-side only)
+  // Load messages for TODAY from server once locale is ready
   useEffect(() => {
-    if (typeof window !== 'undefined' && isReady) {
-      const savedMessages = localStorage.getItem('mistral-chat-messages');
-      if (savedMessages) {
-        try {
-          const parsed = JSON.parse(savedMessages);
-          // Convert timestamp strings back to Date objects
-          const loadedMessages = parsed.map((msg: any) => ({
-            ...msg,
-            timestamp: new Date(msg.timestamp)
-          }));
-          setMessages(loadedMessages);
-        } catch (error) {
-          console.error('Error parsing saved messages:', error);
+    const loadFromServer = async (): Promise<void> => {
+      if (!isReady) return;
+      try {
+        const dateISO = getTodayAsYYYYMMDD();
+        const res = await fetch(`/api/chat-messages?date=${dateISO}`);
+        if (!res.ok) throw new Error(`Failed to load chat: ${res.status}`);
+        const data = await res.json();
+        const serverMessages = (data.messages || []).map((m: any) => ({
+          id: m.id,
+          type: m.role === 'user' ? 'user' : 'bot',
+          text: m.content,
+          timestamp: new Date(m.createdAt)
+        })) as Message[];
+        if (serverMessages.length > 0) {
+          setMessages(serverMessages);
         }
+      } catch (error) {
+        console.error('Failed to load chat messages:', error);
       }
-    }
-  }, [isReady]); // Run when locale is ready
+    };
+    void loadFromServer();
+  }, [isReady]);
 
-  // Save messages to localStorage whenever messages change
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('mistral-chat-messages', JSON.stringify(messages));
+  // Persist a single message to server (fire and forget)
+  const persistMessage = useCallback(async (role: 'user' | 'bot', content: string): Promise<void> => {
+    try {
+      const dateISO = getTodayAsYYYYMMDD();
+      await fetch('/api/chat-messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dateISO, role, content })
+      });
+    } catch (error) {
+      console.error('Failed to persist chat message:', error);
     }
-  }, [messages]);
+  }, []);
 
   // Function to clear chat
   const clearChat = useCallback(() => {
@@ -142,6 +155,7 @@ export function useMistralChat(): {
       timestamp: new Date()
     };
     setMessages(prev => [...prev, newUserMessage]);
+    void persistMessage('user', userMessage);
 
     // Add loading message
     const loadingMessageId = (Date.now() + 1).toString();
@@ -180,6 +194,8 @@ export function useMistralChat(): {
             text: result.response,
             timestamp: new Date()
           };
+          // Persist bot message
+          void persistMessage('bot', botMessage.text);
           return [...filtered, botMessage];
         });
 

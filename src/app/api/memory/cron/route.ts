@@ -64,6 +64,21 @@ async function generateContentForUser(
   return content
 }
 
+function getTodayInTzYYYYMMDD(tz: string): string {
+  const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' })
+  return fmt.format(new Date())
+}
+
+function getYesterdayInTzYYYYMMDD(tz: string): string {
+  // Take today in tz, then subtract one day by constructing a Date from that string and minus 1 day
+  const todayStr = getTodayInTzYYYYMMDD(tz) // YYYY-MM-DD
+  const [y, m, d] = todayStr.split('-').map(n => parseInt(n, 10))
+  const localDate = new Date(y, m - 1, d)
+  localDate.setDate(localDate.getDate() - 1)
+  const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' })
+  return fmt.format(localDate)
+}
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const url = new URL(request.url)
   const querySecret = url.searchParams.get('secret')
@@ -89,9 +104,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const supabaseAdmin = createAdminClient()
 
   // Default: yesterday (in server local time)
-  const now = new Date()
-  const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
-  const dateISO = formatDateToYYYYMMDD(yesterday)
+  const tz = process.env.MEMORY_TZ || 'UTC'
+  const dateISO = getYesterdayInTzYYYYMMDD(tz)
 
   let processed = 0
   let failures: Array<{ userId: string; error: string }> = []
